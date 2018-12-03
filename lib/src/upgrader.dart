@@ -32,12 +32,14 @@ class UpgradeAlert extends StatelessWidget {
     if (this.client != null) {
       Upgrader().client = this.client;
     }
-    return FutureBuilder(future: Upgrader().initialize(), builder: (BuildContext context, AsyncSnapshot<bool> processed) {
-      if (processed.connectionState == ConnectionState.done) {
-        Upgrader().checkVersion(context: context);
-      }
-      return child;
-    });
+    return FutureBuilder(
+        future: Upgrader().initialize(),
+        builder: (BuildContext context, AsyncSnapshot<bool> processed) {
+          if (processed.connectionState == ConnectionState.done) {
+            Upgrader().checkVersion(context: context);
+          }
+          return child;
+        });
   }
 }
 
@@ -96,7 +98,8 @@ class Upgrader {
     if (_packageInfo == null) {
       _packageInfo = await PackageInfo.fromPlatform();
       if (debugEnabled) {
-        print('upgrader: package info packageName: ${_packageInfo.packageName}');
+        print(
+            'upgrader: package info packageName: ${_packageInfo.packageName}');
         print('upgrader: package info version: ${_packageInfo.version}');
       }
     }
@@ -131,12 +134,13 @@ class Upgrader {
 
   bool _verifyInit() {
     if (!_initCalled) {
-        throw(notInitializedExceptionMessage);
+      throw (notInitializedExceptionMessage);
     }
     return true;
   }
 
-  final notInitializedExceptionMessage = 'initialize() not called. Must be called first.';
+  final notInitializedExceptionMessage =
+      'initialize() not called. Must be called first.';
 
   String appName() {
     _verifyInit();
@@ -168,17 +172,17 @@ class Upgrader {
   final updateButtonTitle = 'Update Now'.toUpperCase();
 
   void checkVersion({@required BuildContext context}) {
-    if (isTooSoon() || alreadyIgnoredThisVersion() || alreadyAnsweredThisVersion() || !isUpdateAvailable()) {
+    if (isTooSoon() ||
+        alreadyIgnoredThisVersion() ||
+        alreadyAnsweredThisVersion() ||
+        !isUpdateAvailable()) {
       return;
     }
 
     if (!_displayed) {
       _displayed = true;
       Future.delayed(Duration(milliseconds: 0), () {
-        _showDialog(context: context,
-            title: title,
-            message: message()
-        );
+        _showDialog(context: context, title: title, message: message());
       });
     }
   }
@@ -197,7 +201,8 @@ class Upgrader {
   }
 
   bool alreadyIgnoredThisVersion() {
-    return _userIgnoredVersion != null && _userIgnoredVersion == _appStoreVersion;
+    return _userIgnoredVersion != null &&
+        _userIgnoredVersion == _appStoreVersion;
   }
 
   bool isUpdateAvailable() {
@@ -221,7 +226,10 @@ class Upgrader {
     return _updateAvailable != null;
   }
 
-  void _showDialog({@required BuildContext context, @required String title, @required String message}) {
+  void _showDialog(
+      {@required BuildContext context,
+      @required String title,
+      @required String message}) {
     if (debugEnabled) {
       print('upgrader: showDialog title: $title');
       print('upgrader: showDialog message: $message');
@@ -239,7 +247,8 @@ class Upgrader {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Text(message),
-              Padding(padding: EdgeInsets.only(top: 15.0),child: Text(question)),
+              Padding(
+                  padding: EdgeInsets.only(top: 15.0), child: Text(question)),
             ],
           ),
           actions: <Widget>[
@@ -323,7 +332,7 @@ class Upgrader {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final lastTimeAlerted = prefs.getString('lastTimeAlerted');
     if (lastTimeAlerted != null) {
-        _lastTimeAlerted = DateTime.parse(lastTimeAlerted);
+      _lastTimeAlerted = DateTime.parse(lastTimeAlerted);
     }
 
     _lastVersionAlerted = prefs.getString('lastVersionAlerted');
@@ -347,8 +356,6 @@ class Upgrader {
 
     if (await canLaunch(_appStoreListingURL)) {
       launch(_appStoreListingURL);
-    } else {
-    }
-
+    } else {}
   }
 }

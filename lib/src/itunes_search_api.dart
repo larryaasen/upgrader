@@ -8,7 +8,8 @@ import 'package:http/http.dart' as http;
 
 class ITunesSearchAPI {
   /// iTunes Search API documentation URL
-  final String iTunesDocumentationURL = 'https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api/';
+  final String iTunesDocumentationURL =
+      'https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api/';
 
   /// iTunes Lookup API URL
   final String lookupPrefixURL = 'https://itunes.apple.com/lookup';
@@ -118,7 +119,6 @@ class ITunesSearchAPI {
 }
 
 class ITunesResults {
-
   /// Return field bundleId from iTunes results.
   static String bundleId(Map response) {
     var value;
@@ -151,5 +151,4 @@ class ITunesResults {
     }
     return value;
   }
-
 }

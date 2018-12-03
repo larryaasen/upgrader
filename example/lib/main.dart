@@ -13,7 +13,8 @@ class MyApp extends StatelessWidget {
   }) : super(key: key) {
     Upgrader().clearSavedSettings();
     Upgrader().installAppStoreVersion('1.1.0');
-    Upgrader().installAppStoreListingURL('https://itunes.apple.com/us/app/google-maps-transit-food/id585027354?mt=8&uo=4');
+    Upgrader().installAppStoreListingURL(
+        'https://itunes.apple.com/us/app/google-maps-transit-food/id585027354?mt=8&uo=4');
   }
 
   @override
@@ -26,9 +27,7 @@ class MyApp extends StatelessWidget {
           ),
           body: UpgradeAlert(
             child: Center(child: Text('Checking...')),
-          )
-      ),
+          )),
     );
   }
 }
-

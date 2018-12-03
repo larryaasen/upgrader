@@ -18,8 +18,7 @@ void main() {
     'plugins.flutter.io/shared_preferences',
   );
 
-  const Map<String, dynamic> kTestValues = <String, dynamic>{
-  };
+  const Map<String, dynamic> kTestValues = <String, dynamic>{};
 
   setUp(() async {
     // This idea to mock the shared preferences taken from:
@@ -43,9 +42,12 @@ void main() {
     expect(iTunes.lookupPrefixURL.length, greaterThan(0));
     expect(iTunes.searchPrefixURL.length, greaterThan(0));
 
-    expect(iTunes.lookupURLByBundleId('com.google.Maps'), equals('https://itunes.apple.com/lookup?bundleId=com.google.Maps'));
-    expect(iTunes.lookupURLById('585027354'), equals('https://itunes.apple.com/lookup?id=585027354'));
-    expect(iTunes.lookupURLByQSP({'id': '909253', 'entity': 'album'}), equals('https://itunes.apple.com/lookup?id=909253&entity=album'));
+    expect(iTunes.lookupURLByBundleId('com.google.Maps'),
+        equals('https://itunes.apple.com/lookup?bundleId=com.google.Maps'));
+    expect(iTunes.lookupURLById('585027354'),
+        equals('https://itunes.apple.com/lookup?id=585027354'));
+    expect(iTunes.lookupURLByQSP({'id': '909253', 'entity': 'album'}),
+        equals('https://itunes.apple.com/lookup?id=909253&entity=album'));
   });
 
   test('testing lookupByBundleId', () async {
@@ -97,12 +99,12 @@ void main() {
       expect(e, upgrader.notInitializedExceptionMessage);
     }
 
-    upgrader.installPackageInfo(packageInfo: PackageInfo(
-        appName: 'Upgrader',
-        packageName: 'com.larryaasen.upgrader',
-        version: '1.9.9',
-        buildNumber: '400'
-    ));
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '1.9.9',
+            buildNumber: '400'));
     await upgrader.initialize();
     expect(upgrader.appName(), 'Upgrader');
     expect(upgrader.currentAppStoreVersion(), '5.6');
@@ -119,9 +121,11 @@ void main() {
 
   testWidgets('test installAppStoreListingURL', (WidgetTester tester) async {
     final upgrader = Upgrader();
-    upgrader.installAppStoreListingURL('https://itunes.apple.com/us/app/google-maps-transit-food/id585027354?mt=8&uo=4');
+    upgrader.installAppStoreListingURL(
+        'https://itunes.apple.com/us/app/google-maps-transit-food/id585027354?mt=8&uo=4');
 
-    expect(upgrader.currentAppStoreListingURL(), 'https://itunes.apple.com/us/app/google-maps-transit-food/id585027354?mt=8&uo=4');
+    expect(upgrader.currentAppStoreListingURL(),
+        'https://itunes.apple.com/us/app/google-maps-transit-food/id585027354?mt=8&uo=4');
   });
 
   testWidgets('test UpgradeWidget', (WidgetTester tester) async {
@@ -129,12 +133,12 @@ void main() {
     final upgrader = Upgrader();
     upgrader.client = client;
 
-    upgrader.installPackageInfo(packageInfo: PackageInfo(
-        appName: 'Upgrader',
-        packageName: 'com.larryaasen.upgrader',
-        version: '0.9.9',
-        buildNumber: '400'
-    ));
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '0.9.9',
+            buildNumber: '400'));
     await upgrader.initialize();
 
     expect(upgrader.isUpdateAvailable(), true);
@@ -176,12 +180,13 @@ http.Client setupMockClient() {
 
   // Use Mockito to return a successful response when it calls the
   // provided http.Client
-  final r ='{"results": [{"version": "5.6", "bundleId": "com.google.Maps"}]}';
+  final r = '{"results": [{"version": "5.6", "bundleId": "com.google.Maps"}]}';
   when(client.get(ITunesSearchAPI().lookupURLById('585027354')))
       .thenAnswer((_) async => http.Response(r, 200));
   when(client.get(ITunesSearchAPI().lookupURLByBundleId('com.google.Maps')))
       .thenAnswer((_) async => http.Response(r, 200));
-  when(client.get(ITunesSearchAPI().lookupURLByBundleId('com.larryaasen.upgrader')))
+  when(client.get(
+          ITunesSearchAPI().lookupURLByBundleId('com.larryaasen.upgrader')))
       .thenAnswer((_) async => http.Response(r, 200));
 
   return client;
@@ -208,8 +213,7 @@ class _MyWidget extends StatelessWidget {
   Widget _buildBody(BuildContext context) {
     return UpgradeAlert(
         child: Column(
-          children: <Widget>[Text('Upgrading')],
-        )
-    );
+      children: <Widget>[Text('Upgrading')],
+    ));
   }
 }
