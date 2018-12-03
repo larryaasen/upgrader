@@ -1,0 +1,36 @@
+name: upgrader
+description: A new Flutter package.
+version: 0.0.1
+author:
+homepage:
+
+environment:
+  sdk: ">=2.0.0-dev.68.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # From Dart Team: A composable, Future-based library for making HTTP requests.
+  http: ^0.12.0
+
+  # From Flutter Team: Provides an API for querying information about an application package.
+  package_info: ^0.3.2
+
+  # From Flutter Team: Wraps NSUserDefaults (on iOS) and SharedPreferences (on Android).
+  shared_preferences: ^0.4.3
+
+  # From Flutter Team: A Flutter plugin for launching a URL in the mobile platform.
+  url_launcher: ^4.0.2
+
+  # A dart library for comparing and incrementing version numbers with Semantic Versioning.
+  version: ^1.0.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # From Dart Team: Mock library for Dart inspired by Mockito.
+  mockito: ^4.0.0
+
+flutter:
