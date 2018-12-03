@@ -44,7 +44,14 @@ class MyApp extends StatelessWidget {
 
 ## Customization
 
-The UpgradeAlert widget can be customized... 
+The UpgradeAlert widget can be customized by setting parameters in the constructor of the
+UpgradeAlert widget.
+
+* buttonTitleIgnore: the ignore button title, which defaults to ```Ignore```
+* buttonTitleRemind: the remind button title, which defaults to ```Remind```
+* buttonTitleUpdate: the update button title, which defaults to ```Update Now```
+* prompt: the call to action message, which defaults to ```Would you like to update it now?```
+* title: the alert dialog title, which defaults to ```Update App?```
 
 ## iTunes Search API
 

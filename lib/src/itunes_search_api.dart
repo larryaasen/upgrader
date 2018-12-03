@@ -20,7 +20,7 @@ class ITunesSearchAPI {
   /// Provide an HTTP Client that can be replaced for mock testing.
   http.Client client = http.Client();
 
-  bool debugEnabled = true;
+  bool debugEnabled = false;
 
   /// Look up by bundle id.
   /// Example: look up Google Maps iOS App:

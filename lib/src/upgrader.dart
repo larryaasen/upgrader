@@ -13,25 +13,65 @@ import 'itunes_search_api.dart';
 
 /// A widget to display the upgrade dialog.
 class UpgradeAlert extends StatelessWidget {
+  /// The [child] contained by the widget.
   final Widget child;
+
+  /// The ignore button title, which defaults to ```Ignore```
+  final String buttonTitleIgnore;
+
+  /// The remind button title, which defaults to ```Remind```
+  final String buttonTitleRemind;
+
+  /// The update button title, which defaults to ```Update Now```
+  final String buttonTitleUpdate;
+
+  /// The call to action message, which defaults to: Would you like to update it now?
+  final String prompt;
+
+  /// The title of the alert dialog. Defaults to: Update App?
+  final String title;
+
+  // TODO: add new properties for customization
 
   /// Provide an HTTP Client that can be replaced for mock testing.
   final http.Client client;
 
-  const UpgradeAlert({
+  UpgradeAlert({
     Key key,
+    this.buttonTitleIgnore,
+    this.buttonTitleRemind,
+    this.buttonTitleUpdate,
     this.child,
+    this.prompt,
+    this.title,
     this.client,
-  }) : super(key: key);
+  }) : super(key: key) {
+    if (this.buttonTitleIgnore != null) {
+      Upgrader().buttonTitleIgnore = this.buttonTitleIgnore;
+    }
+    if (this.buttonTitleRemind != null) {
+      Upgrader().buttonTitleRemind = this.buttonTitleRemind;
+    }
+    if (this.buttonTitleUpdate != null) {
+      Upgrader().buttonTitleUpdate = this.buttonTitleUpdate;
+    }
+    if (this.client != null) {
+      Upgrader().client = this.client;
+    }
+    if (this.prompt != null) {
+      Upgrader().prompt = this.prompt;
+    }
+    if (this.title != null) {
+      Upgrader().title = this.title;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     if (Upgrader().debugEnabled) {
       print('upgrader: build UpgradeWidget');
     }
-    if (this.client != null) {
-      Upgrader().client = this.client;
-    }
+
     return FutureBuilder(
         future: Upgrader().initialize(),
         builder: (BuildContext context, AsyncSnapshot<bool> processed) {
@@ -47,17 +87,31 @@ class UpgradeAlert extends StatelessWidget {
 class Upgrader {
   static final Upgrader _singleton = new Upgrader._internal();
 
+  String buttonTitleIgnore = 'Ignore'.toUpperCase();
+  String buttonTitleRemind = 'Later'.toUpperCase();
+  String buttonTitleUpdate = 'Update Now'.toUpperCase();
+
   /// Provide an HTTP Client that can be replaced for mock testing.
   http.Client client = http.Client();
 
-  bool debugEnabled = true;
+  /// Enable print statements for debugging.
+  bool debugEnabled = false;
+
+  /// Days until alerting user again
+  int daysToAlertAgain = 3;
+
+  final notInitializedExceptionMessage =
+      'initialize() not called. Must be called first.';
+
+  String prompt = 'Would you like to update it now?';
+
+  /// The alert dialog title
+  String title = 'Update App?';
+
 
   bool _displayed = false;
   bool _initCalled = false;
   PackageInfo _packageInfo;
-
-  /// Days until alerting user again
-  int daysToAlertAgain = 3;
 
   String _installedVersion;
   String _appStoreVersion;
@@ -139,9 +193,6 @@ class Upgrader {
     return true;
   }
 
-  final notInitializedExceptionMessage =
-      'initialize() not called. Must be called first.';
-
   String appName() {
     _verifyInit();
     return _packageInfo.appName;
@@ -162,14 +213,6 @@ class Upgrader {
   String message() {
     return 'A new version of ${appName()} is available! Version ${currentAppStoreVersion()} is now available-you have ${currentInstalledVersion()}.';
   }
-
-  String question = 'Would you like to update it now?';
-
-  final title = 'Update App?';
-
-  final ignoreButtonTitle = 'Ignore'.toUpperCase();
-  final remindButtonTitle = 'Later'.toUpperCase();
-  final updateButtonTitle = 'Update Now'.toUpperCase();
 
   void checkVersion({@required BuildContext context}) {
     if (isTooSoon() ||
@@ -248,15 +291,15 @@ class Upgrader {
             children: <Widget>[
               Text(message),
               Padding(
-                  padding: EdgeInsets.only(top: 15.0), child: Text(question)),
+                  padding: EdgeInsets.only(top: 15.0), child: Text(prompt)),
             ],
           ),
           actions: <Widget>[
             FlatButton(
-              child: Text(ignoreButtonTitle),
+              child: Text(buttonTitleIgnore),
               onPressed: () {
                 if (debugEnabled) {
-                  print('upgrader: button tapped: $ignoreButtonTitle');
+                  print('upgrader: button tapped: $buttonTitleIgnore');
                 }
 
                 _onUserIgnored();
@@ -266,10 +309,10 @@ class Upgrader {
               },
             ),
             FlatButton(
-              child: Text(remindButtonTitle),
+              child: Text(buttonTitleRemind),
               onPressed: () {
                 if (debugEnabled) {
-                  print('upgrader: button tapped: $remindButtonTitle');
+                  print('upgrader: button tapped: $buttonTitleRemind');
                 }
 
                 Navigator.of(context).pop();
@@ -277,10 +320,10 @@ class Upgrader {
               },
             ),
             FlatButton(
-              child: Text(updateButtonTitle),
+              child: Text(buttonTitleUpdate),
               onPressed: () {
                 if (debugEnabled) {
-                  print('upgrader: button tapped: $updateButtonTitle');
+                  print('upgrader: button tapped: $buttonTitleUpdate');
                 }
 
                 Navigator.of(context).pop();

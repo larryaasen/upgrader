@@ -157,17 +157,17 @@ void main() {
 
     expect(find.text(upgrader.title), findsOneWidget);
     expect(find.text(upgrader.message()), findsOneWidget);
-    expect(find.text(upgrader.question), findsOneWidget);
+    expect(find.text(upgrader.prompt), findsOneWidget);
     expect(find.byType(FlatButton), findsNWidgets(3));
-    expect(find.text(upgrader.ignoreButtonTitle), findsOneWidget);
-    expect(find.text(upgrader.remindButtonTitle), findsOneWidget);
-    expect(find.text(upgrader.updateButtonTitle), findsOneWidget);
+    expect(find.text(upgrader.buttonTitleIgnore), findsOneWidget);
+    expect(find.text(upgrader.buttonTitleRemind), findsOneWidget);
+    expect(find.text(upgrader.buttonTitleUpdate), findsOneWidget);
 
-    await tester.tap(find.text(upgrader.updateButtonTitle));
+    await tester.tap(find.text(upgrader.buttonTitleUpdate));
     await tester.pumpAndSettle();
-    expect(find.text(upgrader.ignoreButtonTitle), findsNothing);
-    expect(find.text(upgrader.remindButtonTitle), findsNothing);
-    expect(find.text(upgrader.updateButtonTitle), findsNothing);
+    expect(find.text(upgrader.buttonTitleIgnore), findsNothing);
+    expect(find.text(upgrader.buttonTitleRemind), findsNothing);
+    expect(find.text(upgrader.buttonTitleUpdate), findsNothing);
   });
 }
 
