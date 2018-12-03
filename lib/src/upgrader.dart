@@ -31,8 +31,6 @@ class UpgradeAlert extends StatelessWidget {
   /// The title of the alert dialog. Defaults to: Update App?
   final String title;
 
-  // TODO: add new properties for customization
-
   /// Provide an HTTP Client that can be replaced for mock testing.
   final http.Client client;
 

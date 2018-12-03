@@ -1,8 +1,8 @@
 name: upgrader
 description: A new Flutter package.
-version: 0.0.1
-author:
-homepage:
+version: 0.1.0
+author: Larry Aasen <larryaasen@gmail.com>
+homepage: https://github.com/larryaasen/upgrader
 
 environment:
   sdk: ">=2.0.0-dev.68.0 <3.0.0"

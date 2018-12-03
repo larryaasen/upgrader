@@ -53,6 +53,13 @@ UpgradeAlert widget.
 * prompt: the call to action message, which defaults to ```Would you like to update it now?```
 * title: the alert dialog title, which defaults to ```Update App?```
 
+## Android
+Unfortunately, this widget only works on iOS at the time. There is no easy way to query the
+Google Play Store for metadata about an app. Without the metadata, the widget cannot compare the
+app version with the latest Play Store version.
+
+Support for Android coming soon.
+
 ## iTunes Search API
 
 There is a class in this Flutter package used by the UpgradeAlert widget to download app details 
