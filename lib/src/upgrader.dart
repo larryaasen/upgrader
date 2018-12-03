@@ -106,7 +106,6 @@ class Upgrader {
   /// The alert dialog title
   String title = 'Update App?';
 
-
   bool _displayed = false;
   bool _initCalled = false;
   PackageInfo _packageInfo;
@@ -288,8 +287,7 @@ class Upgrader {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Text(message),
-              Padding(
-                  padding: EdgeInsets.only(top: 15.0), child: Text(prompt)),
+              Padding(padding: EdgeInsets.only(top: 15.0), child: Text(prompt)),
             ],
           ),
           actions: <Widget>[
