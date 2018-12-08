@@ -38,6 +38,9 @@ void main() {
 
   test('testing ITunesSearchAPI properties', () async {
     final iTunes = ITunesSearchAPI();
+    expect(iTunes.debugEnabled, equals(false));
+    iTunes.debugEnabled = true;
+    expect(iTunes.debugEnabled, equals(true));
     expect(iTunes.iTunesDocumentationURL.length, greaterThan(0));
     expect(iTunes.lookupPrefixURL.length, greaterThan(0));
     expect(iTunes.searchPrefixURL.length, greaterThan(0));
@@ -110,12 +113,8 @@ void main() {
     expect(upgrader.currentAppStoreVersion(), '5.6');
     expect(upgrader.currentInstalledVersion(), '1.9.9');
     expect(upgrader.isUpdateAvailable(), true);
-  });
 
-  testWidgets('test installAppStoreVersion', (WidgetTester tester) async {
-    final upgrader = Upgrader();
     upgrader.installAppStoreVersion('1.2.3');
-
     expect(upgrader.currentAppStoreVersion(), '1.2.3');
   });
 
@@ -143,6 +142,18 @@ void main() {
 
     expect(upgrader.isUpdateAvailable(), true);
     expect(upgrader.isTooSoon(), false);
+
+    expect(upgrader.buttonTitleIgnore, 'IGNORE');
+    expect(upgrader.buttonTitleRemind, 'LATER');
+    expect(upgrader.buttonTitleUpdate, 'UPDATE NOW');
+
+    upgrader.buttonTitleIgnore = 'aaa';
+    upgrader.buttonTitleRemind = 'bbb';
+    upgrader.buttonTitleUpdate = 'ccc';
+
+    expect(upgrader.buttonTitleIgnore, 'aaa');
+    expect(upgrader.buttonTitleRemind, 'bbb');
+    expect(upgrader.buttonTitleUpdate, 'ccc');
 
     await tester.pumpWidget(_MyWidget());
 

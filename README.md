@@ -48,17 +48,21 @@ The UpgradeAlert widget can be customized by setting parameters in the construct
 UpgradeAlert widget.
 
 * buttonTitleIgnore: the ignore button title, which defaults to ```Ignore```
-* buttonTitleRemind: the remind button title, which defaults to ```Remind```
+* buttonTitleRemind: the remind button title, which defaults to ```Later```
 * buttonTitleUpdate: the update button title, which defaults to ```Update Now```
+* daysUntilAlertAgain: days until alerting user again, which defaults to ```3```
+* debugEnabled: Enable print statements for debugging, which defaults to ```false```
 * prompt: the call to action message, which defaults to ```Would you like to update it now?```
 * title: the alert dialog title, which defaults to ```Update App?```
 
-## Android
-Unfortunately, this widget only works on iOS at the time. There is no easy way to query the
-Google Play Store for metadata about an app. Without the metadata, the widget cannot compare the
-app version with the latest Play Store version.
+## Limitations
+This widget works on both Android and iOS. When running on iOS the App Store will provide the
+latest app version and will display the prompt at the appropriate times.
 
-Support for Android coming soon.
+On Android, this widget does nothing as there is no easy way to query the
+Google Play Store for metadata about an app. Without the metadata, the widget cannot compare the
+app version with the latest Play Store version. It will not disrupt the widget tree and can be
+included in an Android without any issues. Support for Android coming soon.
 
 ## iTunes Search API
 

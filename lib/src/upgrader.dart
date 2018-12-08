@@ -11,76 +11,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:version/version.dart';
 import 'itunes_search_api.dart';
 
-/// A widget to display the upgrade dialog.
-class UpgradeAlert extends StatelessWidget {
-  /// The [child] contained by the widget.
-  final Widget child;
-
-  /// The ignore button title, which defaults to ```Ignore```
-  final String buttonTitleIgnore;
-
-  /// The remind button title, which defaults to ```Remind```
-  final String buttonTitleRemind;
-
-  /// The update button title, which defaults to ```Update Now```
-  final String buttonTitleUpdate;
-
-  /// The call to action message, which defaults to: Would you like to update it now?
-  final String prompt;
-
-  /// The title of the alert dialog. Defaults to: Update App?
-  final String title;
-
-  /// Provide an HTTP Client that can be replaced for mock testing.
-  final http.Client client;
-
-  UpgradeAlert({
-    Key key,
-    this.buttonTitleIgnore,
-    this.buttonTitleRemind,
-    this.buttonTitleUpdate,
-    this.child,
-    this.prompt,
-    this.title,
-    this.client,
-  }) : super(key: key) {
-    if (this.buttonTitleIgnore != null) {
-      Upgrader().buttonTitleIgnore = this.buttonTitleIgnore;
-    }
-    if (this.buttonTitleRemind != null) {
-      Upgrader().buttonTitleRemind = this.buttonTitleRemind;
-    }
-    if (this.buttonTitleUpdate != null) {
-      Upgrader().buttonTitleUpdate = this.buttonTitleUpdate;
-    }
-    if (this.client != null) {
-      Upgrader().client = this.client;
-    }
-    if (this.prompt != null) {
-      Upgrader().prompt = this.prompt;
-    }
-    if (this.title != null) {
-      Upgrader().title = this.title;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (Upgrader().debugEnabled) {
-      print('upgrader: build UpgradeWidget');
-    }
-
-    return FutureBuilder(
-        future: Upgrader().initialize(),
-        builder: (BuildContext context, AsyncSnapshot<bool> processed) {
-          if (processed.connectionState == ConnectionState.done) {
-            Upgrader().checkVersion(context: context);
-          }
-          return child;
-        });
-  }
-}
-
 /// A singleton class to configure the upgrade dialog.
 class Upgrader {
   static final Upgrader _singleton = new Upgrader._internal();
@@ -92,11 +22,11 @@ class Upgrader {
   /// Provide an HTTP Client that can be replaced for mock testing.
   http.Client client = http.Client();
 
+  /// Days until alerting user again
+  int daysUntilAlertAgain = 3;
+
   /// Enable print statements for debugging.
   bool debugEnabled = false;
-
-  /// Days until alerting user again
-  int daysToAlertAgain = 3;
 
   final notInitializedExceptionMessage =
       'initialize() not called. Must be called first.';
@@ -233,7 +163,7 @@ class Upgrader {
     }
 
     final lastAlertedDuration = DateTime.now().difference(_lastTimeAlerted);
-    return lastAlertedDuration.inDays < daysToAlertAgain;
+    return lastAlertedDuration.inDays < daysUntilAlertAgain;
   }
 
   bool alreadyAnsweredThisVersion() {

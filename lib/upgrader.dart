@@ -5,4 +5,5 @@
 library upgrader;
 
 export 'src/itunes_search_api.dart';
+export 'src/upgrade_alert.dart';
 export 'src/upgrader.dart';
