@@ -51,7 +51,7 @@ class UpgradeAlert extends StatelessWidget {
       Upgrader().buttonTitleIgnore = this.buttonTitleIgnore;
     }
     if (this.buttonTitleRemind != null) {
-      Upgrader().buttonTitleRemind = this.buttonTitleRemind;
+      Upgrader().buttonTitleLater = this.buttonTitleRemind;
     }
     if (this.buttonTitleUpdate != null) {
       Upgrader().buttonTitleUpdate = this.buttonTitleUpdate;

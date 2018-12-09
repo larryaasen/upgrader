@@ -16,7 +16,7 @@ class Upgrader {
   static final Upgrader _singleton = new Upgrader._internal();
 
   String buttonTitleIgnore = 'Ignore'.toUpperCase();
-  String buttonTitleRemind = 'Later'.toUpperCase();
+  String buttonTitleLater = 'Later'.toUpperCase();
   String buttonTitleUpdate = 'Update Now'.toUpperCase();
 
   /// Provide an HTTP Client that can be replaced for mock testing.
@@ -235,10 +235,10 @@ class Upgrader {
               },
             ),
             FlatButton(
-              child: Text(buttonTitleRemind),
+              child: Text(buttonTitleLater),
               onPressed: () {
                 if (debugEnabled) {
-                  print('upgrader: button tapped: $buttonTitleRemind');
+                  print('upgrader: button tapped: $buttonTitleLater');
                 }
 
                 Navigator.of(context).pop();

@@ -32,8 +32,10 @@ void main() {
     preferences = await SharedPreferences.getInstance();
   });
 
-  tearDown(() {
-    preferences.clear();
+  tearDown(() async {
+    print('tearDown');
+    await preferences.clear();
+    await Upgrader().clearSavedSettings();
   });
 
   test('testing ITunesSearchAPI properties', () async {
@@ -109,6 +111,10 @@ void main() {
             version: '1.9.9',
             buildNumber: '400'));
     await upgrader.initialize();
+
+    // Calling initialize() a second time should do nothing
+    await upgrader.initialize();
+
     expect(upgrader.appName(), 'Upgrader');
     expect(upgrader.currentAppStoreVersion(), '5.6');
     expect(upgrader.currentInstalledVersion(), '1.9.9');
@@ -144,15 +150,15 @@ void main() {
     expect(upgrader.isTooSoon(), false);
 
     expect(upgrader.buttonTitleIgnore, 'IGNORE');
-    expect(upgrader.buttonTitleRemind, 'LATER');
+    expect(upgrader.buttonTitleLater, 'LATER');
     expect(upgrader.buttonTitleUpdate, 'UPDATE NOW');
 
     upgrader.buttonTitleIgnore = 'aaa';
-    upgrader.buttonTitleRemind = 'bbb';
+    upgrader.buttonTitleLater = 'bbb';
     upgrader.buttonTitleUpdate = 'ccc';
 
     expect(upgrader.buttonTitleIgnore, 'aaa');
-    expect(upgrader.buttonTitleRemind, 'bbb');
+    expect(upgrader.buttonTitleLater, 'bbb');
     expect(upgrader.buttonTitleUpdate, 'ccc');
 
     await tester.pumpWidget(_MyWidget());
@@ -171,15 +177,68 @@ void main() {
     expect(find.text(upgrader.prompt), findsOneWidget);
     expect(find.byType(FlatButton), findsNWidgets(3));
     expect(find.text(upgrader.buttonTitleIgnore), findsOneWidget);
-    expect(find.text(upgrader.buttonTitleRemind), findsOneWidget);
+    expect(find.text(upgrader.buttonTitleLater), findsOneWidget);
     expect(find.text(upgrader.buttonTitleUpdate), findsOneWidget);
 
     await tester.tap(find.text(upgrader.buttonTitleUpdate));
     await tester.pumpAndSettle();
     expect(find.text(upgrader.buttonTitleIgnore), findsNothing);
-    expect(find.text(upgrader.buttonTitleRemind), findsNothing);
+    expect(find.text(upgrader.buttonTitleLater), findsNothing);
     expect(find.text(upgrader.buttonTitleUpdate), findsNothing);
   });
+
+  testWidgets('test UpgradeWidget ignore', (WidgetTester tester) async {
+    final client = setupMockClient();
+    final upgrader = Upgrader();
+    upgrader.client = client;
+
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '0.9.9',
+            buildNumber: '400'));
+    await upgrader.initialize();
+
+    expect(upgrader.isTooSoon(), false);
+
+    await tester.pumpWidget(_MyWidget());
+
+    // Pump the UI so the upgrader can display its dialog
+    await tester.pumpAndSettle();
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text(upgrader.buttonTitleIgnore));
+    await tester.pumpAndSettle();
+    expect(find.text(upgrader.buttonTitleIgnore), findsNothing);
+  });
+
+  testWidgets('test UpgradeWidget later', (WidgetTester tester) async {
+    final client = setupMockClient();
+    final upgrader = Upgrader();
+    upgrader.client = client;
+
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '0.9.9',
+            buildNumber: '400'));
+    await upgrader.initialize();
+
+    expect(upgrader.isTooSoon(), false);
+
+    await tester.pumpWidget(_MyWidget());
+
+    // Pump the UI so the upgrader can display its dialog
+    await tester.pumpAndSettle();
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text(upgrader.buttonTitleLater));
+    await tester.pumpAndSettle();
+    expect(find.text(upgrader.buttonTitleLater), findsNothing);
+  });
+
 }
 
 // Create a MockClient using the Mock class provided by the Mockito package.
