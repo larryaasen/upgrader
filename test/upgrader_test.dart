@@ -238,7 +238,6 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text(upgrader.buttonTitleLater), findsNothing);
   });
-
 }
 
 // Create a MockClient using the Mock class provided by the Mockito package.
