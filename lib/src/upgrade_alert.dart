@@ -26,6 +26,18 @@ class UpgradeAlert extends StatelessWidget {
   /// Enable print statements for debugging.
   final bool debugEnabled;
 
+  /// Called when the ignore button is tapped or otherwise activated.
+  /// Return false when the default behavior should not execute.
+  BoolCallback onIgnore;
+
+  /// Called when the ignore button is tapped or otherwise activated.
+  /// Return false when the default behavior should not execute.
+  BoolCallback onLater;
+
+  /// Called when the ignore button is tapped or otherwise activated.
+  /// Return false when the default behavior should not execute.
+  BoolCallback onUpdate;
+
   /// The call to action message, which defaults to: Would you like to update it now?
   final String prompt;
 
@@ -43,6 +55,9 @@ class UpgradeAlert extends StatelessWidget {
     this.child,
     this.daysToAlertAgain = 3,
     this.debugEnabled = false,
+    this.onIgnore,
+    this.onLater,
+    this.onUpdate,
     this.prompt,
     this.title,
     this.client,
@@ -61,6 +76,15 @@ class UpgradeAlert extends StatelessWidget {
     }
     Upgrader().daysUntilAlertAgain = this.daysToAlertAgain;
     Upgrader().debugEnabled = this.debugEnabled;
+    if (this.onIgnore != null) {
+      Upgrader().onIgnore = this.onIgnore;
+    }
+    if (this.onLater != null) {
+      Upgrader().onLater = this.onLater;
+    }
+    if (this.onUpdate != null) {
+      Upgrader().onUpdate = this.onUpdate;
+    }
     if (this.prompt != null) {
       Upgrader().prompt = this.prompt;
     }

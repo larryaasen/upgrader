@@ -33,7 +33,6 @@ void main() {
   });
 
   tearDown(() async {
-    print('tearDown');
     await preferences.clear();
     await Upgrader().clearSavedSettings();
   });
@@ -146,6 +145,19 @@ void main() {
             buildNumber: '400'));
     await upgrader.initialize();
 
+    bool called = false;
+    bool notCalled = true;
+    upgrader.onUpdate = () {
+      called = true;
+      return true;
+    };
+    upgrader.onIgnore = () {
+      notCalled = false;
+    };
+    upgrader.onLater = () {
+      notCalled = false;
+    };
+
     expect(upgrader.isUpdateAvailable(), true);
     expect(upgrader.isTooSoon(), false);
 
@@ -185,6 +197,8 @@ void main() {
     expect(find.text(upgrader.buttonTitleIgnore), findsNothing);
     expect(find.text(upgrader.buttonTitleLater), findsNothing);
     expect(find.text(upgrader.buttonTitleUpdate), findsNothing);
+    expect(called, true);
+    expect(notCalled, true);
   });
 
   testWidgets('test UpgradeWidget ignore', (WidgetTester tester) async {
@@ -200,6 +214,19 @@ void main() {
             buildNumber: '400'));
     await upgrader.initialize();
 
+    bool called = false;
+    bool notCalled = true;
+    upgrader.onIgnore = () {
+      called = true;
+      return true;
+    };
+    upgrader.onUpdate = () {
+      notCalled = false;
+    };
+    upgrader.onLater = () {
+      notCalled = false;
+    };
+
     expect(upgrader.isTooSoon(), false);
 
     await tester.pumpWidget(_MyWidget());
@@ -211,6 +238,8 @@ void main() {
     await tester.tap(find.text(upgrader.buttonTitleIgnore));
     await tester.pumpAndSettle();
     expect(find.text(upgrader.buttonTitleIgnore), findsNothing);
+    expect(called, true);
+    expect(notCalled, true);
   });
 
   testWidgets('test UpgradeWidget later', (WidgetTester tester) async {
@@ -226,6 +255,19 @@ void main() {
             buildNumber: '400'));
     await upgrader.initialize();
 
+    bool called = false;
+    bool notCalled = true;
+    upgrader.onLater = () {
+      called = true;
+      return true;
+    };
+    upgrader.onIgnore = () {
+      notCalled = false;
+    };
+    upgrader.onUpdate = () {
+      notCalled = false;
+    };
+
     expect(upgrader.isTooSoon(), false);
 
     await tester.pumpWidget(_MyWidget());
@@ -237,6 +279,8 @@ void main() {
     await tester.tap(find.text(upgrader.buttonTitleLater));
     await tester.pumpAndSettle();
     expect(find.text(upgrader.buttonTitleLater), findsNothing);
+    expect(called, true);
+    expect(notCalled, true);
   });
 }
 

@@ -11,6 +11,9 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:version/version.dart';
 import 'itunes_search_api.dart';
 
+/// Signature of callbacks that have no arguments and return bool.
+typedef BoolCallback = bool Function();
+
 /// A singleton class to configure the upgrade dialog.
 class Upgrader {
   static final Upgrader _singleton = new Upgrader._internal();
@@ -35,6 +38,18 @@ class Upgrader {
 
   /// The alert dialog title
   String title = 'Update App?';
+
+  /// Called when the ignore button is tapped or otherwise activated.
+  /// Return false when the default behavior should not execute.
+  BoolCallback onIgnore;
+
+  /// Called when the ignore button is tapped or otherwise activated.
+  /// Return false when the default behavior should not execute.
+  BoolCallback onLater;
+
+  /// Called when the ignore button is tapped or otherwise activated.
+  /// Return false when the default behavior should not execute.
+  BoolCallback onUpdate;
 
   bool _displayed = false;
   bool _initCalled = false;
@@ -209,6 +224,7 @@ class Upgrader {
     _saveLastAlerted();
 
     showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -223,40 +239,15 @@ class Upgrader {
           actions: <Widget>[
             FlatButton(
               child: Text(buttonTitleIgnore),
-              onPressed: () {
-                if (debugEnabled) {
-                  print('upgrader: button tapped: $buttonTitleIgnore');
-                }
-
-                _onUserIgnored();
-
-                Navigator.of(context).pop();
-                _displayed = false;
-              },
+              onPressed: () => _onUserIgnored(context)
             ),
             FlatButton(
               child: Text(buttonTitleLater),
-              onPressed: () {
-                if (debugEnabled) {
-                  print('upgrader: button tapped: $buttonTitleLater');
-                }
-
-                Navigator.of(context).pop();
-                _displayed = false;
-              },
+              onPressed: () => _onUserLater(context)
             ),
             FlatButton(
               child: Text(buttonTitleUpdate),
-              onPressed: () {
-                if (debugEnabled) {
-                  print('upgrader: button tapped: $buttonTitleUpdate');
-                }
-
-                Navigator.of(context).pop();
-                _displayed = false;
-
-                _sendUserToAppStore();
-              },
+              onPressed: () => _onUserUpdated(context)
             ),
           ],
         );
@@ -264,11 +255,60 @@ class Upgrader {
     );
   }
 
-  void _onUserIgnored() {
-    _saveIgnored();
+  void _onUserIgnored(BuildContext context) {
+    if (debugEnabled) {
+      print('upgrader: button tapped: $buttonTitleIgnore');
+    }
+
+    // If this callback has been provided, call it.
+    var doProcess = true;
+    if (this.onIgnore != null) {
+      doProcess = onIgnore();
+    }
+
+    if (doProcess) {
+      _saveIgnored();
+    }
+
+    _pop(context);
   }
 
-  void clearSavedSettings() async {
+  void _onUserLater(BuildContext context) {
+    if (debugEnabled) {
+      print('upgrader: button tapped: $buttonTitleLater');
+    }
+
+    // If this callback has been provided, call it.
+    var doProcess = true;
+    if (this.onLater != null) {
+      doProcess = onLater();
+    }
+
+    if (doProcess) {
+    }
+
+    _pop(context);
+  }
+
+  void _onUserUpdated(BuildContext context) {
+    if (debugEnabled) {
+      print('upgrader: button tapped: $buttonTitleUpdate');
+    }
+
+    // If this callback has been provided, call it.
+    var doProcess = true;
+    if (this.onUpdate != null) {
+      doProcess = onUpdate();
+    }
+
+    if (doProcess) {
+      _sendUserToAppStore();
+    }
+
+    _pop(context);
+  }
+
+  Future<bool> clearSavedSettings() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove('userIgnoredVersion');
     prefs.remove('lastTimeAlerted');
@@ -277,6 +317,13 @@ class Upgrader {
     _userIgnoredVersion = null;
     _lastTimeAlerted = null;
     _lastVersionAlerted = null;
+
+    return true;
+  }
+
+  void _pop(BuildContext context) {
+    Navigator.of(context).pop();
+    _displayed = false;
   }
 
   Future<bool> _saveIgnored() async {

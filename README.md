@@ -52,6 +52,11 @@ UpgradeAlert widget.
 * buttonTitleUpdate: the update button title, which defaults to ```Update Now```
 * daysUntilAlertAgain: days until alerting user again, which defaults to ```3```
 * debugEnabled: Enable print statements for debugging, which defaults to ```false```
+
+* onIgnore: Called when the ignore button is tapped, defaults to ```null```
+* onLater: Called when the ignore button is tapped, defaults to ```null```
+* onUpdate: Called when the ignore button is tapped, defaults to ```null```
+  
 * prompt: the call to action message, which defaults to ```Would you like to update it now?```
 * title: the alert dialog title, which defaults to ```Update App?```
 
