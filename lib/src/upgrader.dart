@@ -238,17 +238,14 @@ class Upgrader {
           ),
           actions: <Widget>[
             FlatButton(
-              child: Text(buttonTitleIgnore),
-              onPressed: () => _onUserIgnored(context)
-            ),
+                child: Text(buttonTitleIgnore),
+                onPressed: () => _onUserIgnored(context)),
             FlatButton(
-              child: Text(buttonTitleLater),
-              onPressed: () => _onUserLater(context)
-            ),
+                child: Text(buttonTitleLater),
+                onPressed: () => _onUserLater(context)),
             FlatButton(
-              child: Text(buttonTitleUpdate),
-              onPressed: () => _onUserUpdated(context)
-            ),
+                child: Text(buttonTitleUpdate),
+                onPressed: () => _onUserUpdated(context)),
           ],
         );
       },
@@ -284,8 +281,7 @@ class Upgrader {
       doProcess = onLater();
     }
 
-    if (doProcess) {
-    }
+    if (doProcess) {}
 
     _pop(context);
   }
