@@ -279,7 +279,7 @@ void main() {
     await tester.tap(find.text(upgrader.buttonTitleLater));
     await tester.pumpAndSettle();
     expect(find.text(upgrader.buttonTitleLater), findsNothing);
-    expect(called, false);
+    expect(called, true);
     expect(notCalled, true);
   });
 }
