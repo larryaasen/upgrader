@@ -28,15 +28,15 @@ class UpgradeAlert extends StatelessWidget {
 
   /// Called when the ignore button is tapped or otherwise activated.
   /// Return false when the default behavior should not execute.
-  BoolCallback onIgnore;
+  final BoolCallback onIgnore;
 
   /// Called when the ignore button is tapped or otherwise activated.
   /// Return false when the default behavior should not execute.
-  BoolCallback onLater;
+  final BoolCallback onLater;
 
   /// Called when the ignore button is tapped or otherwise activated.
   /// Return false when the default behavior should not execute.
-  BoolCallback onUpdate;
+  final BoolCallback onUpdate;
 
   /// The call to action message, which defaults to: Would you like to update it now?
   final String prompt;
