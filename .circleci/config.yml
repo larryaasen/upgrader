@@ -6,5 +6,5 @@ jobs:
     steps:
       - checkout
       - run: flutter doctor
-      - run: flutter test
-      - run: flutter -v build apk
+      - run: dartfmt -n --set-exit-if-changed ./lib ./test ./example
+      - run: flutter test --coverage --coverage-path=lcov.info
