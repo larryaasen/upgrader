@@ -81,8 +81,14 @@ The class ITunesSearchAPI can be used standalone with the
 UpgradeAlert widget to query iTunes for app details.
 ```dart
 final iTunes = ITunesSearchAPI();
-final results = await iTunes.lookupURLByBundleId('com.google.Maps');
+final resultsFuture = iTunes.lookupByBundleId('com.google.Maps');
+resultsFuture.then((results) {
+    print('results: $results');
+});
 ```
+
+### Results
+[![image](screenshots/results.png)](screenshots/results.png)
 
 ## Contributing
 All [comments](https://github.com/larryaasen/upgrader/issues) and [pull requests](https://github.com/larryaasen/upgrader/pulls) are welcome.
