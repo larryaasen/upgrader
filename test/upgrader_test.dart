@@ -282,6 +282,47 @@ void main() {
     expect(called, true);
     expect(notCalled, true);
   });
+
+  testWidgets('test UpgradeWidget Card later', (WidgetTester tester) async {
+    final client = setupMockClient();
+    final upgrader = Upgrader();
+    upgrader.client = client;
+
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '0.9.9',
+            buildNumber: '400'));
+    await upgrader.initialize();
+
+    bool called = false;
+    bool notCalled = true;
+    upgrader.onLater = () {
+      called = true;
+      return true;
+    };
+    upgrader.onIgnore = () {
+      notCalled = false;
+    };
+    upgrader.onUpdate = () {
+      notCalled = false;
+    };
+
+    expect(upgrader.isTooSoon(), false);
+
+    await tester.pumpWidget(_MyWidgetCard());
+
+    // Pump the UI so the upgrade card is displayed
+    await tester.pumpAndSettle();
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text(upgrader.buttonTitleLater));
+    await tester.pumpAndSettle();
+    expect(called, true);
+    expect(notCalled, true);
+    expect(find.text(upgrader.buttonTitleLater), findsNothing);
+  });
 }
 
 // Create a MockClient using the Mock class provided by the Mockito package.
@@ -318,15 +359,32 @@ class _MyWidget extends StatelessWidget {
         appBar: AppBar(
           title: Text('Upgrader test'),
         ),
-        body: _buildBody(context),
+        body: UpgradeAlert(
+            child: Column(
+          children: <Widget>[Text('Upgrading')],
+        )),
       ),
     );
   }
+}
 
-  Widget _buildBody(BuildContext context) {
-    return UpgradeAlert(
-        child: Column(
-      children: <Widget>[Text('Upgrading')],
-    ));
+class _MyWidgetCard extends StatelessWidget {
+  const _MyWidgetCard({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Upgrader test',
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Upgrader test'),
+        ),
+        body: Column(
+          children: <Widget>[UpgradeCard()],
+        ),
+      ),
+    );
   }
 }

@@ -51,7 +51,7 @@ The UpgradeAlert widget can be customized by setting parameters in the construct
 UpgradeAlert widget.
 
 * buttonTitleIgnore: the ignore button title, which defaults to ```Ignore```
-* buttonTitleRemind: the remind button title, which defaults to ```Later```
+* buttonTitleLater: the later button title, which defaults to ```Later```
 * buttonTitleUpdate: the update button title, which defaults to ```Update Now```
 * daysUntilAlertAgain: days until alerting user again, which defaults to ```3```
 * debugEnabled: Enable print statements for debugging, which defaults to ```false```

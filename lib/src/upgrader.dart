@@ -28,6 +28,9 @@ class Upgrader {
   /// Days until alerting user again
   int daysUntilAlertAgain = 3;
 
+  /// For debugging, always force the upgrade to be available.
+  bool debugAlwaysUpgrade = false;
+
   /// Enable print statements for debugging.
   bool debugEnabled = false;
 
@@ -157,19 +160,28 @@ class Upgrader {
   }
 
   void checkVersion({@required BuildContext context}) {
+    if (!_displayed) {
+      if (shouldDisplayUpgrade()) {
+        _displayed = true;
+        Future.delayed(Duration(milliseconds: 0), () {
+          _showDialog(context: context, title: title, message: message());
+        });
+      }
+    }
+  }
+
+  bool shouldDisplayUpgrade() {
+    if (debugAlwaysUpgrade) {
+      return true;
+    }
+
     if (isTooSoon() ||
         alreadyIgnoredThisVersion() ||
         alreadyAnsweredThisVersion() ||
         !isUpdateAvailable()) {
-      return;
+      return false;
     }
-
-    if (!_displayed) {
-      _displayed = true;
-      Future.delayed(Duration(milliseconds: 0), () {
-        _showDialog(context: context, title: title, message: message());
-      });
-    }
+    return true;
   }
 
   bool isTooSoon() {
@@ -239,20 +251,20 @@ class Upgrader {
           actions: <Widget>[
             FlatButton(
                 child: Text(buttonTitleIgnore),
-                onPressed: () => _onUserIgnored(context)),
+                onPressed: () => onUserIgnored(context, true)),
             FlatButton(
                 child: Text(buttonTitleLater),
-                onPressed: () => _onUserLater(context)),
+                onPressed: () => onUserLater(context, true)),
             FlatButton(
                 child: Text(buttonTitleUpdate),
-                onPressed: () => _onUserUpdated(context)),
+                onPressed: () => onUserUpdated(context, true)),
           ],
         );
       },
     );
   }
 
-  void _onUserIgnored(BuildContext context) {
+  void onUserIgnored(BuildContext context, bool shouldPop) {
     if (debugEnabled) {
       print('upgrader: button tapped: $buttonTitleIgnore');
     }
@@ -267,10 +279,12 @@ class Upgrader {
       _saveIgnored();
     }
 
-    _pop(context);
+    if (shouldPop) {
+      _pop(context);
+    }
   }
 
-  void _onUserLater(BuildContext context) {
+  void onUserLater(BuildContext context, bool shouldPop) {
     if (debugEnabled) {
       print('upgrader: button tapped: $buttonTitleLater');
     }
@@ -283,10 +297,12 @@ class Upgrader {
 
     if (doProcess) {}
 
-    _pop(context);
+    if (shouldPop) {
+      _pop(context);
+    }
   }
 
-  void _onUserUpdated(BuildContext context) {
+  void onUserUpdated(BuildContext context, bool shouldPop) {
     if (debugEnabled) {
       print('upgrader: button tapped: $buttonTitleUpdate');
     }
@@ -301,7 +317,9 @@ class Upgrader {
       _sendUserToAppStore();
     }
 
-    _pop(context);
+    if (shouldPop) {
+      _pop(context);
+    }
   }
 
   Future<bool> clearSavedSettings() async {
