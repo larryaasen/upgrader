@@ -29,7 +29,10 @@ class Upgrader {
   int daysUntilAlertAgain = 3;
 
   /// For debugging, always force the upgrade to be available.
-  bool debugAlwaysUpgrade = false;
+  bool debugDisplayAlways = false;
+
+  /// For debugging, display the upgrade at least once once.
+  bool debugDisplayOnce = false;
 
   /// Enable print statements for debugging.
   bool debugEnabled = false;
@@ -65,6 +68,7 @@ class Upgrader {
   DateTime _lastTimeAlerted;
   String _lastVersionAlerted;
   String _userIgnoredVersion;
+  bool _hasAlerted = false;
 
   factory Upgrader() {
     return _singleton;
@@ -171,14 +175,11 @@ class Upgrader {
   }
 
   bool shouldDisplayUpgrade() {
-    if (debugAlwaysUpgrade) {
+    if (debugDisplayAlways || (debugDisplayOnce && !_hasAlerted)) {
       return true;
     }
 
-    if (isTooSoon() ||
-        alreadyIgnoredThisVersion() ||
-        alreadyAnsweredThisVersion() ||
-        !isUpdateAvailable()) {
+    if (isTooSoon() || alreadyIgnoredThisVersion() || !isUpdateAvailable()) {
       return false;
     }
     return true;
@@ -191,10 +192,6 @@ class Upgrader {
 
     final lastAlertedDuration = DateTime.now().difference(_lastTimeAlerted);
     return lastAlertedDuration.inDays < daysUntilAlertAgain;
-  }
-
-  bool alreadyAnsweredThisVersion() {
-    return false;
   }
 
   bool alreadyIgnoredThisVersion() {
@@ -233,7 +230,7 @@ class Upgrader {
     }
 
     // Save the date/time as the last time alerted.
-    _saveLastAlerted();
+    saveLastAlerted();
 
     showDialog(
       barrierDismissible: false,
@@ -348,13 +345,15 @@ class Upgrader {
     return true;
   }
 
-  Future<bool> _saveLastAlerted() async {
+  Future<bool> saveLastAlerted() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _lastTimeAlerted = DateTime.now();
     prefs.setString('lastTimeAlerted', _lastTimeAlerted.toString());
 
     _lastVersionAlerted = _appStoreVersion;
     prefs.setString('lastVersionAlerted', _lastVersionAlerted);
+
+    _hasAlerted = true;
     return true;
   }
 

@@ -14,18 +14,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() {
   SharedPreferences preferences;
 
-  const MethodChannel channel = MethodChannel(
+  const MethodChannel sharedPrefsChannel = MethodChannel(
     'plugins.flutter.io/shared_preferences',
   );
 
-  const Map<String, dynamic> kTestValues = <String, dynamic>{};
+  const Map<String, dynamic> kEmptyPreferences = <String, dynamic>{};
+//  const Map<String, dynamic> kEmptyPreferences = <String, dynamic>{};
 
   setUp(() async {
     // This idea to mock the shared preferences taken from:
     /// https://github.com/flutter/plugins/blob/master/packages/shared_preferences/test/shared_preferences_test.dart
-    channel.setMockMethodCallHandler((MethodCall methodCall) async {
+    sharedPrefsChannel.setMockMethodCallHandler((MethodCall methodCall) async {
       if (methodCall.method == 'getAll') {
-        return kTestValues;
+        return kEmptyPreferences;
       }
       return null;
     });
@@ -283,10 +284,95 @@ void main() {
     expect(notCalled, true);
   });
 
+  testWidgets('test UpgradeWidget Card upgrade', (WidgetTester tester) async {
+    final client = setupMockClient();
+    final upgrader = Upgrader();
+    upgrader.client = client;
+    upgrader.debugEnabled = true;
+
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '0.9.9',
+            buildNumber: '400'));
+    await upgrader.initialize();
+
+    bool called = false;
+    bool notCalled = true;
+    upgrader.onUpdate = () {
+      called = true;
+      return true;
+    };
+    upgrader.onLater = () {
+      notCalled = false;
+    };
+    upgrader.onIgnore = () {
+      notCalled = false;
+    };
+
+    expect(upgrader.isTooSoon(), false);
+
+    await tester.pumpWidget(_MyWidgetCard());
+
+    // Pump the UI so the upgrade card is displayed
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text(upgrader.buttonTitleUpdate));
+    await tester.pumpAndSettle();
+
+    expect(called, true);
+    expect(notCalled, true);
+    expect(find.text(upgrader.buttonTitleUpdate), findsNothing);
+  });
+
+  testWidgets('test UpgradeWidget Card ignore', (WidgetTester tester) async {
+    final client = setupMockClient();
+    final upgrader = Upgrader();
+    upgrader.client = client;
+    upgrader.debugEnabled = true;
+
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '0.9.9',
+            buildNumber: '400'));
+    await upgrader.initialize();
+
+    bool called = false;
+    bool notCalled = true;
+    upgrader.onIgnore = () {
+      called = true;
+      return true;
+    };
+    upgrader.onLater = () {
+      notCalled = false;
+    };
+    upgrader.onUpdate = () {
+      notCalled = false;
+    };
+
+    expect(upgrader.isTooSoon(), false);
+
+    await tester.pumpWidget(_MyWidgetCard());
+
+    // Pump the UI so the upgrade card is displayed
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text(upgrader.buttonTitleIgnore));
+    await tester.pumpAndSettle();
+
+    expect(called, true);
+    expect(notCalled, true);
+    expect(find.text(upgrader.buttonTitleIgnore), findsNothing);
+  });
+
   testWidgets('test UpgradeWidget Card later', (WidgetTester tester) async {
     final client = setupMockClient();
     final upgrader = Upgrader();
     upgrader.client = client;
+    upgrader.debugEnabled = true;
 
     upgrader.installPackageInfo(
         packageInfo: PackageInfo(
@@ -315,10 +401,10 @@ void main() {
 
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle();
-    await tester.pumpAndSettle();
 
     await tester.tap(find.text(upgrader.buttonTitleLater));
     await tester.pumpAndSettle();
+
     expect(called, true);
     expect(notCalled, true);
     expect(find.text(upgrader.buttonTitleLater), findsNothing);

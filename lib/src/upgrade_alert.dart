@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'upgrader.dart';
 
-class _UpgradeBase extends StatelessWidget {
+class _UpgradeBase extends StatefulWidget {
   /// The ignore button title, which defaults to ```Ignore```
   final String buttonTitleIgnore;
 
@@ -21,9 +21,12 @@ class _UpgradeBase extends StatelessWidget {
   final int daysToAlertAgain;
 
   /// For debugging, always force the upgrade to be available.
-  final bool debugAlwaysUpgrade;
+  final bool debugDisplayAlways;
 
-  /// Enable print statements for debugging.
+  /// For debugging, display the upgrade at least once once.
+  final bool debugDisplayOnce;
+
+  /// Enable debug statements for debugging.
   final bool debugEnabled;
 
   /// Called when the ignore button is tapped or otherwise activated.
@@ -53,7 +56,8 @@ class _UpgradeBase extends StatelessWidget {
     this.buttonTitleLater,
     this.buttonTitleUpdate,
     this.daysToAlertAgain = 3,
-    this.debugAlwaysUpgrade = false,
+    this.debugDisplayAlways = false,
+    this.debugDisplayOnce = false,
     this.debugEnabled = false,
     this.onIgnore,
     this.onLater,
@@ -77,8 +81,11 @@ class _UpgradeBase extends StatelessWidget {
     if (this.daysToAlertAgain != null) {
       Upgrader().daysUntilAlertAgain = this.daysToAlertAgain;
     }
-    if (this.debugAlwaysUpgrade != null) {
-      Upgrader().debugAlwaysUpgrade = this.debugAlwaysUpgrade;
+    if (this.debugDisplayAlways != null) {
+      Upgrader().debugDisplayAlways = this.debugDisplayAlways;
+    }
+    if (this.debugDisplayOnce != null) {
+      Upgrader().debugDisplayOnce = this.debugDisplayOnce;
     }
     if (this.debugEnabled != null) {
       Upgrader().debugEnabled = this.debugEnabled;
@@ -100,9 +107,26 @@ class _UpgradeBase extends StatelessWidget {
     }
   }
 
+  Widget build(BuildContext context, _UpgradeBaseState state) {
+    return null;
+  }
+
+  @override
+  _UpgradeBaseState createState() => _UpgradeBaseState();
+}
+
+class _UpgradeBaseState extends State<_UpgradeBase> {
+  bool rebuildNeeded = false;
+
   @override
   Widget build(BuildContext context) {
-    return null;
+    return widget.build(context, this);
+  }
+
+  void forceUpdateState() {
+    setState(() {
+      rebuildNeeded = true;
+    });
   }
 }
 
@@ -122,6 +146,7 @@ class UpgradeCard extends _UpgradeBase {
     String buttonTitleUpdate,
     int daysToAlertAgain,
     bool debugAlwaysUpgrade,
+    bool debugDisplayOnce,
     bool debugEnabled,
     BoolCallback onIgnore,
     BoolCallback onLater,
@@ -135,7 +160,8 @@ class UpgradeCard extends _UpgradeBase {
           buttonTitleLater: buttonTitleLater,
           buttonTitleUpdate: buttonTitleUpdate,
           daysToAlertAgain: daysToAlertAgain,
-          debugAlwaysUpgrade: debugAlwaysUpgrade,
+          debugDisplayAlways: debugAlwaysUpgrade,
+          debugDisplayOnce: debugDisplayOnce,
           debugEnabled: debugEnabled,
           onIgnore: onIgnore,
           onLater: onLater,
@@ -146,9 +172,9 @@ class UpgradeCard extends _UpgradeBase {
         );
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, _UpgradeBaseState state) {
     if (Upgrader().debugEnabled) {
-      print('upgrader: build UpgradeCard');
+      print('UpgradeCard: build UpgradeCard');
     }
 
     return FutureBuilder(
@@ -175,16 +201,31 @@ class UpgradeCard extends _UpgradeBase {
                       actions: <Widget>[
                         FlatButton(
                             child: Text(Upgrader().buttonTitleIgnore),
-                            onPressed: () =>
-                                Upgrader().onUserIgnored(context, false)),
+                            onPressed: () {
+                              // Save the date/time as the last time alerted.
+                              Upgrader().saveLastAlerted();
+
+                              Upgrader().onUserIgnored(context, false);
+                              state.forceUpdateState();
+                            }),
                         FlatButton(
                             child: Text(Upgrader().buttonTitleLater),
-                            onPressed: () =>
-                                Upgrader().onUserLater(context, false)),
+                            onPressed: () {
+                              // Save the date/time as the last time alerted.
+                              Upgrader().saveLastAlerted();
+
+                              Upgrader().onUserLater(context, false);
+                              state.forceUpdateState();
+                            }),
                         FlatButton(
                             child: Text(Upgrader().buttonTitleUpdate),
-                            onPressed: () =>
-                                Upgrader().onUserUpdated(context, false)),
+                            onPressed: () {
+                              // Save the date/time as the last time alerted.
+                              Upgrader().saveLastAlerted();
+
+                              Upgrader().onUserUpdated(context, false);
+                              state.forceUpdateState();
+                            }),
                       ]));
             }
           }
@@ -206,6 +247,7 @@ class UpgradeAlert extends _UpgradeBase {
     this.child,
     int daysToAlertAgain,
     bool debugAlwaysUpgrade,
+    bool debugDisplayOnce,
     bool debugEnabled,
     BoolCallback onIgnore,
     BoolCallback onLater,
@@ -219,7 +261,8 @@ class UpgradeAlert extends _UpgradeBase {
           buttonTitleLater: buttonTitleLater,
           buttonTitleUpdate: buttonTitleUpdate,
           daysToAlertAgain: daysToAlertAgain,
-          debugAlwaysUpgrade: debugAlwaysUpgrade,
+          debugDisplayAlways: debugAlwaysUpgrade,
+          debugDisplayOnce: debugDisplayOnce,
           debugEnabled: debugEnabled,
           onIgnore: onIgnore,
           onLater: onLater,
@@ -230,7 +273,7 @@ class UpgradeAlert extends _UpgradeBase {
         );
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, _UpgradeBaseState state) {
     if (Upgrader().debugEnabled) {
       print('upgrader: build UpgradeAlert');
     }
