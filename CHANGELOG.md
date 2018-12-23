@@ -1,3 +1,7 @@
+## 0.3.0
+
+* added UpgradeCard class
+
 ## 0.2.0
 
 * added many customizations to the widget including callbacks for onIgnore, onLater, and onUpdate
