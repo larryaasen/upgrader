@@ -11,6 +11,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # From Dart Team: Get current device information from within the Flutter application.
+  device_info: ^0.3.0
+
   # From Dart Team: A composable, Future-based library for making HTTP requests.
   http: ^0.12.0
 
@@ -25,6 +28,9 @@ dependencies:
 
   # A dart library for comparing and incrementing version numbers with Semantic Versioning.
   version: ^1.0.3
+
+  # A dart librat for parsing, traversing, querying, transforming and building XML documents.
+  xml: ^3.2.3
 
 dev_dependencies:
   flutter_test:

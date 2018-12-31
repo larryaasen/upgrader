@@ -4,6 +4,7 @@
 
 library upgrader;
 
+export 'src/appcast.dart';
 export 'src/itunes_search_api.dart';
 export 'src/upgrade_alert.dart';
 export 'src/upgrader.dart';
