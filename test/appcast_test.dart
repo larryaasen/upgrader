@@ -21,6 +21,7 @@ void main() {
     expect(defaultTargetPlatform, equals(TargetPlatform.android));
 
     final appcast = Appcast();
+    print("pwd: " + Directory.current.path);
     final items =
         await appcast.parseAppcastItemsFromFile(File('test/testappcast.xml'));
     validateItems(items, appcast);
