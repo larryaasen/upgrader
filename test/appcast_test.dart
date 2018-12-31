@@ -21,14 +21,16 @@ void main() {
     expect(defaultTargetPlatform, equals(TargetPlatform.android));
 
     final appcast = Appcast();
-    final items = await appcast.parseAppcastItemsFromFile(File('test/testappcast.xml'));
+    final items =
+        await appcast.parseAppcastItemsFromFile(File('test/testappcast.xml'));
     validateItems(items, appcast);
   });
 
   test('testing Appcast download', () async {
     final client = await setupMockClient();
     final appcast = Appcast(client: client);
-    final items = await appcast.parseAppcastItemsFromUri('https://sparkle-project.org/test/testappcast.xml');
+    final items = await appcast.parseAppcastItemsFromUri(
+        'https://sparkle-project.org/test/testappcast.xml');
     validateItems(items, appcast);
   });
 }
@@ -72,8 +74,7 @@ void validateItems(List<AppcastItem> items, Appcast appcast) {
   expect(items[2].minimumSystemVersion, equals('17.0.0'));
   expect(items[2].versionString, equals('4.0'));
   expect(items[2].hostSupportsItem(osVersion: '0.0.1'), equals(false));
-  expect(
-      items[2].hostSupportsItem(osVersion: '17.0.1', currentPlatform: 'iOS'),
+  expect(items[2].hostSupportsItem(osVersion: '17.0.1', currentPlatform: 'iOS'),
       equals(true));
   expect(items[2].osString, equals('iOS'));
 
