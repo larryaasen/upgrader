@@ -21,11 +21,7 @@ void main() {
     expect(defaultTargetPlatform, equals(TargetPlatform.android));
 
     final appcast = Appcast();
-    File testFile = File('test/testappcast.xml');
-    final exists = await testFile.exists();
-    if (!exists) {
-      testFile = File('testappcast.xml');
-    }
+    File testFile = await getTestFile();
     final items = await appcast.parseAppcastItemsFromFile(testFile);
     validateItems(items, appcast);
   });
@@ -101,6 +97,15 @@ void validateItems(List<AppcastItem> items, Appcast appcast) {
   expect(bestItem.osString, isNull);
 }
 
+Future<File> getTestFile() async {
+  File testFile = File('test/testappcast.xml');
+  final exists = await testFile.exists();
+  if (!exists) {
+    testFile = File('testappcast.xml');
+  }
+  return testFile;
+}
+
 // Create a MockClient using the Mock class provided by the Mockito package.
 // We will create a new instances of this class in each test.
 class MockClient extends Mock implements http.Client {}
@@ -110,7 +115,7 @@ Future<http.Client> setupMockClient() async {
 
   // Use Mockito to return a successful response when it calls the
   // provided http.Client
-  final testFile = new File('test/testappcast.xml');
+  final testFile = await getTestFile();
   final contents = await testFile.readAsString();
   when(client.get('https://sparkle-project.org/test/testappcast.xml'))
       .thenAnswer((_) async => http.Response(contents, 200));
