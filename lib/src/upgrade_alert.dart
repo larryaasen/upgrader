@@ -8,6 +8,9 @@ import 'package:http/http.dart' as http;
 import 'upgrader.dart';
 
 class _UpgradeBase extends StatefulWidget {
+  /// The appcast configuration ([AppcastConfiguration]) used by [Appcast].
+  final AppcastConfiguration appcastConfig;
+
   /// The ignore button title, which defaults to ```Ignore```
   final String buttonTitleIgnore;
 
@@ -27,7 +30,7 @@ class _UpgradeBase extends StatefulWidget {
   final bool debugDisplayOnce;
 
   /// Enable debug statements for debugging.
-  final bool debugEnabled;
+  final bool debugLogging;
 
   /// Called when the ignore button is tapped or otherwise activated.
   /// Return false when the default behavior should not execute.
@@ -52,13 +55,14 @@ class _UpgradeBase extends StatefulWidget {
 
   _UpgradeBase({
     Key key,
+    this.appcastConfig,
     this.buttonTitleIgnore,
     this.buttonTitleLater,
     this.buttonTitleUpdate,
     this.daysToAlertAgain = 3,
     this.debugDisplayAlways = false,
     this.debugDisplayOnce = false,
-    this.debugEnabled = false,
+    this.debugLogging = false,
     this.onIgnore,
     this.onLater,
     this.onUpdate,
@@ -66,6 +70,9 @@ class _UpgradeBase extends StatefulWidget {
     this.title,
     this.client,
   }) : super(key: key) {
+    if (this.appcastConfig != null) {
+      Upgrader().appcastConfig = this.appcastConfig;
+    }
     if (this.buttonTitleIgnore != null) {
       Upgrader().buttonTitleIgnore = this.buttonTitleIgnore;
     }
@@ -87,8 +94,8 @@ class _UpgradeBase extends StatefulWidget {
     if (this.debugDisplayOnce != null) {
       Upgrader().debugDisplayOnce = this.debugDisplayOnce;
     }
-    if (this.debugEnabled != null) {
-      Upgrader().debugEnabled = this.debugEnabled;
+    if (this.debugLogging != null) {
+      Upgrader().debugLogging = this.debugLogging;
     }
     if (this.onIgnore != null) {
       Upgrader().onIgnore = this.onIgnore;
@@ -141,13 +148,14 @@ class UpgradeCard extends _UpgradeBase {
   UpgradeCard({
     this.margin = const EdgeInsets.all(4.0),
     Key key,
+    AppcastConfiguration appcastConfig,
     String buttonTitleIgnore,
     String buttonTitleLater,
     String buttonTitleUpdate,
     int daysToAlertAgain,
     bool debugAlwaysUpgrade,
     bool debugDisplayOnce,
-    bool debugEnabled,
+    bool debugLogging,
     BoolCallback onIgnore,
     BoolCallback onLater,
     BoolCallback onUpdate,
@@ -156,13 +164,14 @@ class UpgradeCard extends _UpgradeBase {
     http.Client client,
   }) : super(
           key: key,
+          appcastConfig: appcastConfig,
           buttonTitleIgnore: buttonTitleIgnore,
           buttonTitleLater: buttonTitleLater,
           buttonTitleUpdate: buttonTitleUpdate,
           daysToAlertAgain: daysToAlertAgain,
           debugDisplayAlways: debugAlwaysUpgrade,
           debugDisplayOnce: debugDisplayOnce,
-          debugEnabled: debugEnabled,
+          debugLogging: debugLogging,
           onIgnore: onIgnore,
           onLater: onLater,
           onUpdate: onUpdate,
@@ -173,7 +182,7 @@ class UpgradeCard extends _UpgradeBase {
 
   @override
   Widget build(BuildContext context, _UpgradeBaseState state) {
-    if (Upgrader().debugEnabled) {
+    if (Upgrader().debugLogging) {
       print('UpgradeCard: build UpgradeCard');
     }
 
@@ -241,6 +250,7 @@ class UpgradeAlert extends _UpgradeBase {
 
   UpgradeAlert({
     Key key,
+    AppcastConfiguration appcastConfig,
     String buttonTitleIgnore,
     String buttonTitleLater,
     String buttonTitleUpdate,
@@ -248,7 +258,7 @@ class UpgradeAlert extends _UpgradeBase {
     int daysToAlertAgain,
     bool debugAlwaysUpgrade,
     bool debugDisplayOnce,
-    bool debugEnabled,
+    bool debugLogging,
     BoolCallback onIgnore,
     BoolCallback onLater,
     BoolCallback onUpdate,
@@ -257,13 +267,14 @@ class UpgradeAlert extends _UpgradeBase {
     http.Client client,
   }) : super(
           key: key,
+          appcastConfig: appcastConfig,
           buttonTitleIgnore: buttonTitleIgnore,
           buttonTitleLater: buttonTitleLater,
           buttonTitleUpdate: buttonTitleUpdate,
           daysToAlertAgain: daysToAlertAgain,
           debugDisplayAlways: debugAlwaysUpgrade,
           debugDisplayOnce: debugDisplayOnce,
-          debugEnabled: debugEnabled,
+          debugLogging: debugLogging,
           onIgnore: onIgnore,
           onLater: onLater,
           onUpdate: onUpdate,
@@ -274,7 +285,7 @@ class UpgradeAlert extends _UpgradeBase {
 
   @override
   Widget build(BuildContext context, _UpgradeBaseState state) {
-    if (Upgrader().debugEnabled) {
+    if (Upgrader().debugLogging) {
       print('upgrader: build UpgradeAlert');
     }
 

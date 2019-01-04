@@ -36,6 +36,10 @@ class Appcast {
   /// Returns the latest item in the Appcast based on OS, OS version, and app
   /// version.
   AppcastItem bestItem() {
+    if (items == null) {
+      return null;
+    }
+
     AppcastItem bestItem;
     items.forEach((AppcastItem item) {
       if (item.hostSupportsItem(osVersion: osVersionString)) {
@@ -52,7 +56,14 @@ class Appcast {
   /// Download the Appcast from [appCastURL].
   Future<List<AppcastItem>> parseAppcastItemsFromUri(String appCastURL) async {
     await _getDeviceInfo();
-    final response = await client.get(appCastURL);
+
+    http.Response response;
+    try {
+      response = await client.get(appCastURL);
+    } catch (e) {
+      print(e);
+      return null;
+    }
     final contents = response.body;
     return parseItemsFromXMLString(contents);
   }
@@ -159,7 +170,7 @@ class Appcast {
     return this.items;
   }
 
-  void _getDeviceInfo() async {
+  Future<bool> _getDeviceInfo() async {
     final deviceInfo = DeviceInfoPlugin();
     if (Platform.isAndroid) {
       _androidInfo = await deviceInfo.androidInfo;
@@ -168,6 +179,7 @@ class Appcast {
       _iosInfo = await deviceInfo.iosInfo;
       osVersionString = _iosInfo.systemVersion;
     }
+    return true;
   }
 }
 

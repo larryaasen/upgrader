@@ -16,6 +16,19 @@ void main() {
 
   /// These tests inspired by:
   ///   https://github.com/sparkle-project/Sparkle/blob/master/Tests/SUAppcastTest.swift
+  test('testing Appcast', () async {
+    // Flutter testings assumes the platform is android, so verify it.
+    expect(defaultTargetPlatform, equals(TargetPlatform.android));
+
+    final appcast = Appcast();
+    expect(appcast.bestItem(), isNull);
+    expect(appcast.osVersionString, isNull);
+    expect(appcast.items, isNull);
+    expect(appcast.parseItemsFromXMLString('asdlfkjasdflkj'), isNull);
+    expect(appcast.parseItemsFromXMLString('</channel>'), isNull);
+    expect(await appcast.parseAppcastItemsFromUri('asdfasdf'), isNull);
+  });
+
   test('testing Appcast file', () async {
     // Flutter testings assumes the platform is android, so verify it.
     expect(defaultTargetPlatform, equals(TargetPlatform.android));
@@ -26,7 +39,7 @@ void main() {
     validateItems(items, appcast);
   });
 
-  test('testing Appcast download', () async {
+  test('testing Appcast ', () async {
     final client = await setupMockClient();
     final appcast = Appcast(client: client);
     final items = await appcast.parseAppcastItemsFromUri(

@@ -2,14 +2,13 @@
  * Copyright (c) 2018 Larry Aasen. All rights reserved.
  */
 
-import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
 import 'package:package_info/package_info.dart';
 import 'package:upgrader/upgrader.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'mockclient.dart';
 
 void main() {
   SharedPreferences preferences;
@@ -19,7 +18,6 @@ void main() {
   );
 
   const Map<String, dynamic> kEmptyPreferences = <String, dynamic>{};
-//  const Map<String, dynamic> kEmptyPreferences = <String, dynamic>{};
 
   setUp(() async {
     // This idea to mock the shared preferences taken from:
@@ -38,61 +36,8 @@ void main() {
     await Upgrader().clearSavedSettings();
   });
 
-  test('testing ITunesSearchAPI properties', () async {
-    final iTunes = ITunesSearchAPI();
-    expect(iTunes.debugEnabled, equals(false));
-    iTunes.debugEnabled = true;
-    expect(iTunes.debugEnabled, equals(true));
-    expect(iTunes.iTunesDocumentationURL.length, greaterThan(0));
-    expect(iTunes.lookupPrefixURL.length, greaterThan(0));
-    expect(iTunes.searchPrefixURL.length, greaterThan(0));
-
-    expect(iTunes.lookupURLByBundleId('com.google.Maps'),
-        equals('https://itunes.apple.com/lookup?bundleId=com.google.Maps'));
-    expect(iTunes.lookupURLById('585027354'),
-        equals('https://itunes.apple.com/lookup?id=585027354'));
-    expect(iTunes.lookupURLByQSP({'id': '909253', 'entity': 'album'}),
-        equals('https://itunes.apple.com/lookup?id=909253&entity=album'));
-  });
-
-  test('testing lookupByBundleId', () async {
-    final client = setupMockClient();
-    final iTunes = ITunesSearchAPI();
-    iTunes.client = client;
-
-    final response = await iTunes.lookupByBundleId('com.google.Maps');
-    expect(response, isInstanceOf<Map>());
-    final results = response['results'];
-    expect(results, isNotNull);
-    expect(results.length, 1);
-    final result0 = results[0];
-    expect(result0, isNotNull);
-    expect(result0['bundleId'], 'com.google.Maps');
-    expect(result0['version'], '5.6');
-    expect(ITunesResults.bundleId(response), 'com.google.Maps');
-    expect(ITunesResults.version(response), '5.6');
-  });
-
-  test('testing lookupById', () async {
-    final client = setupMockClient();
-    final iTunes = ITunesSearchAPI();
-    iTunes.client = client;
-
-    final response = await iTunes.lookupById('585027354');
-    expect(response, isInstanceOf<Map>());
-    final results = response['results'];
-    expect(results, isNotNull);
-    expect(results.length, 1);
-    final result0 = results[0];
-    expect(result0, isNotNull);
-    expect(result0['bundleId'], 'com.google.Maps');
-    expect(result0['version'], '5.6');
-    expect(ITunesResults.bundleId(response), 'com.google.Maps');
-    expect(ITunesResults.version(response), '5.6');
-  });
-
   testWidgets('test Upgrader class', (WidgetTester tester) async {
-    final client = setupMockClient();
+    final client = MockClient.setupMockClient();
     final upgrader = Upgrader();
     upgrader.client = client;
 
@@ -134,7 +79,7 @@ void main() {
   });
 
   testWidgets('test UpgradeWidget', (WidgetTester tester) async {
-    final client = setupMockClient();
+    final client = MockClient.setupMockClient();
     final upgrader = Upgrader();
     upgrader.client = client;
 
@@ -203,7 +148,7 @@ void main() {
   });
 
   testWidgets('test UpgradeWidget ignore', (WidgetTester tester) async {
-    final client = setupMockClient();
+    final client = MockClient.setupMockClient();
     final upgrader = Upgrader();
     upgrader.client = client;
 
@@ -244,7 +189,7 @@ void main() {
   });
 
   testWidgets('test UpgradeWidget later', (WidgetTester tester) async {
-    final client = setupMockClient();
+    final client = MockClient.setupMockClient();
     final upgrader = Upgrader();
     upgrader.client = client;
 
@@ -285,10 +230,10 @@ void main() {
   });
 
   testWidgets('test UpgradeWidget Card upgrade', (WidgetTester tester) async {
-    final client = setupMockClient();
+    final client = MockClient.setupMockClient();
     final upgrader = Upgrader();
     upgrader.client = client;
-    upgrader.debugEnabled = true;
+    upgrader.debugLogging = true;
 
     upgrader.installPackageInfo(
         packageInfo: PackageInfo(
@@ -327,10 +272,10 @@ void main() {
   });
 
   testWidgets('test UpgradeWidget Card ignore', (WidgetTester tester) async {
-    final client = setupMockClient();
+    final client = MockClient.setupMockClient();
     final upgrader = Upgrader();
     upgrader.client = client;
-    upgrader.debugEnabled = true;
+    upgrader.debugLogging = true;
 
     upgrader.installPackageInfo(
         packageInfo: PackageInfo(
@@ -369,10 +314,10 @@ void main() {
   });
 
   testWidgets('test UpgradeWidget Card later', (WidgetTester tester) async {
-    final client = setupMockClient();
+    final client = MockClient.setupMockClient();
     final upgrader = Upgrader();
     upgrader.client = client;
-    upgrader.debugEnabled = true;
+    upgrader.debugLogging = true;
 
     upgrader.installPackageInfo(
         packageInfo: PackageInfo(
@@ -409,27 +354,6 @@ void main() {
     expect(notCalled, true);
     expect(find.text(upgrader.buttonTitleLater), findsNothing);
   });
-}
-
-// Create a MockClient using the Mock class provided by the Mockito package.
-// We will create a new instances of this class in each test.
-class MockClient extends Mock implements http.Client {}
-
-http.Client setupMockClient() {
-  final client = MockClient();
-
-  // Use Mockito to return a successful response when it calls the
-  // provided http.Client
-  final r = '{"results": [{"version": "5.6", "bundleId": "com.google.Maps"}]}';
-  when(client.get(ITunesSearchAPI().lookupURLById('585027354')))
-      .thenAnswer((_) async => http.Response(r, 200));
-  when(client.get(ITunesSearchAPI().lookupURLByBundleId('com.google.Maps')))
-      .thenAnswer((_) async => http.Response(r, 200));
-  when(client.get(
-          ITunesSearchAPI().lookupURLByBundleId('com.larryaasen.upgrader')))
-      .thenAnswer((_) async => http.Response(r, 200));
-
-  return client;
 }
 
 class _MyWidget extends StatelessWidget {

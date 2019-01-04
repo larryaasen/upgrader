@@ -1,3 +1,7 @@
+## 0.4.0
+
+* added Appcast to support Android upgrades
+
 ## 0.3.0
 
 * added UpgradeCard class

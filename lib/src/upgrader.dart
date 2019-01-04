@@ -3,23 +3,48 @@
  */
 
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:version/version.dart';
+
+import 'appcast.dart';
 import 'itunes_search_api.dart';
 
 /// Signature of callbacks that have no arguments and return bool.
 typedef BoolCallback = bool Function();
 
+/// A class to define the configuration for the appcast. The configuration
+/// contains two parts: a URL to the appcast, and a list of supported OS
+/// names, such as "android", "ios".
+class AppcastConfiguration {
+  final List<String> supportedOS;
+  final String url;
+
+  AppcastConfiguration({
+    this.supportedOS,
+    this.url,
+  });
+}
+
 /// A singleton class to configure the upgrade dialog.
 class Upgrader {
   static final Upgrader _singleton = new Upgrader._internal();
 
+  /// The appcast configuration ([AppcastConfiguration]) used by [Appcast].
+  /// When an appcast is configured for iOS, the iTunes lookup is not used.
+  AppcastConfiguration appcastConfig;
+
+  /// The ignore button title, which defaults to ```Ignore```
   String buttonTitleIgnore = 'Ignore'.toUpperCase();
+
+  /// The later button title, which defaults to ```Later```
   String buttonTitleLater = 'Later'.toUpperCase();
+
+  /// The update button title, which defaults to ```Update Now```
   String buttonTitleUpdate = 'Update Now'.toUpperCase();
 
   /// Provide an HTTP Client that can be replaced for mock testing.
@@ -35,7 +60,7 @@ class Upgrader {
   bool debugDisplayOnce = false;
 
   /// Enable print statements for debugging.
-  bool debugEnabled = false;
+  bool debugLogging = false;
 
   final notInitializedExceptionMessage =
       'initialize() not called. Must be called first.';
@@ -100,39 +125,89 @@ class Upgrader {
 
     if (_packageInfo == null) {
       _packageInfo = await PackageInfo.fromPlatform();
-      if (debugEnabled) {
+      if (debugLogging) {
         print(
             'upgrader: package info packageName: ${_packageInfo.packageName}');
         print('upgrader: package info version: ${_packageInfo.version}');
       }
     }
 
-    await _updateAppStoreDetails();
+    await _updateVersionInfo();
 
     _installedVersion = _packageInfo.version;
 
     return true;
   }
 
-  Future<bool> _updateAppStoreDetails() async {
-    if (_packageInfo == null || _packageInfo.packageName.length == 0) {
-      return false;
-    }
+  Future<bool> _updateVersionInfo() async {
+    // If there is an appcast for this platform
+    if (_isAppcastThisPlatform()) {
+      if (debugLogging) {
+        print('upgrader: appcast is available for this platform');
+      }
 
-    // TODO: add support for the Android Play Store
+      final appcast = Appcast();
+      await appcast.parseAppcastItemsFromUri(appcastConfig.url);
+      if (debugLogging) {
+        int count = appcast.items == null ? 0 : appcast.items.length;
+        print('upgrader: appcast item count: $count');
+      }
+      final bestItem = appcast.bestItem();
+      if (bestItem != null &&
+          bestItem.versionString != null &&
+          bestItem.versionString.isNotEmpty) {
+        if (debugLogging) {
+          int count = appcast.items == null ? 0 : appcast.items.length;
+          print(
+              'upgrader: appcast best item version: ${bestItem.versionString}');
+        }
+        if (_appStoreVersion == null) {
+          _appStoreVersion = bestItem.versionString;
+        }
+        if (_appStoreListingURL == null) {
+          _appStoreListingURL = bestItem.fileURL;
+        }
+      }
+    } else {
+//      // If this platform is not iOS, skip the iTunes lookup
+//      if (!Platform.isIOS) {
+//        return false;
+//      }
 
-    final iTunes = ITunesSearchAPI();
-    iTunes.client = this.client;
-    final response = await iTunes.lookupByBundleId(_packageInfo.packageName);
+      if (_packageInfo == null || _packageInfo.packageName.isEmpty) {
+        return false;
+      }
 
-    if (_appStoreVersion == null) {
-      _appStoreVersion = ITunesResults.version(response);
-    }
-    if (_appStoreListingURL == null) {
-      _appStoreListingURL = ITunesResults.trackViewUrl(response);
+      final iTunes = ITunesSearchAPI();
+      iTunes.client = this.client;
+      final response = await iTunes.lookupByBundleId(_packageInfo.packageName);
+
+      if (_appStoreVersion == null) {
+        _appStoreVersion = ITunesResults.version(response);
+      }
+      if (_appStoreListingURL == null) {
+        _appStoreListingURL = ITunesResults.trackViewUrl(response);
+      }
     }
 
     return true;
+  }
+
+  bool _isAppcastThisPlatform() {
+    if (appcastConfig == null ||
+        appcastConfig.url == null ||
+        appcastConfig.url.isEmpty) {
+      return false;
+    }
+
+    // Since this appcast config contains a URL, this appcast is valid.
+    // However, if the supported OS is not listed, it is not supported.
+    // When there are no supported OSes listed, they are all supported.
+    bool supported = true;
+    if (appcastConfig.supportedOS != null) {
+      supported = appcastConfig.supportedOS.contains(Platform.operatingSystem);
+    }
+    return supported;
   }
 
   bool _verifyInit() {
@@ -211,7 +286,7 @@ class Upgrader {
       final available = appStoreVersion > installedVersion;
       _updateAvailable = available ? _appStoreVersion : null;
 
-      if (debugEnabled) {
+      if (debugLogging) {
         print('upgrader: appStoreVersion: $_appStoreVersion');
         print('upgrader: installedVersion: $_installedVersion');
         print('upgrader: isUpdateAvailable: $available');
@@ -224,7 +299,7 @@ class Upgrader {
       {@required BuildContext context,
       @required String title,
       @required String message}) {
-    if (debugEnabled) {
+    if (debugLogging) {
       print('upgrader: showDialog title: $title');
       print('upgrader: showDialog message: $message');
     }
@@ -262,7 +337,7 @@ class Upgrader {
   }
 
   void onUserIgnored(BuildContext context, bool shouldPop) {
-    if (debugEnabled) {
+    if (debugLogging) {
       print('upgrader: button tapped: $buttonTitleIgnore');
     }
 
@@ -282,7 +357,7 @@ class Upgrader {
   }
 
   void onUserLater(BuildContext context, bool shouldPop) {
-    if (debugEnabled) {
+    if (debugLogging) {
       print('upgrader: button tapped: $buttonTitleLater');
     }
 
@@ -300,7 +375,7 @@ class Upgrader {
   }
 
   void onUserUpdated(BuildContext context, bool shouldPop) {
-    if (debugEnabled) {
+    if (debugLogging) {
       print('upgrader: button tapped: $buttonTitleUpdate');
     }
 
@@ -373,13 +448,13 @@ class Upgrader {
 
   void _sendUserToAppStore() async {
     if (_appStoreListingURL == null || _appStoreListingURL.length == 0) {
-      if (debugEnabled) {
+      if (debugLogging) {
         print('upgrader: empty _appStoreListingURL');
       }
       return;
     }
 
-    if (debugEnabled) {
+    if (debugLogging) {
       print('upgrader: launching: $_appStoreListingURL');
     }
 
