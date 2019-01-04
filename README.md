@@ -7,7 +7,7 @@ Flutter package for prompting users to upgrade when there is a newer version of 
 [![codecov](https://codecov.io/gh/larryaasen/upgrader/branch/master/graph/badge.svg)](https://codecov.io/gh/larryaasen/upgrader)
 [![pub package](https://img.shields.io/pub/v/upgrader.svg)](https://pub.dartlang.org/packages/upgrader)
 
-<a href="https://www.patreon.com/bePatron?u=15315667" data-patreon-widget-type="become-patron-button">Become a Patron!</a><script async src="https://c6.patreon.com/becomePatronButton.bundle.js"></script>
+<a href="https://www.patreon.com/bePatron?u=15315667" data-patreon-widget-type="become-patron-button">Become a Patron!</a>
 
 A simple prompt widget is displayed when a newer app version is availabe
 in the store. With today's modern app stores, there is little need to persuade users to upgrade
