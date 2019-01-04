@@ -7,7 +7,7 @@ Flutter package for prompting users to upgrade when there is a newer version of 
 [![codecov](https://codecov.io/gh/larryaasen/upgrader/branch/master/graph/badge.svg)](https://codecov.io/gh/larryaasen/upgrader)
 [![pub package](https://img.shields.io/pub/v/upgrader.svg)](https://pub.dartlang.org/packages/upgrader)
 
-<a href="https://www.patreon.com/bePatron?u=15315667" data-patreon-widget-type="become-patron-button">Become a Patron!</a>
+[Become a Patron!](https://www.patreon.com/bePatron?u=15315667)
 
 A simple prompt widget is displayed when a newer app version is availabe
 in the store. With today's modern app stores, there is little need to persuade users to upgrade
@@ -83,7 +83,7 @@ included in an Android without any issues. Support for Android coming soon.
 
 There is a class in this Flutter package used by the UpgradeAlert widget to download app details 
 from the
-[iTunes Serach API](https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api).
+[iTunes Search API](https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api).
 The class ITunesSearchAPI can be used standalone with the
 UpgradeAlert widget to query iTunes for app details.
 ```dart
