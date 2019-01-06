@@ -9,15 +9,18 @@ Flutter package for prompting users to upgrade when there is a newer version of 
 
 [Become a Patron!](https://www.patreon.com/bePatron?u=15315667)
 
-A simple prompt widget is displayed when a newer app version is availabe
-in the store. With today's modern app stores, there is little need to persuade users to upgrade
+When a newer app version is availabe in the app store, a simple alert prompt widget or card is
+displayed. With today's modern app stores, there is little need to persuade users to upgrade
 because most of them are already using the auto upgrade feature. However, there may be times when
 an app needs to be updated more quickly than usual, and nagging a user to upgrade will entice
 the upgrade sooner. Also, with Flutter supporting more than just Android and iOS app stores in the
 future, it will become more likely that users on other app stores need to be nagged about
-upgrading. 
+upgrading.
 
-## Example
+The UI comes in two flavors: alert or card. The [UpgradeAlert](#alert-example) class is used to display the
+popup alert prompt, and the [UpgradeCard](#card-example) class is used to display the inline material design card.
+
+## Alert Example
 
 Just wrap your body widget in the UpgradeAlert widget, and it will handle the rest.
 ```dart
@@ -48,54 +51,57 @@ class MyApp extends StatelessWidget {
 }
 ```
 
-## Screenshot
+## Screenshot of alert
 
 ![image](screenshots/example1.png)
+
+
+## Card Example
+
+Just return an UpgradeCard widget in your build method and a material design card will be displayed
+when an update is detected. The widget will have width and height of 0.0 when no update is detected.
+```dart
+return Container(
+        margin: EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 0.0),
+        child: UpgradeCard());
+```
+
+## Screenshot of card
+
+![image](screenshots/example2.png)
 
 ## Customization
 
 The UpgradeAlert widget can be customized by setting parameters in the constructor of the
 UpgradeAlert widget.
 
+* appcastConfig: the appcast configuration, defaults to ```null```
 * buttonTitleIgnore: the ignore button title, which defaults to ```Ignore```
 * buttonTitleLater: the later button title, which defaults to ```Later```
 * buttonTitleUpdate: the update button title, which defaults to ```Update Now```
+* client: an HTTP Client that can be replaced for mock testing, defaults to ```null```
 * daysUntilAlertAgain: days until alerting user again, which defaults to ```3```
-* debugEnabled: Enable print statements for debugging, which defaults to ```false```
-
+* debugDisplayAlways: always force the upgrade to be available, defaults to ```false```
+* debugDisplayOnce: display the upgrade at least once once, defaults to ```false```
+* debugLogging: display logging statements, which defaults to ```false```
 * onIgnore: Called when the ignore button is tapped, defaults to ```null```
 * onLater: Called when the ignore button is tapped, defaults to ```null```
 * onUpdate: Called when the ignore button is tapped, defaults to ```null```
-  
 * prompt: the call to action message, which defaults to ```Would you like to update it now?```
 * title: the alert dialog title, which defaults to ```Update App?```
 
 ## Limitations
-This widget works on both Android and iOS. When running on iOS the App Store will provide the
+These widgets work on both Android and iOS. When running on iOS the App Store will provide the
 latest app version and will display the prompt at the appropriate times.
 
-On Android, this widget does nothing as there is no easy way to query the
-Google Play Store for metadata about an app. Without the metadata, the widget cannot compare the
-app version with the latest Play Store version. It will not disrupt the widget tree and can be
-included in an Android without any issues. Support for Android coming soon.
+On Android, this widget
+does nothing as there is no easy way to query the Google Play Store for metadata about an app.
+Without the metadata, the widget cannot compare the app version with the latest Play Store version.
+It will not disrupt the widget tree and can be
+included in an Android without any issues.
 
-## iTunes Search API
-
-There is a class in this Flutter package used by the UpgradeAlert widget to download app details 
-from the
-[iTunes Search API](https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api).
-The class ITunesSearchAPI can be used standalone with the
-UpgradeAlert widget to query iTunes for app details.
-```dart
-final iTunes = ITunesSearchAPI();
-final resultsFuture = iTunes.lookupByBundleId('com.google.Maps');
-resultsFuture.then((results) {
-    print('results: $results');
-});
-```
-
-### Results
-[![image](screenshots/results.png)](screenshots/results.png)
+There is now an [appcast](#appcast) that can be used for Android and iOS to remotely configure the
+latest app version.
 
 ## Appcast
 
@@ -115,8 +121,7 @@ is available on the app store.
 
 The Appcast class can be used stand alone or as part of Upgrader.
 
-
-### Example - Stand alone
+### Appcast Example
 ```dart
 final appcast = Appcast();
 final items = await appcast.parseAppcastItemsFromUri('https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast.xml');
@@ -138,5 +143,27 @@ final bestItem = appcast.bestItem();
     </channel>
 </rss>
 ```
+
+## iTunes Search API
+
+There is a class in this Flutter package used by the upgrader widgets to download app details 
+from the
+[iTunes Search API](https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api).
+The class ITunesSearchAPI can be used standalone to query iTunes for app details.
+
+### ITunesSearchAPI Example
+```dart
+final iTunes = ITunesSearchAPI();
+final resultsFuture = iTunes.lookupByBundleId('com.google.Maps');
+resultsFuture.then((results) {
+    print('results: $results');
+});
+```
+
+### Results
+[![image](screenshots/results.png)](screenshots/results.png)
+
 ## Contributing
 All [comments](https://github.com/larryaasen/upgrader/issues) and [pull requests](https://github.com/larryaasen/upgrader/pulls) are welcome.
+
+[Become a Patron!](https://www.patreon.com/bePatron?u=15315667)

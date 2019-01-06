@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Larry Aasen. All rights reserved.
+ * Copyright (c) 2019 Larry Aasen. All rights reserved.
  */
 
 import 'package:flutter/material.dart';
@@ -25,9 +25,10 @@ class MyApp extends StatelessWidget {
           appBar: AppBar(
             title: Text('Upgrader Example'),
           ),
-          body: UpgradeAlert(
-            child: Center(child: Text('Checking...')),
-          )),
+          body: Center(
+              child: Container(
+                  margin: EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 0.0),
+                  child: UpgradeCard(debugAlwaysUpgrade: true)))),
     );
   }
 }

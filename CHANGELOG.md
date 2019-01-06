@@ -1,3 +1,7 @@
+## 0.4.3
+
+* improved README documentation and example code
+
 ## 0.4.2
 
 * fixed README file that appears on the Dart Packages website

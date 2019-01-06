@@ -29,7 +29,7 @@ class _UpgradeBase extends StatefulWidget {
   /// For debugging, display the upgrade at least once once.
   final bool debugDisplayOnce;
 
-  /// Enable debug statements for debugging.
+  /// For debugging, display logging statements.
   final bool debugLogging;
 
   /// Called when the ignore button is tapped or otherwise activated.
