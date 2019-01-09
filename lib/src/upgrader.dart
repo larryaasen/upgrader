@@ -157,7 +157,6 @@ class Upgrader {
           bestItem.versionString != null &&
           bestItem.versionString.isNotEmpty) {
         if (debugLogging) {
-          int count = appcast.items == null ? 0 : appcast.items.length;
           print(
               'upgrader: appcast best item version: ${bestItem.versionString}');
         }
