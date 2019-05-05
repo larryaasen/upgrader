@@ -18,6 +18,8 @@ script:
   - ./flutter/bin/flutter test --coverage --coverage-path=lcov.info
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+
+# Avoid re-downloading packages across different builds if possible.
 cache:
   directories:
     - $HOME/.pub-cache

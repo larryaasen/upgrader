@@ -1,6 +1,6 @@
 name: upgrader
 description: Flutter package for prompting users to upgrade when there is a newer version of the app in the store.
-version: 0.4.3
+version: 0.5.0
 author: Larry Aasen <larryaasen@gmail.com>
 homepage: https://github.com/larryaasen/upgrader
 
@@ -12,25 +12,25 @@ dependencies:
     sdk: flutter
 
   # From Dart Team: Get current device information from within the Flutter application.
-  device_info: ^0.3.0
+  device_info: ^0.4.0+1
 
   # From Dart Team: A composable, Future-based library for making HTTP requests.
   http: ^0.12.0
 
   # From Flutter Team: Provides an API for querying information about an application package.
-  package_info: ^0.3.2
+  package_info: ^0.4.0+3
 
   # From Flutter Team: Wraps NSUserDefaults (on iOS) and SharedPreferences (on Android).
-  shared_preferences: ^0.4.3
+  shared_preferences: ^0.5.2
 
   # From Flutter Team: A Flutter plugin for launching a URL in the mobile platform.
-  url_launcher: ^4.0.2
+  url_launcher: ^5.0.2
 
   # A dart library for comparing and incrementing version numbers with Semantic Versioning.
   version: ^1.0.3
 
   # A dart librat for parsing, traversing, querying, transforming and building XML documents.
-  xml: ^3.2.3
+  xml: ^3.4.1
 
 dev_dependencies:
   flutter_test:
