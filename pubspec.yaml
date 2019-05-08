@@ -5,7 +5,7 @@ author: Larry Aasen <larryaasen@gmail.com>
 homepage: https://github.com/larryaasen/upgrader
 
 environment:
-  sdk: ">=2.0.0-dev.68.0 <3.0.0"
+  sdk: ">=2.2.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -30,7 +30,7 @@ dependencies:
   version: ^1.0.3
 
   # A dart librat for parsing, traversing, querying, transforming and building XML documents.
-  xml: ^3.4.1
+  xml: ^3.4.0
 
 dev_dependencies:
   flutter_test:
