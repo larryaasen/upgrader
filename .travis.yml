@@ -3,7 +3,7 @@ os:
 sudo: false
 branches:
   only:
-  - master
+  - dev
 addons:
   apt:
     # Flutter depends on /usr/lib/x86_64-linux-gnu/libstdc++.so.6 version GLIBCXX_3.4.18
@@ -13,7 +13,7 @@ addons:
       - libstdc++6
       - fonts-droid
 before_script:
-  - git clone https://github.com/flutter/flutter.git -b master --single-branch
+  - git clone https://github.com/flutter/flutter.git -b dev --single-branch
   - ./flutter/bin/flutter doctor
 script:
   - ./flutter/bin/cache/dart-sdk/bin/dartfmt -n --set-exit-if-changed ./lib ./test ./example || travis_terminate 1

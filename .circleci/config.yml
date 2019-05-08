@@ -5,6 +5,7 @@ jobs:
       - image: cirrusci/flutter
     steps:
       - checkout
+      - run: flutter channel dev
       - run: flutter doctor
       - run: dartfmt -n --set-exit-if-changed ./lib ./test ./example
       - run: flutter test --coverage --coverage-path=lcov.info
