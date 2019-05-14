@@ -10,15 +10,16 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   MyApp({
     Key key,
-  }) : super(key: key) {
-    Upgrader().clearSavedSettings();
-    Upgrader().installAppStoreVersion('1.1.0');
-    Upgrader().installAppStoreListingURL(
-        'https://itunes.apple.com/us/app/google-maps-transit-food/id585027354?mt=8&uo=4');
-  }
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // Setup the Appcast for Android only. On iOS, the default behavior will be
+    // to use the App Store version of the app.
+    final String appcastURL =
+        'https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast.xml';
+    final cfg = AppcastConfiguration(url: appcastURL, supportedOS: ["android"]);
+
     return MaterialApp(
       title: 'Upgrader Example',
       home: Scaffold(
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
             title: Text('Upgrader Example'),
           ),
           body: UpgradeAlert(
+            appcastConfig: cfg,
             child: Center(child: Text('Checking...')),
           )),
     );
