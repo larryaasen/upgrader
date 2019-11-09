@@ -29,7 +29,7 @@ dependencies:
   # A dart library for comparing and incrementing version numbers with Semantic Versioning.
   version: ^1.0.3
 
-  # A dart librat for parsing, traversing, querying, transforming and building XML documents.
+  # A dart library for parsing, traversing, querying, transforming and building XML documents.
   xml: ^3.4.0
 
 dev_dependencies:

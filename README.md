@@ -85,8 +85,8 @@ UpgradeAlert widget.
 * debugDisplayOnce: display the upgrade at least once once, defaults to ```false```
 * debugLogging: display logging statements, which defaults to ```false```
 * onIgnore: Called when the ignore button is tapped, defaults to ```null```
-* onLater: Called when the ignore button is tapped, defaults to ```null```
-* onUpdate: Called when the ignore button is tapped, defaults to ```null```
+* onLater: Called when the later button is tapped, defaults to ```null```
+* onUpdate: Called when the update button is tapped, defaults to ```null```
 * prompt: the call to action message, which defaults to ```Would you like to update it now?```
 * title: the alert dialog title, which defaults to ```Update App?```
 

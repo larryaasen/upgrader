@@ -74,11 +74,11 @@ class Upgrader {
   /// Return false when the default behavior should not execute.
   BoolCallback onIgnore;
 
-  /// Called when the ignore button is tapped or otherwise activated.
+  /// Called when the later button is tapped or otherwise activated.
   /// Return false when the default behavior should not execute.
   BoolCallback onLater;
 
-  /// Called when the ignore button is tapped or otherwise activated.
+  /// Called when the update button is tapped or otherwise activated.
   /// Return false when the default behavior should not execute.
   BoolCallback onUpdate;
 
