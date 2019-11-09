@@ -14,8 +14,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Setup the Appcast for Android only. On iOS, the default behavior will be
-    // to use the App Store version of the app.
+    // On Android, setup the Appcast.
+    // On iOS, the default behavior will be to use the App Store version of
+    // the app, so update the Bundle Identifier in example/ios/Runner with a
+    // valid identifier already in the App Store.
     final String appcastURL =
         'https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast.xml';
     final cfg = AppcastConfiguration(url: appcastURL, supportedOS: ["android"]);

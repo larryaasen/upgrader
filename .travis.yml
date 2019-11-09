@@ -11,7 +11,6 @@ addons:
       - ubuntu-toolchain-r-test # if we don't specify this, the libstdc++6 we get is the wrong version
     packages:
       - libstdc++6
-      - fonts-droid
 before_script:
   - git clone https://github.com/flutter/flutter.git -b dev --single-branch
   - ./flutter/bin/flutter doctor
