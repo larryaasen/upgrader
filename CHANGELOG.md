@@ -1,3 +1,7 @@
+## 0.6.0
+
+* Fixed issue to not use the OS version string (deviceInfo.androidInfo.version.baseOS) when it is not a valid Semantic Version as defined here http://semver.org/.
+
 ## 0.5.1+1
 
 * updated the examples with an Appcast for Android.
