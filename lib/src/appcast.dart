@@ -3,6 +3,7 @@
  */
 
 import 'dart:io';
+
 import 'package:device_info/device_info.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
@@ -179,6 +180,14 @@ class Appcast {
       _iosInfo = await deviceInfo.iosInfo;
       osVersionString = _iosInfo.systemVersion;
     }
+
+    // If the OS version string is not valid, don't use it.
+    try {
+      final value = Version.parse(osVersionString);
+    } catch (e) {
+      osVersionString = null;
+    }
+
     return true;
   }
 }
@@ -231,7 +240,13 @@ class AppcastItem {
     }
 
     if (supported && osVersion != null && osVersion.isNotEmpty) {
-      final osVersionValue = Version.parse(osVersion);
+      var osVersionValue;
+      try {
+        osVersionValue = Version.parse(osVersion);
+      } catch (e) {
+        print("appcast.hostSupportsItem: invalid osVerion: $e");
+        return false;
+      }
       if (maximumSystemVersion != null) {
         final maxVersion = Version.parse(maximumSystemVersion);
         if (osVersionValue > maxVersion) {

@@ -3,6 +3,7 @@
  */
 
 import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
@@ -45,6 +46,24 @@ void main() {
     final items = await appcast.parseAppcastItemsFromUri(
         'https://sparkle-project.org/test/testappcast.xml');
     validateItems(items, appcast);
+  });
+
+  test('testing Appcast host', () async {
+    final item = AppcastItem();
+
+    expect(item.hostSupportsItem(osVersion: null), equals(true));
+    expect(item.hostSupportsItem(osVersion: ''), equals(true));
+    expect(item.hostSupportsItem(osVersion: '0'), equals(false));
+
+    expect(
+        item.hostSupportsItem(
+            osVersion:
+                'samsung/hero2ltexx/hero2lte:7.0/NRD90M/G935FXXU2DRB6:user/release-keys'),
+        equals(false));
+
+    expect(item.hostSupportsItem(osVersion: '0.1'), equals(true));
+
+    expect(item.hostSupportsItem(osVersion: '0.0.1'), equals(true));
   });
 }
 
