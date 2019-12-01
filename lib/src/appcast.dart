@@ -183,7 +183,7 @@ class Appcast {
 
     // If the OS version string is not valid, don't use it.
     try {
-      final value = Version.parse(osVersionString);
+      Version.parse(osVersionString);
     } catch (e) {
       osVersionString = null;
     }
@@ -236,7 +236,7 @@ class AppcastItem {
       currentPlatform = currentPlatform == null
           ? defaultTargetPlatform.toString()
           : 'TargetPlatform.' + currentPlatform;
-      supported = platformEnum == currentPlatform;
+      supported = platformEnum.toLowerCase() == currentPlatform.toLowerCase();
     }
 
     if (supported && osVersion != null && osVersion.isNotEmpty) {

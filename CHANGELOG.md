@@ -1,3 +1,8 @@
+## 0.7.0
+
+* Improved error messaging, allowed Appcast OS name (sparkle:os) to be case insensitive, example
+defaults to debug logging on, and added command line app to evaluate the iTunes search.
+
 ## 0.6.0
 
 * Fixed issue to not use the OS version string (deviceInfo.androidInfo.version.baseOS) when it is not a valid Semantic Version as defined here http://semver.org/.

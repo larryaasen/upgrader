@@ -4,6 +4,7 @@
 
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 
 class ITunesSearchAPI {
@@ -48,16 +49,8 @@ class ITunesSearchAPI {
       return null;
     }
 
-    final jsonResponse = response.body;
-
-    if (jsonResponse != null && jsonResponse.isNotEmpty) {
-      final decodedResults = json.decode(jsonResponse);
-      if (decodedResults is Map) {
-        return decodedResults;
-      }
-    }
-
-    return null;
+    final decodedResults = _decodeResults(response.body);
+    return decodedResults;
   }
 
   /// Look up by id.
@@ -70,16 +63,9 @@ class ITunesSearchAPI {
 
     final url = lookupURLById(id);
     final response = await client.get(url);
-    final jsonResponse = response.body;
 
-    if (jsonResponse != null && jsonResponse.isNotEmpty) {
-      final decodedResults = json.decode(jsonResponse);
-      if (decodedResults is Map) {
-        return decodedResults;
-      }
-    }
-
-    return null;
+    final decodedResults = _decodeResults(response.body);
+    return decodedResults;
   }
 
   /// Look up URL by bundle id.
@@ -116,6 +102,23 @@ class ITunesSearchAPI {
 
     return '$lookupPrefixURL?$finalParameters';
   }
+
+  Map _decodeResults(String jsonResponse) {
+    if (jsonResponse != null && jsonResponse.isNotEmpty) {
+      final decodedResults = json.decode(jsonResponse);
+      if (decodedResults is Map) {
+        final resultCount = decodedResults['resultCount'];
+        if (resultCount == 0) {
+          if (debugEnabled) {
+            print(
+                'upgrader.ITunesSearchAPI: results are empty: $decodedResults');
+          }
+        }
+        return decodedResults;
+      }
+    }
+    return null;
+  }
 }
 
 class ITunesResults {
@@ -125,7 +128,7 @@ class ITunesResults {
     try {
       value = response['results'][0]['bundleId'];
     } catch (e) {
-      print('upgrader: $e');
+      print('upgrader.ITunesResults.bundleId: $e');
     }
     return value;
   }
@@ -136,7 +139,7 @@ class ITunesResults {
     try {
       value = response['results'][0]['trackViewUrl'];
     } catch (e) {
-      print('upgrader: $e');
+      print('upgrader.ITunesResults.trackViewUrl: $e');
     }
     return value;
   }
@@ -147,7 +150,7 @@ class ITunesResults {
     try {
       value = response['results'][0]['version'];
     } catch (e) {
-      print('upgrader: $e');
+      print('upgrader.ITunesResults.version: $e');
     }
     return value;
   }

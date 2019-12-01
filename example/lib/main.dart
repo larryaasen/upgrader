@@ -14,6 +14,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Upgrader().clearSavedSettings();
+
     // On Android, setup the Appcast.
     // On iOS, the default behavior will be to use the App Store version of
     // the app, so update the Bundle Identifier in example/ios/Runner with a
@@ -30,6 +32,7 @@ class MyApp extends StatelessWidget {
           ),
           body: UpgradeAlert(
             appcastConfig: cfg,
+            debugLogging: true,
             child: Center(child: Text('Checking...')),
           )),
     );
