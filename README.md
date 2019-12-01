@@ -163,6 +163,24 @@ resultsFuture.then((results) {
 ### Results
 [![image](screenshots/results.png)](screenshots/results.png)
 
+### Command Line App
+There is a command line app used to display the results from iTunes Search. The code is located in
+bin/itunes_lookup.dart, and can be run from the command line like this:
+```
+$ dart itunes_lookup.dart bundleid=com.google.Maps
+```
+Results:
+```
+upgrader: download: https://itunes.apple.com/lookup?bundleId=com.google.Maps
+upgrader: response statusCode: 200
+itunes_lookup bundleId: com.google.Maps
+itunes_lookup trackViewUrl: https://apps.apple.com/us/app/google-maps-transit-food/id585027354?uo=4
+itunes_lookup version: 5.31
+itunes_lookup all results:
+{resultCount: 1, results: 
+...
+```
+
 ## Contributing
 All [comments](https://github.com/larryaasen/upgrader/issues) and [pull requests](https://github.com/larryaasen/upgrader/pulls) are welcome.
 
