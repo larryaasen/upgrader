@@ -24,6 +24,10 @@ class MockClient extends Mock implements http.Client {
             ITunesSearchAPI().lookupURLByBundleId('com.larryaasen.upgrader')))
         .thenAnswer((_) async => http.Response(r, 200));
 
+    final responseMyApp = '{"resultCount": 0,"results": []}';
+    when(client.get(ITunesSearchAPI().lookupURLByBundleId('com.google.MyApp')))
+        .thenAnswer((_) async => http.Response(responseMyApp, 200));
+
     return client;
   }
 }

@@ -4,6 +4,7 @@
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:upgrader/upgrader.dart';
+
 import 'mockclient.dart';
 
 void main() {
@@ -40,6 +41,18 @@ void main() {
     expect(result0['version'], '5.6');
     expect(ITunesResults.bundleId(response), 'com.google.Maps');
     expect(ITunesResults.version(response), '5.6');
+  });
+
+  test('testing lookupByBundleId unknown app', () async {
+    final client = MockClient.setupMockClient();
+    final iTunes = ITunesSearchAPI();
+    iTunes.client = client;
+
+    final response = await iTunes.lookupByBundleId('com.google.MyApp');
+    expect(response, isInstanceOf<Map>());
+    final results = response['results'];
+    expect(results, isNotNull);
+    expect(results.length, 0);
   });
 
   test('testing lookupById', () async {

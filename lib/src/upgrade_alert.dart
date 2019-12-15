@@ -5,6 +5,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
 import 'upgrader.dart';
 
 class _UpgradeBase extends StatefulWidget {
@@ -339,7 +340,7 @@ class _AlertStyleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     assert(debugCheckHasMaterialLocalizations(context));
     final List<Widget> children = <Widget>[];
-    String semanticLabel = 'semanticLabel';
+    const String semanticLabel = 'semanticLabel';
     final EdgeInsetsGeometry titlePadding = null;
     final EdgeInsetsGeometry contentPadding =
         const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 24.0);
@@ -361,9 +362,16 @@ class _AlertStyleWidget extends StatelessWidget {
           label = semanticLabel;
           break;
         case TargetPlatform.android:
+          label = semanticLabel ??
+              MaterialLocalizations.of(context)?.alertDialogLabel;
+          break;
         case TargetPlatform.fuchsia:
           label = semanticLabel ??
               MaterialLocalizations.of(context)?.alertDialogLabel;
+          break;
+        case TargetPlatform.macOS:
+          label = semanticLabel;
+          break;
       }
     }
 

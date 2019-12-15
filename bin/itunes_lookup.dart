@@ -10,8 +10,8 @@
 import 'package:upgrader/src/itunes_search_api.dart';
 
 void main(List<String> arguments) {
-  final default_lookup_bundleId = 'com.google.Maps';
-  var lookup_bundleId = default_lookup_bundleId;
+  final defaultLookupBundleId = 'com.google.Maps';
+  var lookupBundleId = defaultLookupBundleId;
 
   if (arguments.length == 1) {
     final arg0 = arguments[0].split('=');
@@ -20,14 +20,14 @@ void main(List<String> arguments) {
       final argValue = arg0[1];
 
       if (argName == 'bundleid') {
-        lookup_bundleId = argValue;
+        lookupBundleId = argValue;
       }
     }
   }
 
   final iTunes = ITunesSearchAPI();
   iTunes.debugEnabled = true;
-  final resultsFuture = iTunes.lookupByBundleId(lookup_bundleId);
+  final resultsFuture = iTunes.lookupByBundleId(lookupBundleId);
   resultsFuture.then((results) {
     final bundleId = ITunesResults.bundleId(results);
     final trackViewUrl = ITunesResults.trackViewUrl(results);

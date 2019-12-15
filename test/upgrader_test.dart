@@ -367,6 +367,49 @@ void main() {
     expect(notCalled, true);
     expect(find.text(upgrader.buttonTitleLater), findsNothing);
   });
+
+  testWidgets('test UpgradeWidget unknown app', (WidgetTester tester) async {
+    final client = MockClient.setupMockClient();
+    final upgrader = Upgrader();
+    upgrader.client = client;
+    upgrader.debugLogging = true;
+
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'MyApp',
+            packageName: 'com.google.MyApp',
+            version: '0.1.0',
+            buildNumber: '1'));
+    await upgrader.initialize();
+
+    bool called = false;
+    bool notCalled = true;
+    upgrader.onLater = () {
+      called = true;
+      return true;
+    };
+    upgrader.onIgnore = () {
+      notCalled = false;
+      return true;
+    };
+    upgrader.onUpdate = () {
+      notCalled = false;
+      return true;
+    };
+
+    expect(upgrader.isTooSoon(), false);
+
+    await tester.pumpWidget(_MyWidgetCard());
+
+    // Pump the UI so the upgrade card is displayed
+    await tester.pumpAndSettle();
+
+    final laterButton = find.text(upgrader.buttonTitleLater);
+    expect(laterButton, findsNothing);
+
+    expect(called, false);
+    expect(notCalled, true);
+  });
 }
 
 class _MyWidget extends StatelessWidget {
