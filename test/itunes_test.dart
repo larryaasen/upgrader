@@ -69,7 +69,29 @@ void main() {
     expect(result0, isNotNull);
     expect(result0['bundleId'], 'com.google.Maps');
     expect(result0['version'], '5.6');
+    expect(result0['currency'], 'USD');
     expect(ITunesResults.bundleId(response), 'com.google.Maps');
     expect(ITunesResults.version(response), '5.6');
+    expect(ITunesResults.currency(response), 'USD');
+  });
+
+  test('testing lookupById FR', () async {
+    final client = MockClient.setupMockClient(country: 'FR');
+    final iTunes = ITunesSearchAPI();
+    iTunes.client = client;
+
+    final response = await iTunes.lookupById('585027354', country: 'FR');
+    expect(response, isInstanceOf<Map>());
+    final results = response['results'];
+    expect(results, isNotNull);
+    expect(results.length, 1);
+    final result0 = results[0];
+    expect(result0, isNotNull);
+    expect(result0['bundleId'], 'com.google.Maps');
+    expect(result0['version'], '5.6');
+    expect(result0['currency'], 'EUR');
+    expect(ITunesResults.bundleId(response), 'com.google.Maps');
+    expect(ITunesResults.version(response), '5.6');
+    expect(ITunesResults.currency(response), 'EUR');
   });
 }

@@ -26,12 +26,13 @@ class ITunesSearchAPI {
   /// Look up by bundle id.
   /// Example: look up Google Maps iOS App:
   /// ```lookupURLByBundleId('com.google.Maps');```
-  Future<Map> lookupByBundleId(String bundleId) async {
+  /// ```lookupURLByBundleId('com.google.Maps', country: 'FR');```
+  Future<Map> lookupByBundleId(String bundleId, {String country = 'US'}) async {
     if (bundleId == null || bundleId.isEmpty) {
       return null;
     }
 
-    final url = lookupURLByBundleId(bundleId);
+    final url = lookupURLByBundleId(bundleId, country: country);
     if (debugEnabled) {
       print('upgrader: download: $url');
     }
@@ -56,12 +57,13 @@ class ITunesSearchAPI {
   /// Look up by id.
   /// Example: look up Google Maps iOS App:
   /// ```lookupURLById('585027354');```
-  Future<Map> lookupById(String id) async {
+  /// ```lookupURLById('585027354', country: 'FR');```
+  Future<Map> lookupById(String id, {String country = 'US'}) async {
     if (id == null || id.isEmpty) {
       return null;
     }
 
-    final url = lookupURLById(id);
+    final url = lookupURLById(id, country: country);
     final response = await client.get(url);
 
     final decodedResults = _decodeResults(response.body);
@@ -71,23 +73,25 @@ class ITunesSearchAPI {
   /// Look up URL by bundle id.
   /// Example: look up Google Maps iOS App:
   /// ```lookupURLByBundleId('com.google.Maps');```
-  String lookupURLByBundleId(String bundleId) {
+  /// ```lookupURLByBundleId('com.google.Maps', country: 'FR');```
+  String lookupURLByBundleId(String bundleId, {String country = 'US'}) {
     if (bundleId == null || bundleId.isEmpty) {
       return null;
     }
 
-    return lookupURLByQSP({'bundleId': bundleId});
+    return lookupURLByQSP({'bundleId': bundleId, 'country': country});
   }
 
   /// Look up URL by id.
   /// Example: look up Jack Johnson by iTunes ID: ```lookupURLById('909253');```
   /// Example: look up Google Maps iOS App: ```lookupURLById('585027354');```
-  String lookupURLById(String id) {
+  /// Example: look up Google Maps iOS App: ```lookupURLById('585027354', country: 'FR');```
+  String lookupURLById(String id, {String country = 'US'}) {
     if (id == null || id.isEmpty) {
       return null;
     }
 
-    return lookupURLByQSP({'id': id});
+    return lookupURLByQSP({'id': id, 'country': country});
   }
 
   /// Look up URL by QSP.
@@ -129,6 +133,17 @@ class ITunesResults {
       value = response['results'][0]['bundleId'];
     } catch (e) {
       print('upgrader.ITunesResults.bundleId: $e');
+    }
+    return value;
+  }
+
+  /// Return field currency from iTunes results.
+  static String currency(Map response) {
+    var value;
+    try {
+      value = response['results'][0]['currency'];
+    } catch (e) {
+      print('upgrader.ITunesResults.currency: $e');
     }
     return value;
   }
