@@ -83,6 +83,12 @@ class Upgrader {
   /// Return false when the default behavior should not execute.
   BoolCallback onUpdate;
 
+  /// Hide or show Ignore button on dialog (default: true)
+  bool showIgnore = true;
+  
+  /// Hide or show Later button on dialog (default: true)
+  bool showLater = true;
+
   bool _displayed = false;
   bool _initCalled = false;
   PackageInfo _packageInfo;
