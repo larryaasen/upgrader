@@ -1,3 +1,7 @@
+## 0.8.1
+
+* Removed TargetPlatform.macOS since pub.dev does not support it yet.
+
 ## 0.8.0
 
 * Added support to ITunesSearchAPI for the country query string parameter. Improved example, and added a few new iTunes tests. Minor updates based on Health suggestions from pub.dev, utilizing pedantic.

@@ -369,9 +369,9 @@ class _AlertStyleWidget extends StatelessWidget {
           label = semanticLabel ??
               MaterialLocalizations.of(context)?.alertDialogLabel;
           break;
-        case TargetPlatform.macOS:
-          label = semanticLabel;
-          break;
+        // case TargetPlatform.macOS:
+        //   label = semanticLabel;
+        //   break;
       }
     }
 
