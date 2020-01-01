@@ -62,6 +62,9 @@ class _UpgradeBase extends StatefulWidget {
   /// Hide or show Later button on dialog (default: true)
   final bool showLater;
 
+  /// Can dialog be dissmied on cliked out side of the dialog ( default: false )
+  final bool canDismissDialog;
+
   _UpgradeBase({
     Key key,
     this.appcastConfig,
@@ -80,6 +83,7 @@ class _UpgradeBase extends StatefulWidget {
     this.client,
     this.showIgnore,
     this.showLater,
+    this.canDismissDialog,
   }) : super(key: key) {
     if (appcastConfig != null) {
       Upgrader().appcastConfig = appcastConfig;
@@ -129,6 +133,10 @@ class _UpgradeBase extends StatefulWidget {
     if(showLater != null) {
       Upgrader().showLater = showLater;
     }
+    
+    if(canDismissDialog != null) {
+      Upgrader().canDismissDialog = canDismissDialog;
+    }
   }
 
   Widget build(BuildContext context, _UpgradeBaseState state) {
@@ -176,11 +184,12 @@ class UpgradeCard extends _UpgradeBase {
     BoolCallback onIgnore,
     BoolCallback onLater,
     BoolCallback onUpdate,
-    bool showIgnore,
-    bool showLater,
     String prompt,
     String title,
     http.Client client,
+    bool showIgnore,
+    bool showLater,
+    bool canDismissDialog,
   }) : super(
           key: key,
           appcastConfig: appcastConfig,
@@ -199,6 +208,7 @@ class UpgradeCard extends _UpgradeBase {
           client: client,
           showIgnore: showIgnore,
           showLater: showLater,
+          canDismissDialog: canDismissDialog
         );
 
   @override
@@ -290,6 +300,7 @@ class UpgradeAlert extends _UpgradeBase {
     http.Client client,
     bool showIgnore,
     bool showLater,
+    bool canDismissDialog,
   }) : super(
           key: key,
           appcastConfig: appcastConfig,
@@ -308,6 +319,7 @@ class UpgradeAlert extends _UpgradeBase {
           client: client,
           showIgnore: showIgnore,
           showLater: showLater,
+          canDismissDialog: canDismissDialog,
         );
 
   @override
