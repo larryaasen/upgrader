@@ -100,7 +100,7 @@ class ITunesSearchAPI {
       return null;
     }
 
-    final parameters = List<String>();
+    final parameters = <String>[];
     qsp.forEach((key, value) => parameters.add('$key=$value'));
     final finalParameters = parameters.join('&');
 

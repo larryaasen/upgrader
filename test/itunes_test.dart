@@ -17,10 +17,12 @@ void main() {
     expect(iTunes.lookupPrefixURL.length, greaterThan(0));
     expect(iTunes.searchPrefixURL.length, greaterThan(0));
 
-    expect(iTunes.lookupURLByBundleId('com.google.Maps'),
-        equals('https://itunes.apple.com/lookup?bundleId=com.google.Maps'));
+    expect(
+        iTunes.lookupURLByBundleId('com.google.Maps'),
+        equals(
+            'https://itunes.apple.com/lookup?bundleId=com.google.Maps&country=US'));
     expect(iTunes.lookupURLById('585027354'),
-        equals('https://itunes.apple.com/lookup?id=585027354'));
+        equals('https://itunes.apple.com/lookup?id=585027354&country=US'));
     expect(iTunes.lookupURLByQSP({'id': '909253', 'entity': 'album'}),
         equals('https://itunes.apple.com/lookup?id=909253&entity=album'));
   });

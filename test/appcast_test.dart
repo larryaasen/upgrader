@@ -35,7 +35,7 @@ void main() {
     expect(defaultTargetPlatform, equals(TargetPlatform.android));
 
     final appcast = Appcast();
-    File testFile = await getTestFile();
+    var testFile = await getTestFile();
     final items = await appcast.parseAppcastItemsFromFile(testFile);
     validateItems(items, appcast);
   });
@@ -98,7 +98,7 @@ void validateItems(List<AppcastItem> items, Appcast appcast) {
 
   expect(items[2].title, equals('Version 4.0'));
   expect(items[2].itemDescription, equals(null));
-  expect(items[2].dateString, "Sat, 26 Jul 2014 15:20:13 +0000");
+  expect(items[2].dateString, 'Sat, 26 Jul 2014 15:20:13 +0000');
   expect(
       items[2].fileURL, equals('http://localhost:1337/Sparkle_Test_App.zip'));
   expect(items[2].isCriticalUpdate, equals(false));
@@ -130,7 +130,7 @@ void validateItems(List<AppcastItem> items, Appcast appcast) {
 }
 
 Future<File> getTestFile() async {
-  File testFile = File('test/testappcast.xml');
+  var testFile = File('test/testappcast.xml');
   final exists = await testFile.exists();
   if (!exists) {
     testFile = File('testappcast.xml');

@@ -1,3 +1,7 @@
+## 0.8.0
+
+* Added support to ITunesSearchAPI for the country query string parameter. Improved example, and added a few new iTunes tests.
+
 ## 0.7.0
 
 * Improved error messaging, allowed Appcast OS name (sparkle:os) to be case insensitive, example

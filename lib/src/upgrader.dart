@@ -4,6 +4,7 @@
 
 import 'dart:async';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info/package_info.dart';
@@ -32,7 +33,7 @@ class AppcastConfiguration {
 
 /// A singleton class to configure the upgrade dialog.
 class Upgrader {
-  static final Upgrader _singleton = new Upgrader._internal();
+  static final Upgrader _singleton = Upgrader._internal();
 
   /// The appcast configuration ([AppcastConfiguration]) used by [Appcast].
   /// When an appcast is configured for iOS, the iTunes lookup is not used.
@@ -85,6 +86,7 @@ class Upgrader {
   bool _displayed = false;
   bool _initCalled = false;
   PackageInfo _packageInfo;
+  String _countryCode;
 
   String _installedVersion;
   String _appStoreVersion;
@@ -97,6 +99,10 @@ class Upgrader {
 
   factory Upgrader() {
     return _singleton;
+  }
+
+  factory Upgrader.newInstance() {
+    return Upgrader._internal();
   }
 
   Upgrader._internal();
@@ -132,6 +138,9 @@ class Upgrader {
       }
     }
 
+    // Get the current locale of the device (TBD), defaulting to US.
+    _countryCode ??= 'US';
+
     await _updateVersionInfo();
 
     _installedVersion = _packageInfo.version;
@@ -149,7 +158,7 @@ class Upgrader {
       final appcast = Appcast();
       await appcast.parseAppcastItemsFromUri(appcastConfig.url);
       if (debugLogging) {
-        int count = appcast.items == null ? 0 : appcast.items.length;
+        var count = appcast.items == null ? 0 : appcast.items.length;
         print('upgrader: appcast item count: $count');
       }
       final bestItem = appcast.bestItem();
@@ -160,12 +169,8 @@ class Upgrader {
           print(
               'upgrader: appcast best item version: ${bestItem.versionString}');
         }
-        if (_appStoreVersion == null) {
-          _appStoreVersion = bestItem.versionString;
-        }
-        if (_appStoreListingURL == null) {
-          _appStoreListingURL = bestItem.fileURL;
-        }
+        _appStoreVersion ??= bestItem.versionString;
+        _appStoreListingURL ??= bestItem.fileURL;
       }
     } else {
 //      // If this platform is not iOS, skip the iTunes lookup
@@ -178,15 +183,13 @@ class Upgrader {
       }
 
       final iTunes = ITunesSearchAPI();
-      iTunes.client = this.client;
-      final response = await iTunes.lookupByBundleId(_packageInfo.packageName);
+      iTunes.client = client;
+      final country = _countryCode;
+      final response = await iTunes.lookupByBundleId(_packageInfo.packageName,
+          country: country);
 
-      if (_appStoreVersion == null) {
-        _appStoreVersion = ITunesResults.version(response);
-      }
-      if (_appStoreListingURL == null) {
-        _appStoreListingURL = ITunesResults.trackViewUrl(response);
-      }
+      _appStoreVersion ??= ITunesResults.version(response);
+      _appStoreListingURL ??= ITunesResults.trackViewUrl(response);
     }
 
     return true;
@@ -202,7 +205,7 @@ class Upgrader {
     // Since this appcast config contains a URL, this appcast is valid.
     // However, if the supported OS is not listed, it is not supported.
     // When there are no supported OSes listed, they are all supported.
-    bool supported = true;
+    var supported = true;
     if (appcastConfig.supportedOS != null) {
       supported = appcastConfig.supportedOS.contains(Platform.operatingSystem);
     }
@@ -342,7 +345,7 @@ class Upgrader {
 
     // If this callback has been provided, call it.
     var doProcess = true;
-    if (this.onIgnore != null) {
+    if (onIgnore != null) {
       doProcess = onIgnore();
     }
 
@@ -362,7 +365,7 @@ class Upgrader {
 
     // If this callback has been provided, call it.
     var doProcess = true;
-    if (this.onLater != null) {
+    if (onLater != null) {
       doProcess = onLater();
     }
 
@@ -380,7 +383,7 @@ class Upgrader {
 
     // If this callback has been provided, call it.
     var doProcess = true;
-    if (this.onUpdate != null) {
+    if (onUpdate != null) {
       doProcess = onUpdate();
     }
 
@@ -394,10 +397,10 @@ class Upgrader {
   }
 
   Future<bool> clearSavedSettings() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove('userIgnoredVersion');
-    prefs.remove('lastTimeAlerted');
-    prefs.remove('lastVersionAlerted');
+    var prefs = await SharedPreferences.getInstance();
+    await prefs.remove('userIgnoredVersion');
+    await prefs.remove('lastTimeAlerted');
+    await prefs.remove('lastVersionAlerted');
 
     _userIgnoredVersion = null;
     _lastTimeAlerted = null;
@@ -412,27 +415,27 @@ class Upgrader {
   }
 
   Future<bool> _saveIgnored() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var prefs = await SharedPreferences.getInstance();
 
     _userIgnoredVersion = _appStoreVersion;
-    prefs.setString('userIgnoredVersion', _userIgnoredVersion);
+    await prefs.setString('userIgnoredVersion', _userIgnoredVersion);
     return true;
   }
 
   Future<bool> saveLastAlerted() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var prefs = await SharedPreferences.getInstance();
     _lastTimeAlerted = DateTime.now();
-    prefs.setString('lastTimeAlerted', _lastTimeAlerted.toString());
+    await prefs.setString('lastTimeAlerted', _lastTimeAlerted.toString());
 
     _lastVersionAlerted = _appStoreVersion;
-    prefs.setString('lastVersionAlerted', _lastVersionAlerted);
+    await prefs.setString('lastVersionAlerted', _lastVersionAlerted);
 
     _hasAlerted = true;
     return true;
   }
 
   Future<bool> _getSavedPrefs() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var prefs = await SharedPreferences.getInstance();
     final lastTimeAlerted = prefs.getString('lastTimeAlerted');
     if (lastTimeAlerted != null) {
       _lastTimeAlerted = DateTime.parse(lastTimeAlerted);
@@ -446,7 +449,7 @@ class Upgrader {
   }
 
   void _sendUserToAppStore() async {
-    if (_appStoreListingURL == null || _appStoreListingURL.length == 0) {
+    if (_appStoreListingURL == null || _appStoreListingURL.isEmpty) {
       if (debugLogging) {
         print('upgrader: empty _appStoreListingURL');
       }
@@ -458,7 +461,7 @@ class Upgrader {
     }
 
     if (await canLaunch(_appStoreListingURL)) {
-      launch(_appStoreListingURL);
+      await launch(_appStoreListingURL);
     } else {}
   }
 }

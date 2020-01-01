@@ -22,9 +22,7 @@ class Appcast {
   Appcast({
     this.client,
   }) {
-    if (this.client == null) {
-      this.client = http.Client();
-    }
+    client ??= http.Client();
   }
 
   /// The items in the Appcast.
@@ -77,7 +75,7 @@ class Appcast {
   }
 
   List<AppcastItem> parseItemsFromXMLString(String xmlString) {
-    this.items = null;
+    items = null;
 
     if (xmlString == null || xmlString.isEmpty) {
       return null;
@@ -87,7 +85,7 @@ class Appcast {
       // Parse the XML
       final document = xml.parse(xmlString);
 
-      List<AppcastItem> items = List<AppcastItem>();
+      var items = <AppcastItem>[];
 
       // look for all item elements in the rss/channel
       document.findAllElements('item').forEach((xml.XmlElement itemElement) {
@@ -98,14 +96,14 @@ class Appcast {
         String maximumSystemVersion;
         String minimumSystemVersion;
         String osString;
-        final tags = List<String>();
+        final tags = <String>[];
         String newVersion;
         String itemVersion;
         String enclosureVersion;
 
         itemElement.children.forEach((xml.XmlNode childNode) {
           if (childNode is xml.XmlElement) {
-            final String name = childNode.name.toString();
+            final name = childNode.name.toString();
             if (name == AppcastConstants.ElementTitle) {
               title = childNode.text;
             } else if (name == AppcastConstants.ElementDescription) {
@@ -132,7 +130,7 @@ class Appcast {
             } else if (name == AppcastConstants.ElementTags) {
               childNode.children.forEach((xml.XmlNode tagChildNode) {
                 if (tagChildNode is xml.XmlElement) {
-                  final String tagName = tagChildNode.name.toString();
+                  final tagName = tagChildNode.name.toString();
                   tags.add(tagName);
                 }
               });
@@ -142,7 +140,11 @@ class Appcast {
           }
         });
 
-        newVersion = itemVersion == null ? enclosureVersion : itemVersion;
+        if (itemVersion == null) {
+          newVersion = enclosureVersion;
+        } else {
+          newVersion = itemVersion;
+        }
 
         // There must be a version
         if (newVersion == null || newVersion.isEmpty) {
@@ -168,7 +170,7 @@ class Appcast {
       print(e);
     }
 
-    return this.items;
+    return items;
   }
 
   Future<bool> _getDeviceInfo() async {
@@ -225,12 +227,12 @@ class AppcastItem {
 
   /// Returns true if the tags ([AppcastConstants.ElementTags]) contains
   /// critical update ([AppcastConstants.ElementCriticalUpdate]).
-  bool get isCriticalUpdate => this.tags == null
+  bool get isCriticalUpdate => tags == null
       ? false
-      : this.tags.contains(AppcastConstants.ElementCriticalUpdate);
+      : tags.contains(AppcastConstants.ElementCriticalUpdate);
 
   bool hostSupportsItem({@required String osVersion, String currentPlatform}) {
-    bool supported = true;
+    var supported = true;
     if (osString != null && osString.isNotEmpty) {
       final platformEnum = 'TargetPlatform.' + osString;
       currentPlatform = currentPlatform == null
@@ -244,7 +246,7 @@ class AppcastItem {
       try {
         osVersionValue = Version.parse(osVersion);
       } catch (e) {
-        print("appcast.hostSupportsItem: invalid osVerion: $e");
+        print('appcast.hostSupportsItem: invalid osVerion: $e');
         return false;
       }
       if (maximumSystemVersion != null) {
@@ -267,29 +269,29 @@ class AppcastItem {
 /// These constants taken from:
 /// https://github.com/sparkle-project/Sparkle/blob/master/Sparkle/SUConstants.m
 class AppcastConstants {
-  static const String AttributeDeltaFrom = "sparkle:deltaFrom";
-  static const String AttributeDSASignature = "sparkle:dsaSignature";
-  static const String AttributeEDSignature = "sparkle:edSignature";
+  static const String AttributeDeltaFrom = 'sparkle:deltaFrom';
+  static const String AttributeDSASignature = 'sparkle:dsaSignature';
+  static const String AttributeEDSignature = 'sparkle:edSignature';
   static const String AttributeShortVersionString =
-      "sparkle:shortVersionString";
-  static const String AttributeVersion = "sparkle:version";
-  static const String AttributeOsType = "sparkle:os";
+      'sparkle:shortVersionString';
+  static const String AttributeVersion = 'sparkle:version';
+  static const String AttributeOsType = 'sparkle:os';
 
-  static const String ElementCriticalUpdate = "sparkle:criticalUpdate";
-  static const String ElementDeltas = "sparkle:deltas";
+  static const String ElementCriticalUpdate = 'sparkle:criticalUpdate';
+  static const String ElementDeltas = 'sparkle:deltas';
   static const String ElementMinimumSystemVersion =
-      "sparkle:minimumSystemVersion";
+      'sparkle:minimumSystemVersion';
   static const String ElementMaximumSystemVersion =
-      "sparkle:maximumSystemVersion";
-  static const String ElementReleaseNotesLink = "sparkle:releaseNotesLink";
-  static const String ElementTags = "sparkle:tags";
+      'sparkle:maximumSystemVersion';
+  static const String ElementReleaseNotesLink = 'sparkle:releaseNotesLink';
+  static const String ElementTags = 'sparkle:tags';
 
-  static const String AttributeURL = "url";
-  static const String AttributeLength = "length";
+  static const String AttributeURL = 'url';
+  static const String AttributeLength = 'length';
 
-  static const String ElementDescription = "description";
-  static const String ElementEnclosure = "enclosure";
-  static const String ElementLink = "link";
-  static const String ElementPubDate = "pubDate";
-  static const String ElementTitle = "title";
+  static const String ElementDescription = 'description';
+  static const String ElementEnclosure = 'enclosure';
+  static const String ElementLink = 'link';
+  static const String ElementPubDate = 'pubDate';
+  static const String ElementTitle = 'title';
 }

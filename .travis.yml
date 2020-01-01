@@ -13,10 +13,13 @@ addons:
       - libstdc++6
 before_script:
   - git clone https://github.com/flutter/flutter.git -b dev --single-branch
-  - ./flutter/bin/flutter doctor
+  - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
+  - flutter doctor
 script:
-  - ./flutter/bin/cache/dart-sdk/bin/dartfmt -n --set-exit-if-changed ./lib ./test ./example || travis_terminate 1
-  - ./flutter/bin/flutter test --coverage --coverage-path=lcov.info
+  - flutter packages get
+  - flutter analyze --no-pub --no-current-package .
+  - dartfmt -n --set-exit-if-changed ./lib ./test ./example || travis_terminate 1
+  - flutter test --coverage --coverage-path=lcov.info
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 

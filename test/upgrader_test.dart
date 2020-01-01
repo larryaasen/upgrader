@@ -14,11 +14,11 @@ import 'mockclient.dart';
 void main() {
   SharedPreferences preferences;
 
-  const MethodChannel sharedPrefsChannel = MethodChannel(
+  const sharedPrefsChannel = MethodChannel(
     'plugins.flutter.io/shared_preferences',
   );
 
-  const Map<String, dynamic> kEmptyPreferences = <String, dynamic>{};
+  const kEmptyPreferences = <String, dynamic>{};
 
   setUp(() async {
     // This idea to mock the shared preferences taken from:
@@ -71,7 +71,7 @@ void main() {
   });
 
   testWidgets('test installAppStoreListingURL', (WidgetTester tester) async {
-    final upgrader = Upgrader();
+    final upgrader = Upgrader.newInstance();
     upgrader.installAppStoreListingURL(
         'https://itunes.apple.com/us/app/google-maps-transit-food/id585027354?mt=8&uo=4');
 
@@ -83,6 +83,7 @@ void main() {
     final client = MockClient.setupMockClient();
     final upgrader = Upgrader();
     upgrader.client = client;
+    upgrader.debugLogging = true;
 
     upgrader.installPackageInfo(
         packageInfo: PackageInfo(
@@ -92,8 +93,8 @@ void main() {
             buildNumber: '400'));
     await upgrader.initialize();
 
-    bool called = false;
-    bool notCalled = true;
+    var called = false;
+    var notCalled = true;
     upgrader.onUpdate = () {
       called = true;
       return true;
@@ -163,8 +164,8 @@ void main() {
             buildNumber: '400'));
     await upgrader.initialize();
 
-    bool called = false;
-    bool notCalled = true;
+    var called = false;
+    var notCalled = true;
     upgrader.onIgnore = () {
       called = true;
       return true;
@@ -206,8 +207,8 @@ void main() {
             buildNumber: '400'));
     await upgrader.initialize();
 
-    bool called = false;
-    bool notCalled = true;
+    var called = false;
+    var notCalled = true;
     upgrader.onLater = () {
       called = true;
       return true;
@@ -250,8 +251,8 @@ void main() {
             buildNumber: '400'));
     await upgrader.initialize();
 
-    bool called = false;
-    bool notCalled = true;
+    var called = false;
+    var notCalled = true;
     upgrader.onUpdate = () {
       called = true;
       return true;
@@ -294,8 +295,8 @@ void main() {
             buildNumber: '400'));
     await upgrader.initialize();
 
-    bool called = false;
-    bool notCalled = true;
+    var called = false;
+    var notCalled = true;
     upgrader.onIgnore = () {
       called = true;
       return true;
@@ -338,8 +339,8 @@ void main() {
             buildNumber: '400'));
     await upgrader.initialize();
 
-    bool called = false;
-    bool notCalled = true;
+    var called = false;
+    var notCalled = true;
     upgrader.onLater = () {
       called = true;
       return true;
@@ -358,7 +359,7 @@ void main() {
     await tester.pumpWidget(_MyWidgetCard());
 
     // Pump the UI so the upgrade card is displayed
-    await tester.pumpAndSettle();
+    await tester.pumpAndSettle(const Duration(milliseconds: 5000));
 
     await tester.tap(find.text(upgrader.buttonTitleLater));
     await tester.pumpAndSettle();
@@ -382,8 +383,8 @@ void main() {
             buildNumber: '1'));
     await upgrader.initialize();
 
-    bool called = false;
-    bool notCalled = true;
+    var called = false;
+    var notCalled = true;
     upgrader.onLater = () {
       called = true;
       return true;
@@ -426,9 +427,10 @@ class _MyWidget extends StatelessWidget {
           title: Text('Upgrader test'),
         ),
         body: UpgradeAlert(
+            debugLogging: true,
             child: Column(
-          children: <Widget>[Text('Upgrading')],
-        )),
+              children: <Widget>[Text('Upgrading')],
+            )),
       ),
     );
   }
@@ -448,7 +450,7 @@ class _MyWidgetCard extends StatelessWidget {
           title: Text('Upgrader test'),
         ),
         body: Column(
-          children: <Widget>[UpgradeCard()],
+          children: <Widget>[UpgradeCard(debugLogging: true)],
         ),
       ),
     );

@@ -71,47 +71,47 @@ class _UpgradeBase extends StatefulWidget {
     this.title,
     this.client,
   }) : super(key: key) {
-    if (this.appcastConfig != null) {
-      Upgrader().appcastConfig = this.appcastConfig;
+    if (appcastConfig != null) {
+      Upgrader().appcastConfig = appcastConfig;
     }
-    if (this.buttonTitleIgnore != null) {
-      Upgrader().buttonTitleIgnore = this.buttonTitleIgnore;
+    if (buttonTitleIgnore != null) {
+      Upgrader().buttonTitleIgnore = buttonTitleIgnore;
     }
-    if (this.buttonTitleLater != null) {
-      Upgrader().buttonTitleLater = this.buttonTitleLater;
+    if (buttonTitleLater != null) {
+      Upgrader().buttonTitleLater = buttonTitleLater;
     }
-    if (this.buttonTitleUpdate != null) {
-      Upgrader().buttonTitleUpdate = this.buttonTitleUpdate;
+    if (buttonTitleUpdate != null) {
+      Upgrader().buttonTitleUpdate = buttonTitleUpdate;
     }
-    if (this.client != null) {
-      Upgrader().client = this.client;
+    if (client != null) {
+      Upgrader().client = client;
     }
-    if (this.daysToAlertAgain != null) {
-      Upgrader().daysUntilAlertAgain = this.daysToAlertAgain;
+    if (daysToAlertAgain != null) {
+      Upgrader().daysUntilAlertAgain = daysToAlertAgain;
     }
-    if (this.debugDisplayAlways != null) {
-      Upgrader().debugDisplayAlways = this.debugDisplayAlways;
+    if (debugDisplayAlways != null) {
+      Upgrader().debugDisplayAlways = debugDisplayAlways;
     }
-    if (this.debugDisplayOnce != null) {
-      Upgrader().debugDisplayOnce = this.debugDisplayOnce;
+    if (debugDisplayOnce != null) {
+      Upgrader().debugDisplayOnce = debugDisplayOnce;
     }
-    if (this.debugLogging != null) {
-      Upgrader().debugLogging = this.debugLogging;
+    if (debugLogging != null) {
+      Upgrader().debugLogging = debugLogging;
     }
-    if (this.onIgnore != null) {
-      Upgrader().onIgnore = this.onIgnore;
+    if (onIgnore != null) {
+      Upgrader().onIgnore = onIgnore;
     }
-    if (this.onLater != null) {
-      Upgrader().onLater = this.onLater;
+    if (onLater != null) {
+      Upgrader().onLater = onLater;
     }
-    if (this.onUpdate != null) {
-      Upgrader().onUpdate = this.onUpdate;
+    if (onUpdate != null) {
+      Upgrader().onUpdate = onUpdate;
     }
-    if (this.prompt != null) {
-      Upgrader().prompt = this.prompt;
+    if (prompt != null) {
+      Upgrader().prompt = prompt;
     }
-    if (this.title != null) {
-      Upgrader().title = this.title;
+    if (title != null) {
+      Upgrader().title = title;
     }
   }
 
@@ -194,8 +194,8 @@ class UpgradeCard extends _UpgradeBase {
             if (Upgrader().shouldDisplayUpgrade()) {
               return Card(
                   color: Colors.white,
-                  margin: this.margin,
-                  child: new _AlertStyleWidget(
+                  margin: margin,
+                  child: _AlertStyleWidget(
                       title: Text(Upgrader().title),
                       content: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -339,13 +339,13 @@ class _AlertStyleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasMaterialLocalizations(context));
-    final List<Widget> children = <Widget>[];
-    const String semanticLabel = 'semanticLabel';
+    final children = <Widget>[];
+    const semanticLabel = 'semanticLabel';
     final EdgeInsetsGeometry titlePadding = null;
     final EdgeInsetsGeometry contentPadding =
         const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 24.0);
 
-    String label = semanticLabel;
+    var label = semanticLabel;
 
     if (title != null) {
       children.add(Padding(

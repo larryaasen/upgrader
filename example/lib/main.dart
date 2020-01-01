@@ -20,9 +20,9 @@ class MyApp extends StatelessWidget {
     // On iOS, the default behavior will be to use the App Store version of
     // the app, so update the Bundle Identifier in example/ios/Runner with a
     // valid identifier already in the App Store.
-    final String appcastURL =
+    final appcastURL =
         'https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast.xml';
-    final cfg = AppcastConfiguration(url: appcastURL, supportedOS: ["android"]);
+    final cfg = AppcastConfiguration(url: appcastURL, supportedOS: ['android']);
 
     return MaterialApp(
       title: 'Upgrader Example',
