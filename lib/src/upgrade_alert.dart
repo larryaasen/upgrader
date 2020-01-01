@@ -388,11 +388,11 @@ class _AlertStyleWidget extends StatelessWidget {
     }
 
     if (actions != null) {
-      children.add(ButtonTheme.bar(
-        child: ButtonBar(
+      children.add(
+        ButtonBar(
           children: actions,
         ),
-      ));
+      );
     }
 
     Widget dialogChild = IntrinsicWidth(
@@ -403,9 +403,10 @@ class _AlertStyleWidget extends StatelessWidget {
       ),
     );
 
-    if (label != null)
+    if (label != null) {
       dialogChild =
           Semantics(namesRoute: true, label: label, child: dialogChild);
+    }
 
     return dialogChild;
   }
