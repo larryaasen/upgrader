@@ -1,6 +1,6 @@
 ## 0.8.0
 
-* Added support to ITunesSearchAPI for the country query string parameter. Improved example, and added a few new iTunes tests.
+* Added support to ITunesSearchAPI for the country query string parameter. Improved example, and added a few new iTunes tests. Minor updates based on Health suggestions from pub.dev, utilizing pedantic.
 
 ## 0.7.0
 
