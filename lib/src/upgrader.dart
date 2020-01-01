@@ -178,7 +178,7 @@ class Upgrader {
         _appStoreVersion ??= bestItem.versionString;
         _appStoreListingURL ??= bestItem.fileURL;
         _listTags ??= bestItem.tags;
-        if(_listTags.contains('force')) {
+        if(bestItem.isCriticalUpdate) {
           showIgnore = false;
           showLater = false;
         }
