@@ -33,7 +33,7 @@ class AppcastConfiguration {
 
 /// A singleton class to configure the upgrade dialog.
 class Upgrader {
-  static final Upgrader _singleton = Upgrader._internal();
+  static Upgrader _singleton = Upgrader._internal();
 
   /// The appcast configuration ([AppcastConfiguration]) used by [Appcast].
   /// When an appcast is configured for iOS, the iTunes lookup is not used.
@@ -99,10 +99,6 @@ class Upgrader {
 
   factory Upgrader() {
     return _singleton;
-  }
-
-  factory Upgrader.newInstance() {
-    return Upgrader._internal();
   }
 
   Upgrader._internal();
@@ -407,6 +403,10 @@ class Upgrader {
     _lastVersionAlerted = null;
 
     return true;
+  }
+
+  static void resetSingleton() {
+    _singleton = Upgrader._internal();
   }
 
   void _pop(BuildContext context) {

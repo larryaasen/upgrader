@@ -21,6 +21,8 @@ void main() {
   const kEmptyPreferences = <String, dynamic>{};
 
   setUp(() async {
+    Upgrader.resetSingleton();
+
     // This idea to mock the shared preferences taken from:
     /// https://github.com/flutter/plugins/blob/master/packages/shared_preferences/test/shared_preferences_test.dart
     sharedPrefsChannel.setMockMethodCallHandler((MethodCall methodCall) async {
@@ -30,11 +32,11 @@ void main() {
       return null;
     });
     preferences = await SharedPreferences.getInstance();
+    await Upgrader().clearSavedSettings();
   });
 
   tearDown(() async {
     await preferences.clear();
-    await Upgrader().clearSavedSettings();
   });
 
   testWidgets('test Upgrader class', (WidgetTester tester) async {
@@ -71,7 +73,7 @@ void main() {
   });
 
   testWidgets('test installAppStoreListingURL', (WidgetTester tester) async {
-    final upgrader = Upgrader.newInstance();
+    final upgrader = Upgrader();
     upgrader.installAppStoreListingURL(
         'https://itunes.apple.com/us/app/google-maps-transit-food/id585027354?mt=8&uo=4');
 
