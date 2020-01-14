@@ -5,8 +5,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
-import 'upgrader.dart';
+import 'package:upgrader/upgrader.dart';
 
 class _UpgradeBase extends StatefulWidget {
   /// The appcast configuration ([AppcastConfiguration]) used by [Appcast].
@@ -56,7 +55,7 @@ class _UpgradeBase extends StatefulWidget {
 
   /// Hide or show Ignore button on dialog (default: true)
   final bool showIgnore;
-  
+
   /// Hide or show Later button on dialog (default: true)
   final bool showLater;
 
@@ -125,14 +124,14 @@ class _UpgradeBase extends StatefulWidget {
     if (title != null) {
       Upgrader().title = title;
     }
-    if(showIgnore != null) {
+    if (showIgnore != null) {
       Upgrader().showIgnore = showIgnore;
     }
-    if(showLater != null) {
+    if (showLater != null) {
       Upgrader().showLater = showLater;
     }
-    
-    if(canDismissDialog != null) {
+
+    if (canDismissDialog != null) {
       Upgrader().canDismissDialog = canDismissDialog;
     }
   }
@@ -189,25 +188,24 @@ class UpgradeCard extends _UpgradeBase {
     bool showLater,
     bool canDismissDialog,
   }) : super(
-          key: key,
-          appcastConfig: appcastConfig,
-          buttonTitleIgnore: buttonTitleIgnore,
-          buttonTitleLater: buttonTitleLater,
-          buttonTitleUpdate: buttonTitleUpdate,
-          daysToAlertAgain: daysToAlertAgain,
-          debugDisplayAlways: debugAlwaysUpgrade,
-          debugDisplayOnce: debugDisplayOnce,
-          debugLogging: debugLogging,
-          onIgnore: onIgnore,
-          onLater: onLater,
-          onUpdate: onUpdate,
-          prompt: prompt,
-          title: title,
-          client: client,
-          showIgnore: showIgnore,
-          showLater: showLater,
-          canDismissDialog: canDismissDialog
-        );
+            key: key,
+            appcastConfig: appcastConfig,
+            buttonTitleIgnore: buttonTitleIgnore,
+            buttonTitleLater: buttonTitleLater,
+            buttonTitleUpdate: buttonTitleUpdate,
+            daysToAlertAgain: daysToAlertAgain,
+            debugDisplayAlways: debugAlwaysUpgrade,
+            debugDisplayOnce: debugDisplayOnce,
+            debugLogging: debugLogging,
+            onIgnore: onIgnore,
+            onLater: onLater,
+            onUpdate: onUpdate,
+            prompt: prompt,
+            title: title,
+            client: client,
+            showIgnore: showIgnore,
+            showLater: showLater,
+            canDismissDialog: canDismissDialog);
 
   @override
   Widget build(BuildContext context, _UpgradeBaseState state) {
@@ -237,7 +235,7 @@ class UpgradeCard extends _UpgradeBase {
                         ],
                       ),
                       actions: <Widget>[
-                        if(Upgrader().showIgnore)
+                        if (Upgrader().showIgnore)
                           FlatButton(
                               child: Text(Upgrader().buttonTitleIgnore),
                               onPressed: () {
@@ -247,7 +245,7 @@ class UpgradeCard extends _UpgradeBase {
                                 Upgrader().onUserIgnored(context, false);
                                 state.forceUpdateState();
                               }),
-                        if(Upgrader().showLater)
+                        if (Upgrader().showLater)
                           FlatButton(
                               child: Text(Upgrader().buttonTitleLater),
                               onPressed: () {
