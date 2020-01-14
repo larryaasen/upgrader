@@ -85,7 +85,7 @@ class Upgrader {
 
   /// Hide or show Ignore button on dialog (default: true)
   bool showIgnore = true;
-  
+
   /// Hide or show Later button on dialog (default: true)
   bool showLater = true;
 
@@ -178,7 +178,7 @@ class Upgrader {
         _appStoreVersion ??= bestItem.versionString;
         _appStoreListingURL ??= bestItem.fileURL;
         _listTags ??= bestItem.tags;
-        if(bestItem.isCriticalUpdate) {
+        if (bestItem.isCriticalUpdate) {
           showIgnore = false;
           showLater = false;
         }
@@ -256,7 +256,11 @@ class Upgrader {
       if (shouldDisplayUpgrade()) {
         _displayed = true;
         Future.delayed(Duration(milliseconds: 0), () {
-          _showDialog(context: context, title: title, message: message(), canDismissDialog: canDismissDialog);
+          _showDialog(
+              context: context,
+              title: title,
+              message: message(),
+              canDismissDialog: canDismissDialog);
         });
       }
     }
@@ -335,11 +339,11 @@ class Upgrader {
             ],
           ),
           actions: <Widget>[
-            if(showIgnore)
+            if (showIgnore)
               FlatButton(
                   child: Text(buttonTitleIgnore),
                   onPressed: () => onUserIgnored(context, true)),
-            if(showLater)
+            if (showLater)
               FlatButton(
                   child: Text(buttonTitleLater),
                   onPressed: () => onUserLater(context, true)),
