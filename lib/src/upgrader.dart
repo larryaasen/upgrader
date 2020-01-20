@@ -89,7 +89,7 @@ class Upgrader {
   /// Hide or show Later button on dialog (default: true)
   bool showLater = true;
 
-  /// Can dialog be dissmied on cliked out side of the dialog ( default: false )
+  /// Can alert dialog be dismissed on tap outside of the alert dialog. Not used by alert card. (default: false)
   bool canDismissDialog = false;
 
   bool _displayed = false;
@@ -100,7 +100,6 @@ class Upgrader {
   String _installedVersion;
   String _appStoreVersion;
   String _appStoreListingURL;
-  List<String> _listTags;
   String _updateAvailable;
   DateTime _lastTimeAlerted;
   String _lastVersionAlerted;
@@ -177,7 +176,6 @@ class Upgrader {
         }
         _appStoreVersion ??= bestItem.versionString;
         _appStoreListingURL ??= bestItem.fileURL;
-        _listTags ??= bestItem.tags;
         if (bestItem.isCriticalUpdate) {
           showIgnore = false;
           showLater = false;

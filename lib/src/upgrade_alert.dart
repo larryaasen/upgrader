@@ -59,7 +59,7 @@ class _UpgradeBase extends StatefulWidget {
   /// Hide or show Later button on dialog (default: true)
   final bool showLater;
 
-  /// Can dialog be dissmied on cliked out side of the dialog ( default: false )
+  /// Can alert dialog be dismissed on tap outside of the alert dialog. Not used by alert card. (default: false)
   final bool canDismissDialog;
 
   _UpgradeBase({
@@ -130,7 +130,6 @@ class _UpgradeBase extends StatefulWidget {
     if (showLater != null) {
       Upgrader().showLater = showLater;
     }
-
     if (canDismissDialog != null) {
       Upgrader().canDismissDialog = canDismissDialog;
     }
