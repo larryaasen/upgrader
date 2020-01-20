@@ -5,8 +5,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
-import 'upgrader.dart';
+import 'package:upgrader/upgrader.dart';
 
 class _UpgradeBase extends StatefulWidget {
   /// The appcast configuration ([AppcastConfiguration]) used by [Appcast].
@@ -54,6 +53,15 @@ class _UpgradeBase extends StatefulWidget {
   /// Provide an HTTP Client that can be replaced for mock testing.
   final http.Client client;
 
+  /// Hide or show Ignore button on dialog (default: true)
+  final bool showIgnore;
+
+  /// Hide or show Later button on dialog (default: true)
+  final bool showLater;
+
+  /// Can alert dialog be dismissed on tap outside of the alert dialog. Not used by alert card. (default: false)
+  final bool canDismissDialog;
+
   _UpgradeBase({
     Key key,
     this.appcastConfig,
@@ -70,6 +78,9 @@ class _UpgradeBase extends StatefulWidget {
     this.prompt,
     this.title,
     this.client,
+    this.showIgnore,
+    this.showLater,
+    this.canDismissDialog,
   }) : super(key: key) {
     if (appcastConfig != null) {
       Upgrader().appcastConfig = appcastConfig;
@@ -112,6 +123,15 @@ class _UpgradeBase extends StatefulWidget {
     }
     if (title != null) {
       Upgrader().title = title;
+    }
+    if (showIgnore != null) {
+      Upgrader().showIgnore = showIgnore;
+    }
+    if (showLater != null) {
+      Upgrader().showLater = showLater;
+    }
+    if (canDismissDialog != null) {
+      Upgrader().canDismissDialog = canDismissDialog;
     }
   }
 
@@ -163,23 +183,28 @@ class UpgradeCard extends _UpgradeBase {
     String prompt,
     String title,
     http.Client client,
+    bool showIgnore,
+    bool showLater,
+    bool canDismissDialog,
   }) : super(
-          key: key,
-          appcastConfig: appcastConfig,
-          buttonTitleIgnore: buttonTitleIgnore,
-          buttonTitleLater: buttonTitleLater,
-          buttonTitleUpdate: buttonTitleUpdate,
-          daysToAlertAgain: daysToAlertAgain,
-          debugDisplayAlways: debugAlwaysUpgrade,
-          debugDisplayOnce: debugDisplayOnce,
-          debugLogging: debugLogging,
-          onIgnore: onIgnore,
-          onLater: onLater,
-          onUpdate: onUpdate,
-          prompt: prompt,
-          title: title,
-          client: client,
-        );
+            key: key,
+            appcastConfig: appcastConfig,
+            buttonTitleIgnore: buttonTitleIgnore,
+            buttonTitleLater: buttonTitleLater,
+            buttonTitleUpdate: buttonTitleUpdate,
+            daysToAlertAgain: daysToAlertAgain,
+            debugDisplayAlways: debugAlwaysUpgrade,
+            debugDisplayOnce: debugDisplayOnce,
+            debugLogging: debugLogging,
+            onIgnore: onIgnore,
+            onLater: onLater,
+            onUpdate: onUpdate,
+            prompt: prompt,
+            title: title,
+            client: client,
+            showIgnore: showIgnore,
+            showLater: showLater,
+            canDismissDialog: canDismissDialog);
 
   @override
   Widget build(BuildContext context, _UpgradeBaseState state) {
@@ -209,24 +234,26 @@ class UpgradeCard extends _UpgradeBase {
                         ],
                       ),
                       actions: <Widget>[
-                        FlatButton(
-                            child: Text(Upgrader().buttonTitleIgnore),
-                            onPressed: () {
-                              // Save the date/time as the last time alerted.
-                              Upgrader().saveLastAlerted();
+                        if (Upgrader().showIgnore)
+                          FlatButton(
+                              child: Text(Upgrader().buttonTitleIgnore),
+                              onPressed: () {
+                                // Save the date/time as the last time alerted.
+                                Upgrader().saveLastAlerted();
 
-                              Upgrader().onUserIgnored(context, false);
-                              state.forceUpdateState();
-                            }),
-                        FlatButton(
-                            child: Text(Upgrader().buttonTitleLater),
-                            onPressed: () {
-                              // Save the date/time as the last time alerted.
-                              Upgrader().saveLastAlerted();
+                                Upgrader().onUserIgnored(context, false);
+                                state.forceUpdateState();
+                              }),
+                        if (Upgrader().showLater)
+                          FlatButton(
+                              child: Text(Upgrader().buttonTitleLater),
+                              onPressed: () {
+                                // Save the date/time as the last time alerted.
+                                Upgrader().saveLastAlerted();
 
-                              Upgrader().onUserLater(context, false);
-                              state.forceUpdateState();
-                            }),
+                                Upgrader().onUserLater(context, false);
+                                state.forceUpdateState();
+                              }),
                         FlatButton(
                             child: Text(Upgrader().buttonTitleUpdate),
                             onPressed: () {
@@ -266,6 +293,9 @@ class UpgradeAlert extends _UpgradeBase {
     String prompt,
     String title,
     http.Client client,
+    bool showIgnore,
+    bool showLater,
+    bool canDismissDialog,
   }) : super(
           key: key,
           appcastConfig: appcastConfig,
@@ -282,6 +312,9 @@ class UpgradeAlert extends _UpgradeBase {
           prompt: prompt,
           title: title,
           client: client,
+          showIgnore: showIgnore,
+          showLater: showLater,
+          canDismissDialog: canDismissDialog,
         );
 
   @override

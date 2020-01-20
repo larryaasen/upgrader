@@ -83,6 +83,15 @@ class Upgrader {
   /// Return false when the default behavior should not execute.
   BoolCallback onUpdate;
 
+  /// Hide or show Ignore button on dialog (default: true)
+  bool showIgnore = true;
+
+  /// Hide or show Later button on dialog (default: true)
+  bool showLater = true;
+
+  /// Can alert dialog be dismissed on tap outside of the alert dialog. Not used by alert card. (default: false)
+  bool canDismissDialog = false;
+
   bool _displayed = false;
   bool _initCalled = false;
   PackageInfo _packageInfo;
@@ -167,6 +176,10 @@ class Upgrader {
         }
         _appStoreVersion ??= bestItem.versionString;
         _appStoreListingURL ??= bestItem.fileURL;
+        if (bestItem.isCriticalUpdate) {
+          showIgnore = false;
+          showLater = false;
+        }
       }
     } else {
 //      // If this platform is not iOS, skip the iTunes lookup
@@ -241,7 +254,11 @@ class Upgrader {
       if (shouldDisplayUpgrade()) {
         _displayed = true;
         Future.delayed(Duration(milliseconds: 0), () {
-          _showDialog(context: context, title: title, message: message());
+          _showDialog(
+              context: context,
+              title: title,
+              message: message(),
+              canDismissDialog: canDismissDialog);
         });
       }
     }
@@ -296,7 +313,8 @@ class Upgrader {
   void _showDialog(
       {@required BuildContext context,
       @required String title,
-      @required String message}) {
+      @required String message,
+      bool canDismissDialog}) {
     if (debugLogging) {
       print('upgrader: showDialog title: $title');
       print('upgrader: showDialog message: $message');
@@ -306,7 +324,7 @@ class Upgrader {
     saveLastAlerted();
 
     showDialog(
-      barrierDismissible: false,
+      barrierDismissible: canDismissDialog,
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -319,12 +337,14 @@ class Upgrader {
             ],
           ),
           actions: <Widget>[
-            FlatButton(
-                child: Text(buttonTitleIgnore),
-                onPressed: () => onUserIgnored(context, true)),
-            FlatButton(
-                child: Text(buttonTitleLater),
-                onPressed: () => onUserLater(context, true)),
+            if (showIgnore)
+              FlatButton(
+                  child: Text(buttonTitleIgnore),
+                  onPressed: () => onUserIgnored(context, true)),
+            if (showLater)
+              FlatButton(
+                  child: Text(buttonTitleLater),
+                  onPressed: () => onUserLater(context, true)),
             FlatButton(
                 child: Text(buttonTitleUpdate),
                 onPressed: () => onUserUpdated(context, true)),
