@@ -1,3 +1,9 @@
+## 0.10.0
+
+* Added options to hide ignore and later buttons. (Thanks to Karthik Ponnam)
+* Added option to close alert dialog on tap outside of alert dialog. (Thanks to Karthik Ponnam)
+* 
+
 ## 0.9.0
 
 * Added minimum support for Flutter at version 1.30.0 and above to support TargetPlatform.macOS.

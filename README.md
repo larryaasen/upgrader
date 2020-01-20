@@ -89,6 +89,9 @@ UpgradeAlert widget.
 * onUpdate: Called when the update button is tapped, defaults to ```null```
 * prompt: the call to action message, which defaults to ```Would you like to update it now?```
 * title: the alert dialog title, which defaults to ```Update App?```
+* showIgnore: hide or show Ignore button on dialog, which defaults to ```true```
+* showLater: hide or show Later button on dialog, which defaults to ```true```
+* canDismissDialog: can alert dialog be dismissed on tap outside of the alert dialog, which defaults to ```false``` (not used by alert card)
 
 ## Limitations
 These widgets work on both Android and iOS. When running on iOS the App Store will provide the
