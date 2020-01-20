@@ -402,9 +402,10 @@ class _AlertStyleWidget extends StatelessWidget {
           label = semanticLabel ??
               MaterialLocalizations.of(context)?.alertDialogLabel;
           break;
-        case TargetPlatform.macOS:
-          label = semanticLabel;
-          break;
+        // The TargetPlatform.macOS value is only supported on Flutter 1.30.0+.
+        // case TargetPlatform.macOS:
+        //   label = semanticLabel;
+        //   break;
       }
     }
 

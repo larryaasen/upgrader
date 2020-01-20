@@ -12,7 +12,7 @@ addons:
     packages:
       - libstdc++6
 before_script:
-  - git clone https://github.com/flutter/flutter.git -b dev --single-branch
+  - git clone --branch stable --depth 1 https://github.com/flutter/flutter.git
   - export PATH=`pwd`/flutter/bin:`pwd`/flutter/bin/cache/dart-sdk/bin:$PATH
   - flutter doctor
 script:

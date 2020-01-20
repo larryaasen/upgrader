@@ -1,3 +1,8 @@
+## 0.10.1
+
+* Downgraded Flutter to stable channel on Travis CI and CircleCI builds to align with pub.dev health scoring.
+* Removed the use of TargetPlatform.macOS since it is only available on Flutter 1.13.0 and above.
+
 ## 0.10.0
 
 * Added options to hide ignore and later buttons. (Thanks to Karthik Ponnam)
