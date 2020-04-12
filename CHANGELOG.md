@@ -1,3 +1,8 @@
+## 0.10.3
+
+* Updated depenency flutter_device_locale to 0.4.0, and xml to 3.5.0, to improve score on pub.dev in the 
+Maintenance issues and suggestions section.
+
 ## 0.10.2
 
 * Prepare for 1.0.0 version of sensors and package_info. ([dart_lsc](http://github.com/amirh/dart_lsc))
