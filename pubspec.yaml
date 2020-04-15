@@ -1,6 +1,6 @@
 name: upgrader
 description: Flutter package for prompting users to upgrade when there is a newer version of the app in the store.
-version: 0.10.3
+version: 0.10.4
 homepage: https://github.com/larryaasen/upgrader
 
 environment:
@@ -33,7 +33,7 @@ dependencies:
   version: ^1.0.3
 
   # A dart library for parsing, traversing, querying, transforming and building XML documents.
-  xml: ^3.5.0
+  xml: ">=3.5.0 <5.0.0"
 
 dev_dependencies:
   flutter_test:

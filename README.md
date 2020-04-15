@@ -147,6 +147,33 @@ final bestItem = appcast.bestItem();
 </rss>
 ```
 
+## Combined Android & iOS Example
+
+```dart
+@override
+Widget build(BuildContext context) {
+  // On Android, setup the Appcast.
+  // On iOS, the default behavior will be to use the App Store version of
+  // the app, so update the Bundle Identifier in example/ios/Runner with a
+  // valid identifier already in the App Store.
+  final appcastURL = 'https://www.mydomain.com/myappcast.xml';
+  final cfg = AppcastConfiguration(url: appcastURL, supportedOS: ['android']);
+
+  return MaterialApp(
+    title: 'Upgrader Example',
+    home: Scaffold(
+        appBar: AppBar(
+          title: Text('Upgrader Example'),
+        ),
+        body: UpgradeAlert(
+          appcastConfig: cfg,
+          debugLogging: true,
+          child: Center(child: Text('Checking...')),
+        )),
+  );
+}
+```
+
 ## iTunes Search API
 
 There is a class in this Flutter package used by the upgrader widgets to download app details 

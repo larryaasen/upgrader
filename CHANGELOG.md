@@ -1,3 +1,8 @@
+## 0.10.4
+
+* Updated dependency xml to ">=3.5.0 <5.0.0" to improve score on pub.dev in the 
+Maintenance issues and suggestions section.
+
 ## 0.10.3
 
 * Updated depenency flutter_device_locale to 0.4.0, and xml to 3.5.0, to improve score on pub.dev in the 
