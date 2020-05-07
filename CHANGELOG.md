@@ -1,3 +1,7 @@
+## 0.11.0
+
+* Updated Flutter SDK to <1.18.0 in support of Flutter 1.17.0.
+
 ## 0.10.4
 
 * Updated dependency xml to ">=3.5.0 <5.0.0" to improve score on pub.dev in the 
