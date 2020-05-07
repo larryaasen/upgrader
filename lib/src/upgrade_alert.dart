@@ -385,27 +385,15 @@ class _AlertStyleWidget extends StatelessWidget {
         padding: titlePadding ??
             EdgeInsets.fromLTRB(24.0, 24.0, 24.0, content == null ? 20.0 : 0.0),
         child: DefaultTextStyle(
-          style: Theme.of(context).textTheme.title,
+          style: Theme.of(context).textTheme.headline6,
           child: Semantics(child: title, namesRoute: true),
         ),
       ));
     } else {
-      switch (defaultTargetPlatform) {
-        case TargetPlatform.iOS:
-          label = semanticLabel;
-          break;
-        case TargetPlatform.android:
-          label = semanticLabel ??
-              MaterialLocalizations.of(context)?.alertDialogLabel;
-          break;
-        case TargetPlatform.fuchsia:
-          label = semanticLabel ??
-              MaterialLocalizations.of(context)?.alertDialogLabel;
-          break;
-        // The TargetPlatform.macOS value is only supported on Flutter 1.30.0+.
-        // case TargetPlatform.macOS:
-        //   label = semanticLabel;
-        //   break;
+      if (defaultTargetPlatform == TargetPlatform.android ||
+          defaultTargetPlatform == TargetPlatform.fuchsia) {
+        label = semanticLabel ??
+            MaterialLocalizations.of(context)?.alertDialogLabel;
       }
     }
 
@@ -414,7 +402,7 @@ class _AlertStyleWidget extends StatelessWidget {
         child: Padding(
           padding: contentPadding,
           child: DefaultTextStyle(
-            style: Theme.of(context).textTheme.subhead,
+            style: Theme.of(context).textTheme.subtitle1,
             child: content,
           ),
         ),
