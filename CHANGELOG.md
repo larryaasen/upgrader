@@ -1,3 +1,7 @@
+## 0.11.1
+
+* Changed use of TargetPlatform and eliminated some warnings.
+
 ## 0.11.0
 
 * Updated Flutter SDK to <1.18.0 in support of Flutter 1.17.0.
