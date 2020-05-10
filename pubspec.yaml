@@ -44,3 +44,8 @@ dev_dependencies:
   pedantic: ^1.0.0
  
 flutter:
+  plugin:
+    platforms:
+      android:
+        package: de.ffuf.in_app_update
+        pluginClass: InAppUpdatePlugin
