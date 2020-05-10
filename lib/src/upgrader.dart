@@ -9,9 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:upgrader/src/android/in_app_update.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:version/version.dart';
 
+import 'android/app_update_info.dart';
 import 'appcast.dart';
 import 'itunes_search_api.dart';
 
@@ -99,6 +101,7 @@ class Upgrader {
 
   String _installedVersion;
   String _appStoreVersion;
+  String _playStoreVersion;
   String _appStoreListingURL;
   String _updateAvailable;
   DateTime _lastTimeAlerted;
@@ -182,10 +185,12 @@ class Upgrader {
         }
       }
     } else {
-//      // If this platform is not iOS, skip the iTunes lookup
-//      if (!Platform.isIOS) {
-//        return false;
-//      }
+      // If this platform is not iOS, skip the iTunes lookup
+      if (!Platform.isIOS) {
+        var appUpdateInfo = await InAppUpdate.checkForUpdate();
+        _playStoreVersion = appUpdateInfo.availableVersionCode.toString();
+        return true;
+      }
 
       if (_packageInfo == null || _packageInfo.packageName.isEmpty) {
         return false;
@@ -295,11 +300,19 @@ class Upgrader {
     }
 
     if (_updateAvailable == null) {
+
       final appStoreVersion = Version.parse(_appStoreVersion);
+      final playStoreVersion = Version.parse(_playStoreVersion);
       final installedVersion = Version.parse(_installedVersion);
 
-      final available = appStoreVersion > installedVersion;
-      _updateAvailable = available ? _appStoreVersion : null;
+      var available;
+      if (Platform.isIOS) {
+        available = appStoreVersion > installedVersion;
+        _updateAvailable = available ? _appStoreVersion : null;
+      } else if (Platform.isAndroid) {
+        available = playStoreVersion > installedVersion;
+        _updateAvailable = available ? _appStoreVersion : null;
+      }
 
       if (debugLogging) {
         print('upgrader: appStoreVersion: $_appStoreVersion');
