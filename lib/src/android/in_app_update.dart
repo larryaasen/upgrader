@@ -13,8 +13,7 @@ class InAppUpdate {
   /// [startFlexibleUpdate] or [performImmediateUpdate] should be called.
   static Future<AppUpdateInfo> checkForUpdate() async {
     final result = await _channel.invokeMethod('checkForUpdate');
-    return AppUpdateInfo(result['updateAvailable'], result['immediateAllowed'],
-        result['flexibleAllowed'], result['availableVersionCode']);
+    return AppUpdateInfo(result['updateAvailable'], result['availableVersionCode']);
   }
 
   /// Performs an immediate update that is entirely handled by the Play API.
