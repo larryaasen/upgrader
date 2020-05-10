@@ -252,7 +252,12 @@ class Upgrader {
   }
 
   String message() {
-    return 'A new version of ${appName()} is available! Version ${currentAppStoreVersion()} is now available-you have ${currentInstalledVersion()}.';
+    var defaultMessage = 'A new version of ${appName()} is available!';
+    if (Platform.isIOS) {
+      return '$defaultMessage Version ${currentAppStoreVersion()} is now available-you have ${currentInstalledVersion()}.';
+    } else {
+      return defaultMessage;
+    }
   }
 
   void checkVersion({@required BuildContext context}) {
