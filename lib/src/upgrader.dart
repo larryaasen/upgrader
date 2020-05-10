@@ -101,7 +101,8 @@ class Upgrader {
 
   String _installedVersion;
   String _appStoreVersion;
-  String _playStoreVersion;
+  int _installedVersionCode;
+  int _playStoreVersionCode;
   String _appStoreListingURL;
   String _updateAvailable;
   DateTime _lastTimeAlerted;
@@ -188,7 +189,7 @@ class Upgrader {
       // If this platform is not iOS, skip the iTunes lookup
       if (!Platform.isIOS) {
         var appUpdateInfo = await InAppUpdate.checkForUpdate();
-        _playStoreVersion = appUpdateInfo.availableVersionCode.toString();
+        _playStoreVersionCode = appUpdateInfo.availableVersionCode;
         return true;
       }
 
@@ -302,7 +303,6 @@ class Upgrader {
     if (_updateAvailable == null) {
 
       final appStoreVersion = Version.parse(_appStoreVersion);
-      final playStoreVersion = Version.parse(_playStoreVersion);
       final installedVersion = Version.parse(_installedVersion);
 
       var available;
@@ -310,8 +310,8 @@ class Upgrader {
         available = appStoreVersion > installedVersion;
         _updateAvailable = available ? _appStoreVersion : null;
       } else if (Platform.isAndroid) {
-        available = playStoreVersion > installedVersion;
-        _updateAvailable = available ? _appStoreVersion : null;
+        available = _playStoreVersionCode > _installedVersionCode;
+        _updateAvailable = available ? _playStoreVersionCode.toString() : null;
       }
 
       if (debugLogging) {
