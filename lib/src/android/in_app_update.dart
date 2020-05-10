@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'app_update_info.dart';
 
 class InAppUpdate {
-  static const MethodChannel _channel = const MethodChannel('in_app_update');
+  static const MethodChannel _channel = MethodChannel('in_app_update');
 
   /// Has to be called before being able to start any update.
   ///

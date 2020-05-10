@@ -13,7 +13,6 @@ import 'package:upgrader/src/android/in_app_update.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:version/version.dart';
 
-import 'android/app_update_info.dart';
 import 'appcast.dart';
 import 'itunes_search_api.dart';
 
