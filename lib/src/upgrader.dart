@@ -256,7 +256,7 @@ class Upgrader {
   String message() {
     var defaultMessage = 'A new version of ${appName()} is available!';
     if (Platform.isIOS) {
-      return '$defaultMessage Version ${currentAppStoreVersion()} is now available-you have ${currentInstalledVersion()}.';
+      return '$defaultMessage Version ${currentAppStoreVersion()} is now available. You have ${currentInstalledVersion()} installed.';
     } else {
       return defaultMessage;
     }
