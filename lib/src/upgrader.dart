@@ -100,9 +100,11 @@ class Upgrader {
 
   String _installedVersion;
   String _appStoreVersion;
+  String _appStoreListingURL;
   int _installedVersionCode;
   int _playStoreVersionCode;
-  String _appStoreListingURL;
+  String _playStoreListingURL;
+
   String _updateAvailable;
   DateTime _lastTimeAlerted;
   String _lastVersionAlerted;
@@ -144,6 +146,7 @@ class Upgrader {
             'upgrader: package info packageName: ${_packageInfo.packageName}');
         print('upgrader: package info version: ${_packageInfo.version}');
       }
+      _playStoreListingURL =  'https://play.google.com/store/apps/details?id=${_packageInfo.packageName}';
     }
 
     // Get the current locale of the device (TBD), defaulting to US.
@@ -421,7 +424,11 @@ class Upgrader {
     }
 
     if (doProcess) {
-      _sendUserToAppStore();
+      if (Platform.isIOS) {
+        _sendUserToAppStore(_appStoreListingURL);
+      } else if (Platform.isAndroid) {
+        _sendUserToAppStore(_playStoreListingURL);
+      }
     }
 
     if (shouldPop) {
@@ -485,20 +492,21 @@ class Upgrader {
     return true;
   }
 
-  void _sendUserToAppStore() async {
-    if (_appStoreListingURL == null || _appStoreListingURL.isEmpty) {
+  void _sendUserToAppStore(String storeListingUrl) async {
+    
+    if (storeListingUrl == null || storeListingUrl.isEmpty) {
       if (debugLogging) {
-        print('upgrader: empty _appStoreListingURL');
+        print('upgrader: empty storeListing');
       }
       return;
     }
 
     if (debugLogging) {
-      print('upgrader: launching: $_appStoreListingURL');
+      print('upgrader: launching: $storeListingUrl');
     }
 
-    if (await canLaunch(_appStoreListingURL)) {
-      await launch(_appStoreListingURL);
+    if (await canLaunch(storeListingUrl)) {
+      await launch(storeListingUrl);
     } else {}
   }
 }
