@@ -33,6 +33,8 @@ class MyApp extends StatelessWidget {
           body: UpgradeAlert(
             appcastConfig: cfg,
             debugLogging: true,
+            alertMessage:
+                '11 \${appName},333 \${currentAppStoreVersion}, 444 \${currentInstalledVersion} 11',
             child: Center(child: Text('Checking...')),
           )),
     );
