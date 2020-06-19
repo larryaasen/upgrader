@@ -12,22 +12,22 @@ dependencies:
     sdk: flutter
 
   # From Dart Team: Get current device information from within the Flutter application.
-  device_info: ^0.4.0+1
+  device_info: ^0.4.2+4
 
   # From Florin Bratan: A Flutter plugin for retrieving the device locale information.
   flutter_device_locale: ^0.4.0
 
   # From Dart Team: A composable, Future-based library for making HTTP requests.
-  http: ^0.12.0
+  http: ^0.12.1
 
   # From Flutter Team: Provides an API for querying information about an application package.
   package_info: '>=0.4.0+3 <2.0.0'
 
   # From Flutter Team: Wraps NSUserDefaults (on iOS) and SharedPreferences (on Android).
-  shared_preferences: ^0.5.2
+  shared_preferences: ^0.5.7+3
 
   # From Flutter Team: A Flutter plugin for launching a URL in the mobile platform.
-  url_launcher: ^5.0.2
+  url_launcher: ^5.4.11
 
   # A dart library for comparing and incrementing version numbers with Semantic Versioning.
   version: ^1.0.3
@@ -40,7 +40,7 @@ dev_dependencies:
     sdk: flutter
 
   # From Dart Team: Mock library for Dart inspired by Mockito.
-  mockito: ^4.0.0
-  pedantic: ^1.0.0
+  mockito: ^4.1.1
+  pedantic: ^1.9.0
  
 flutter:

@@ -71,6 +71,10 @@ class Upgrader {
   /// The alert dialog title
   String title = 'Update App?';
 
+  /// The alert dialog message use string with parameters: \${appName}, \${currentAppStoreVersion},  \${currentInstalledVersion} - you can also use it without parameters.
+  String alertMessage =
+      'A new version of \${appName} is available! Version \${currentAppStoreVersion} is now available-you have \${currentInstalledVersion}.';
+
   /// Called when the ignore button is tapped or otherwise activated.
   /// Return false when the default behavior should not execute.
   BoolCallback onIgnore;
@@ -246,7 +250,12 @@ class Upgrader {
   }
 
   String message() {
-    return 'A new version of ${appName()} is available! Version ${currentAppStoreVersion()} is now available-you have ${currentInstalledVersion()}.';
+//    return 'A new version of ${appName()} is available! Version ${currentAppStoreVersion()} is now available-you have ${currentInstalledVersion()}.';
+
+    return alertMessage
+        .replaceAll('\${appName}', appName())
+        .replaceAll('\${currentAppStoreVersion}', currentAppStoreVersion())
+        .replaceAll('\${currentInstalledVersion}', currentInstalledVersion());
   }
 
   void checkVersion({@required BuildContext context}) {
