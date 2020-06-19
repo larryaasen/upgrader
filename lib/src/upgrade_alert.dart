@@ -47,6 +47,9 @@ class _UpgradeBase extends StatefulWidget {
   /// The call to action message, which defaults to: Would you like to update it now?
   final String prompt;
 
+  /// The alert dialog message use string with parameters: \${appName}, \${currentAppStoreVersion},  \${currentInstalledVersion} - you can also use it without parameters.
+  String alertMessage;
+
   /// The title of the alert dialog. Defaults to: Update App?
   final String title;
 
@@ -76,6 +79,7 @@ class _UpgradeBase extends StatefulWidget {
     this.onLater,
     this.onUpdate,
     this.prompt,
+    this.alertMessage,
     this.title,
     this.client,
     this.showIgnore,
@@ -120,6 +124,9 @@ class _UpgradeBase extends StatefulWidget {
     }
     if (prompt != null) {
       Upgrader().prompt = prompt;
+    }
+    if (alertMessage != null) {
+      Upgrader().alertMessage = alertMessage;
     }
     if (title != null) {
       Upgrader().title = title;
