@@ -1,3 +1,7 @@
+## 0.11.2
+
+* Removed the restriction for Flutter SDK <1.18.0
+
 ## 0.11.1
 
 * Changed use of TargetPlatform and eliminated some warnings.
