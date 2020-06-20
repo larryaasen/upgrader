@@ -53,7 +53,7 @@ void main() {
 
     expect(item.hostSupportsItem(osVersion: null), equals(true));
     expect(item.hostSupportsItem(osVersion: ''), equals(true));
-    expect(item.hostSupportsItem(osVersion: '0'), equals(false));
+    expect(item.hostSupportsItem(osVersion: '0'), equals(true));
 
     expect(
         item.hostSupportsItem(

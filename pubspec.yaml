@@ -30,7 +30,7 @@ dependencies:
   url_launcher: ^5.0.2
 
   # A dart library for comparing and incrementing version numbers with Semantic Versioning.
-  version: ^1.0.3
+  version: ^1.2.0
 
   # A dart library for parsing, traversing, querying, transforming and building XML documents.
   xml: ">=3.5.0 <5.0.0"
