@@ -1,6 +1,5 @@
 name: upgrader_example
 description: Demonstrates how to use the upgrader package.
-author: Larry Aasen <larryaasen@gmail.com>
 version: 1.0.0
 
 environment:
@@ -8,6 +7,8 @@ environment:
 
 dependencies:
   flutter:
+    sdk: flutter
+  flutter_localizations:
     sdk: flutter
   upgrader:
     path: ../

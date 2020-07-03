@@ -14,8 +14,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Setup the Appcast for Android only. On iOS, the default behavior will be
-    // to use the App Store version of the app.
+    // Only call clearSavedSettings() during testing to reset internal values.
+    Upgrader().clearSavedSettings();
+
+    // On Android, setup the Appcast.
+    // On iOS, the default behavior will be to use the App Store version of
+    // the app, so update the Bundle Identifier in example/ios/Runner with a
+    // valid identifier already in the App Store.
     final appcastURL =
         'https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast.xml';
     final cfg = AppcastConfiguration(url: appcastURL, supportedOS: ['android']);
@@ -29,7 +34,10 @@ class MyApp extends StatelessWidget {
           body: Center(
               child: Container(
                   margin: EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 0.0),
-                  child: UpgradeCard(appcastConfig: cfg)))),
+                  child: UpgradeCard(
+                    appcastConfig: cfg,
+                    debugLogging: true,
+                  )))),
     );
   }
 }

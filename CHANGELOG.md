@@ -1,3 +1,13 @@
+## 2.0.0
+
+* Major enhancements!
+* This update provides language localization in English and Spanish using the new class UpgraderMessage, with the ability to add additional languages, and customize strings. Support for Spanish is included and will work without code changes.
+* A few parameters were removed, and if used, will be a breaking change. Most use of this update will not require code changes.
+* Five parameters removed: buttonTitleIgnore, buttonTitleLater, buttonTitleUpdate, prompt, title.
+* All parameters that were removed are now contained in the messages parameter.
+* The body of the message can now be customized and uses mustache style template variables.
+* Bumped version to 2.0.0
+
 ## 0.11.2
 
 * Removed the restriction for Flutter SDK <1.18.0
