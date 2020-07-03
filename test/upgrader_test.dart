@@ -113,17 +113,17 @@ void main() {
     expect(upgrader.isUpdateAvailable(), true);
     expect(upgrader.isTooSoon(), false);
 
-    expect(upgrader.buttonTitleIgnore, 'IGNORE');
-    expect(upgrader.buttonTitleLater, 'LATER');
-    expect(upgrader.buttonTitleUpdate, 'UPDATE NOW');
+    expect(upgrader.messages, isNotNull);
 
-    upgrader.buttonTitleIgnore = 'aaa';
-    upgrader.buttonTitleLater = 'bbb';
-    upgrader.buttonTitleUpdate = 'ccc';
+    expect(upgrader.messages.buttonTitleIgnore, 'IGNORE');
+    expect(upgrader.messages.buttonTitleLater, 'LATER');
+    expect(upgrader.messages.buttonTitleUpdate, 'UPDATE NOW');
 
-    expect(upgrader.buttonTitleIgnore, 'aaa');
-    expect(upgrader.buttonTitleLater, 'bbb');
-    expect(upgrader.buttonTitleUpdate, 'ccc');
+    upgrader.messages = MyUpgraderMessages();
+
+    expect(upgrader.messages.buttonTitleIgnore, 'aaa');
+    expect(upgrader.messages.buttonTitleLater, 'bbb');
+    expect(upgrader.messages.buttonTitleUpdate, 'ccc');
 
     await tester.pumpWidget(_MyWidget());
 
@@ -136,19 +136,19 @@ void main() {
 
     expect(upgrader.isTooSoon(), true);
 
-    expect(find.text(upgrader.title), findsOneWidget);
+    expect(find.text(upgrader.messages.title), findsOneWidget);
     expect(find.text(upgrader.message()), findsOneWidget);
-    expect(find.text(upgrader.prompt), findsOneWidget);
+    expect(find.text(upgrader.messages.prompt), findsOneWidget);
     expect(find.byType(FlatButton), findsNWidgets(3));
-    expect(find.text(upgrader.buttonTitleIgnore), findsOneWidget);
-    expect(find.text(upgrader.buttonTitleLater), findsOneWidget);
-    expect(find.text(upgrader.buttonTitleUpdate), findsOneWidget);
+    expect(find.text(upgrader.messages.buttonTitleIgnore), findsOneWidget);
+    expect(find.text(upgrader.messages.buttonTitleLater), findsOneWidget);
+    expect(find.text(upgrader.messages.buttonTitleUpdate), findsOneWidget);
 
-    await tester.tap(find.text(upgrader.buttonTitleUpdate));
+    await tester.tap(find.text(upgrader.messages.buttonTitleUpdate));
     await tester.pumpAndSettle();
-    expect(find.text(upgrader.buttonTitleIgnore), findsNothing);
-    expect(find.text(upgrader.buttonTitleLater), findsNothing);
-    expect(find.text(upgrader.buttonTitleUpdate), findsNothing);
+    expect(find.text(upgrader.messages.buttonTitleIgnore), findsNothing);
+    expect(find.text(upgrader.messages.buttonTitleLater), findsNothing);
+    expect(find.text(upgrader.messages.buttonTitleUpdate), findsNothing);
     expect(called, true);
     expect(notCalled, true);
   });
@@ -189,9 +189,9 @@ void main() {
     await tester.pumpAndSettle();
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text(upgrader.buttonTitleIgnore));
+    await tester.tap(find.text(upgrader.messages.buttonTitleIgnore));
     await tester.pumpAndSettle();
-    expect(find.text(upgrader.buttonTitleIgnore), findsNothing);
+    expect(find.text(upgrader.messages.buttonTitleIgnore), findsNothing);
     expect(called, true);
     expect(notCalled, true);
   });
@@ -232,9 +232,9 @@ void main() {
     await tester.pumpAndSettle();
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text(upgrader.buttonTitleLater));
+    await tester.tap(find.text(upgrader.messages.buttonTitleLater));
     await tester.pumpAndSettle();
-    expect(find.text(upgrader.buttonTitleLater), findsNothing);
+    expect(find.text(upgrader.messages.buttonTitleLater), findsNothing);
     expect(called, true);
     expect(notCalled, true);
   });
@@ -252,6 +252,8 @@ void main() {
             version: '0.9.9',
             buildNumber: '400'));
     await upgrader.initialize();
+
+    expect(upgrader.messages, isNotNull);
 
     var called = false;
     var notCalled = true;
@@ -275,12 +277,12 @@ void main() {
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text(upgrader.buttonTitleUpdate));
+    await tester.tap(find.text(upgrader.messages.buttonTitleUpdate));
     await tester.pumpAndSettle();
 
     expect(called, true);
     expect(notCalled, true);
-    expect(find.text(upgrader.buttonTitleUpdate), findsNothing);
+    expect(find.text(upgrader.messages.buttonTitleUpdate), findsNothing);
   });
 
   testWidgets('test UpgradeWidget Card ignore', (WidgetTester tester) async {
@@ -319,12 +321,12 @@ void main() {
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text(upgrader.buttonTitleIgnore));
+    await tester.tap(find.text(upgrader.messages.buttonTitleIgnore));
     await tester.pumpAndSettle();
 
     expect(called, true);
     expect(notCalled, true);
-    expect(find.text(upgrader.buttonTitleIgnore), findsNothing);
+    expect(find.text(upgrader.messages.buttonTitleIgnore), findsNothing);
   });
 
   testWidgets('test UpgradeWidget Card later', (WidgetTester tester) async {
@@ -363,12 +365,12 @@ void main() {
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle(const Duration(milliseconds: 5000));
 
-    await tester.tap(find.text(upgrader.buttonTitleLater));
+    await tester.tap(find.text(upgrader.messages.buttonTitleLater));
     await tester.pumpAndSettle();
 
     expect(called, true);
     expect(notCalled, true);
-    expect(find.text(upgrader.buttonTitleLater), findsNothing);
+    expect(find.text(upgrader.messages.buttonTitleLater), findsNothing);
   });
 
   testWidgets('test UpgradeWidget unknown app', (WidgetTester tester) async {
@@ -407,7 +409,7 @@ void main() {
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle();
 
-    final laterButton = find.text(upgrader.buttonTitleLater);
+    final laterButton = find.text(upgrader.messages.buttonTitleLater);
     expect(laterButton, findsNothing);
 
     expect(called, false);
@@ -457,4 +459,13 @@ class _MyWidgetCard extends StatelessWidget {
       ),
     );
   }
+}
+
+class MyUpgraderMessages extends UpgraderMessages {
+  @override
+  String get buttonTitleIgnore => 'aaa';
+  @override
+  String get buttonTitleLater => 'bbb';
+  @override
+  String get buttonTitleUpdate => 'ccc';
 }

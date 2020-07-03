@@ -7,8 +7,6 @@ Flutter package for prompting users to upgrade when there is a newer version of 
 [![codecov](https://codecov.io/gh/larryaasen/upgrader/branch/master/graph/badge.svg)](https://codecov.io/gh/larryaasen/upgrader)
 [![pub package](https://img.shields.io/pub/v/upgrader.svg)](https://pub.dartlang.org/packages/upgrader)
 
-[Become a Patron!](https://www.patreon.com/bePatron?u=15315667)
-
 When a newer app version is availabe in the app store, a simple alert prompt widget or card is
 displayed. With today's modern app stores, there is little need to persuade users to upgrade
 because most of them are already using the auto upgrade feature. However, there may be times when
@@ -19,6 +17,8 @@ upgrading.
 
 The UI comes in two flavors: alert or card. The [UpgradeAlert](#alert-example) class is used to display the
 popup alert prompt, and the [UpgradeCard](#card-example) class is used to display the inline material design card.
+
+The text displayed in the upgrader package is localized in English and Spanish, and supports customization.
 
 ## Alert Example
 
@@ -76,19 +76,15 @@ The UpgradeAlert widget can be customized by setting parameters in the construct
 UpgradeAlert widget.
 
 * appcastConfig: the appcast configuration, defaults to ```null```
-* buttonTitleIgnore: the ignore button title, which defaults to ```Ignore```
-* buttonTitleLater: the later button title, which defaults to ```Later```
-* buttonTitleUpdate: the update button title, which defaults to ```Update Now```
 * client: an HTTP Client that can be replaced for mock testing, defaults to ```null```
 * daysUntilAlertAgain: days until alerting user again, which defaults to ```3```
 * debugDisplayAlways: always force the upgrade to be available, defaults to ```false```
 * debugDisplayOnce: display the upgrade at least once once, defaults to ```false```
 * debugLogging: display logging statements, which defaults to ```false```
-* onIgnore: Called when the ignore button is tapped, defaults to ```null```
-* onLater: Called when the later button is tapped, defaults to ```null```
-* onUpdate: Called when the update button is tapped, defaults to ```null```
-* prompt: the call to action message, which defaults to ```Would you like to update it now?```
-* title: the alert dialog title, which defaults to ```Update App?```
+* messages: optional localized messages used for display in upgrader
+* onIgnore: called when the ignore button is tapped, defaults to ```null```
+* onLater: called when the later button is tapped, defaults to ```null```
+* onUpdate: called when the update button is tapped, defaults to ```null```
 * showIgnore: hide or show Ignore button on dialog, which defaults to ```true```
 * showLater: hide or show Later button on dialog, which defaults to ```true```
 * canDismissDialog: can alert dialog be dismissed on tap outside of the alert dialog, which defaults to ```false``` (not used by alert card)
@@ -174,6 +170,75 @@ Widget build(BuildContext context) {
 }
 ```
 
+## Customizing the display
+
+The strings displayed in upgrader can be customzied by extending the `UpgraderMessages` class
+to provide custom values.
+
+As an example, to replace the Ignore button with a custom value, first create a new
+class that extends UpgraderMessages, and override the buttonTitleIgnore function. Next,
+when calling UpgradeAlert (or UpgradeCard), add the paramter messages with an instance
+of your extended class. Here is an example:
+
+```dart
+class MyUpgraderMessages extends UpgraderMessages {
+  @override
+  String get buttonTitleIgnore => 'My Ignore';
+}
+
+UpgradeAlert(messages: MyUpgraderMessages());
+```
+
+## Language localization
+
+The strings displayed in upgrader are already localized in English and Spanish. New languages will be
+supported in the future with minor updates.
+
+The upgrader package can be supplied with additional languages in your code by extending the `UpgraderMessages` class
+to provide custom values.
+
+As an example, to add the Spanish (es) language (which is already provided), first create a new
+class that extends UpgraderMessages, and override the message function. Next, add a string for
+each of the messages. Finally, when calling UpgradeAlert (or UpgradeCard), add the paramter messages with an instance
+of your extended class. Here is an example:
+
+```dart
+class MySpanishMessages extends UpgraderMessages {
+  /// Override the message function to provide custom language localization.
+  @override
+  String message(UpgraderMessage messageKey) {
+    if (languageCode == 'es') {
+      switch (messageKey) {
+        case UpgraderMessage.body:
+          return 'es A new version of {{appName}} is available!';
+        case UpgraderMessage.buttonTitleIgnore:
+          return 'es Ignore';
+        case UpgraderMessage.buttonTitleLater:
+          return 'es Later';
+        case UpgraderMessage.buttonTitleUpdate:
+          return 'es Update Now';
+        case UpgraderMessage.prompt:
+          return 'es Want to update?';
+        case UpgraderMessage.title:
+          return 'es Update App?';
+      }
+    }
+    // Messages that are not provided above can still use the default values.
+    return super.message(messageKey);
+  }
+}
+
+UpgradeAlert(messages: MySpanishMessages());
+```
+
+You can even force the upgrade package to use a specific language, instead of the
+system language on the device. Just pass the language code to an instance of
+UpgraderMessages when displaying the alert or card. Here is an example:
+
+```dart
+UpgradeAlert(messages: UpgraderMessages(code: 'es'));
+```
+
 ## iTunes Search API
 
 There is a class in this Flutter package used by the upgrader widgets to download app details 
@@ -214,4 +279,7 @@ itunes_lookup all results:
 ## Contributing
 All [comments](https://github.com/larryaasen/upgrader/issues) and [pull requests](https://github.com/larryaasen/upgrader/pulls) are welcome.
 
-[Become a Patron!](https://www.patreon.com/bePatron?u=15315667)
+## Donations on Flattr
+
+[Please donate to the creator of upgrader!](https://flattr.com/@larryaasen)
+

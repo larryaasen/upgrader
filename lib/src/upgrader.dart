@@ -14,6 +14,7 @@ import 'package:version/version.dart';
 
 import 'appcast.dart';
 import 'itunes_search_api.dart';
+import 'upgrade_messages.dart';
 
 /// Signature of callbacks that have no arguments and return bool.
 typedef BoolCallback = bool Function();
@@ -39,15 +40,6 @@ class Upgrader {
   /// When an appcast is configured for iOS, the iTunes lookup is not used.
   AppcastConfiguration appcastConfig;
 
-  /// The ignore button title, which defaults to ```Ignore```
-  String buttonTitleIgnore = 'Ignore'.toUpperCase();
-
-  /// The later button title, which defaults to ```Later```
-  String buttonTitleLater = 'Later'.toUpperCase();
-
-  /// The update button title, which defaults to ```Update Now```
-  String buttonTitleUpdate = 'Update Now'.toUpperCase();
-
   /// Provide an HTTP Client that can be replaced for mock testing.
   http.Client client = http.Client();
 
@@ -63,13 +55,11 @@ class Upgrader {
   /// Enable print statements for debugging.
   bool debugLogging = false;
 
+  /// The localized messages used for display in upgrader.
+  UpgraderMessages messages;
+
   final notInitializedExceptionMessage =
       'initialize() not called. Must be called first.';
-
-  String prompt = 'Would you like to update it now?';
-
-  /// The alert dialog title
-  String title = 'Update App?';
 
   /// Called when the ignore button is tapped or otherwise activated.
   /// Return false when the default behavior should not execute.
@@ -131,6 +121,8 @@ class Upgrader {
     }
 
     _initCalled = true;
+
+    messages ??= UpgraderMessages();
 
     await _getSavedPrefs();
 
@@ -246,7 +238,13 @@ class Upgrader {
   }
 
   String message() {
-    return 'A new version of ${appName()} is available! Version ${currentAppStoreVersion()} is now available-you have ${currentInstalledVersion()}.';
+    var msg = messages.message(UpgraderMessage.body);
+    msg = msg.replaceAll('{{appName}}', appName());
+    msg =
+        msg.replaceAll('{{currentAppStoreVersion}}', currentAppStoreVersion());
+    msg = msg.replaceAll(
+        '{{currentInstalledVersion}}', currentInstalledVersion());
+    return msg;
   }
 
   void checkVersion({@required BuildContext context}) {
@@ -256,7 +254,7 @@ class Upgrader {
         Future.delayed(Duration(milliseconds: 0), () {
           _showDialog(
               context: context,
-              title: title,
+              title: messages.message(UpgraderMessage.title),
               message: message(),
               canDismissDialog: canDismissDialog);
         });
@@ -333,20 +331,25 @@ class Upgrader {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Text(message),
-              Padding(padding: EdgeInsets.only(top: 15.0), child: Text(prompt)),
+              Padding(
+                  padding: EdgeInsets.only(top: 15.0),
+                  child: Text(messages.message(UpgraderMessage.prompt))),
             ],
           ),
           actions: <Widget>[
             if (showIgnore)
               FlatButton(
-                  child: Text(buttonTitleIgnore),
+                  child:
+                      Text(messages.message(UpgraderMessage.buttonTitleIgnore)),
                   onPressed: () => onUserIgnored(context, true)),
             if (showLater)
               FlatButton(
-                  child: Text(buttonTitleLater),
+                  child:
+                      Text(messages.message(UpgraderMessage.buttonTitleLater)),
                   onPressed: () => onUserLater(context, true)),
             FlatButton(
-                child: Text(buttonTitleUpdate),
+                child:
+                    Text(messages.message(UpgraderMessage.buttonTitleUpdate)),
                 onPressed: () => onUserUpdated(context, true)),
           ],
         );
@@ -356,7 +359,7 @@ class Upgrader {
 
   void onUserIgnored(BuildContext context, bool shouldPop) {
     if (debugLogging) {
-      print('upgrader: button tapped: $buttonTitleIgnore');
+      print('upgrader: button tapped: ignore');
     }
 
     // If this callback has been provided, call it.
@@ -376,7 +379,7 @@ class Upgrader {
 
   void onUserLater(BuildContext context, bool shouldPop) {
     if (debugLogging) {
-      print('upgrader: button tapped: $buttonTitleLater');
+      print('upgrader: button tapped: later');
     }
 
     // If this callback has been provided, call it.
@@ -394,7 +397,7 @@ class Upgrader {
 
   void onUserUpdated(BuildContext context, bool shouldPop) {
     if (debugLogging) {
-      print('upgrader: button tapped: $buttonTitleUpdate');
+      print('upgrader: button tapped: update now');
     }
 
     // If this callback has been provided, call it.

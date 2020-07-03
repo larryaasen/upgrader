@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Only call clearSavedSettings() during testing to reset internal values.
     Upgrader().clearSavedSettings();
 
     // On Android, setup the Appcast.
