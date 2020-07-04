@@ -88,6 +88,7 @@ UpgradeAlert widget.
 * showIgnore: hide or show Ignore button on dialog, which defaults to ```true```
 * showLater: hide or show Later button on dialog, which defaults to ```true```
 * canDismissDialog: can alert dialog be dismissed on tap outside of the alert dialog, which defaults to ```false``` (not used by alert card)
+* countryCode: the country code that will override the system locale. Optional. (iOS only)
 
 ## Limitations
 These widgets work on both Android and iOS. When running on iOS the App Store will provide the

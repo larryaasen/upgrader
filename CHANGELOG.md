@@ -1,3 +1,9 @@
+## 2.1.0
+
+* The iOS App Store query will now default to the country code of the system locale,
+instead of `US`. This will help suggest upgrades to users from countries other than
+the US. The country code can be overriden with the optional `countryCode` parameter.
+
 ## 2.0.0
 
 * Major enhancements!

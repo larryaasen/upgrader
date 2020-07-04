@@ -378,6 +378,7 @@ void main() {
     final upgrader = Upgrader();
     upgrader.client = client;
     upgrader.debugLogging = true;
+    upgrader.countryCode = 'IT';
 
     upgrader.installPackageInfo(
         packageInfo: PackageInfo(

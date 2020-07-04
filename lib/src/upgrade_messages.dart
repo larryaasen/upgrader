@@ -76,8 +76,8 @@ class UpgraderMessages {
       // Get the system locale
       locale = WidgetsBinding.instance.window.locale;
     }
-
-    return locale == null ? 'en' : locale.languageCode;
+    final code = locale == null ? 'en' : locale.languageCode;
+    return code;
   }
 
   /// The body of the upgrade message. This string supports mustache style
