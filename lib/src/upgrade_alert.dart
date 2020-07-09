@@ -55,7 +55,7 @@ class _UpgradeBase extends StatefulWidget {
 
   /// The minimum app version supported by this app. Earlier versions of this app
   /// will be forced to update to the current version. Optional.
-  String minAppVersion;
+  final String minAppVersion;
 
   _UpgradeBase({
     Key key,
