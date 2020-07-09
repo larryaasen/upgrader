@@ -85,6 +85,10 @@ class Upgrader {
   /// The country code that will override the system locale. Optional. Used only for iOS.
   String countryCode;
 
+  /// The minimum app version supported by this app. Earlier versions of this app
+  /// will be forced to update to the current version. Optional.
+  String minAppVersion;
+
   bool _displayed = false;
   bool _initCalled = false;
   PackageInfo _packageInfo;
@@ -272,7 +276,29 @@ class Upgrader {
     if (isTooSoon() || alreadyIgnoredThisVersion() || !isUpdateAvailable()) {
       return false;
     }
+
+    // If installed version below minimum app version, disable ignore and later
+    if (belowMinAppVersion()) {
+      showIgnore = false;
+      showLater = false;
+    }
+
     return true;
+  }
+
+  /// Is installed version below minimum app version?
+  bool belowMinAppVersion() {
+    var rv = false;
+    if (minAppVersion != null) {
+      try {
+        final minVersion = Version.parse(minAppVersion);
+        final installedVersion = Version.parse(_installedVersion);
+        rv = installedVersion < minVersion;
+      } catch (e) {
+        print(e);
+      }
+    }
+    return rv;
   }
 
   bool isTooSoon() {

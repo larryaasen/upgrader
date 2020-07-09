@@ -53,6 +53,10 @@ class _UpgradeBase extends StatefulWidget {
   /// The country code that will override the system locale. Optional. Used only for iOS.
   final String countryCode;
 
+  /// The minimum app version supported by this app. Earlier versions of this app
+  /// will be forced to update to the current version. Optional.
+  String minAppVersion;
+
   _UpgradeBase({
     Key key,
     this.appcastConfig,
@@ -69,6 +73,7 @@ class _UpgradeBase extends StatefulWidget {
     this.showLater,
     this.canDismissDialog,
     this.countryCode,
+    this.minAppVersion,
   }) : super(key: key) {
     if (appcastConfig != null) {
       Upgrader().appcastConfig = appcastConfig;
@@ -111,6 +116,9 @@ class _UpgradeBase extends StatefulWidget {
     }
     if (countryCode != null) {
       Upgrader().countryCode = countryCode;
+    }
+    if (minAppVersion != null) {
+      Upgrader().minAppVersion = minAppVersion;
     }
   }
 
@@ -162,6 +170,7 @@ class UpgradeCard extends _UpgradeBase {
     bool showLater,
     bool canDismissDialog,
     String countryCode,
+    String minAppVersion,
   }) : super(
           key: key,
           appcastConfig: appcastConfig,
@@ -178,6 +187,7 @@ class UpgradeCard extends _UpgradeBase {
           showLater: showLater,
           canDismissDialog: canDismissDialog,
           countryCode: countryCode,
+          minAppVersion: minAppVersion,
         );
 
   @override
@@ -277,6 +287,7 @@ class UpgradeAlert extends _UpgradeBase {
     bool showLater,
     bool canDismissDialog,
     String countryCode,
+    String minAppVersion,
   }) : super(
           key: key,
           appcastConfig: appcastConfig,
@@ -293,6 +304,7 @@ class UpgradeAlert extends _UpgradeBase {
           showLater: showLater,
           canDismissDialog: canDismissDialog,
           countryCode: countryCode,
+          minAppVersion: minAppVersion,
         );
 
   @override
