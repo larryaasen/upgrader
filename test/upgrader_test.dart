@@ -373,11 +373,48 @@ void main() {
     expect(find.text(upgrader.messages.buttonTitleLater), findsNothing);
   });
 
+  testWidgets('test UpgradeWidget MinAppVersion', (WidgetTester tester) async {
+    final client = MockClient.setupMockClient();
+    final upgrader = Upgrader();
+    upgrader.client = client;
+    upgrader.debugLogging = true;
+    upgrader.minAppVersion = '1.0.0';
+
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '0.9.9',
+            buildNumber: '400'));
+    await upgrader.initialize();
+
+    expect(upgrader.isTooSoon(), false);
+    upgrader.minAppVersion = '0.5.0';
+    expect(upgrader.belowMinAppVersion(), false);
+    upgrader.minAppVersion = '1.0.0';
+    expect(upgrader.belowMinAppVersion(), true);
+    upgrader.minAppVersion = null;
+    expect(upgrader.belowMinAppVersion(), false);
+    upgrader.minAppVersion = 'empty';
+    expect(upgrader.belowMinAppVersion(), false);
+    upgrader.minAppVersion = '1.0.0';
+
+    await tester.pumpWidget(_MyWidgetCard());
+
+    // Pump the UI so the upgrade card is displayed
+    await tester.pumpAndSettle(const Duration(milliseconds: 5000));
+
+    expect(find.text(upgrader.messages.buttonTitleIgnore), findsNothing);
+    expect(find.text(upgrader.messages.buttonTitleLater), findsNothing);
+    expect(find.text(upgrader.messages.buttonTitleUpdate), findsOneWidget);
+  });
+
   testWidgets('test UpgradeWidget unknown app', (WidgetTester tester) async {
     final client = MockClient.setupMockClient();
     final upgrader = Upgrader();
     upgrader.client = client;
     upgrader.debugLogging = true;
+    upgrader.countryCode = 'IT';
 
     upgrader.installPackageInfo(
         packageInfo: PackageInfo(

@@ -50,6 +50,13 @@ class _UpgradeBase extends StatefulWidget {
   /// Can alert dialog be dismissed on tap outside of the alert dialog. Not used by alert card. (default: false)
   final bool canDismissDialog;
 
+  /// The country code that will override the system locale. Optional. Used only for iOS.
+  final String countryCode;
+
+  /// The minimum app version supported by this app. Earlier versions of this app
+  /// will be forced to update to the current version. Optional.
+  final String minAppVersion;
+
   _UpgradeBase({
     Key key,
     this.appcastConfig,
@@ -65,6 +72,8 @@ class _UpgradeBase extends StatefulWidget {
     this.showIgnore,
     this.showLater,
     this.canDismissDialog,
+    this.countryCode,
+    this.minAppVersion,
   }) : super(key: key) {
     if (appcastConfig != null) {
       Upgrader().appcastConfig = appcastConfig;
@@ -104,6 +113,12 @@ class _UpgradeBase extends StatefulWidget {
     }
     if (canDismissDialog != null) {
       Upgrader().canDismissDialog = canDismissDialog;
+    }
+    if (countryCode != null) {
+      Upgrader().countryCode = countryCode;
+    }
+    if (minAppVersion != null) {
+      Upgrader().minAppVersion = minAppVersion;
     }
   }
 
@@ -154,21 +169,26 @@ class UpgradeCard extends _UpgradeBase {
     bool showIgnore,
     bool showLater,
     bool canDismissDialog,
+    String countryCode,
+    String minAppVersion,
   }) : super(
-            key: key,
-            appcastConfig: appcastConfig,
-            messages: messages,
-            daysToAlertAgain: daysToAlertAgain,
-            debugDisplayAlways: debugAlwaysUpgrade,
-            debugDisplayOnce: debugDisplayOnce,
-            debugLogging: debugLogging,
-            onIgnore: onIgnore,
-            onLater: onLater,
-            onUpdate: onUpdate,
-            client: client,
-            showIgnore: showIgnore,
-            showLater: showLater,
-            canDismissDialog: canDismissDialog);
+          key: key,
+          appcastConfig: appcastConfig,
+          messages: messages,
+          daysToAlertAgain: daysToAlertAgain,
+          debugDisplayAlways: debugAlwaysUpgrade,
+          debugDisplayOnce: debugDisplayOnce,
+          debugLogging: debugLogging,
+          onIgnore: onIgnore,
+          onLater: onLater,
+          onUpdate: onUpdate,
+          client: client,
+          showIgnore: showIgnore,
+          showLater: showLater,
+          canDismissDialog: canDismissDialog,
+          countryCode: countryCode,
+          minAppVersion: minAppVersion,
+        );
 
   @override
   Widget build(BuildContext context, _UpgradeBaseState state) {
@@ -266,6 +286,8 @@ class UpgradeAlert extends _UpgradeBase {
     bool showIgnore,
     bool showLater,
     bool canDismissDialog,
+    String countryCode,
+    String minAppVersion,
   }) : super(
           key: key,
           appcastConfig: appcastConfig,
@@ -281,6 +303,8 @@ class UpgradeAlert extends _UpgradeBase {
           showIgnore: showIgnore,
           showLater: showLater,
           canDismissDialog: canDismissDialog,
+          countryCode: countryCode,
+          minAppVersion: minAppVersion,
         );
 
   @override

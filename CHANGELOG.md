@@ -1,3 +1,11 @@
+## 2.1.0
+
+* Added support for an optional minimum app version. If the installed version is below the minimum app version,
+the ignore and later buttons will be hidden. This is similar to the critical update attribute for Appcast.
+* The iOS App Store query will now default to the country code of the system locale,
+instead of `US`. This will help suggest upgrades to users from countries other than
+the US. The country code can be overriden with the optional `countryCode` parameter.
+
 ## 2.0.0
 
 * Major enhancements!

@@ -82,10 +82,16 @@ class Upgrader {
   /// Can alert dialog be dismissed on tap outside of the alert dialog. Not used by alert card. (default: false)
   bool canDismissDialog = false;
 
+  /// The country code that will override the system locale. Optional. Used only for iOS.
+  String countryCode;
+
+  /// The minimum app version supported by this app. Earlier versions of this app
+  /// will be forced to update to the current version. Optional.
+  String minAppVersion;
+
   bool _displayed = false;
   bool _initCalled = false;
   PackageInfo _packageInfo;
-  String _countryCode;
 
   String _installedVersion;
   String _appStoreVersion;
@@ -135,9 +141,6 @@ class Upgrader {
       }
     }
 
-    // Get the current locale of the device (TBD), defaulting to US.
-    _countryCode ??= 'US';
-
     await _updateVersionInfo();
 
     _installedVersion = _packageInfo.version;
@@ -183,9 +186,12 @@ class Upgrader {
         return false;
       }
 
+      // The  country code of the locale, defaulting to `US`.
+      final code = countryCode ?? findCountryCode();
+
       final iTunes = ITunesSearchAPI();
       iTunes.client = client;
-      final country = _countryCode;
+      final country = code;
       final response = await iTunes.lookupByBundleId(_packageInfo.packageName,
           country: country);
 
@@ -270,7 +276,29 @@ class Upgrader {
     if (isTooSoon() || alreadyIgnoredThisVersion() || !isUpdateAvailable()) {
       return false;
     }
+
+    // If installed version below minimum app version, disable ignore and later
+    if (belowMinAppVersion()) {
+      showIgnore = false;
+      showLater = false;
+    }
+
     return true;
+  }
+
+  /// Is installed version below minimum app version?
+  bool belowMinAppVersion() {
+    var rv = false;
+    if (minAppVersion != null) {
+      try {
+        final minVersion = Version.parse(minAppVersion);
+        final installedVersion = Version.parse(_installedVersion);
+        rv = installedVersion < minVersion;
+      } catch (e) {
+        print(e);
+      }
+    }
+    return rv;
   }
 
   bool isTooSoon() {
@@ -306,6 +334,24 @@ class Upgrader {
       }
     }
     return _updateAvailable != null;
+  }
+
+  /// Determine the current country code, either from the context, or
+  /// from the system-reported default locale of the device. The default
+  /// is `US`.
+  String findCountryCode({BuildContext context}) {
+    Locale locale;
+    if (context != null) {
+      locale = Localizations.localeOf(context, nullOk: true);
+    } else {
+      // Get the system locale
+      locale = WidgetsBinding.instance.window.locale;
+    }
+    final code = locale == null ? 'US' : locale.countryCode;
+    if (debugLogging) {
+      print('upgrader: countryCode: $code');
+    }
+    return code;
   }
 
   void _showDialog(
