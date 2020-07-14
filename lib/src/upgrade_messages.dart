@@ -101,6 +101,10 @@ class UpgraderMessages {
         message =
             '¡Una nueva versión de {{appName}} está disponible! La versión {{currentAppStoreVersion}} ya está disponible-usted tiene {{currentInstalledVersion}}.';
         break;
+      case 'ar':
+        message =
+            'يدة من {{appName}} متوفرة! النسخة {{currentAppStoreVersion}} متوفرة الآن, أنت تستخدم النسخة {{currentInstalledVersion}}.';
+        break;
     }
     return message;
   }
@@ -116,6 +120,9 @@ class UpgraderMessages {
         break;
       case 'es':
         message = 'IGNORAR';
+        break;
+      case 'ar':
+        message = 'تجاهل';
         break;
     }
     return message;
@@ -133,6 +140,9 @@ class UpgraderMessages {
       case 'es':
         message = 'MÁS TARDE';
         break;
+      case 'ar':
+        message = 'لاحقاً';
+        break;
     }
     return message;
   }
@@ -148,6 +158,9 @@ class UpgraderMessages {
         break;
       case 'es':
         message = 'ACTUALIZAR';
+        break;
+      case 'ar':
+        message = 'حدث الآن';
         break;
     }
     return message;
@@ -165,6 +178,9 @@ class UpgraderMessages {
       case 'es':
         message = '¿Le gustaría actualizar ahora?';
         break;
+      case 'ar':
+        message = 'هل تفضل أن يتم التحديث الآن';
+        break;
     }
     return message;
   }
@@ -180,6 +196,9 @@ class UpgraderMessages {
         break;
       case 'es':
         message = '¿Actualizar la aplicación?';
+        break;
+      case 'ar':
+        message = 'هل تريد تحديث التطبيق؟';
         break;
     }
     return message;

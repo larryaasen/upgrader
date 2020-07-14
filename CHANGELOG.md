@@ -1,3 +1,7 @@
+## 2.2.0
+
+* Added support for Arabic language localization.
+
 ## 2.1.0
 
 * Added support for an optional minimum app version. If the installed version is below the minimum app version,
