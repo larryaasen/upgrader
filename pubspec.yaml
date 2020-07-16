@@ -41,6 +41,6 @@ dev_dependencies:
 
   # From Dart Team: Mock library for Dart inspired by Mockito.
   mockito: ^4.0.0
-  pedantic: ^1.0.0
+  pedantic: ^1.9.0
  
 flutter:

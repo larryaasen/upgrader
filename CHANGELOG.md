@@ -48,7 +48,7 @@ Maintenance issues and suggestions section.
 
 ## 0.10.2
 
-* Prepare for 1.0.0 version of sensors and package_info. ([dart_lsc](http://github.com/amirh/dart_lsc))
+* Prepare for 1.0.0 version of sensors and package_info. ([dart_lsc](https://github.com/amirh/dart_lsc))
 
 ## 0.10.1
 
