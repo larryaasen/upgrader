@@ -1,3 +1,7 @@
+## 2.2.1
+
+* Added support for mocking the Appcast.
+
 ## 2.2.0
 
 * Added support for Arabic language localization.

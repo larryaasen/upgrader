@@ -155,7 +155,7 @@ class Upgrader {
         print('upgrader: appcast is available for this platform');
       }
 
-      final appcast = Appcast();
+      final appcast = Appcast(client: client);
       await appcast.parseAppcastItemsFromUri(appcastConfig.url);
       if (debugLogging) {
         var count = appcast.items == null ? 0 : appcast.items.length;
