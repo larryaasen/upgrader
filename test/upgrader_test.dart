@@ -373,7 +373,7 @@ void main() {
     expect(find.text(upgrader.messages.buttonTitleLater), findsNothing);
   });
 
-  testWidgets('test UpgradeWidget MinAppVersion', (WidgetTester tester) async {
+  testWidgets('test upgrader minAppVersion', (WidgetTester tester) async {
     final client = MockClient.setupMockClient();
     final upgrader = Upgrader();
     upgrader.client = client;
@@ -451,6 +451,19 @@ void main() {
 
     expect(called, false);
     expect(notCalled, true);
+  });
+
+  test('test upgrader shouldDisplayUpgrade', () async {
+    final client = MockClient.setupMockClient();
+    final upgrader = Upgrader();
+    upgrader.client = client;
+    upgrader.debugLogging = true;
+
+    expect(upgrader.shouldDisplayUpgrade(), false);
+    upgrader.debugDisplayAlways = true;
+    expect(upgrader.shouldDisplayUpgrade(), true);
+    upgrader.debugDisplayAlways = false;
+    expect(upgrader.shouldDisplayUpgrade(), false);
   });
 }
 
