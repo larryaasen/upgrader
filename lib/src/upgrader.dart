@@ -40,6 +40,9 @@ class Upgrader {
   /// When an appcast is configured for iOS, the iTunes lookup is not used.
   AppcastConfiguration appcastConfig;
 
+  /// Provide an Appcast that can be replaced for mock testing.
+  Appcast appCast;
+
   /// Provide an HTTP Client that can be replaced for mock testing.
   http.Client client = http.Client();
 
@@ -156,7 +159,7 @@ class Upgrader {
         print('upgrader: appcast is available for this platform');
       }
 
-      final appcast = Appcast(client: client);
+      final appcast = appCast ?? Appcast(client: client);
       await appcast.parseAppcastItemsFromUri(appcastConfig.url);
       if (debugLogging) {
         var count = appcast.items == null ? 0 : appcast.items.length;
@@ -273,9 +276,10 @@ class Upgrader {
   }
 
   bool shouldDisplayUpgrade() {
+    final isBlocked = blocked();
     // If installed version below minimum app version, or is a critical update,
     // disable ignore and later buttons.
-    if (blocked()) {
+    if (isBlocked) {
       showIgnore = false;
       showLater = false;
     }
@@ -285,7 +289,7 @@ class Upgrader {
     if (!isUpdateAvailable()) {
       return false;
     }
-    if (blocked()) {
+    if (isBlocked) {
       return true;
     }
     if (isTooSoon() || alreadyIgnoredThisVersion()) {
