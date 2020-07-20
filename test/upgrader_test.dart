@@ -5,11 +5,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upgrader/upgrader.dart';
 
 import 'mockclient.dart';
+
+class MockAppCast extends Mock implements Appcast {}
 
 void main() {
   SharedPreferences preferences;
@@ -453,17 +456,72 @@ void main() {
     expect(notCalled, true);
   });
 
-  test('test upgrader shouldDisplayUpgrade', () async {
-    final client = MockClient.setupMockClient();
-    final upgrader = Upgrader();
-    upgrader.client = client;
-    upgrader.debugLogging = true;
+  group('shouldDisplayUpgrade', () {
+    test('should respect `debugDisplayAlways` property', () {
+      final client = MockClient.setupMockClient();
+      final upgrader = Upgrader()
+        ..client = client
+        ..debugLogging = true;
 
-    expect(upgrader.shouldDisplayUpgrade(), false);
-    upgrader.debugDisplayAlways = true;
-    expect(upgrader.shouldDisplayUpgrade(), true);
-    upgrader.debugDisplayAlways = false;
-    expect(upgrader.shouldDisplayUpgrade(), false);
+      expect(upgrader.shouldDisplayUpgrade(), false);
+      upgrader.debugDisplayAlways = true;
+      expect(upgrader.shouldDisplayUpgrade(), true);
+      upgrader.debugDisplayAlways = false;
+      expect(upgrader.shouldDisplayUpgrade(), false);
+    });
+
+    test('should be blocked when version is below minAppVersion', () async {
+      final upgrader = Upgrader()
+        ..client = MockClient.setupMockClient()
+        ..debugLogging = true
+        ..minAppVersion = '2.0.0'
+        ..installPackageInfo(
+          packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '1.9.6',
+            buildNumber: '42',
+          ),
+        );
+
+      await upgrader.initialize();
+
+      final shouldDisplayUpgrade = upgrader.shouldDisplayUpgrade();
+
+      expect(shouldDisplayUpgrade, true);
+    });
+
+    test('should be blocked when bestItem has critical update', () async {
+      final appcast = MockAppCast();
+      const version = '2.0.0';
+
+      when(appcast.bestItem()).thenReturn(
+        AppcastItem(
+          versionString: version,
+          fileURL: 'https://some.fakewebsite.com',
+          tags: [AppcastConstants.ElementCriticalUpdate],
+        ),
+      );
+
+      final upgrader = Upgrader()
+        ..client = MockClient.setupMockClient()
+        ..appCast = appcast
+        ..debugLogging = true
+        ..installPackageInfo(
+          packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: version,
+            buildNumber: '42',
+          ),
+        );
+
+      await upgrader.initialize();
+
+      final shouldDisplayUpgrade = upgrader.shouldDisplayUpgrade();
+
+      expect(shouldDisplayUpgrade, true);
+    });
   });
 }
 
