@@ -10,9 +10,8 @@ import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upgrader/upgrader.dart';
 
+import 'mock_appcast.dart';
 import 'mockclient.dart';
-
-class MockAppCast extends Mock implements Appcast {}
 
 void main() {
   SharedPreferences preferences;
@@ -456,6 +455,30 @@ void main() {
     expect(notCalled, true);
   });
 
+  group('initialize', () {
+    test('should use fake Appcast', () async {
+      final fakeAppcast = FakeAppcast();
+      final client = MockClient.setupMockClient();
+      final upgrader = Upgrader()
+        ..client = client
+        ..appcastConfig = fakeAppcast.config
+        ..debugLogging = true
+        ..appcast = fakeAppcast
+        ..installPackageInfo(
+          packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '1.9.6',
+            buildNumber: '42',
+          ),
+        );
+
+      await upgrader.initialize();
+
+      expect(fakeAppcast.callCount, greaterThan(0));
+    });
+  });
+
   group('shouldDisplayUpgrade', () {
     test('should respect `debugDisplayAlways` property', () {
       final client = MockClient.setupMockClient();
@@ -492,7 +515,7 @@ void main() {
     });
 
     test('should be blocked when bestItem has critical update', () async {
-      final appcast = MockAppCast();
+      final appcast = MockAppcast();
       const version = '2.0.0';
 
       when(appcast.bestItem()).thenReturn(
@@ -505,7 +528,7 @@ void main() {
 
       final upgrader = Upgrader()
         ..client = MockClient.setupMockClient()
-        ..appCast = appcast
+        ..appcast = appcast
         ..debugLogging = true
         ..installPackageInfo(
           packageInfo: PackageInfo(

@@ -41,7 +41,7 @@ class Upgrader {
   AppcastConfiguration appcastConfig;
 
   /// Provide an Appcast that can be replaced for mock testing.
-  Appcast appCast;
+  Appcast appcast;
 
   /// Provide an HTTP Client that can be replaced for mock testing.
   http.Client client = http.Client();
@@ -159,7 +159,7 @@ class Upgrader {
         print('upgrader: appcast is available for this platform');
       }
 
-      final appcast = appCast ?? Appcast(client: client);
+      final appcast = this.appcast ?? Appcast(client: client);
       await appcast.parseAppcastItemsFromUri(appcastConfig.url);
       if (debugLogging) {
         var count = appcast.items == null ? 0 : appcast.items.length;
