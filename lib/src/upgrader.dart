@@ -101,6 +101,7 @@ class Upgrader {
   String _lastVersionAlerted;
   String _userIgnoredVersion;
   bool _hasAlerted = false;
+  bool _isCriticalUpdate = false;
 
   factory Upgrader() {
     return _singleton;
@@ -172,8 +173,7 @@ class Upgrader {
         _appStoreVersion ??= bestItem.versionString;
         _appStoreListingURL ??= bestItem.fileURL;
         if (bestItem.isCriticalUpdate) {
-          showIgnore = false;
-          showLater = false;
+          _isCriticalUpdate = true;
         }
       }
     } else {
@@ -268,21 +268,29 @@ class Upgrader {
     }
   }
 
+  bool blocked() {
+    return belowMinAppVersion() || _isCriticalUpdate;
+  }
+
   bool shouldDisplayUpgrade() {
-    if (debugDisplayAlways || (debugDisplayOnce && !_hasAlerted)) {
-      return true;
-    }
-
-    if (isTooSoon() || alreadyIgnoredThisVersion() || !isUpdateAvailable()) {
-      return false;
-    }
-
-    // If installed version below minimum app version, disable ignore and later
-    if (belowMinAppVersion()) {
+    // If installed version below minimum app version, or is a critical update,
+    // disable ignore and later buttons.
+    if (blocked()) {
       showIgnore = false;
       showLater = false;
     }
-
+    if (debugDisplayAlways || (debugDisplayOnce && !_hasAlerted)) {
+      return true;
+    }
+    if (!isUpdateAvailable()) {
+      return false;
+    }
+    if (blocked()) {
+      return true;
+    }
+    if (isTooSoon() || alreadyIgnoredThisVersion()) {
+      return false;
+    }
     return true;
   }
 
@@ -396,7 +404,7 @@ class Upgrader {
             FlatButton(
                 child:
                     Text(messages.message(UpgraderMessage.buttonTitleUpdate)),
-                onPressed: () => onUserUpdated(context, true)),
+                onPressed: () => onUserUpdated(context, !blocked())),
           ],
         );
       },
@@ -530,7 +538,13 @@ class Upgrader {
     }
 
     if (await canLaunch(_appStoreListingURL)) {
-      await launch(_appStoreListingURL);
+      try {
+        await launch(_appStoreListingURL);
+      } catch (e) {
+        if (debugLogging) {
+          print('upgrader: launch to app store failed: $e');
+        }
+      }
     } else {}
   }
 }

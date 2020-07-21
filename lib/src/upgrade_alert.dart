@@ -202,6 +202,9 @@ class UpgradeCard extends _UpgradeBase {
           if (processed.connectionState == ConnectionState.done) {
             assert(Upgrader().messages != null);
             if (Upgrader().shouldDisplayUpgrade()) {
+              if (Upgrader().debugLogging) {
+                print('UpgradeCard: will display');
+              }
               return Card(
                   color: Colors.white,
                   margin: margin,
@@ -258,6 +261,10 @@ class UpgradeCard extends _UpgradeBase {
                               state.forceUpdateState();
                             }),
                       ]));
+            } else {
+              if (Upgrader().debugLogging) {
+                print('UpgradeCard: will not display');
+              }
             }
           }
           return Container(width: 0.0, height: 0.0);
