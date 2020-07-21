@@ -1,3 +1,7 @@
+## 2.3.0
+
+* Enhanced to prevent the dialog and card from being closed when in a blocked state, either with a critical update, or when the minimum app version is enforced.
+
 ## 2.2.1
 
 * Added support for mocking the Appcast.
