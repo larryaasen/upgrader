@@ -8,7 +8,7 @@ import 'package:device_info/device_info.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:version/version.dart';
-import 'package:xml/xml.dart' as xml;
+import 'package:xml/xml.dart';
 
 /// The [Appcast] class is used to download an Appcast, based on the Sparkle
 /// framework by Andy Matuschak.
@@ -83,12 +83,12 @@ class Appcast {
 
     try {
       // Parse the XML
-      final document = xml.parse(xmlString);
+      final document = XmlDocument.parse(xmlString);
 
       var items = <AppcastItem>[];
 
       // look for all item elements in the rss/channel
-      document.findAllElements('item').forEach((xml.XmlElement itemElement) {
+      document.findAllElements('item').forEach((XmlElement itemElement) {
         String title;
         String itemDescription;
         String dateString;
@@ -101,15 +101,15 @@ class Appcast {
         String itemVersion;
         String enclosureVersion;
 
-        itemElement.children.forEach((xml.XmlNode childNode) {
-          if (childNode is xml.XmlElement) {
+        itemElement.children.forEach((XmlNode childNode) {
+          if (childNode is XmlElement) {
             final name = childNode.name.toString();
             if (name == AppcastConstants.ElementTitle) {
               title = childNode.text;
             } else if (name == AppcastConstants.ElementDescription) {
               itemDescription = childNode.text;
             } else if (name == AppcastConstants.ElementEnclosure) {
-              childNode.attributes.forEach((xml.XmlAttribute attribute) {
+              childNode.attributes.forEach((XmlAttribute attribute) {
                 if (attribute.name.toString() ==
                     AppcastConstants.AttributeVersion) {
                   enclosureVersion = attribute.value;
@@ -128,8 +128,8 @@ class Appcast {
             } else if (name == AppcastConstants.ElementPubDate) {
               dateString = childNode.text;
             } else if (name == AppcastConstants.ElementTags) {
-              childNode.children.forEach((xml.XmlNode tagChildNode) {
-                if (tagChildNode is xml.XmlElement) {
+              childNode.children.forEach((XmlNode tagChildNode) {
+                if (tagChildNode is XmlElement) {
                   final tagName = tagChildNode.name.toString();
                   tags.add(tagName);
                 }

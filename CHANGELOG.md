@@ -1,6 +1,7 @@
 ## 2.4.0
 
 * Added new language translations for French ('fr') and Portuguese ('pt').
+* Updated the Appcast class to support a newer version of the Xml package.
 
 ## 2.3.0
 
