@@ -193,8 +193,16 @@ UpgradeAlert(messages: MyUpgraderMessages());
 
 ## Language localization
 
-The strings displayed in upgrader are already localized in English, Spanish, and Arabic. New languages will be
+The strings displayed in upgrader are already localized in various languages. New languages will be
 supported in the future with minor updates.
+
+Languages supported:
+* English (en)
+* Arabic (ar)
+* French (fr)
+* Portuguese (pt)
+* Spanish (es)
+
 
 The upgrader package can be supplied with additional languages in your code by extending the `UpgraderMessages` class
 to provide custom values.
