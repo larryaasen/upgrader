@@ -355,7 +355,9 @@ class Upgrader {
       // Get the system locale
       locale = WidgetsBinding.instance.window.locale;
     }
-    final code = locale == null ? 'US' : locale.countryCode;
+    final code = locale == null || locale.countryCode == null
+        ? 'US'
+        : locale.countryCode;
     if (debugLogging) {
       print('upgrader: countryCode: $code');
     }

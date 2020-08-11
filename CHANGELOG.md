@@ -1,3 +1,7 @@
+## 2.4.1
+
+* Fixed issue with default country code
+
 ## 2.4.0
 
 * Added new language translations for French ('fr') and Portuguese ('pt').
