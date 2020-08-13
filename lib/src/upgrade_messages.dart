@@ -113,6 +113,10 @@ class UpgraderMessages {
         message =
             'Há uma nova versão do {{appName}} disponível! A versão {{currentAppStoreVersion}} já está disponível, você tem a {{currentInstalledVersion}}.';
         break;
+      case 'pl':
+        message =
+            'Nowa wersja {{appName}} jest dostępna! Wersja {{currentAppStoreVersion}} jest dostępna, Ty masz {{currentInstalledVersion}}.';
+        break;
     }
     return message;
   }
@@ -137,6 +141,9 @@ class UpgraderMessages {
         break;
       case 'pt':
         message = 'IGNORAR';
+        break;
+      case 'pl':
+        message = 'IGNORUJ';
         break;
     }
     return message;
@@ -163,6 +170,9 @@ class UpgraderMessages {
       case 'pt':
         message = 'MAIS TARDE';
         break;
+      case 'pl':
+        message = 'PÓŹNIEJ';
+        break;
     }
     return message;
   }
@@ -187,6 +197,9 @@ class UpgraderMessages {
         break;
       case 'pt':
         message = 'ATUALIZAR';
+        break;
+      case 'pl':
+        message = 'AKTUALIZUJ';
         break;
     }
     return message;
@@ -213,6 +226,9 @@ class UpgraderMessages {
       case 'pt':
         message = 'Você quer atualizar agora?';
         break;
+      case 'pl':
+        message = 'Czy chciałbyś zaktualizować teraz?';
+        break;
     }
     return message;
   }
@@ -237,6 +253,9 @@ class UpgraderMessages {
         break;
       case 'pt':
         message = 'Atualizar aplicação?';
+        break;
+      case 'pl':
+        message = 'Czy zaktualizować aplikację?';
         break;
     }
     return message;
