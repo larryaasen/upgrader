@@ -479,14 +479,14 @@ void main() {
 
 void verifyMessages(UpgraderMessages messages, String code) {
   expect(messages.languageCode, code);
-  expect(messages.message(UpgraderMessage.body).length > 0, isTrue);
+  expect(messages.message(UpgraderMessage.body).isNotEmpty, isTrue);
   expect(
-      messages.message(UpgraderMessage.buttonTitleIgnore).length > 0, isTrue);
-  expect(messages.message(UpgraderMessage.buttonTitleLater).length > 0, isTrue);
+      messages.message(UpgraderMessage.buttonTitleIgnore).isNotEmpty, isTrue);
+  expect(messages.message(UpgraderMessage.buttonTitleLater).isNotEmpty, isTrue);
   expect(
-      messages.message(UpgraderMessage.buttonTitleUpdate).length > 0, isTrue);
-  expect(messages.message(UpgraderMessage.prompt).length > 0, isTrue);
-  expect(messages.message(UpgraderMessage.title).length > 0, isTrue);
+      messages.message(UpgraderMessage.buttonTitleUpdate).isNotEmpty, isTrue);
+  expect(messages.message(UpgraderMessage.prompt).isNotEmpty, isTrue);
+  expect(messages.message(UpgraderMessage.title).isNotEmpty, isTrue);
 }
 
 class _MyWidget extends StatelessWidget {
