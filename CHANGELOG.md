@@ -1,3 +1,7 @@
+## 2.5.0
+
+* Added new language translations for Polish ('pl') and Korean ('ko').
+
 ## 2.4.1
 
 * Fixed issue with default country code

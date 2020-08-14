@@ -453,7 +453,7 @@ void main() {
     expect(notCalled, true);
   });
 
-  test('test upgrader shouldDisplayUpgrade', () async {
+  test('test upgrader shouldDisplayUpgrade', () {
     final client = MockClient.setupMockClient();
     final upgrader = Upgrader();
     upgrader.client = client;
@@ -465,6 +465,28 @@ void main() {
     upgrader.debugDisplayAlways = false;
     expect(upgrader.shouldDisplayUpgrade(), false);
   });
+
+  test('test UpgraderMessages', () {
+    verifyMessages(UpgraderMessages(code: 'en'), 'en');
+    verifyMessages(UpgraderMessages(code: 'ar'), 'ar');
+    verifyMessages(UpgraderMessages(code: 'es'), 'es');
+    verifyMessages(UpgraderMessages(code: 'fr'), 'fr');
+    verifyMessages(UpgraderMessages(code: 'ko'), 'ko');
+    verifyMessages(UpgraderMessages(code: 'pt'), 'pt');
+    verifyMessages(UpgraderMessages(code: 'pl'), 'pl');
+  });
+}
+
+void verifyMessages(UpgraderMessages messages, String code) {
+  expect(messages.languageCode, code);
+  expect(messages.message(UpgraderMessage.body).length > 0, isTrue);
+  expect(
+      messages.message(UpgraderMessage.buttonTitleIgnore).length > 0, isTrue);
+  expect(messages.message(UpgraderMessage.buttonTitleLater).length > 0, isTrue);
+  expect(
+      messages.message(UpgraderMessage.buttonTitleUpdate).length > 0, isTrue);
+  expect(messages.message(UpgraderMessage.prompt).length > 0, isTrue);
+  expect(messages.message(UpgraderMessage.title).length > 0, isTrue);
 }
 
 class _MyWidget extends StatelessWidget {

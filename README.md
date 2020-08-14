@@ -200,10 +200,10 @@ Languages supported:
 * English (en)
 * Arabic (ar)
 * French (fr)
+* Korean (ko)
+* Polish (pl)
 * Portuguese (pt)
 * Spanish (es)
-* Polish (pl)
-
 
 The upgrader package can be supplied with additional languages in your code by extending the `UpgraderMessages` class
 to provide custom values.
