@@ -202,6 +202,7 @@ Languages supported:
 * French (fr)
 * Portuguese (pt)
 * Spanish (es)
+* Polish (pl)
 
 
 The upgrader package can be supplied with additional languages in your code by extending the `UpgraderMessages` class
