@@ -109,6 +109,10 @@ class UpgraderMessages {
         message =
             'Une nouvelle version de {{appName}} est disponible ! La version {{currentAppStoreVersion}} est maintenant disponible, vous avez la version {{currentInstalledVersion}}.';
         break;
+      case 'de':
+        message =
+            'Eine neue Version von {{appName}} ist verfügbar! Die Version {{currentAppStoreVersion}} ist verfügbar, installiert ist die Version {{currentInstalledVersion}}.';
+        break;
       case 'ko':
         message =
             'Há uma nova versão do {{appName}} disponível! A versão {{currentAppStoreVersion}} já está disponível, você tem a {{currentInstalledVersion}}.';
@@ -143,6 +147,9 @@ class UpgraderMessages {
       case 'fr':
         message = 'IGNORER';
         break;
+      case 'de':
+        message = 'IGNORIEREN';
+        break;
       case 'ko':
         message = '무시';
         break;
@@ -173,6 +180,9 @@ class UpgraderMessages {
         break;
       case 'fr':
         message = 'PLUS TARD';
+        break;
+      case 'de':
+        message = 'SPÄTER';
         break;
       case 'ko':
         message = '나중에';
@@ -205,6 +215,9 @@ class UpgraderMessages {
       case 'fr':
         message = 'MAINTENANT';
         break;
+      case 'de':
+        message = 'AKTUALISIEREN';
+        break;
       case 'ko':
         message = '지금 업데이트';
         break;
@@ -236,6 +249,9 @@ class UpgraderMessages {
       case 'fr':
         message = 'Voulez-vous mettre à jour maintenant?';
         break;
+      case 'de':
+        message = 'Möchtest du jetzt aktualisieren?';
+        break;
       case 'ko':
         message = '지금 업데이트를 시작하시겠습니까?';
         break;
@@ -266,6 +282,9 @@ class UpgraderMessages {
         break;
       case 'fr':
         message = 'Mettre à jour l\'application?';
+        break;
+      case 'de':
+        message = 'App aktualisieren?';
         break;
       case 'ko':
         message = '앱을 업데이트하시겠습니까?';

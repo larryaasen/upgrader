@@ -200,6 +200,7 @@ Languages supported:
 * English (en)
 * Arabic (ar)
 * French (fr)
+* German (de)
 * Korean (ko)
 * Polish (pl)
 * Portuguese (pt)
@@ -252,7 +253,7 @@ UpgradeAlert(messages: UpgraderMessages(code: 'es'));
 
 ## iTunes Search API
 
-There is a class in this Flutter package used by the upgrader widgets to download app details 
+There is a class in this Flutter package used by the upgrader widgets to download app details
 from the
 [iTunes Search API](https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api).
 The class ITunesSearchAPI can be used standalone to query iTunes for app details.
@@ -283,7 +284,7 @@ itunes_lookup bundleId: com.google.Maps
 itunes_lookup trackViewUrl: https://apps.apple.com/us/app/google-maps-transit-food/id585027354?uo=4
 itunes_lookup version: 5.31
 itunes_lookup all results:
-{resultCount: 1, results: 
+{resultCount: 1, results:
 ...
 ```
 
@@ -293,4 +294,3 @@ All [comments](https://github.com/larryaasen/upgrader/issues) and [pull requests
 ## Donations on Flattr
 
 [Please donate to the creator of upgrader!](https://flattr.com/@larryaasen)
-
