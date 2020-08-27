@@ -1,3 +1,7 @@
+## 2.5.1
+
+* Fixed a bug on Android where the alert was displayed without using an Appcast.
+
 ## 2.5.0
 
 * Added new language translations for Polish ('pl') and Korean ('ko').

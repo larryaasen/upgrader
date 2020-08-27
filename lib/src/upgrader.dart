@@ -177,10 +177,10 @@ class Upgrader {
         }
       }
     } else {
-//      // If this platform is not iOS, skip the iTunes lookup
-//      if (!Platform.isIOS) {
-//        return false;
-//      }
+      // If this platform is not iOS, skip the iTunes lookup
+      if (Platform.isAndroid) {
+        return false;
+      }
 
       if (_packageInfo == null || _packageInfo.packageName.isEmpty) {
         return false;
