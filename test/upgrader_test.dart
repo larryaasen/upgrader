@@ -515,26 +515,14 @@ void main() {
     });
 
     test('should return true when bestItem has critical update', () async {
-      final appcast = MockAppcast();
-      const version = '2.0.0';
-
-      when(appcast.bestItem()).thenReturn(
-        AppcastItem(
-          versionString: version,
-          fileURL: 'https://some.fakewebsite.com',
-          tags: [AppcastConstants.ElementCriticalUpdate],
-        ),
-      );
-
       final upgrader = Upgrader()
         ..client = MockClient.setupMockClient()
-        ..appcast = appcast
         ..debugLogging = true
         ..installPackageInfo(
           packageInfo: PackageInfo(
             appName: 'Upgrader',
             packageName: 'com.larryaasen.upgrader',
-            version: version,
+            version: '2.0.0',
             buildNumber: '42',
           ),
         );
