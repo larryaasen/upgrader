@@ -480,7 +480,7 @@ void main() {
   });
 
   group('shouldDisplayUpgrade', () {
-    test('should respect `debugDisplayAlways` property', () {
+    test('should respect debugDisplayAlways property', () {
       final client = MockClient.setupMockClient();
       final upgrader = Upgrader()
         ..client = client
@@ -493,7 +493,7 @@ void main() {
       expect(upgrader.shouldDisplayUpgrade(), false);
     });
 
-    test('should be blocked when version is below minAppVersion', () async {
+    test('should return true when version is below minAppVersion', () async {
       final upgrader = Upgrader()
         ..client = MockClient.setupMockClient()
         ..debugLogging = true
@@ -511,10 +511,10 @@ void main() {
 
       final shouldDisplayUpgrade = upgrader.shouldDisplayUpgrade();
 
-      expect(shouldDisplayUpgrade, true);
+      expect(shouldDisplayUpgrade, isTrue);
     });
 
-    test('should be blocked when bestItem has critical update', () async {
+    test('should return true when bestItem has critical update', () async {
       final appcast = MockAppcast();
       const version = '2.0.0';
 
@@ -543,7 +543,7 @@ void main() {
 
       final shouldDisplayUpgrade = upgrader.shouldDisplayUpgrade();
 
-      expect(shouldDisplayUpgrade, true);
+      expect(shouldDisplayUpgrade, isTrue);
     });
   });
 
