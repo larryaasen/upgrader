@@ -180,10 +180,10 @@ class Upgrader {
         }
       }
     } else {
-//      // If this platform is not iOS, skip the iTunes lookup
-//      if (!Platform.isIOS) {
-//        return false;
-//      }
+      // If this platform is not iOS, skip the iTunes lookup
+      if (Platform.isAndroid) {
+        return false;
+      }
 
       if (_packageInfo == null || _packageInfo.packageName.isEmpty) {
         return false;
@@ -359,7 +359,9 @@ class Upgrader {
       // Get the system locale
       locale = WidgetsBinding.instance.window.locale;
     }
-    final code = locale == null ? 'US' : locale.countryCode;
+    final code = locale == null || locale.countryCode == null
+        ? 'US'
+        : locale.countryCode;
     if (debugLogging) {
       print('upgrader: countryCode: $code');
     }

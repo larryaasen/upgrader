@@ -97,13 +97,29 @@ class UpgraderMessages {
         message =
             'A new version of {{appName}} is available! Version {{currentAppStoreVersion}} is now available-you have {{currentInstalledVersion}}.';
         break;
+      case 'ar':
+        message =
+            'نسخة جديدة من {{appName}} متوفرة! النسخة {{currentAppStoreVersion}} متوفرة الآن, أنت تستخدم النسخة {{currentInstalledVersion}}.';
+        break;
       case 'es':
         message =
             '¡Una nueva versión de {{appName}} está disponible! La versión {{currentAppStoreVersion}} ya está disponible-usted tiene {{currentInstalledVersion}}.';
         break;
-      case 'ar':
+      case 'fr':
         message =
-            'نسخة جديدة من {{appName}} متوفرة! النسخة {{currentAppStoreVersion}} متوفرة الآن, أنت تستخدم النسخة {{currentInstalledVersion}}.';
+            'Une nouvelle version de {{appName}} est disponible ! La version {{currentAppStoreVersion}} est maintenant disponible, vous avez la version {{currentInstalledVersion}}.';
+        break;
+      case 'ko':
+        message =
+            'Há uma nova versão do {{appName}} disponível! A versão {{currentAppStoreVersion}} já está disponível, você tem a {{currentInstalledVersion}}.';
+        break;
+      case 'pt':
+        message =
+            '{{appName}}이 새 버전으로 업데이트되었습니다! 최신 버전 {{currentAppStoreVersion}}으로 업그레이드 가능합니다 - 현재 버전 {{currentInstalledVersion}}.';
+        break;
+      case 'pl':
+        message =
+            'Nowa wersja {{appName}} jest dostępna! Wersja {{currentAppStoreVersion}} jest dostępna, Ty masz {{currentInstalledVersion}}.';
         break;
     }
     return message;
@@ -118,11 +134,23 @@ class UpgraderMessages {
       case 'en':
         message = 'IGNORE';
         break;
+      case 'ar':
+        message = 'تجاهل';
+        break;
       case 'es':
         message = 'IGNORAR';
         break;
-      case 'ar':
-        message = 'تجاهل';
+      case 'fr':
+        message = 'IGNORER';
+        break;
+      case 'ko':
+        message = '무시';
+        break;
+      case 'pt':
+        message = 'IGNORAR';
+        break;
+      case 'pl':
+        message = 'IGNORUJ';
         break;
     }
     return message;
@@ -137,11 +165,23 @@ class UpgraderMessages {
       case 'en':
         message = 'LATER';
         break;
+      case 'ar':
+        message = 'لاحقاً';
+        break;
       case 'es':
         message = 'MÁS TARDE';
         break;
-      case 'ar':
-        message = 'لاحقاً';
+      case 'fr':
+        message = 'PLUS TARD';
+        break;
+      case 'ko':
+        message = '나중에';
+        break;
+      case 'pt':
+        message = 'MAIS TARDE';
+        break;
+      case 'pl':
+        message = 'PÓŹNIEJ';
         break;
     }
     return message;
@@ -156,11 +196,23 @@ class UpgraderMessages {
       case 'en':
         message = 'UPDATE NOW';
         break;
+      case 'ar':
+        message = 'حدث الآن';
+        break;
       case 'es':
         message = 'ACTUALIZAR';
         break;
-      case 'ar':
-        message = 'حدث الآن';
+      case 'fr':
+        message = 'MAINTENANT';
+        break;
+      case 'ko':
+        message = '지금 업데이트';
+        break;
+      case 'pt':
+        message = 'ATUALIZAR';
+        break;
+      case 'pl':
+        message = 'AKTUALIZUJ';
         break;
     }
     return message;
@@ -175,11 +227,23 @@ class UpgraderMessages {
       case 'en':
         message = 'Would you like to update it now?';
         break;
+      case 'ar':
+        message = 'هل تفضل أن يتم التحديث الآن';
+        break;
       case 'es':
         message = '¿Le gustaría actualizar ahora?';
         break;
-      case 'ar':
-        message = 'هل تفضل أن يتم التحديث الآن';
+      case 'fr':
+        message = 'Voulez-vous mettre à jour maintenant?';
+        break;
+      case 'ko':
+        message = '지금 업데이트를 시작하시겠습니까?';
+        break;
+      case 'pt':
+        message = 'Você quer atualizar agora?';
+        break;
+      case 'pl':
+        message = 'Czy chciałbyś zaktualizować teraz?';
         break;
     }
     return message;
@@ -194,11 +258,23 @@ class UpgraderMessages {
       case 'en':
         message = 'Update App?';
         break;
+      case 'ar':
+        message = 'هل تريد تحديث التطبيق؟';
+        break;
       case 'es':
         message = '¿Actualizar la aplicación?';
         break;
-      case 'ar':
-        message = 'هل تريد تحديث التطبيق؟';
+      case 'fr':
+        message = 'Mettre à jour l\'application?';
+        break;
+      case 'ko':
+        message = '앱을 업데이트하시겠습니까?';
+        break;
+      case 'pt':
+        message = 'Atualizar aplicação?';
+        break;
+      case 'pl':
+        message = 'Czy zaktualizować aplikację?';
         break;
     }
     return message;

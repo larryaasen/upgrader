@@ -1,4 +1,4 @@
-package com.larryaasen.upgraderexample
+package com.google.maps
 
 import android.os.Bundle
 
