@@ -203,6 +203,7 @@ Languages supported:
 * Arabic (ar)
 * French (fr)
 * German (de)
+* Italian (it)
 * Korean (ko)
 * Polish (pl)
 * Portuguese (pt)

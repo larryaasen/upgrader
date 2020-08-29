@@ -1,3 +1,7 @@
+## 2.6.0
+
+* Added new language translations for German ('de') and Italian ('it').
+
 ## 2.5.2
 
 * Fixed potential crash when the app name is null.

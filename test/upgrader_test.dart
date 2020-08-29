@@ -472,6 +472,7 @@ void main() {
     verifyMessages(UpgraderMessages(code: 'es'), 'es');
     verifyMessages(UpgraderMessages(code: 'fr'), 'fr');
     verifyMessages(UpgraderMessages(code: 'de'), 'de');
+    verifyMessages(UpgraderMessages(code: 'it'), 'it');
     verifyMessages(UpgraderMessages(code: 'ko'), 'ko');
     verifyMessages(UpgraderMessages(code: 'pt'), 'pt');
     verifyMessages(UpgraderMessages(code: 'pl'), 'pl');
