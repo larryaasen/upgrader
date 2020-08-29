@@ -6,6 +6,8 @@ Flutter package for prompting users to upgrade when there is a newer version of 
 [![CircleCI](https://circleci.com/gh/larryaasen/upgrader.svg?style=svg)](https://circleci.com/gh/larryaasen/upgrader)
 [![codecov](https://codecov.io/gh/larryaasen/upgrader/branch/master/graph/badge.svg)](https://codecov.io/gh/larryaasen/upgrader)
 [![pub package](https://img.shields.io/pub/v/upgrader.svg)](https://pub.dartlang.org/packages/upgrader)
+[![GitHub Stars](https://img.shields.io/github/stars/larryaasen/upgrader.svg)](https://github.com/larryaasen/upgrader/stargazers)
+
 
 When a newer app version is availabe in the app store, a simple alert prompt widget or card is
 displayed. With today's modern app stores, there is little need to persuade users to upgrade
