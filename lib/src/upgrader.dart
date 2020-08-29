@@ -245,11 +245,11 @@ class Upgrader {
 
   String message() {
     var msg = messages.message(UpgraderMessage.body);
-    msg = msg.replaceAll('{{appName}}', appName());
-    msg =
-        msg.replaceAll('{{currentAppStoreVersion}}', currentAppStoreVersion());
+    msg = msg.replaceAll('{{appName}}', appName() ?? '');
     msg = msg.replaceAll(
-        '{{currentInstalledVersion}}', currentInstalledVersion());
+        '{{currentAppStoreVersion}}', currentAppStoreVersion() ?? '');
+    msg = msg.replaceAll(
+        '{{currentInstalledVersion}}', currentInstalledVersion() ?? '');
     return msg;
   }
 

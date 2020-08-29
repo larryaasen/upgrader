@@ -1,3 +1,7 @@
+## 2.5.2
+
+* Fixed potential crash when the app name is null.
+
 ## 2.5.1
 
 * Fixed a bug on Android where the alert was displayed without using an Appcast.
