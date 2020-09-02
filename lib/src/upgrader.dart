@@ -13,6 +13,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:version/version.dart';
 
 import 'appcast.dart';
+import 'extensions/extensions.dart';
 import 'itunes_search_api.dart';
 import 'upgrade_messages.dart';
 
@@ -81,6 +82,9 @@ class Upgrader {
 
   /// Can alert dialog be dismissed on tap outside of the alert dialog. Not used by alert card. (default: false)
   bool canDismissDialog = false;
+
+  /// stop dismiss the alert dialog when press back button. Not used by alert card. (default: false)
+  bool disableBackButton = false;
 
   /// The country code that will override the system locale. Optional. Used only for iOS.
   String countryCode;
@@ -262,7 +266,8 @@ class Upgrader {
               context: context,
               title: messages.message(UpgraderMessage.title),
               message: message(),
-              canDismissDialog: canDismissDialog);
+              canDismissDialog: canDismissDialog,
+              disableBackButton: disableBackButton);
         });
       }
     }
@@ -368,7 +373,8 @@ class Upgrader {
       {@required BuildContext context,
       @required String title,
       @required String message,
-      bool canDismissDialog}) {
+      bool canDismissDialog,
+      bool disableBackButton}) {
     if (debugLogging) {
       print('upgrader: showDialog title: $title');
       print('upgrader: showDialog message: $message');
@@ -408,7 +414,7 @@ class Upgrader {
                     Text(messages.message(UpgraderMessage.buttonTitleUpdate)),
                 onPressed: () => onUserUpdated(context, !blocked())),
           ],
-        );
+        ).disableBackButton(disableBackButton);
       },
     );
   }

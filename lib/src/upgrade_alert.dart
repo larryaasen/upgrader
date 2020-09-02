@@ -50,6 +50,9 @@ class _UpgradeBase extends StatefulWidget {
   /// Can alert dialog be dismissed on tap outside of the alert dialog. Not used by alert card. (default: false)
   final bool canDismissDialog;
 
+  /// stop dismiss the alert dialog when press back button. Not used by alert card. (default: false)
+  final bool disableBackButton;
+
   /// The country code that will override the system locale. Optional. Used only for iOS.
   final String countryCode;
 
@@ -72,6 +75,7 @@ class _UpgradeBase extends StatefulWidget {
     this.showIgnore,
     this.showLater,
     this.canDismissDialog,
+    this.disableBackButton,
     this.countryCode,
     this.minAppVersion,
   }) : super(key: key) {
@@ -113,6 +117,9 @@ class _UpgradeBase extends StatefulWidget {
     }
     if (canDismissDialog != null) {
       Upgrader().canDismissDialog = canDismissDialog;
+    }
+    if (disableBackButton != null) {
+      Upgrader().disableBackButton = disableBackButton;
     }
     if (countryCode != null) {
       Upgrader().countryCode = countryCode;
@@ -293,6 +300,7 @@ class UpgradeAlert extends _UpgradeBase {
     bool showIgnore,
     bool showLater,
     bool canDismissDialog,
+    bool disableBackButton,
     String countryCode,
     String minAppVersion,
   }) : super(
@@ -310,6 +318,7 @@ class UpgradeAlert extends _UpgradeBase {
           showIgnore: showIgnore,
           showLater: showLater,
           canDismissDialog: canDismissDialog,
+          disableBackButton: disableBackButton,
           countryCode: countryCode,
           minAppVersion: minAppVersion,
         );
