@@ -13,7 +13,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:version/version.dart';
 
 import 'appcast.dart';
-import 'extensions/extensions.dart';
 import 'itunes_search_api.dart';
 import 'upgrade_messages.dart';
 
@@ -387,34 +386,37 @@ class Upgrader {
       barrierDismissible: canDismissDialog,
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(message),
-              Padding(
-                  padding: EdgeInsets.only(top: 15.0),
-                  child: Text(messages.message(UpgraderMessage.prompt))),
+        return _DisableBackButton(
+          disable: disableBackButton,
+          child: AlertDialog(
+            title: Text(title),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(message),
+                Padding(
+                    padding: EdgeInsets.only(top: 15.0),
+                    child: Text(messages.message(UpgraderMessage.prompt))),
+              ],
+            ),
+            actions: <Widget>[
+              if (showIgnore)
+                FlatButton(
+                    child: Text(
+                        messages.message(UpgraderMessage.buttonTitleIgnore)),
+                    onPressed: () => onUserIgnored(context, true)),
+              if (showLater)
+                FlatButton(
+                    child: Text(
+                        messages.message(UpgraderMessage.buttonTitleLater)),
+                    onPressed: () => onUserLater(context, true)),
+              FlatButton(
+                  child:
+                      Text(messages.message(UpgraderMessage.buttonTitleUpdate)),
+                  onPressed: () => onUserUpdated(context, !blocked())),
             ],
           ),
-          actions: <Widget>[
-            if (showIgnore)
-              FlatButton(
-                  child:
-                      Text(messages.message(UpgraderMessage.buttonTitleIgnore)),
-                  onPressed: () => onUserIgnored(context, true)),
-            if (showLater)
-              FlatButton(
-                  child:
-                      Text(messages.message(UpgraderMessage.buttonTitleLater)),
-                  onPressed: () => onUserLater(context, true)),
-            FlatButton(
-                child:
-                    Text(messages.message(UpgraderMessage.buttonTitleUpdate)),
-                onPressed: () => onUserUpdated(context, !blocked())),
-          ],
-        ).disableBackButton(disableBackButton);
+        );
       },
     );
   }
@@ -554,5 +556,23 @@ class Upgrader {
         }
       }
     } else {}
+  }
+}
+
+class _DisableBackButton extends StatelessWidget {
+  final Widget child;
+  final bool disable;
+
+  _DisableBackButton({@required this.child, @required this.disable});
+
+  @override
+  Widget build(BuildContext context) {
+    if (disable) {
+      return WillPopScope(
+        child: child,
+        onWillPop: () => Future.value(false),
+      );
+    }
+    return child;
   }
 }
