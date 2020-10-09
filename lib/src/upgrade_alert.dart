@@ -26,6 +26,9 @@ class _UpgradeBase extends StatefulWidget {
   /// For debugging, display logging statements.
   final bool debugLogging;
 
+  /// Duration until alerting user again after later. Overrides `daysToAlertAgain`
+  final Duration durationToAlertAgain;
+
   /// Called when the ignore button is tapped or otherwise activated.
   /// Return false when the default behavior should not execute.
   final BoolCallback onIgnore;
@@ -65,6 +68,7 @@ class _UpgradeBase extends StatefulWidget {
     this.debugDisplayAlways = false,
     this.debugDisplayOnce = false,
     this.debugLogging = false,
+    this.durationToAlertAgain,
     this.onIgnore,
     this.onLater,
     this.onUpdate,
@@ -84,9 +88,6 @@ class _UpgradeBase extends StatefulWidget {
     if (client != null) {
       Upgrader().client = client;
     }
-    if (daysToAlertAgain != null) {
-      Upgrader().daysUntilAlertAgain = daysToAlertAgain;
-    }
     if (debugDisplayAlways != null) {
       Upgrader().debugDisplayAlways = debugDisplayAlways;
     }
@@ -95,6 +96,11 @@ class _UpgradeBase extends StatefulWidget {
     }
     if (debugLogging != null) {
       Upgrader().debugLogging = debugLogging;
+    }
+    if (durationToAlertAgain != null) {
+      Upgrader().durationUntilAlertAgain = durationToAlertAgain;
+    } else if (daysToAlertAgain != null) {
+      Upgrader().durationUntilAlertAgain = Duration(days: daysToAlertAgain);
     }
     if (onIgnore != null) {
       Upgrader().onIgnore = onIgnore;
