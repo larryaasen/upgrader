@@ -5,6 +5,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info/package_info.dart';
@@ -381,6 +382,38 @@ class Upgrader {
       barrierDismissible: canDismissDialog,
       context: context,
       builder: (BuildContext context) {
+        if (Platform.isIOS) {
+          return CupertinoAlertDialog(
+            title: Text(title),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Text(message),
+                Padding(
+                    padding: EdgeInsets.only(top: 15.0),
+                    child: Text(messages.message(UpgraderMessage.prompt))),
+              ],
+            ),
+            actions: <Widget>[
+              if (showIgnore)
+                CupertinoDialogAction(
+                    child: Text(
+                        messages.message(UpgraderMessage.buttonTitleIgnore)),
+                    onPressed: () => onUserIgnored(context, true)),
+              if (showLater)
+                CupertinoDialogAction(
+                    child: Text(
+                        messages.message(UpgraderMessage.buttonTitleLater)),
+                    onPressed: () => onUserLater(context, true)),
+              CupertinoDialogAction(
+                  isDefaultAction: true,
+                  child:
+                      Text(messages.message(UpgraderMessage.buttonTitleUpdate)),
+                  onPressed: () => onUserUpdated(context, !blocked())),
+            ],
+          );
+        }
         return AlertDialog(
           title: Text(title),
           content: Column(
