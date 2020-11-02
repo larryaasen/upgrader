@@ -129,6 +129,10 @@ class UpgraderMessages {
         message =
             'Nowa wersja {{appName}} jest dostępna! Wersja {{currentAppStoreVersion}} jest dostępna, Ty masz {{currentInstalledVersion}}.';
         break;
+      case 'ru':
+        message =
+            'Доступна новая версия приложения {{appName}}! Новая версия: {{currentAppStoreVersion}}, текущая версия: {{currentInstalledVersion}}.';
+        break;
       case 'vi':
         message =
             'Đã có phiên bản mới của {{appName}}. Phiên bản {{currentAppStoreVersion}} đã sẵn sàng, bạn đang dùng {{currentInstalledVersion}}.';
@@ -170,6 +174,9 @@ class UpgraderMessages {
       case 'pl':
         message = 'IGNORUJ';
         break;
+      case 'ru':
+        message = 'НЕТ';
+        break;
       case 'vi':
         message = 'BỎ QUA';
         break;
@@ -209,6 +216,9 @@ class UpgraderMessages {
         break;
       case 'pl':
         message = 'PÓŹNIEJ';
+        break;
+      case 'ru':
+        message = 'ПОЗЖЕ';
         break;
       case 'vi':
         message = 'ĐỂ SAU';
@@ -250,6 +260,9 @@ class UpgraderMessages {
       case 'pl':
         message = 'AKTUALIZUJ';
         break;
+      case 'ru':
+        message = 'ОБНОВИТЬ';
+        break;
       case 'vi':
         message = 'CẬP NHẬT';
         break;
@@ -290,6 +303,9 @@ class UpgraderMessages {
       case 'pl':
         message = 'Czy chciałbyś zaktualizować teraz?';
         break;
+      case 'ru':
+        message = 'Хотите обновить сейчас?';
+        break;
       case 'vi':
         message = 'Bạn có muốn cập nhật ứng dụng?';
         break;
@@ -329,6 +345,9 @@ class UpgraderMessages {
         break;
       case 'pl':
         message = 'Czy zaktualizować aplikację?';
+        break;
+      case 'ru':
+        message = 'Обновить?';
         break;
       case 'vi':
         message = 'Cập nhật ứng dụng?';

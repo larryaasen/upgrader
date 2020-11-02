@@ -207,6 +207,7 @@ Languages supported:
 * Korean (ko)
 * Polish (pl)
 * Portuguese (pt)
+* Russian (ru)
 * Spanish (es)
 * Vietnamese (vi)
 

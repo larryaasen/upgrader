@@ -476,6 +476,7 @@ void main() {
     verifyMessages(UpgraderMessages(code: 'ko'), 'ko');
     verifyMessages(UpgraderMessages(code: 'pt'), 'pt');
     verifyMessages(UpgraderMessages(code: 'pl'), 'pl');
+    verifyMessages(UpgraderMessages(code: 'ru'), 'ru');
     verifyMessages(UpgraderMessages(code: 'vi'), 'vi');
   });
 }
