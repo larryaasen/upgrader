@@ -1,3 +1,7 @@
+## 2.6.2
+
+* Added new language translations for Vietnamese ('vi'), Russian ('ru), Hungarian ('hu'), Turkish ('tr), Indonesian ('id).
+
 ## 2.6.1
 
 * Fixed Portuguese and Korean body messages that were reversed. Thanks to Clare Kang for the fix.
