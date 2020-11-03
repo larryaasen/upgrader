@@ -117,6 +117,10 @@ class UpgraderMessages {
         message =
             'Új verzió érhető el az alkalmazásból {{appName}} ! Az elérhető új verzió: {{currentAppStoreVersion}} - a jelenlegi verzió: {{currentInstalledVersion}}.';
         break;
+      case 'id':
+        message =
+            'Versi terbaru dari {{appName}} tersedia! Versi terbaru saat ini adalah {{currentAppStoreVersion}} - versi anda saat ini adalah {{currentInstalledVersion}}.';
+        break;
       case 'it':
         message =
             'Una nuova versione di {{appName}} è disponibile! La versione {{currentAppStoreVersion}} è ora disponibile, voi avete {{currentInstalledVersion}}.';
@@ -173,6 +177,9 @@ class UpgraderMessages {
       case 'hu':
         message = 'KIHAGYOM';
         break;
+      case 'id':
+        message = 'ABAIKAN';
+        break;
       case 'it':
         message = 'IGNORA';
         break;
@@ -221,6 +228,9 @@ class UpgraderMessages {
         break;
       case 'hu':
         message = 'KÉSŐBB';
+        break;
+      case 'id':
+        message = 'NANTI';
         break;
       case 'it':
         message = 'DOPO';
@@ -271,6 +281,9 @@ class UpgraderMessages {
       case 'hu':
         message = 'FRISSÍTSE MOST';
         break;
+      case 'id':
+        message = 'PERBARUI SEKARANG';
+        break;
       case 'it':
         message = 'AGGIORNA ORA';
         break;
@@ -320,6 +333,9 @@ class UpgraderMessages {
       case 'hu':
         message = 'Akarja most frissíteni?';
         break;
+      case 'id':
+        message = 'Apakah Anda ingin memperbaruinya sekarang?';
+        break;
       case 'it':
         message = 'Ti piacerebbe aggiornare ora?';
         break;
@@ -368,6 +384,9 @@ class UpgraderMessages {
         break;
       case 'hu':
         message = 'FrissÍtés?';
+        break;
+      case 'id':
+        message = 'Perbarui Aplikasi?';
         break;
       case 'it':
         message = 'Aggiornare l\'applicazione?';

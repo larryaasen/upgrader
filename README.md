@@ -204,6 +204,7 @@ Languages supported:
 * French (fr)
 * German (de)
 * Hungarian (hu)
+* Indonesian (id)
 * Italian (it)
 * Korean (ko)
 * Polish (pl)
