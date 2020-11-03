@@ -137,6 +137,10 @@ class UpgraderMessages {
         message =
             'Доступна новая версия приложения {{appName}}! Новая версия: {{currentAppStoreVersion}}, текущая версия: {{currentInstalledVersion}}.';
         break;
+      case 'tr':
+        message =
+            '{{appName}} uygulamanızın yeni bir versiyonu mevcut! Versiyon {{currentAppStoreVersion}} şu anda erişilebilir, mevcut sürümünüz {{currentInstalledVersion}}.';
+        break;
       case 'vi':
         message =
             'Đã có phiên bản mới của {{appName}}. Phiên bản {{currentAppStoreVersion}} đã sẵn sàng, bạn đang dùng {{currentInstalledVersion}}.';
@@ -184,6 +188,9 @@ class UpgraderMessages {
       case 'ru':
         message = 'НЕТ';
         break;
+      case 'tr':
+        message = 'YOKSAY';
+        break;
       case 'vi':
         message = 'BỎ QUA';
         break;
@@ -229,6 +236,9 @@ class UpgraderMessages {
         break;
       case 'ru':
         message = 'ПОЗЖЕ';
+        break;
+      case 'tr':
+        message = 'SONRA';
         break;
       case 'vi':
         message = 'ĐỂ SAU';
@@ -276,6 +286,9 @@ class UpgraderMessages {
       case 'ru':
         message = 'ОБНОВИТЬ';
         break;
+      case 'tr':
+        message = 'ŞİMDİ GÜNCELLE';
+        break;
       case 'vi':
         message = 'CẬP NHẬT';
         break;
@@ -322,6 +335,9 @@ class UpgraderMessages {
       case 'ru':
         message = 'Хотите обновить сейчас?';
         break;
+      case 'tr':
+        message = 'Şimdi güncellemek ister misiniz?';
+        break;
       case 'vi':
         message = 'Bạn có muốn cập nhật ứng dụng?';
         break;
@@ -367,6 +383,9 @@ class UpgraderMessages {
         break;
       case 'ru':
         message = 'Обновить?';
+        break;
+      case 'tr':
+        message = 'Uygulamayı Güncelle?';
         break;
       case 'vi':
         message = 'Cập nhật ứng dụng?';

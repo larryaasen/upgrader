@@ -210,6 +210,7 @@ Languages supported:
 * Portuguese (pt)
 * Russian (ru)
 * Spanish (es)
+* Turkish (tr)
 * Vietnamese (vi)
 
 The upgrader package can be supplied with additional languages in your code by extending the `UpgraderMessages` class
