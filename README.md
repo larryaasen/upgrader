@@ -20,7 +20,7 @@ upgrading.
 The UI comes in two flavors: alert or card. The [UpgradeAlert](#alert-example) class is used to display the
 popup alert prompt, and the [UpgradeCard](#card-example) class is used to display the inline material design card.
 
-The text displayed in the upgrader package is localized in English and Spanish, and supports customization.
+The text displayed in the upgrader package is localized in many languages, and supports customization.
 
 ## Alert Example
 
