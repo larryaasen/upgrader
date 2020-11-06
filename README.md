@@ -106,7 +106,7 @@ UpgradeAlert widget.
 * canDismissDialog: can alert dialog be dismissed on tap outside of the alert dialog, which defaults to ```false``` (not used by alert card)
 * countryCode: the country code that will override the system locale, which defaults to ```null``` (iOS only)
 * minAppVersion: the minimum app version supported by this app. Earlier versions of this app will be forced to update to the current version. Defaults to ```null```.
-* dialogStyle: the upgrade dialog style, either ```material``` or ```cupertino```, defaults to ```material```, used only by UpgradeAlert
+* dialogStyle: the upgrade dialog style, either ```material``` or ```cupertino```, defaults to ```material```, used only by UpgradeAlert, works on Android and iOS.
 
 
 ## Limitations
@@ -114,7 +114,7 @@ These widgets work on both Android and iOS. When running on iOS the App Store wi
 latest app version and will display the prompt at the appropriate times.
 
 On Android, this widget
-does nothing as there is no easy way to query the Google Play Store for metadata about an app.
+does nothing (unless using [appcast](#appcast)) as there is no easy way to query the Google Play Store for metadata about an app.
 Without the metadata, the widget cannot compare the app version with the latest Play Store version.
 It will not disrupt the widget tree and can be
 included in an Android without any issues.
