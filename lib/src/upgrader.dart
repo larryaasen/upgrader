@@ -5,6 +5,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info/package_info.dart';
@@ -18,6 +19,9 @@ import 'upgrade_messages.dart';
 
 /// Signature of callbacks that have no arguments and return bool.
 typedef BoolCallback = bool Function();
+
+/// There are two different dialog styles: Cupertino and Material
+enum UpgradeDialogStyle { cupertino, material }
 
 /// A class to define the configuration for the appcast. The configuration
 /// contains two parts: a URL to the appcast, and a list of supported OS
@@ -88,6 +92,9 @@ class Upgrader {
   /// The minimum app version supported by this app. Earlier versions of this app
   /// will be forced to update to the current version. Optional.
   String minAppVersion;
+
+  /// The upgrade dialog style. Optional. Used only on UpgradeAlert. (default: material)
+  UpgradeDialogStyle dialogStyle = UpgradeDialogStyle.material;
 
   bool _displayed = false;
   bool _initCalled = false;
@@ -381,35 +388,69 @@ class Upgrader {
       barrierDismissible: canDismissDialog,
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(message),
-              Padding(
-                  padding: EdgeInsets.only(top: 15.0),
-                  child: Text(messages.message(UpgraderMessage.prompt))),
-            ],
-          ),
-          actions: <Widget>[
-            if (showIgnore)
-              FlatButton(
-                  child:
-                      Text(messages.message(UpgraderMessage.buttonTitleIgnore)),
-                  onPressed: () => onUserIgnored(context, true)),
-            if (showLater)
-              FlatButton(
-                  child:
-                      Text(messages.message(UpgraderMessage.buttonTitleLater)),
-                  onPressed: () => onUserLater(context, true)),
-            FlatButton(
-                child:
-                    Text(messages.message(UpgraderMessage.buttonTitleUpdate)),
-                onPressed: () => onUserUpdated(context, !blocked())),
-          ],
-        );
+        return dialogStyle == UpgradeDialogStyle.material
+            ? _alertDialog(title, message, context)
+            : _cupertinoAlertDialog(title, message, context);
       },
+    );
+  }
+
+  AlertDialog _alertDialog(String title, String message, BuildContext context) {
+    return AlertDialog(
+      title: Text(title),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Text(message),
+          Padding(
+              padding: EdgeInsets.only(top: 15.0),
+              child: Text(messages.message(UpgraderMessage.prompt))),
+        ],
+      ),
+      actions: <Widget>[
+        if (showIgnore)
+          FlatButton(
+              child: Text(messages.message(UpgraderMessage.buttonTitleIgnore)),
+              onPressed: () => onUserIgnored(context, true)),
+        if (showLater)
+          FlatButton(
+              child: Text(messages.message(UpgraderMessage.buttonTitleLater)),
+              onPressed: () => onUserLater(context, true)),
+        FlatButton(
+            child: Text(messages.message(UpgraderMessage.buttonTitleUpdate)),
+            onPressed: () => onUserUpdated(context, !blocked())),
+      ],
+    );
+  }
+
+  CupertinoAlertDialog _cupertinoAlertDialog(
+      String title, String message, BuildContext context) {
+    return CupertinoAlertDialog(
+      title: Text(title),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Text(message),
+          Padding(
+              padding: EdgeInsets.only(top: 15.0),
+              child: Text(messages.message(UpgraderMessage.prompt))),
+        ],
+      ),
+      actions: <Widget>[
+        if (showIgnore)
+          CupertinoDialogAction(
+              child: Text(messages.message(UpgraderMessage.buttonTitleIgnore)),
+              onPressed: () => onUserIgnored(context, true)),
+        if (showLater)
+          CupertinoDialogAction(
+              child: Text(messages.message(UpgraderMessage.buttonTitleLater)),
+              onPressed: () => onUserLater(context, true)),
+        CupertinoDialogAction(
+            isDefaultAction: true,
+            child: Text(messages.message(UpgraderMessage.buttonTitleUpdate)),
+            onPressed: () => onUserUpdated(context, !blocked())),
+      ],
     );
   }
 

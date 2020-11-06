@@ -58,6 +58,20 @@ class MyApp extends StatelessWidget {
 ![image](screenshots/example1.png)
 
 
+## Cupertino Alert Example
+
+You can also display a Cupertino style dialog by using the dialogStyle parameter.
+```dart
+          body: UpgradeAlert(
+            dialogStyle: UpgradeDialogStyle.cupertino,
+            child: Center(child: Text('Checking...')),
+          )
+```
+
+## Screenshot of Cupertino alert
+
+![image](screenshots/example-cupertino.png)
+
 ## Card Example
 
 Just return an UpgradeCard widget in your build method and a material design card will be displayed
@@ -92,6 +106,8 @@ UpgradeAlert widget.
 * canDismissDialog: can alert dialog be dismissed on tap outside of the alert dialog, which defaults to ```false``` (not used by alert card)
 * countryCode: the country code that will override the system locale, which defaults to ```null``` (iOS only)
 * minAppVersion: the minimum app version supported by this app. Earlier versions of this app will be forced to update to the current version. Defaults to ```null```.
+* dialogStyle: the upgrade dialog style, either ```material``` or ```cupertino```, defaults to ```material```, used only by UpgradeAlert
+
 
 ## Limitations
 These widgets work on both Android and iOS. When running on iOS the App Store will provide the

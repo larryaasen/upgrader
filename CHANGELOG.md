@@ -1,3 +1,7 @@
+## 2.7.0
+
+* Added support for a Cupertino style dialog for UpgradeAlert.
+
 ## 2.6.2
 
 * Added new language translations for Vietnamese ('vi'), Russian ('ru), Hungarian ('hu'), Turkish ('tr), Indonesian ('id).
