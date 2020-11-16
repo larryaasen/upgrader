@@ -1,3 +1,7 @@
+## 2.7.1
+
+* Added extra debug logging.
+
 ## 2.7.0
 
 * Added support for a Cupertino style dialog for UpgradeAlert.

@@ -262,7 +262,11 @@ class Upgrader {
 
   void checkVersion({@required BuildContext context}) {
     if (!_displayed) {
-      if (shouldDisplayUpgrade()) {
+      final shouldDisplay = shouldDisplayUpgrade();
+      if (debugLogging) {
+        print('upgrader: shouldDisplayUpgrade: $shouldDisplay');
+      }
+      if (shouldDisplay) {
         _displayed = true;
         Future.delayed(Duration(milliseconds: 0), () {
           _showDialog(
@@ -280,9 +284,18 @@ class Upgrader {
   }
 
   bool shouldDisplayUpgrade() {
-    // If installed version below minimum app version, or is a critical update,
+    final isBlocked = blocked();
+
+    if (debugLogging) {
+      print('upgrader: blocked: $isBlocked');
+      print('upgrader: debugDisplayAlways: $debugDisplayAlways');
+      print('upgrader: debugDisplayOnce: $debugDisplayOnce');
+      print('upgrader: hasAlerted: $_hasAlerted');
+    }
+
+    // If installed version is below minimum app version, or is critical update,
     // disable ignore and later buttons.
-    if (blocked()) {
+    if (isBlocked) {
       showIgnore = false;
       showLater = false;
     }
@@ -292,7 +305,7 @@ class Upgrader {
     if (!isUpdateAvailable()) {
       return false;
     }
-    if (blocked()) {
+    if (isBlocked) {
       return true;
     }
     if (isTooSoon() || alreadyIgnoredThisVersion()) {
@@ -345,6 +358,7 @@ class Upgrader {
       if (debugLogging) {
         print('upgrader: appStoreVersion: $_appStoreVersion');
         print('upgrader: installedVersion: $_installedVersion');
+        print('upgrader: minAppVersion: $minAppVersion');
         print('upgrader: isUpdateAvailable: $available');
       }
     }
