@@ -1,3 +1,7 @@
+## 2.7.2
+
+* Added a wider version range for package device_info, up to <1.1.0.
+
 ## 2.7.1
 
 * Added extra debug logging.
