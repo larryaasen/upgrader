@@ -57,6 +57,9 @@ class _UpgradeBase extends StatefulWidget {
   /// will be forced to update to the current version. Optional.
   final String minAppVersion;
 
+  /// The upgrade dialog style. Optional. Used only on UpgradeAlert. (default: material)
+  final UpgradeDialogStyle dialogStyle;
+
   _UpgradeBase({
     Key key,
     this.appcastConfig,
@@ -74,6 +77,7 @@ class _UpgradeBase extends StatefulWidget {
     this.canDismissDialog,
     this.countryCode,
     this.minAppVersion,
+    this.dialogStyle = UpgradeDialogStyle.material,
   }) : super(key: key) {
     if (appcastConfig != null) {
       Upgrader().appcastConfig = appcastConfig;
@@ -119,6 +123,9 @@ class _UpgradeBase extends StatefulWidget {
     }
     if (minAppVersion != null) {
       Upgrader().minAppVersion = minAppVersion;
+    }
+    if (dialogStyle != null) {
+      Upgrader().dialogStyle = dialogStyle;
     }
   }
 
@@ -295,6 +302,7 @@ class UpgradeAlert extends _UpgradeBase {
     bool canDismissDialog,
     String countryCode,
     String minAppVersion,
+    UpgradeDialogStyle dialogStyle,
   }) : super(
           key: key,
           appcastConfig: appcastConfig,
@@ -312,6 +320,7 @@ class UpgradeAlert extends _UpgradeBase {
           canDismissDialog: canDismissDialog,
           countryCode: countryCode,
           minAppVersion: minAppVersion,
+          dialogStyle: dialogStyle,
         );
 
   @override

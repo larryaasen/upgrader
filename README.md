@@ -6,6 +6,8 @@ Flutter package for prompting users to upgrade when there is a newer version of 
 [![CircleCI](https://circleci.com/gh/larryaasen/upgrader.svg?style=svg)](https://circleci.com/gh/larryaasen/upgrader)
 [![codecov](https://codecov.io/gh/larryaasen/upgrader/branch/master/graph/badge.svg)](https://codecov.io/gh/larryaasen/upgrader)
 [![pub package](https://img.shields.io/pub/v/upgrader.svg)](https://pub.dartlang.org/packages/upgrader)
+[![GitHub Stars](https://img.shields.io/github/stars/larryaasen/upgrader.svg)](https://github.com/larryaasen/upgrader/stargazers)
+
 
 When a newer app version is availabe in the app store, a simple alert prompt widget or card is
 displayed. With today's modern app stores, there is little need to persuade users to upgrade
@@ -18,7 +20,7 @@ upgrading.
 The UI comes in two flavors: alert or card. The [UpgradeAlert](#alert-example) class is used to display the
 popup alert prompt, and the [UpgradeCard](#card-example) class is used to display the inline material design card.
 
-The text displayed in the upgrader package is localized in English and Spanish, and supports customization.
+The text displayed in the upgrader package is localized in many languages, and supports customization.
 
 ## Alert Example
 
@@ -56,6 +58,20 @@ class MyApp extends StatelessWidget {
 ![image](screenshots/example1.png)
 
 
+## Cupertino Alert Example
+
+You can also display a Cupertino style dialog by using the dialogStyle parameter.
+```dart
+          body: UpgradeAlert(
+            dialogStyle: UpgradeDialogStyle.cupertino,
+            child: Center(child: Text('Checking...')),
+          )
+```
+
+## Screenshot of Cupertino alert
+
+![image](screenshots/example-cupertino.png)
+
 ## Card Example
 
 Just return an UpgradeCard widget in your build method and a material design card will be displayed
@@ -90,13 +106,15 @@ UpgradeAlert widget.
 * canDismissDialog: can alert dialog be dismissed on tap outside of the alert dialog, which defaults to ```false``` (not used by alert card)
 * countryCode: the country code that will override the system locale, which defaults to ```null``` (iOS only)
 * minAppVersion: the minimum app version supported by this app. Earlier versions of this app will be forced to update to the current version. Defaults to ```null```.
+* dialogStyle: the upgrade dialog style, either ```material``` or ```cupertino```, defaults to ```material```, used only by UpgradeAlert, works on Android and iOS.
+
 
 ## Limitations
 These widgets work on both Android and iOS. When running on iOS the App Store will provide the
 latest app version and will display the prompt at the appropriate times.
 
 On Android, this widget
-does nothing as there is no easy way to query the Google Play Store for metadata about an app.
+does nothing (unless using [appcast](#appcast)) as there is no easy way to query the Google Play Store for metadata about an app.
 Without the metadata, the widget cannot compare the app version with the latest Play Store version.
 It will not disrupt the widget tree and can be
 included in an Android without any issues.
@@ -200,10 +218,17 @@ Languages supported:
 * English (en)
 * Arabic (ar)
 * French (fr)
+* German (de)
+* Hungarian (hu)
+* Indonesian (id)
+* Italian (it)
 * Korean (ko)
 * Polish (pl)
 * Portuguese (pt)
+* Russian (ru)
 * Spanish (es)
+* Turkish (tr)
+* Vietnamese (vi)
 
 The upgrader package can be supplied with additional languages in your code by extending the `UpgraderMessages` class
 to provide custom values.
@@ -252,7 +277,7 @@ UpgradeAlert(messages: UpgraderMessages(code: 'es'));
 
 ## iTunes Search API
 
-There is a class in this Flutter package used by the upgrader widgets to download app details 
+There is a class in this Flutter package used by the upgrader widgets to download app details
 from the
 [iTunes Search API](https://affiliate.itunes.apple.com/resources/documentation/itunes-store-web-service-search-api).
 The class ITunesSearchAPI can be used standalone to query iTunes for app details.
@@ -283,7 +308,7 @@ itunes_lookup bundleId: com.google.Maps
 itunes_lookup trackViewUrl: https://apps.apple.com/us/app/google-maps-transit-food/id585027354?uo=4
 itunes_lookup version: 5.31
 itunes_lookup all results:
-{resultCount: 1, results: 
+{resultCount: 1, results:
 ...
 ```
 
@@ -293,4 +318,3 @@ All [comments](https://github.com/larryaasen/upgrader/issues) and [pull requests
 ## Donations on Flattr
 
 [Please donate to the creator of upgrader!](https://flattr.com/@larryaasen)
-

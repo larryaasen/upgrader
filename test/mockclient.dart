@@ -12,7 +12,11 @@ class MockClient extends Mock implements http.Client {
   static http.Client setupMockClient({String country = 'US'}) {
     final client = MockClient();
 
-    final currency = country == 'US' ? 'USD' : country == 'FR' ? 'EUR' : '';
+    final currency = country == 'US'
+        ? 'USD'
+        : country == 'FR'
+            ? 'EUR'
+            : '';
 
     // Use Mockito to return a successful response when it calls the
     // provided http.Client

@@ -30,9 +30,16 @@ class Demo extends StatelessWidget {
         const Locale('ar', ''), // Arabic, no country code
         const Locale('es', ''), // Spanish, no country code
         const Locale('fr', ''), // French, no country code
+        const Locale('de', ''), // German, no country code
+        const Locale('hu', ''), // Hungarian, no country code
+        const Locale('id', ''), // Indonesian, no country code
+        const Locale('it', ''), // Italian, no country code
         const Locale('ko', ''), // Korean, no country code
         const Locale('pt', ''), // Portuguese, no country code
         const Locale('pl', ''), // Polish, no country code
+        const Locale('ru', ''), // Russian, no country code
+        const Locale('tr', ''), // Turkish, no country code
+        const Locale('vi', ''), // Vietnamese, no country code
       ],
     );
   }
@@ -99,8 +106,22 @@ class DemoLocalizationsDelegate
   const DemoLocalizationsDelegate();
 
   @override
-  bool isSupported(Locale locale) =>
-      ['en', 'ar', 'es', 'fr', 'ko', 'pt', 'pl'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => [
+        'en',
+        'ar',
+        'es',
+        'fr',
+        'de',
+        'hu',
+        'id',
+        'it',
+        'ko',
+        'pt',
+        'pl',
+        'ru',
+        'tr',
+        'vi'
+      ].contains(locale.languageCode);
 
   @override
   Future<DemoLocalizations> load(Locale locale) {

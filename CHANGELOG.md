@@ -1,3 +1,31 @@
+## 2.7.2
+
+* Added a wider version range for package device_info, up to <1.1.0.
+
+## 2.7.1
+
+* Added extra debug logging.
+
+## 2.7.0
+
+* Added support for a Cupertino style dialog for UpgradeAlert.
+
+## 2.6.2
+
+* Added new language translations for Vietnamese ('vi'), Russian ('ru), Hungarian ('hu'), Turkish ('tr), Indonesian ('id).
+
+## 2.6.1
+
+* Fixed Portuguese and Korean body messages that were reversed. Thanks to Clare Kang for the fix.
+
+## 2.6.0
+
+* Added new language translations for German ('de') and Italian ('it').
+
+## 2.5.2
+
+* Fixed potential crash when the app name is null.
+
 ## 2.5.1
 
 * Fixed a bug on Android where the alert was displayed without using an Appcast.
