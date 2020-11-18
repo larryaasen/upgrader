@@ -1,3 +1,8 @@
+## 2.7.3
+
+* Added a property to the Upgrader class to allow mocking out Appcast for testing. Thanks
+to [Jonah Walker](https://github.com/supposedlysam-bb) for the update.
+
 ## 2.7.2
 
 * Added a wider version range for package device_info, up to <1.1.0.
