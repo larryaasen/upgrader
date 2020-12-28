@@ -8,7 +8,6 @@ Flutter package for prompting users to upgrade when there is a newer version of 
 [![pub package](https://img.shields.io/pub/v/upgrader.svg)](https://pub.dartlang.org/packages/upgrader)
 [![GitHub Stars](https://img.shields.io/github/stars/larryaasen/upgrader.svg)](https://github.com/larryaasen/upgrader/stargazers)
 
-
 When a newer app version is availabe in the app store, a simple alert prompt widget or card is
 displayed. With today's modern app stores, there is little need to persuade users to upgrade
 because most of them are already using the auto upgrade feature. However, there may be times when
@@ -25,6 +24,7 @@ The text displayed in the upgrader package is localized in many languages, and s
 ## Alert Example
 
 Just wrap your body widget in the UpgradeAlert widget, and it will handle the rest.
+
 ```dart
 import 'package:flutter/material.dart';
 import 'package:upgrader/upgrader.dart';
@@ -57,10 +57,10 @@ class MyApp extends StatelessWidget {
 
 ![image](screenshots/example1.png)
 
-
 ## Cupertino Alert Example
 
 You can also display a Cupertino style dialog by using the dialogStyle parameter.
+
 ```dart
           body: UpgradeAlert(
             dialogStyle: UpgradeDialogStyle.cupertino,
@@ -76,6 +76,7 @@ You can also display a Cupertino style dialog by using the dialogStyle parameter
 
 Just return an UpgradeCard widget in your build method and a material design card will be displayed
 when an update is detected. The widget will have width and height of 0.0 when no update is detected.
+
 ```dart
 return Container(
         margin: EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 0.0),
@@ -91,25 +92,25 @@ return Container(
 The UpgradeAlert widget can be customized by setting parameters in the constructor of the
 UpgradeAlert widget.
 
-* appcastConfig: the appcast configuration, defaults to ```null```
-* client: an HTTP Client that can be replaced for mock testing, defaults to ```null```
-* daysUntilAlertAgain: days until alerting user again, which defaults to ```3```
-* debugDisplayAlways: always force the upgrade to be available, defaults to ```false```
-* debugDisplayOnce: display the upgrade at least once once, defaults to ```false```
-* debugLogging: display logging statements, which defaults to ```false```
-* messages: optional localized messages used for display in upgrader
-* onIgnore: called when the ignore button is tapped, defaults to ```null```
-* onLater: called when the later button is tapped, defaults to ```null```
-* onUpdate: called when the update button is tapped, defaults to ```null```
-* showIgnore: hide or show Ignore button on dialog, which defaults to ```true```
-* showLater: hide or show Later button on dialog, which defaults to ```true```
-* canDismissDialog: can alert dialog be dismissed on tap outside of the alert dialog, which defaults to ```false``` (not used by alert card)
-* countryCode: the country code that will override the system locale, which defaults to ```null``` (iOS only)
-* minAppVersion: the minimum app version supported by this app. Earlier versions of this app will be forced to update to the current version. Defaults to ```null```.
-* dialogStyle: the upgrade dialog style, either ```material``` or ```cupertino```, defaults to ```material```, used only by UpgradeAlert, works on Android and iOS.
-
+- appcastConfig: the appcast configuration, defaults to `null`
+- client: an HTTP Client that can be replaced for mock testing, defaults to `null`
+- daysUntilAlertAgain: days until alerting user again, which defaults to `3`
+- debugDisplayAlways: always force the upgrade to be available, defaults to `false`
+- debugDisplayOnce: display the upgrade at least once once, defaults to `false`
+- debugLogging: display logging statements, which defaults to `false`
+- messages: optional localized messages used for display in upgrader
+- onIgnore: called when the ignore button is tapped, defaults to `null`
+- onLater: called when the later button is tapped, defaults to `null`
+- onUpdate: called when the update button is tapped, defaults to `null`
+- showIgnore: hide or show Ignore button on dialog, which defaults to `true`
+- showLater: hide or show Later button on dialog, which defaults to `true`
+- canDismissDialog: can alert dialog be dismissed on tap outside of the alert dialog, which defaults to `false` (not used by alert card)
+- countryCode: the country code that will override the system locale, which defaults to `null` (iOS only)
+- minAppVersion: the minimum app version supported by this app. Earlier versions of this app will be forced to update to the current version. Defaults to `null`.
+- dialogStyle: the upgrade dialog style, either `material` or `cupertino`, defaults to `material`, used only by UpgradeAlert, works on Android and iOS.
 
 ## Limitations
+
 These widgets work on both Android and iOS. When running on iOS the App Store will provide the
 latest app version and will display the prompt at the appropriate times.
 
@@ -141,6 +142,7 @@ is available on the app store.
 The Appcast class can be used stand alone or as part of Upgrader.
 
 ### Appcast Example
+
 ```dart
 final appcast = Appcast();
 final items = await appcast.parseAppcastItemsFromUri('https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast.xml');
@@ -148,6 +150,7 @@ final bestItem = appcast.bestItem();
 ```
 
 ### Appcast Sample File
+
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
@@ -215,20 +218,22 @@ The strings displayed in upgrader are already localized in various languages. Ne
 supported in the future with minor updates.
 
 Languages supported:
-* English (en)
-* Arabic (ar)
-* French (fr)
-* German (de)
-* Hungarian (hu)
-* Indonesian (id)
-* Italian (it)
-* Korean (ko)
-* Polish (pl)
-* Portuguese (pt)
-* Russian (ru)
-* Spanish (es)
-* Turkish (tr)
-* Vietnamese (vi)
+
+- English (en)
+- Arabic (ar)
+- French (fr)
+- German (de)
+- Hungarian (hu)
+- Indonesian (id)
+- Italian (it)
+- Korean (ko)
+- Polish (pl)
+- Portuguese (pt)
+- Russian (ru)
+- Spanish (es)
+- Turkish (tr)
+- Vietnamese (vi)
+- Catalan (ca)
 
 The upgrader package can be supplied with additional languages in your code by extending the `UpgraderMessages` class
 to provide custom values.
@@ -283,6 +288,7 @@ from the
 The class ITunesSearchAPI can be used standalone to query iTunes for app details.
 
 ### ITunesSearchAPI Example
+
 ```dart
 final iTunes = ITunesSearchAPI();
 final resultsFuture = iTunes.lookupByBundleId('com.google.Maps');
@@ -292,15 +298,20 @@ resultsFuture.then((results) {
 ```
 
 ### Results
+
 [![image](screenshots/results.png)](screenshots/results.png)
 
 ### Command Line App
+
 There is a command line app used to display the results from iTunes Search. The code is located in
 bin/itunes_lookup.dart, and can be run from the command line like this:
+
 ```
 $ dart itunes_lookup.dart bundleid=com.google.Maps
 ```
+
 Results:
+
 ```
 upgrader: download: https://itunes.apple.com/lookup?bundleId=com.google.Maps
 upgrader: response statusCode: 200
@@ -313,6 +324,7 @@ itunes_lookup all results:
 ```
 
 ## Contributing
+
 All [comments](https://github.com/larryaasen/upgrader/issues) and [pull requests](https://github.com/larryaasen/upgrader/pulls) are welcome.
 
 ## Donations on Flattr

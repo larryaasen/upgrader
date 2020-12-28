@@ -149,6 +149,10 @@ class UpgraderMessages {
         message =
             'Đã có phiên bản mới của {{appName}}. Phiên bản {{currentAppStoreVersion}} đã sẵn sàng, bạn đang dùng {{currentInstalledVersion}}.';
         break;
+      case 'ca':
+        message =
+            'Una nova versió de {{appName}} està disponible!! La versió {{currentAppStoreVersion}} ara està disponible mentre que tu tens la versió {{currentInstalledVersion}}.';
+        break;
     }
     return message;
   }
@@ -200,6 +204,9 @@ class UpgraderMessages {
         break;
       case 'vi':
         message = 'BỎ QUA';
+        break;
+      case 'ca':
+        message = 'IGNORAR';
         break;
     }
     return message;
@@ -253,6 +260,9 @@ class UpgraderMessages {
       case 'vi':
         message = 'ĐỂ SAU';
         break;
+      case 'ca':
+        message = 'MÉS TARD';
+        break;
     }
     return message;
   }
@@ -304,6 +314,9 @@ class UpgraderMessages {
         break;
       case 'vi':
         message = 'CẬP NHẬT';
+        break;
+      case 'ca':
+        message = 'ACTUALITZAR ARA';
         break;
     }
     return message;
@@ -357,6 +370,9 @@ class UpgraderMessages {
       case 'vi':
         message = 'Bạn có muốn cập nhật ứng dụng?';
         break;
+      case 'ca':
+        message = 'T\'agradaria actualitzar-la ara?';
+        break;
     }
     return message;
   }
@@ -408,6 +424,9 @@ class UpgraderMessages {
         break;
       case 'vi':
         message = 'Cập nhật ứng dụng?';
+        break;
+      case 'ca':
+        message = 'Actualitzar la aplicació?';
         break;
     }
     return message;

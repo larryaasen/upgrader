@@ -549,6 +549,7 @@ void main() {
     verifyMessages(UpgraderMessages(code: 'ru'), 'ru');
     verifyMessages(UpgraderMessages(code: 'tr'), 'tr');
     verifyMessages(UpgraderMessages(code: 'vi'), 'vi');
+    verifyMessages(UpgraderMessages(code: 'ca'), 'ca');
   });
 }
 
