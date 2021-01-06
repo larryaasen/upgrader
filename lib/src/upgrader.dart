@@ -50,8 +50,8 @@ class Upgrader {
   /// Provide an HTTP Client that can be replaced for mock testing.
   http.Client client = http.Client();
 
-  /// Days until alerting user again
-  int daysUntilAlertAgain = 3;
+  /// Duration until alerting user again
+  Duration durationUntilAlertAgain = Duration(days: 3);
 
   /// For debugging, always force the upgrade to be available.
   bool debugDisplayAlways = false;
@@ -338,7 +338,7 @@ class Upgrader {
     }
 
     final lastAlertedDuration = DateTime.now().difference(_lastTimeAlerted);
-    return lastAlertedDuration.inDays < daysUntilAlertAgain;
+    return lastAlertedDuration < durationUntilAlertAgain;
   }
 
   bool alreadyIgnoredThisVersion() {
