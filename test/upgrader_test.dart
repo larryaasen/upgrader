@@ -476,6 +476,25 @@ void main() {
 
       expect(fakeAppcast.callCount, greaterThan(0));
     });
+
+    test('durationUntilAlertAgain defaults to 3 days', () async {
+      final upgrader = Upgrader();
+      expect(upgrader.durationUntilAlertAgain, Duration(days: 3));
+    });
+
+    test('durationUntilAlertAgain card is valid', () async {
+      final card1 = UpgradeCard();
+      expect(card1.durationToAlertAgain, Duration(days: 3));
+      final card2 = UpgradeCard(durationToAlertAgain: Duration(days: 10));
+      expect(card2.durationToAlertAgain, Duration(days: 10));
+    });
+
+    test('durationUntilAlertAgain alert is valid', () async {
+      final alert1 = UpgradeAlert();
+      expect(alert1.durationToAlertAgain, Duration(days: 3));
+      final alert2 = UpgradeAlert(durationToAlertAgain: Duration(days: 10));
+      expect(alert2.durationToAlertAgain, Duration(days: 10));
+    });
   });
 
   group('shouldDisplayUpgrade', () {

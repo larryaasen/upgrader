@@ -1,3 +1,8 @@
+## 2.8.0
+
+* Changed the parameter daysUntilAlertAgain to durationUntilAlertAgain which is
+a breaking change. Thanks to [José](https://github.com/nwparker) for his contribution.
+
 ## 2.7.3
 
 * Added a property to the Upgrader class to allow mocking out Appcast for testing. Thanks

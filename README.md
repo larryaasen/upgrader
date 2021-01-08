@@ -8,7 +8,6 @@ Flutter package for prompting users to upgrade when there is a newer version of 
 [![pub package](https://img.shields.io/pub/v/upgrader.svg)](https://pub.dartlang.org/packages/upgrader)
 [![GitHub Stars](https://img.shields.io/github/stars/larryaasen/upgrader.svg)](https://github.com/larryaasen/upgrader/stargazers)
 
-
 When a newer app version is availabe in the app store, a simple alert prompt widget or card is
 displayed. With today's modern app stores, there is little need to persuade users to upgrade
 because most of them are already using the auto upgrade feature. However, there may be times when
@@ -93,7 +92,7 @@ UpgradeAlert widget.
 
 * appcastConfig: the appcast configuration, defaults to ```null```
 * client: an HTTP Client that can be replaced for mock testing, defaults to ```null```
-* daysUntilAlertAgain: days until alerting user again, which defaults to ```3```
+* durationUntilAlertAgain: duration until alerting user again, which defaults to ```3 days```
 * debugDisplayAlways: always force the upgrade to be available, defaults to ```false```
 * debugDisplayOnce: display the upgrade at least once once, defaults to ```false```
 * debugLogging: display logging statements, which defaults to ```false```

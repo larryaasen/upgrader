@@ -14,9 +14,6 @@ class _UpgradeBase extends StatefulWidget {
   /// The localized messages used for display in upgrader.
   final UpgraderMessages messages;
 
-  /// Days until alerting user again after later.
-  final int daysToAlertAgain;
-
   /// For debugging, always force the upgrade to be available.
   final bool debugDisplayAlways;
 
@@ -26,8 +23,8 @@ class _UpgradeBase extends StatefulWidget {
   /// For debugging, display logging statements.
   final bool debugLogging;
 
-  /// Duration until alerting user again after later. Overrides `daysToAlertAgain`
-  final Duration durationToAlertAgain;
+  /// Duration until alerting user again after later.
+  Duration get durationToAlertAgain => Upgrader().durationUntilAlertAgain;
 
   /// Called when the ignore button is tapped or otherwise activated.
   /// Return false when the default behavior should not execute.
@@ -67,11 +64,10 @@ class _UpgradeBase extends StatefulWidget {
     Key key,
     this.appcastConfig,
     this.messages,
-    this.daysToAlertAgain = 3,
     this.debugDisplayAlways = false,
     this.debugDisplayOnce = false,
     this.debugLogging = false,
-    this.durationToAlertAgain,
+    Duration durationToAlertAgain = const Duration(days: 3),
     this.onIgnore,
     this.onLater,
     this.onUpdate,
@@ -103,8 +99,6 @@ class _UpgradeBase extends StatefulWidget {
     }
     if (durationToAlertAgain != null) {
       Upgrader().durationUntilAlertAgain = durationToAlertAgain;
-    } else if (daysToAlertAgain != null) {
-      Upgrader().durationUntilAlertAgain = Duration(days: daysToAlertAgain);
     }
     if (onIgnore != null) {
       Upgrader().onIgnore = onIgnore;
@@ -171,7 +165,6 @@ class UpgradeCard extends _UpgradeBase {
     Key key,
     AppcastConfiguration appcastConfig,
     UpgraderMessages messages,
-    int daysToAlertAgain,
     bool debugAlwaysUpgrade,
     bool debugDisplayOnce,
     bool debugLogging,
@@ -189,7 +182,6 @@ class UpgradeCard extends _UpgradeBase {
           key: key,
           appcastConfig: appcastConfig,
           messages: messages,
-          daysToAlertAgain: daysToAlertAgain,
           debugDisplayAlways: debugAlwaysUpgrade,
           debugDisplayOnce: debugDisplayOnce,
           debugLogging: debugLogging,
@@ -297,7 +289,6 @@ class UpgradeAlert extends _UpgradeBase {
     AppcastConfiguration appcastConfig,
     UpgraderMessages messages,
     this.child,
-    int daysToAlertAgain,
     bool debugAlwaysUpgrade,
     bool debugDisplayOnce,
     bool debugLogging,
@@ -316,7 +307,6 @@ class UpgradeAlert extends _UpgradeBase {
           key: key,
           appcastConfig: appcastConfig,
           messages: messages,
-          daysToAlertAgain: daysToAlertAgain,
           debugDisplayAlways: debugAlwaysUpgrade,
           debugDisplayOnce: debugDisplayOnce,
           debugLogging: debugLogging,
