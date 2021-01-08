@@ -2,6 +2,7 @@
  * Copyright (c) 2018 Larry Aasen. All rights reserved.
  */
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -154,6 +155,79 @@ void main() {
     expect(notCalled, true);
   });
 
+  testWidgets('test UpgradeWidget Cupertino', (WidgetTester tester) async {
+    final client = MockClient.setupMockClient();
+    final upgrader = Upgrader();
+    upgrader.client = client;
+    upgrader.debugLogging = true;
+
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '0.9.9',
+            buildNumber: '400'));
+    await upgrader.initialize();
+
+    var called = false;
+    var notCalled = true;
+    upgrader.onUpdate = () {
+      called = true;
+      return true;
+    };
+    upgrader.onIgnore = () {
+      notCalled = false;
+      return true;
+    };
+    upgrader.onLater = () {
+      notCalled = false;
+      return true;
+    };
+
+    expect(upgrader.isUpdateAvailable(), true);
+    expect(upgrader.isTooSoon(), false);
+
+    expect(upgrader.messages, isNotNull);
+
+    expect(upgrader.messages.buttonTitleIgnore, 'IGNORE');
+    expect(upgrader.messages.buttonTitleLater, 'LATER');
+    expect(upgrader.messages.buttonTitleUpdate, 'UPDATE NOW');
+
+    upgrader.messages = MyUpgraderMessages();
+
+    expect(upgrader.messages.buttonTitleIgnore, 'aaa');
+    expect(upgrader.messages.buttonTitleLater, 'bbb');
+    expect(upgrader.messages.buttonTitleUpdate, 'ccc');
+
+    await tester.pumpWidget(_MyWidget(
+      dialogStyle: UpgradeDialogStyle.cupertino,
+    ));
+
+    expect(find.text('Upgrader test'), findsOneWidget);
+    expect(find.text('Upgrading'), findsOneWidget);
+
+    // Pump the UI so the upgrader can display its dialog
+    await tester.pumpAndSettle();
+    await tester.pumpAndSettle();
+
+    expect(upgrader.isTooSoon(), true);
+
+    expect(find.text(upgrader.messages.title), findsOneWidget);
+    expect(find.text(upgrader.message()), findsOneWidget);
+    expect(find.text(upgrader.messages.prompt), findsOneWidget);
+    expect(find.byType(CupertinoDialogAction), findsNWidgets(3));
+    expect(find.text(upgrader.messages.buttonTitleIgnore), findsOneWidget);
+    expect(find.text(upgrader.messages.buttonTitleLater), findsOneWidget);
+    expect(find.text(upgrader.messages.buttonTitleUpdate), findsOneWidget);
+
+    await tester.tap(find.text(upgrader.messages.buttonTitleUpdate));
+    await tester.pumpAndSettle();
+    expect(find.text(upgrader.messages.buttonTitleIgnore), findsNothing);
+    expect(find.text(upgrader.messages.buttonTitleLater), findsNothing);
+    expect(find.text(upgrader.messages.buttonTitleUpdate), findsNothing);
+    expect(called, true);
+    expect(notCalled, true);
+  });
   testWidgets('test UpgradeWidget ignore', (WidgetTester tester) async {
     final client = MockClient.setupMockClient();
     final upgrader = Upgrader();
@@ -584,8 +658,10 @@ void verifyMessages(UpgraderMessages messages, String code) {
 }
 
 class _MyWidget extends StatelessWidget {
+  final dialogStyle;
   const _MyWidget({
     Key key,
+    this.dialogStyle = UpgradeDialogStyle.material,
   }) : super(key: key);
 
   @override
@@ -598,6 +674,7 @@ class _MyWidget extends StatelessWidget {
         ),
         body: UpgradeAlert(
             debugLogging: true,
+            dialogStyle: dialogStyle,
             child: Column(
               children: <Widget>[Text('Upgrading')],
             )),
