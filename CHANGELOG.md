@@ -2,6 +2,7 @@
 
 * Changed the parameter daysUntilAlertAgain to durationUntilAlertAgain which is
 a breaking change. Thanks to [José](https://github.com/nwparker) for his contribution.
+* Updated the Android example to AndroidX.
 
 ## 2.7.3
 
