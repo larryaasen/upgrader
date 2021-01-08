@@ -140,6 +140,11 @@ class Upgrader {
     _initCalled = true;
 
     messages ??= UpgraderMessages();
+    if (messages.languageCode == null || messages.languageCode.isEmpty) {
+      print('upgrader: error -> languageCode is empty');
+    } else if (debugLogging) {
+      print('upgrader: languageCode: ${messages.languageCode}');
+    }
 
     await _getSavedPrefs();
 
