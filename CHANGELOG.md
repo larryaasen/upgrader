@@ -3,6 +3,8 @@
 * Changed the parameter daysUntilAlertAgain to durationUntilAlertAgain which is
 a breaking change. Thanks to [José](https://github.com/nwparker) for his contribution.
 * Updated the Android example to AndroidX.
+* Added extra debug logging for language code.
+* Moved classes AlertStyleWidget, UpgradeBase, and UpgradeCard into their own Dart files.
 
 ## 2.7.3
 
