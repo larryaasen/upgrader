@@ -7,6 +7,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:upgrader/upgrader.dart';
 
 void main() {
+  test('testing UpgraderMessages valid', () async {
+    expect(UpgraderMessages(), isNotNull);
+    expect(() => UpgraderMessages(code: null), isNotNull);
+    expect(() => UpgraderMessages(code: ''), throwsAssertionError);
+    expect(() => UpgraderMessages(code: '0'), isNotNull);
+  });
+
   testWidgets('test UpgraderMessages context', (WidgetTester tester) async {
     final messages = UpgraderMessages();
     expect(messages, isNotNull);

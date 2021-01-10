@@ -44,7 +44,9 @@ class UpgraderMessages {
   final String languageCode;
 
   /// Provide a [code] to override the system-reported default locale.
-  UpgraderMessages({String code}) : languageCode = code ?? findLanguageCode();
+  UpgraderMessages({String code}) : languageCode = code ?? findLanguageCode() {
+    assert(languageCode != null && languageCode.isNotEmpty);
+  }
 
   /// Override the message function to provide custom language localization.
   String message(UpgraderMessage messageKey) {
@@ -76,7 +78,11 @@ class UpgraderMessages {
       // Get the system locale
       locale = WidgetsBinding.instance.window.locale;
     }
-    final code = locale == null ? 'en' : locale.languageCode;
+    final code = locale == null ||
+            locale.languageCode == null ||
+            locale.languageCode.isEmpty
+        ? 'en'
+        : locale.languageCode;
     return code;
   }
 

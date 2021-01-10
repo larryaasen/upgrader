@@ -153,6 +153,7 @@ class Upgrader {
       if (debugLogging) {
         print(
             'upgrader: package info packageName: ${_packageInfo.packageName}');
+        print('upgrader: package info appName: ${_packageInfo.appName}');
         print('upgrader: package info version: ${_packageInfo.version}');
       }
     }
@@ -197,12 +198,17 @@ class Upgrader {
         return false;
       }
 
-      if (_packageInfo == null || _packageInfo.packageName.isEmpty) {
+      if (_packageInfo == null ||
+          _packageInfo.packageName == null ||
+          _packageInfo.packageName.isEmpty) {
         return false;
       }
 
       // The  country code of the locale, defaulting to `US`.
       final code = countryCode ?? findCountryCode();
+      if (debugLogging) {
+        print('upgrader: countryCode: $code');
+      }
 
       final iTunes = ITunesSearchAPI();
       iTunes.client = client;
@@ -352,7 +358,15 @@ class Upgrader {
   }
 
   bool isUpdateAvailable() {
+    if (debugLogging) {
+      print('upgrader: appStoreVersion: $_appStoreVersion');
+      print('upgrader: installedVersion: $_installedVersion');
+      print('upgrader: minAppVersion: $minAppVersion');
+    }
     if (_appStoreVersion == null || _installedVersion == null) {
+      if (debugLogging) {
+        print('upgrader: isUpdateAvailable: false');
+      }
       return false;
     }
 
@@ -362,13 +376,9 @@ class Upgrader {
 
       final available = appStoreVersion > installedVersion;
       _updateAvailable = available ? _appStoreVersion : null;
-
-      if (debugLogging) {
-        print('upgrader: appStoreVersion: $_appStoreVersion');
-        print('upgrader: installedVersion: $_installedVersion');
-        print('upgrader: minAppVersion: $minAppVersion');
-        print('upgrader: isUpdateAvailable: $available');
-      }
+    }
+    if (debugLogging) {
+      print('upgrader: isUpdateAvailable: ${_updateAvailable != null}');
     }
     return _updateAvailable != null;
   }
@@ -387,9 +397,6 @@ class Upgrader {
     final code = locale == null || locale.countryCode == null
         ? 'US'
         : locale.countryCode;
-    if (debugLogging) {
-      print('upgrader: countryCode: $code');
-    }
     return code;
   }
 

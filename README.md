@@ -107,6 +107,12 @@ UpgradeAlert widget.
 * minAppVersion: the minimum app version supported by this app. Earlier versions of this app will be forced to update to the current version. Defaults to ```null```.
 * dialogStyle: the upgrade dialog style, either ```material``` or ```cupertino```, defaults to ```material```, used only by UpgradeAlert, works on Android and iOS.
 
+## iOS Country Code
+
+When your app is not in the iOS `US` App Store, which is the default, you must use
+the `countryCode` parameter mentioned above. The upgrader package does not know
+which country app store to use because it is not provided by Apple. It assumes
+the app is in the `US` App Store.
 
 ## Limitations
 These widgets work on both Android and iOS. When running on iOS the App Store will provide the

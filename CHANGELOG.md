@@ -1,3 +1,8 @@
+## 2.8.1
+
+* Improved error checking on UpgraderMessages language code.
+* Added extra debug logging.
+
 ## 2.8.0
 
 * Changed the parameter daysUntilAlertAgain to durationUntilAlertAgain which is

@@ -625,6 +625,25 @@ void main() {
 
       expect(shouldDisplayUpgrade, isTrue);
     });
+
+    test('packageInfo is empty', () async {
+      final upgrader = Upgrader()
+        ..client = MockClient.setupMockClient()
+        ..debugLogging = true
+        ..installPackageInfo(
+          packageInfo: PackageInfo(
+            appName: null,
+            packageName: null,
+            version: null,
+            buildNumber: null,
+          ),
+        );
+
+      await upgrader.initialize();
+      expect(upgrader.shouldDisplayUpgrade(), isFalse);
+      expect(upgrader.appName(), isNull);
+      expect(upgrader.currentInstalledVersion(), isNull);
+    });
   });
 
   test('test UpgraderMessages', () {

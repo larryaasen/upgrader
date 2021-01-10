@@ -27,7 +27,11 @@ void main(List<String> arguments) {
 
   final iTunes = ITunesSearchAPI();
   iTunes.debugEnabled = true;
-  final resultsFuture = iTunes.lookupByBundleId(lookupBundleId);
+  final countryCode = 'US';
+  final resultsFuture = iTunes.lookupByBundleId(
+    lookupBundleId,
+    country: countryCode,
+  );
   resultsFuture.then((results) {
     final bundleId = ITunesResults.bundleId(results);
     final trackViewUrl = ITunesResults.trackViewUrl(results);
