@@ -1,3 +1,8 @@
+## 2.8.2
+
+* Fixed issue with language code that was not supported. It now defaults to 'en' English.
+* Added Codemagic CI configuration file.
+
 ## 2.8.1
 
 * Improved error checking on UpgraderMessages language code.

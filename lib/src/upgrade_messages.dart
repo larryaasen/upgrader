@@ -99,10 +99,6 @@ class UpgraderMessages {
   String get body {
     String message;
     switch (languageCode) {
-      case 'en':
-        message =
-            'A new version of {{appName}} is available! Version {{currentAppStoreVersion}} is now available-you have {{currentInstalledVersion}}.';
-        break;
       case 'ar':
         message =
             'نسخة جديدة من {{appName}} متوفرة! النسخة {{currentAppStoreVersion}} متوفرة الآن, أنت تستخدم النسخة {{currentInstalledVersion}}.';
@@ -155,6 +151,11 @@ class UpgraderMessages {
         message =
             'Đã có phiên bản mới của {{appName}}. Phiên bản {{currentAppStoreVersion}} đã sẵn sàng, bạn đang dùng {{currentInstalledVersion}}.';
         break;
+      case 'en':
+      default:
+        message =
+            'A new version of {{appName}} is available! Version {{currentAppStoreVersion}} is now available-you have {{currentInstalledVersion}}.';
+        break;
     }
     return message;
   }
@@ -165,9 +166,6 @@ class UpgraderMessages {
   String get buttonTitleIgnore {
     String message;
     switch (languageCode) {
-      case 'en':
-        message = 'IGNORE';
-        break;
       case 'ar':
         message = 'تجاهل';
         break;
@@ -207,6 +205,10 @@ class UpgraderMessages {
       case 'vi':
         message = 'BỎ QUA';
         break;
+      case 'en':
+      default:
+        message = 'IGNORE';
+        break;
     }
     return message;
   }
@@ -217,9 +219,6 @@ class UpgraderMessages {
   String get buttonTitleLater {
     String message;
     switch (languageCode) {
-      case 'en':
-        message = 'LATER';
-        break;
       case 'ar':
         message = 'لاحقاً';
         break;
@@ -259,6 +258,10 @@ class UpgraderMessages {
       case 'vi':
         message = 'ĐỂ SAU';
         break;
+      case 'en':
+      default:
+        message = 'LATER';
+        break;
     }
     return message;
   }
@@ -269,9 +272,6 @@ class UpgraderMessages {
   String get buttonTitleUpdate {
     String message;
     switch (languageCode) {
-      case 'en':
-        message = 'UPDATE NOW';
-        break;
       case 'ar':
         message = 'حدث الآن';
         break;
@@ -311,6 +311,10 @@ class UpgraderMessages {
       case 'vi':
         message = 'CẬP NHẬT';
         break;
+      case 'en':
+      default:
+        message = 'UPDATE NOW';
+        break;
     }
     return message;
   }
@@ -321,9 +325,6 @@ class UpgraderMessages {
   String get prompt {
     String message;
     switch (languageCode) {
-      case 'en':
-        message = 'Would you like to update it now?';
-        break;
       case 'ar':
         message = 'هل تفضل أن يتم التحديث الآن';
         break;
@@ -363,6 +364,10 @@ class UpgraderMessages {
       case 'vi':
         message = 'Bạn có muốn cập nhật ứng dụng?';
         break;
+      case 'en':
+      default:
+        message = 'Would you like to update it now?';
+        break;
     }
     return message;
   }
@@ -373,9 +378,6 @@ class UpgraderMessages {
   String get title {
     String message;
     switch (languageCode) {
-      case 'en':
-        message = 'Update App?';
-        break;
       case 'ar':
         message = 'هل تريد تحديث التطبيق؟';
         break;
@@ -414,6 +416,10 @@ class UpgraderMessages {
         break;
       case 'vi':
         message = 'Cập nhật ứng dụng?';
+        break;
+      case 'en':
+      default:
+        message = 'Update App?';
         break;
     }
     return message;

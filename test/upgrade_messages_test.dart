@@ -53,4 +53,21 @@ void main() {
     expect(messages.prompt, '¿Le gustaría actualizar ahora?');
     expect(messages.title, '¿Actualizar la aplicación?');
   });
+
+  test('test UpgraderMessages unknown language code', () {
+    final bb = UpgraderMessages(code: 'bb'); // unknown language code
+    final en = UpgraderMessages(code: 'en'); // English language code
+
+    expect(bb.message(UpgraderMessage.body), en.message(UpgraderMessage.body));
+    expect(bb.message(UpgraderMessage.buttonTitleIgnore),
+        en.message(UpgraderMessage.buttonTitleIgnore));
+    expect(bb.message(UpgraderMessage.buttonTitleLater),
+        en.message(UpgraderMessage.buttonTitleLater));
+    expect(bb.message(UpgraderMessage.buttonTitleUpdate),
+        en.message(UpgraderMessage.buttonTitleUpdate));
+    expect(
+        bb.message(UpgraderMessage.prompt), en.message(UpgraderMessage.prompt));
+    expect(
+        bb.message(UpgraderMessage.title), en.message(UpgraderMessage.title));
+  });
 }
