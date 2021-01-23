@@ -321,6 +321,6 @@ itunes_lookup all results:
 ## Contributing
 All [comments](https://github.com/larryaasen/upgrader/issues) and [pull requests](https://github.com/larryaasen/upgrader/pulls) are welcome.
 
-## Donations on Flattr
+## Donations / Sponsor
 
-[Please donate to the creator of upgrader!](https://flattr.com/@larryaasen)
+Please sponsor or donate to the creator of upgrader on [Flattr](https://flattr.com/@larryaasen) or [Patreon](https://www.patreon.com/larryaasen).
