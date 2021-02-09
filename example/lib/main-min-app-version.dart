@@ -28,15 +28,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Upgrader Example',
       home: Scaffold(
-          appBar: AppBar(
-            title: Text('Upgrader Example'),
-          ),
-          body: UpgradeAlert(
-            appcastConfig: cfg,
-            debugLogging: true,
-            child: Center(child: Text('Checking...')),
-            minAppVersion: '1.1.0',
-          )),
+        appBar: AppBar(
+          title: Text('Upgrader Example'),
+        ),
+        body: UpgradeAlert(
+          appcastConfig: cfg,
+          debugLogging: true,
+          child: Center(child: Text('Checking...')),
+          minAppVersion: '1.1.0',
+        ),
+      ),
     );
   }
 }

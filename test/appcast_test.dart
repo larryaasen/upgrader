@@ -149,7 +149,8 @@ Future<http.Client> setupMockClient() async {
   // provided http.Client
   final testFile = await getTestFile();
   final contents = await testFile.readAsString();
-  when(client.get('https://sparkle-project.org/test/testappcast.xml'))
+  when(client
+          .get(Uri.parse('https://sparkle-project.org/test/testappcast.xml')))
       .thenAnswer((_) async => http.Response(contents, 200));
 
   return client;

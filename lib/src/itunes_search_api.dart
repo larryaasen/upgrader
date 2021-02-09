@@ -74,7 +74,7 @@ class ITunesSearchAPI {
   /// Example: look up Google Maps iOS App:
   /// ```lookupURLByBundleId('com.google.Maps');```
   /// ```lookupURLByBundleId('com.google.Maps', country: 'FR');```
-  String lookupURLByBundleId(String bundleId, {String country = 'US'}) {
+  Uri lookupURLByBundleId(String bundleId, {String country = 'US'}) {
     if (bundleId == null || bundleId.isEmpty) {
       return null;
     }
@@ -86,7 +86,7 @@ class ITunesSearchAPI {
   /// Example: look up Jack Johnson by iTunes ID: ```lookupURLById('909253');```
   /// Example: look up Google Maps iOS App: ```lookupURLById('585027354');```
   /// Example: look up Google Maps iOS App: ```lookupURLById('585027354', country: 'FR');```
-  String lookupURLById(String id, {String country = 'US'}) {
+  Uri lookupURLById(String id, {String country = 'US'}) {
     if (id == null || id.isEmpty) {
       return null;
     }
@@ -95,7 +95,7 @@ class ITunesSearchAPI {
   }
 
   /// Look up URL by QSP.
-  String lookupURLByQSP(Map<String, String> qsp) {
+  Uri lookupURLByQSP(Map<String, String> qsp) {
     if (qsp == null || qsp.isEmpty) {
       return null;
     }
@@ -104,7 +104,7 @@ class ITunesSearchAPI {
     qsp.forEach((key, value) => parameters.add('$key=$value'));
     final finalParameters = parameters.join('&');
 
-    return '$lookupPrefixURL?$finalParameters';
+    return Uri.parse('$lookupPrefixURL?$finalParameters');
   }
 
   Map _decodeResults(String jsonResponse) {

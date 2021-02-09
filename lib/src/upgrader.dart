@@ -389,7 +389,7 @@ class Upgrader {
   String findCountryCode({BuildContext context}) {
     Locale locale;
     if (context != null) {
-      locale = Localizations.localeOf(context, nullOk: true);
+      locale = Localizations.maybeLocaleOf(context);
     } else {
       // Get the system locale
       locale = WidgetsBinding.instance.window.locale;
@@ -438,14 +438,14 @@ class Upgrader {
       ),
       actions: <Widget>[
         if (showIgnore)
-          FlatButton(
+          TextButton(
               child: Text(messages.message(UpgraderMessage.buttonTitleIgnore)),
               onPressed: () => onUserIgnored(context, true)),
         if (showLater)
-          FlatButton(
+          TextButton(
               child: Text(messages.message(UpgraderMessage.buttonTitleLater)),
               onPressed: () => onUserLater(context, true)),
-        FlatButton(
+        TextButton(
             child: Text(messages.message(UpgraderMessage.buttonTitleUpdate)),
             onPressed: () => onUserUpdated(context, !blocked())),
       ],

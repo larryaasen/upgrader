@@ -58,7 +58,7 @@ class Appcast {
 
     http.Response response;
     try {
-      response = await client.get(appCastURL);
+      response = await client.get(Uri.parse(appCastURL));
     } catch (e) {
       print(e);
       return null;

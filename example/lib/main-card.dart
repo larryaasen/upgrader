@@ -28,16 +28,19 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Upgrader Example',
       home: Scaffold(
-          appBar: AppBar(
-            title: Text('Upgrader Example'),
+        appBar: AppBar(
+          title: Text('Upgrader Example'),
+        ),
+        body: Center(
+          child: Container(
+            margin: EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 0.0),
+            child: UpgradeCard(
+              appcastConfig: cfg,
+              debugLogging: true,
+            ),
           ),
-          body: Center(
-              child: Container(
-                  margin: EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 0.0),
-                  child: UpgradeCard(
-                    appcastConfig: cfg,
-                    debugLogging: true,
-                  )))),
+        ),
+      ),
     );
   }
 }

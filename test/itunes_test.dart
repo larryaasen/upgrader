@@ -19,12 +19,16 @@ void main() {
 
     expect(
         iTunes.lookupURLByBundleId('com.google.Maps'),
-        equals(
-            'https://itunes.apple.com/lookup?bundleId=com.google.Maps&country=US'));
-    expect(iTunes.lookupURLById('585027354'),
-        equals('https://itunes.apple.com/lookup?id=585027354&country=US'));
-    expect(iTunes.lookupURLByQSP({'id': '909253', 'entity': 'album'}),
-        equals('https://itunes.apple.com/lookup?id=909253&entity=album'));
+        equals(Uri.parse(
+            'https://itunes.apple.com/lookup?bundleId=com.google.Maps&country=US')));
+    expect(
+        iTunes.lookupURLById('585027354'),
+        equals(Uri.parse(
+            'https://itunes.apple.com/lookup?id=585027354&country=US')));
+    expect(
+        iTunes.lookupURLByQSP({'id': '909253', 'entity': 'album'}),
+        equals(Uri.parse(
+            'https://itunes.apple.com/lookup?id=909253&entity=album')));
   });
 
   test('testing lookupByBundleId', () async {
