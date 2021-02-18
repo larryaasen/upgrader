@@ -1,3 +1,10 @@
+## 3.0.0
+
+* Migrated to null safety.
+* Upgraded these packages to null safety: device_info, http, package_info, shared_preferences, url_launcher, xml, mockito, pedantic.
+* Still waiting to migrate package version to null safety.
+* Removed reference to unused package flutter_device_locale.
+
 ## 2.8.2
 
 * Fixed issue with language code that was not supported. It now defaults to 'en' English.

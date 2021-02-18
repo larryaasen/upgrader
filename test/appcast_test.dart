@@ -37,7 +37,7 @@ void main() {
     final appcast = Appcast();
     var testFile = await getTestFile();
     final items = await appcast.parseAppcastItemsFromFile(testFile);
-    validateItems(items, appcast);
+    validateItems(items!, appcast);
   });
 
   test('testing Appcast ', () async {
@@ -45,7 +45,7 @@ void main() {
     final appcast = Appcast(client: client);
     final items = await appcast.parseAppcastItemsFromUri(
         'https://sparkle-project.org/test/testappcast.xml');
-    validateItems(items, appcast);
+    validateItems(items!, appcast);
   });
 
   test('testing Appcast host', () async {
@@ -122,7 +122,7 @@ void validateItems(List<AppcastItem> items, Appcast appcast) {
   expect(items[3].hostSupportsItem(osVersion: '2.0.1'), equals(false));
   expect(items[3].osString, isNull);
 
-  final bestItem = appcast.bestItem();
+  final bestItem = appcast.bestItem()!;
   expect(bestItem, isNotNull);
   expect(bestItem.versionString, equals('5.0'));
   expect(bestItem.hostSupportsItem(osVersion: '0.0.1'), equals(true));
@@ -149,7 +149,8 @@ Future<http.Client> setupMockClient() async {
   // provided http.Client
   final testFile = await getTestFile();
   final contents = await testFile.readAsString();
-  when(client.get('https://sparkle-project.org/test/testappcast.xml'))
+  when(client
+          .get(Uri.parse('https://sparkle-project.org/test/testappcast.xml')))
       .thenAnswer((_) async => http.Response(contents, 200));
 
   return client;

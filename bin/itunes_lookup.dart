@@ -33,7 +33,7 @@ void main(List<String> arguments) {
     country: countryCode,
   );
   resultsFuture.then((results) {
-    final bundleId = ITunesResults.bundleId(results);
+    final bundleId = ITunesResults.bundleId(results!);
     final trackViewUrl = ITunesResults.trackViewUrl(results);
     final version = ITunesResults.version(results);
 

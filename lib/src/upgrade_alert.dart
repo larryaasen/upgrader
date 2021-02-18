@@ -10,27 +10,27 @@ import 'package:upgrader/upgrader.dart';
 /// A widget to display the upgrade dialog.
 class UpgradeAlert extends UpgradeBase {
   /// The [child] contained by the widget.
-  final Widget child;
+  final Widget? child;
 
   UpgradeAlert({
-    Key key,
-    AppcastConfiguration appcastConfig,
-    UpgraderMessages messages,
+    Key? key,
+    AppcastConfiguration? appcastConfig,
+    UpgraderMessages? messages,
     this.child,
-    bool debugAlwaysUpgrade,
-    bool debugDisplayOnce,
-    bool debugLogging,
-    Duration durationToAlertAgain,
-    BoolCallback onIgnore,
-    BoolCallback onLater,
-    BoolCallback onUpdate,
-    http.Client client,
-    bool showIgnore,
-    bool showLater,
-    bool canDismissDialog,
-    String countryCode,
-    String minAppVersion,
-    UpgradeDialogStyle dialogStyle,
+    bool? debugAlwaysUpgrade,
+    bool? debugDisplayOnce,
+    bool? debugLogging,
+    Duration? durationToAlertAgain,
+    BoolCallback? onIgnore,
+    BoolCallback? onLater,
+    BoolCallback? onUpdate,
+    http.Client? client,
+    bool? showIgnore,
+    bool? showLater,
+    bool? canDismissDialog,
+    String? countryCode,
+    String? minAppVersion,
+    UpgradeDialogStyle? dialogStyle,
   }) : super(
           key: key,
           appcastConfig: appcastConfig,
@@ -63,7 +63,7 @@ class UpgradeAlert extends UpgradeBase {
           if (processed.connectionState == ConnectionState.done) {
             Upgrader().checkVersion(context: context);
           }
-          return child;
+          return child!;
         });
   }
 }

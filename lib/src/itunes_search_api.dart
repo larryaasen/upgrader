@@ -19,7 +19,7 @@ class ITunesSearchAPI {
   final String searchPrefixURL = 'https://itunes.apple.com/search';
 
   /// Provide an HTTP Client that can be replaced for mock testing.
-  http.Client client = http.Client();
+  http.Client? client = http.Client();
 
   bool debugEnabled = false;
 
@@ -27,27 +27,20 @@ class ITunesSearchAPI {
   /// Example: look up Google Maps iOS App:
   /// ```lookupURLByBundleId('com.google.Maps');```
   /// ```lookupURLByBundleId('com.google.Maps', country: 'FR');```
-  Future<Map> lookupByBundleId(String bundleId, {String country = 'US'}) async {
-    if (bundleId == null || bundleId.isEmpty) {
+  Future<Map?> lookupByBundleId(String bundleId,
+      {String? country = 'US'}) async {
+    if (bundleId.isEmpty) {
       return null;
     }
 
-    final url = lookupURLByBundleId(bundleId, country: country);
+    final url = lookupURLByBundleId(bundleId, country: country)!;
     if (debugEnabled) {
       print('upgrader: download: $url');
     }
 
-    final response = await client.get(url);
+    final response = await client!.get(Uri.parse(url));
     if (debugEnabled) {
-      if (response == null) {
-        print('upgrader: response empty');
-      } else {
-        print('upgrader: response statusCode: ${response.statusCode}');
-      }
-    }
-
-    if (response == null) {
-      return null;
+      print('upgrader: response statusCode: ${response.statusCode}');
     }
 
     final decodedResults = _decodeResults(response.body);
@@ -58,13 +51,13 @@ class ITunesSearchAPI {
   /// Example: look up Google Maps iOS App:
   /// ```lookupURLById('585027354');```
   /// ```lookupURLById('585027354', country: 'FR');```
-  Future<Map> lookupById(String id, {String country = 'US'}) async {
-    if (id == null || id.isEmpty) {
+  Future<Map?> lookupById(String id, {String country = 'US'}) async {
+    if (id.isEmpty) {
       return null;
     }
 
-    final url = lookupURLById(id, country: country);
-    final response = await client.get(url);
+    final url = lookupURLById(id, country: country)!;
+    final response = await client!.get(Uri.parse(url));
 
     final decodedResults = _decodeResults(response.body);
     return decodedResults;
@@ -74,8 +67,8 @@ class ITunesSearchAPI {
   /// Example: look up Google Maps iOS App:
   /// ```lookupURLByBundleId('com.google.Maps');```
   /// ```lookupURLByBundleId('com.google.Maps', country: 'FR');```
-  String lookupURLByBundleId(String bundleId, {String country = 'US'}) {
-    if (bundleId == null || bundleId.isEmpty) {
+  String? lookupURLByBundleId(String bundleId, {String? country = 'US'}) {
+    if (bundleId.isEmpty) {
       return null;
     }
 
@@ -86,8 +79,8 @@ class ITunesSearchAPI {
   /// Example: look up Jack Johnson by iTunes ID: ```lookupURLById('909253');```
   /// Example: look up Google Maps iOS App: ```lookupURLById('585027354');```
   /// Example: look up Google Maps iOS App: ```lookupURLById('585027354', country: 'FR');```
-  String lookupURLById(String id, {String country = 'US'}) {
-    if (id == null || id.isEmpty) {
+  String? lookupURLById(String id, {String country = 'US'}) {
+    if (id.isEmpty) {
       return null;
     }
 
@@ -95,8 +88,8 @@ class ITunesSearchAPI {
   }
 
   /// Look up URL by QSP.
-  String lookupURLByQSP(Map<String, String> qsp) {
-    if (qsp == null || qsp.isEmpty) {
+  String? lookupURLByQSP(Map<String, String?> qsp) {
+    if (qsp.isEmpty) {
       return null;
     }
 
@@ -107,8 +100,8 @@ class ITunesSearchAPI {
     return '$lookupPrefixURL?$finalParameters';
   }
 
-  Map _decodeResults(String jsonResponse) {
-    if (jsonResponse != null && jsonResponse.isNotEmpty) {
+  Map? _decodeResults(String jsonResponse) {
+    if (jsonResponse.isNotEmpty) {
       final decodedResults = json.decode(jsonResponse);
       if (decodedResults is Map) {
         final resultCount = decodedResults['resultCount'];
@@ -127,7 +120,7 @@ class ITunesSearchAPI {
 
 class ITunesResults {
   /// Return field bundleId from iTunes results.
-  static String bundleId(Map response) {
+  static String? bundleId(Map response) {
     var value;
     try {
       value = response['results'][0]['bundleId'];
@@ -138,7 +131,7 @@ class ITunesResults {
   }
 
   /// Return field currency from iTunes results.
-  static String currency(Map response) {
+  static String? currency(Map response) {
     var value;
     try {
       value = response['results'][0]['currency'];
@@ -149,7 +142,7 @@ class ITunesResults {
   }
 
   /// Return field trackViewUrl from iTunes results.
-  static String trackViewUrl(Map response) {
+  static String? trackViewUrl(Map response) {
     var value;
     try {
       value = response['results'][0]['trackViewUrl'];
@@ -160,7 +153,7 @@ class ITunesResults {
   }
 
   /// Return field version from iTunes results.
-  static String version(Map response) {
+  static String? version(Map response) {
     var value;
     try {
       value = response['results'][0]['version'];

@@ -17,7 +17,7 @@ import 'package:xml/xml.dart';
 /// that each describe one app version.
 class Appcast {
   /// Provide an HTTP Client that can be replaced for mock testing.
-  http.Client client;
+  http.Client? client;
 
   Appcast({
     this.client,
@@ -26,25 +26,25 @@ class Appcast {
   }
 
   /// The items in the Appcast.
-  List<AppcastItem> items;
+  List<AppcastItem>? items;
 
-  AndroidDeviceInfo _androidInfo;
-  IosDeviceInfo _iosInfo;
-  String osVersionString;
+  late AndroidDeviceInfo _androidInfo;
+  late IosDeviceInfo _iosInfo;
+  String? osVersionString;
 
   /// Returns the latest item in the Appcast based on OS, OS version, and app
   /// version.
-  AppcastItem bestItem() {
+  AppcastItem? bestItem() {
     if (items == null) {
       return null;
     }
 
-    AppcastItem bestItem;
-    items.forEach((AppcastItem item) {
+    AppcastItem? bestItem;
+    items!.forEach((AppcastItem item) {
       if (item.hostSupportsItem(osVersion: osVersionString)) {
         if (bestItem == null ||
-            Version.parse(item.versionString) >
-                Version.parse(bestItem.versionString)) {
+            Version.parse(item.versionString!) >
+                Version.parse(bestItem!.versionString!)) {
           bestItem = item;
         }
       }
@@ -53,12 +53,12 @@ class Appcast {
   }
 
   /// Download the Appcast from [appCastURL].
-  Future<List<AppcastItem>> parseAppcastItemsFromUri(String appCastURL) async {
+  Future<List<AppcastItem>?> parseAppcastItemsFromUri(String appCastURL) async {
     await _getDeviceInfo();
 
     http.Response response;
     try {
-      response = await client.get(appCastURL);
+      response = await client!.get(Uri.parse(appCastURL));
     } catch (e) {
       print(e);
       return null;
@@ -68,16 +68,16 @@ class Appcast {
   }
 
   /// Load the Appcast from [file].
-  Future<List<AppcastItem>> parseAppcastItemsFromFile(File file) async {
+  Future<List<AppcastItem>?> parseAppcastItemsFromFile(File file) async {
     await _getDeviceInfo();
     final contents = await file.readAsString();
     return parseItemsFromXMLString(contents);
   }
 
-  List<AppcastItem> parseItemsFromXMLString(String xmlString) {
+  List<AppcastItem>? parseItemsFromXMLString(String xmlString) {
     items = null;
 
-    if (xmlString == null || xmlString.isEmpty) {
+    if (xmlString.isEmpty) {
       return null;
     }
 
@@ -89,17 +89,17 @@ class Appcast {
 
       // look for all item elements in the rss/channel
       document.findAllElements('item').forEach((XmlElement itemElement) {
-        String title;
-        String itemDescription;
-        String dateString;
-        String fileURL;
-        String maximumSystemVersion;
-        String minimumSystemVersion;
-        String osString;
+        String? title;
+        String? itemDescription;
+        String? dateString;
+        String? fileURL;
+        String? maximumSystemVersion;
+        String? minimumSystemVersion;
+        String? osString;
         final tags = <String>[];
-        String newVersion;
-        String itemVersion;
-        String enclosureVersion;
+        String? newVersion;
+        String? itemVersion;
+        String? enclosureVersion;
 
         itemElement.children.forEach((XmlNode childNode) {
           if (childNode is XmlElement) {
@@ -185,7 +185,7 @@ class Appcast {
 
     // If the OS version string is not valid, don't use it.
     try {
-      Version.parse(osVersionString);
+      Version.parse(osVersionString!);
     } catch (e) {
       osVersionString = null;
     }
@@ -195,19 +195,19 @@ class Appcast {
 }
 
 class AppcastItem {
-  final String title;
-  final String dateString;
-  final String itemDescription;
-  final String releaseNotesURL;
-  final String minimumSystemVersion;
-  final String maximumSystemVersion;
-  final String fileURL;
-  final int contentLength;
-  final String versionString;
-  final String osString;
-  final String displayVersionString;
-  final String infoURL;
-  final List<String> tags;
+  final String? title;
+  final String? dateString;
+  final String? itemDescription;
+  final String? releaseNotesURL;
+  final String? minimumSystemVersion;
+  final String? maximumSystemVersion;
+  final String? fileURL;
+  final int? contentLength;
+  final String? versionString;
+  final String? osString;
+  final String? displayVersionString;
+  final String? infoURL;
+  final List<String>? tags;
 
   AppcastItem({
     this.title,
@@ -229,12 +229,12 @@ class AppcastItem {
   /// critical update ([AppcastConstants.ElementCriticalUpdate]).
   bool get isCriticalUpdate => tags == null
       ? false
-      : tags.contains(AppcastConstants.ElementCriticalUpdate);
+      : tags!.contains(AppcastConstants.ElementCriticalUpdate);
 
-  bool hostSupportsItem({@required String osVersion, String currentPlatform}) {
+  bool hostSupportsItem({String? osVersion, String? currentPlatform}) {
     var supported = true;
-    if (osString != null && osString.isNotEmpty) {
-      final platformEnum = 'TargetPlatform.' + osString;
+    if (osString != null && osString!.isNotEmpty) {
+      final platformEnum = 'TargetPlatform.' + osString!;
       currentPlatform = currentPlatform == null
           ? defaultTargetPlatform.toString()
           : 'TargetPlatform.' + currentPlatform;
@@ -250,13 +250,13 @@ class AppcastItem {
         return false;
       }
       if (maximumSystemVersion != null) {
-        final maxVersion = Version.parse(maximumSystemVersion);
+        final maxVersion = Version.parse(maximumSystemVersion!);
         if (osVersionValue > maxVersion) {
           supported = false;
         }
       }
       if (supported && minimumSystemVersion != null) {
-        final minVersion = Version.parse(minimumSystemVersion);
+        final minVersion = Version.parse(minimumSystemVersion!);
         if (osVersionValue < minVersion) {
           supported = false;
         }

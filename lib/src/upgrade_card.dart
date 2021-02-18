@@ -17,22 +17,22 @@ class UpgradeCard extends UpgradeBase {
 
   UpgradeCard({
     this.margin = const EdgeInsets.all(4.0),
-    Key key,
-    AppcastConfiguration appcastConfig,
-    UpgraderMessages messages,
-    bool debugAlwaysUpgrade,
-    bool debugDisplayOnce,
-    bool debugLogging,
-    Duration durationToAlertAgain,
-    BoolCallback onIgnore,
-    BoolCallback onLater,
-    BoolCallback onUpdate,
-    http.Client client,
-    bool showIgnore,
-    bool showLater,
-    bool canDismissDialog,
-    String countryCode,
-    String minAppVersion,
+    Key? key,
+    AppcastConfiguration? appcastConfig,
+    UpgraderMessages? messages,
+    bool? debugAlwaysUpgrade,
+    bool? debugDisplayOnce,
+    bool? debugLogging,
+    Duration? durationToAlertAgain,
+    BoolCallback? onIgnore,
+    BoolCallback? onLater,
+    BoolCallback? onUpdate,
+    http.Client? client,
+    bool? showIgnore,
+    bool? showLater,
+    bool? canDismissDialog,
+    String? countryCode,
+    String? minAppVersion,
   }) : super(
           key: key,
           appcastConfig: appcastConfig,
@@ -72,7 +72,7 @@ class UpgradeCard extends UpgradeBase {
                   margin: margin,
                   child: AlertStyleWidget(
                       title: Text(
-                          Upgrader().messages.message(UpgraderMessage.title)),
+                          Upgrader().messages!.message(UpgraderMessage.title)!),
                       content: Column(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -82,16 +82,16 @@ class UpgradeCard extends UpgradeBase {
                           Padding(
                               padding: EdgeInsets.only(top: 15.0),
                               child: Text(Upgrader()
-                                  .messages
-                                  .message(UpgraderMessage.prompt))),
+                                  .messages!
+                                  .message(UpgraderMessage.prompt)!)),
                         ],
                       ),
                       actions: <Widget>[
                         if (Upgrader().showIgnore)
-                          FlatButton(
+                          TextButton(
                               child: Text(Upgrader()
-                                  .messages
-                                  .message(UpgraderMessage.buttonTitleIgnore)),
+                                  .messages!
+                                  .message(UpgraderMessage.buttonTitleIgnore)!),
                               onPressed: () {
                                 // Save the date/time as the last time alerted.
                                 Upgrader().saveLastAlerted();
@@ -100,10 +100,10 @@ class UpgradeCard extends UpgradeBase {
                                 state.forceUpdateState();
                               }),
                         if (Upgrader().showLater)
-                          FlatButton(
+                          TextButton(
                               child: Text(Upgrader()
-                                  .messages
-                                  .message(UpgraderMessage.buttonTitleLater)),
+                                  .messages!
+                                  .message(UpgraderMessage.buttonTitleLater)!),
                               onPressed: () {
                                 // Save the date/time as the last time alerted.
                                 Upgrader().saveLastAlerted();
@@ -111,10 +111,10 @@ class UpgradeCard extends UpgradeBase {
                                 Upgrader().onUserLater(context, false);
                                 state.forceUpdateState();
                               }),
-                        FlatButton(
+                        TextButton(
                             child: Text(Upgrader()
-                                .messages
-                                .message(UpgraderMessage.buttonTitleUpdate)),
+                                .messages!
+                                .message(UpgraderMessage.buttonTitleUpdate)!),
                             onPressed: () {
                               // Save the date/time as the last time alerted.
                               Upgrader().saveLastAlerted();

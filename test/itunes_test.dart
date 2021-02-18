@@ -34,7 +34,7 @@ void main() {
 
     final response = await iTunes.lookupByBundleId('com.google.Maps');
     expect(response, isInstanceOf<Map>());
-    final results = response['results'];
+    final results = response!['results'];
     expect(results, isNotNull);
     expect(results.length, 1);
     final result0 = results[0];
@@ -52,7 +52,7 @@ void main() {
 
     final response = await iTunes.lookupByBundleId('com.google.MyApp');
     expect(response, isInstanceOf<Map>());
-    final results = response['results'];
+    final results = response!['results'];
     expect(results, isNotNull);
     expect(results.length, 0);
   });
@@ -64,7 +64,7 @@ void main() {
 
     final response = await iTunes.lookupById('585027354');
     expect(response, isInstanceOf<Map>());
-    final results = response['results'];
+    final results = response!['results'];
     expect(results, isNotNull);
     expect(results.length, 1);
     final result0 = results[0];
@@ -84,7 +84,7 @@ void main() {
 
     final response = await iTunes.lookupById('585027354', country: 'FR');
     expect(response, isInstanceOf<Map>());
-    final results = response['results'];
+    final results = response!['results'];
     expect(results, isNotNull);
     expect(results.length, 1);
     final result0 = results[0];

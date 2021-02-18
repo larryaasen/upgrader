@@ -22,19 +22,20 @@ class MockClient extends Mock implements http.Client {
     // provided http.Client
     final r =
         '{"results": [{"version": "5.6", "bundleId": "com.google.Maps", "currency": "$currency"}]}';
-    when(client.get(
-            ITunesSearchAPI().lookupURLById('585027354', country: country)))
+    when(client.get(Uri.parse(
+            ITunesSearchAPI().lookupURLById('585027354', country: country)!)))
         .thenAnswer((_) async => http.Response(r, 200));
-    when(client.get(ITunesSearchAPI()
-            .lookupURLByBundleId('com.google.Maps', country: country)))
+    when(client.get(Uri.parse(ITunesSearchAPI()
+            .lookupURLByBundleId('com.google.Maps', country: country)!)))
         .thenAnswer((_) async => http.Response(r, 200));
-    when(client.get(ITunesSearchAPI()
-            .lookupURLByBundleId('com.larryaasen.upgrader', country: country)))
+    when(client.get(Uri.parse(ITunesSearchAPI().lookupURLByBundleId(
+            'com.larryaasen.upgrader',
+            country: country)!)))
         .thenAnswer((_) async => http.Response(r, 200));
 
     final responseMyApp = '{"resultCount": 0,"results": []}';
-    when(client.get(ITunesSearchAPI()
-            .lookupURLByBundleId('com.google.MyApp', country: country)))
+    when(client.get(Uri.parse(ITunesSearchAPI()
+            .lookupURLByBundleId('com.google.MyApp', country: country)!)))
         .thenAnswer((_) async => http.Response(responseMyApp, 200));
 
     return client;

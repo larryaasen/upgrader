@@ -1,6 +1,7 @@
 name: upgrader_example
 description: Demonstrates how to use the upgrader package.
 version: 1.0.0
+publish_to: none
 
 environment:
   sdk: ">=2.2.0 <3.0.0"

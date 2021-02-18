@@ -55,11 +55,11 @@ class FakeAppcast extends Fake implements Appcast {
   ]);
 
   @override
-  Client client = MockClient();
+  Client? client = MockClient();
 
   @override
-  List<AppcastItem> items = [];
+  List<AppcastItem>? items = [];
 
   @override
-  String osVersionString = '';
+  String? osVersionString = '';
 }

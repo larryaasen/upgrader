@@ -1,10 +1,10 @@
 name: upgrader
 description: Flutter package for prompting users to upgrade when there is a newer version of the app in the store.
-version: 2.8.2
+version: 3.0.0-nullsafety
 homepage: https://github.com/larryaasen/upgrader
 
 environment:
-  sdk: ">=2.2.2 <3.0.0"
+  sdk: '>=2.12.0-259.12.beta <3.0.0'
   flutter: ">=1.12.0"
 
 dependencies:
@@ -12,35 +12,32 @@ dependencies:
     sdk: flutter
 
   # From Dart Team: Get current device information from within the Flutter application.
-  device_info: '>=0.4.1 <1.1.0'
-
-  # From Florin Bratan: A Flutter plugin for retrieving the device locale information.
-  flutter_device_locale: ^0.4.0
+  device_info: ^2.0.0-nullsafety.2
 
   # From Dart Team: A composable, Future-based library for making HTTP requests.
-  http: ^0.12.0
+  http: ^0.13.0
 
   # From Flutter Team: Provides an API for querying information about an application package.
-  package_info: '>=0.4.0+3 <2.0.0'
+  package_info: ^0.5.0-nullsafety
 
   # From Flutter Team: Wraps NSUserDefaults (on iOS) and SharedPreferences (on Android).
-  shared_preferences: ^0.5.2
+  shared_preferences: ^2.0.0-nullsafety
 
   # From Flutter Team: A Flutter plugin for launching a URL in the mobile platform.
-  url_launcher: ^5.0.2
+  url_launcher: ^6.0.0-nullsafety.6
 
   # A dart library for comparing and incrementing version numbers with Semantic Versioning.
   version: ^1.2.0
 
   # A dart library for parsing, traversing, querying, transforming and building XML documents.
-  xml: '>=3.5.0 <5.0.0'
+  xml: ^5.0.0-nullsafety.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   # From Dart Team: Mock library for Dart inspired by Mockito.
-  mockito: ^4.0.0
-  pedantic: ^1.9.0
+  mockito: ^5.0.0-nullsafety.7
+  pedantic: ^1.10.0
  
 flutter:
