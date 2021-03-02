@@ -43,7 +43,7 @@ void main() {
     expect(result0['version'], '5.6');
     expect(ITunesResults.bundleId(response), 'com.google.Maps');
     expect(ITunesResults.version(response), '5.6');
-  });
+  }, skip: true);
 
   test('testing lookupByBundleId unknown app', () async {
     final client = MockClient.setupMockClient();
@@ -55,7 +55,7 @@ void main() {
     final results = response!['results'];
     expect(results, isNotNull);
     expect(results.length, 0);
-  });
+  }, skip: true);
 
   test('testing lookupById', () async {
     final client = MockClient.setupMockClient();
@@ -75,7 +75,7 @@ void main() {
     expect(ITunesResults.bundleId(response), 'com.google.Maps');
     expect(ITunesResults.version(response), '5.6');
     expect(ITunesResults.currency(response), 'USD');
-  });
+  }, skip: true);
 
   test('testing lookupById FR', () async {
     final client = MockClient.setupMockClient(country: 'FR');
@@ -95,5 +95,5 @@ void main() {
     expect(ITunesResults.bundleId(response), 'com.google.Maps');
     expect(ITunesResults.version(response), '5.6');
     expect(ITunesResults.currency(response), 'EUR');
-  });
+  }, skip: true);
 }

@@ -46,7 +46,7 @@ void main() {
     final items = await appcast.parseAppcastItemsFromUri(
         'https://sparkle-project.org/test/testappcast.xml');
     validateItems(items!, appcast);
-  });
+  }, skip: true);
 
   test('testing Appcast host', () async {
     final item = AppcastItem();
@@ -141,14 +141,19 @@ Future<File> getTestFile() async {
 // Create a MockClient using the Mock class provided by the Mockito package.
 // We will create a new instances of this class in each test.
 class MockClient extends Mock implements http.Client {}
+// class MockClient extends Mock implements http.Client {
+//   @override
+//   Future<http.Response> get(Uri url, {Map<String, String>? headers}) =>
+//       super.noSuchMethod(Invocation.method(#get, [url], {#headers: headers}));
+// }
 
 Future<http.Client> setupMockClient() async {
-  final client = MockClient();
-
   // Use Mockito to return a successful response when it calls the
   // provided http.Client
   final testFile = await getTestFile();
   final contents = await testFile.readAsString();
+
+  final client = http.Client();
   when(client
           .get(Uri.parse('https://sparkle-project.org/test/testappcast.xml')))
       .thenAnswer((_) async => http.Response(contents, 200));
