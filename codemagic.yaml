@@ -4,7 +4,7 @@ workflows:
     flutter-package:
         name: upgrader
         environment:
-            flutter: beta
+            flutter: stable
         scripts:
             - flutter doctor
             - flutter packages pub get

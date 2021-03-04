@@ -1,3 +1,7 @@
+## 3.0.0
+
+* Moved to Flutter 2.0.0 stable.
+
 ## 3.0.0-nullsafety.2
 
 * Resolved issues with unit tests so all are passing now. Minor package upgrades.
