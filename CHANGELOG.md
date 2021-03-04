@@ -1,3 +1,7 @@
+## 3.0.0-nullsafety.2
+
+* Resolved issues with unit tests so all are passing now. Minor package upgrades.
+
 ## 3.0.0-nullsafety.1
 
 * BREAKING CHANGE - Migrated to null safety.

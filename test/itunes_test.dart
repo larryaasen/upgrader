@@ -5,7 +5,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:upgrader/upgrader.dart';
 
-import 'mockclient.dart';
+import 'mock_itunes_client.dart';
 
 void main() {
   test('testing ITunesSearchAPI properties', () async {
@@ -28,7 +28,7 @@ void main() {
   });
 
   test('testing lookupByBundleId', () async {
-    final client = MockClient.setupMockClient();
+    final client = MockITunesSearchClient.setupMockClient();
     final iTunes = ITunesSearchAPI();
     iTunes.client = client;
 
@@ -43,10 +43,10 @@ void main() {
     expect(result0['version'], '5.6');
     expect(ITunesResults.bundleId(response), 'com.google.Maps');
     expect(ITunesResults.version(response), '5.6');
-  }, skip: true);
+  }, skip: false);
 
   test('testing lookupByBundleId unknown app', () async {
-    final client = MockClient.setupMockClient();
+    final client = MockITunesSearchClient.setupMockClient();
     final iTunes = ITunesSearchAPI();
     iTunes.client = client;
 
@@ -55,10 +55,10 @@ void main() {
     final results = response!['results'];
     expect(results, isNotNull);
     expect(results.length, 0);
-  }, skip: true);
+  }, skip: false);
 
   test('testing lookupById', () async {
-    final client = MockClient.setupMockClient();
+    final client = MockITunesSearchClient.setupMockClient();
     final iTunes = ITunesSearchAPI();
     iTunes.client = client;
 
@@ -75,10 +75,10 @@ void main() {
     expect(ITunesResults.bundleId(response), 'com.google.Maps');
     expect(ITunesResults.version(response), '5.6');
     expect(ITunesResults.currency(response), 'USD');
-  }, skip: true);
+  }, skip: false);
 
   test('testing lookupById FR', () async {
-    final client = MockClient.setupMockClient(country: 'FR');
+    final client = MockITunesSearchClient.setupMockClient(country: 'FR');
     final iTunes = ITunesSearchAPI();
     iTunes.client = client;
 
@@ -95,5 +95,5 @@ void main() {
     expect(ITunesResults.bundleId(response), 'com.google.Maps');
     expect(ITunesResults.version(response), '5.6');
     expect(ITunesResults.currency(response), 'EUR');
-  }, skip: true);
+  }, skip: false);
 }

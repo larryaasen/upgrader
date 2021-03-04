@@ -10,8 +10,8 @@ import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upgrader/upgrader.dart';
 
-import 'mock_appcast.dart';
-import 'mockclient.dart';
+import 'fake_appcast.dart';
+import 'mock_itunes_client.dart';
 
 void main() {
   late SharedPreferences preferences;
@@ -31,6 +31,11 @@ void main() {
       if (methodCall.method == 'getAll') {
         return kEmptyPreferences;
       }
+      if (methodCall.method == 'clear' ||
+          methodCall.method == 'remove' ||
+          methodCall.method == 'setString') {
+        return true;
+      }
       return null;
     });
     preferences = await SharedPreferences.getInstance();
@@ -42,7 +47,7 @@ void main() {
   });
 
   testWidgets('test Upgrader class', (WidgetTester tester) async {
-    final client = MockClient.setupMockClient();
+    final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader();
     upgrader.client = client;
 
@@ -72,7 +77,7 @@ void main() {
 
     upgrader.installAppStoreVersion('1.2.3');
     expect(upgrader.currentAppStoreVersion(), '1.2.3');
-  }, skip: true);
+  }, skip: false);
 
   testWidgets('test installAppStoreListingURL', (WidgetTester tester) async {
     final upgrader = Upgrader();
@@ -81,10 +86,10 @@ void main() {
 
     expect(upgrader.currentAppStoreListingURL(),
         'https://itunes.apple.com/us/app/google-maps-transit-food/id585027354?mt=8&uo=4');
-  }, skip: true);
+  }, skip: false);
 
   testWidgets('test UpgradeWidget', (WidgetTester tester) async {
-    final client = MockClient.setupMockClient();
+    final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader();
     upgrader.client = client;
     upgrader.debugLogging = true;
@@ -153,10 +158,10 @@ void main() {
     expect(find.text(upgrader.messages!.buttonTitleUpdate), findsNothing);
     expect(called, true);
     expect(notCalled, true);
-  }, skip: true);
+  }, skip: false);
 
   testWidgets('test UpgradeWidget Cupertino', (WidgetTester tester) async {
-    final client = MockClient.setupMockClient();
+    final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader();
     upgrader.client = client;
     upgrader.debugLogging = true;
@@ -227,9 +232,9 @@ void main() {
     expect(find.text(upgrader.messages!.buttonTitleUpdate), findsNothing);
     expect(called, true);
     expect(notCalled, true);
-  }, skip: true);
+  }, skip: false);
   testWidgets('test UpgradeWidget ignore', (WidgetTester tester) async {
-    final client = MockClient.setupMockClient();
+    final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader();
     upgrader.client = client;
 
@@ -269,10 +274,10 @@ void main() {
     expect(find.text(upgrader.messages!.buttonTitleIgnore), findsNothing);
     expect(called, true);
     expect(notCalled, true);
-  }, skip: true);
+  }, skip: false);
 
   testWidgets('test UpgradeWidget later', (WidgetTester tester) async {
-    final client = MockClient.setupMockClient();
+    final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader();
     upgrader.client = client;
 
@@ -312,10 +317,10 @@ void main() {
     expect(find.text(upgrader.messages!.buttonTitleLater), findsNothing);
     expect(called, true);
     expect(notCalled, true);
-  }, skip: true);
+  }, skip: false);
 
   testWidgets('test UpgradeWidget Card upgrade', (WidgetTester tester) async {
-    final client = MockClient.setupMockClient();
+    final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader();
     upgrader.client = client;
     upgrader.debugLogging = true;
@@ -358,10 +363,10 @@ void main() {
     expect(called, true);
     expect(notCalled, true);
     expect(find.text(upgrader.messages!.buttonTitleUpdate), findsNothing);
-  }, skip: true);
+  }, skip: false);
 
   testWidgets('test UpgradeWidget Card ignore', (WidgetTester tester) async {
-    final client = MockClient.setupMockClient();
+    final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader();
     upgrader.client = client;
     upgrader.debugLogging = true;
@@ -402,10 +407,10 @@ void main() {
     expect(called, true);
     expect(notCalled, true);
     expect(find.text(upgrader.messages!.buttonTitleIgnore), findsNothing);
-  }, skip: true);
+  }, skip: false);
 
   testWidgets('test UpgradeWidget Card later', (WidgetTester tester) async {
-    final client = MockClient.setupMockClient();
+    final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader();
     upgrader.client = client;
     upgrader.debugLogging = true;
@@ -446,10 +451,10 @@ void main() {
     expect(called, true);
     expect(notCalled, true);
     expect(find.text(upgrader.messages!.buttonTitleLater), findsNothing);
-  }, skip: true);
+  }, skip: false);
 
   testWidgets('test upgrader minAppVersion', (WidgetTester tester) async {
-    final client = MockClient.setupMockClient();
+    final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader();
     upgrader.client = client;
     upgrader.debugLogging = true;
@@ -482,10 +487,10 @@ void main() {
     expect(find.text(upgrader.messages!.buttonTitleIgnore), findsNothing);
     expect(find.text(upgrader.messages!.buttonTitleLater), findsNothing);
     expect(find.text(upgrader.messages!.buttonTitleUpdate), findsOneWidget);
-  }, skip: true);
+  }, skip: false);
 
   testWidgets('test UpgradeWidget unknown app', (WidgetTester tester) async {
-    final client = MockClient.setupMockClient();
+    final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader();
     upgrader.client = client;
     upgrader.debugLogging = true;
@@ -526,12 +531,12 @@ void main() {
 
     expect(called, false);
     expect(notCalled, true);
-  }, skip: true);
+  }, skip: false);
 
   group('initialize', () {
     test('should use fake Appcast', () async {
       final fakeAppcast = FakeAppcast();
-      final client = MockClient.setupMockClient();
+      final client = MockITunesSearchClient.setupMockClient();
       final upgrader = Upgrader()
         ..client = client
         ..appcastConfig = fakeAppcast.config
@@ -549,31 +554,31 @@ void main() {
       await upgrader.initialize();
 
       expect(fakeAppcast.callCount, greaterThan(0));
-    }, skip: true);
+    }, skip: false);
 
     test('durationUntilAlertAgain defaults to 3 days', () async {
       final upgrader = Upgrader();
       expect(upgrader.durationUntilAlertAgain, Duration(days: 3));
-    }, skip: true);
+    }, skip: false);
 
     test('durationUntilAlertAgain card is valid', () async {
       final card1 = UpgradeCard();
       expect(card1.durationToAlertAgain, Duration(days: 3));
       final card2 = UpgradeCard(durationToAlertAgain: Duration(days: 10));
       expect(card2.durationToAlertAgain, Duration(days: 10));
-    }, skip: true);
+    }, skip: false);
 
     test('durationUntilAlertAgain alert is valid', () async {
       final alert1 = UpgradeAlert();
       expect(alert1.durationToAlertAgain, Duration(days: 3));
       final alert2 = UpgradeAlert(durationToAlertAgain: Duration(days: 10));
       expect(alert2.durationToAlertAgain, Duration(days: 10));
-    }, skip: true);
+    }, skip: false);
   });
 
   group('shouldDisplayUpgrade', () {
     test('should respect debugDisplayAlways property', () {
-      final client = MockClient.setupMockClient();
+      final client = MockITunesSearchClient.setupMockClient();
       final upgrader = Upgrader()
         ..client = client
         ..debugLogging = true;
@@ -583,11 +588,11 @@ void main() {
       expect(upgrader.shouldDisplayUpgrade(), true);
       upgrader.debugDisplayAlways = false;
       expect(upgrader.shouldDisplayUpgrade(), false);
-    }, skip: true);
+    }, skip: false);
 
     test('should return true when version is below minAppVersion', () async {
       final upgrader = Upgrader()
-        ..client = MockClient.setupMockClient()
+        ..client = MockITunesSearchClient.setupMockClient()
         ..debugLogging = true
         ..minAppVersion = '2.0.0'
         ..installPackageInfo(
@@ -604,11 +609,11 @@ void main() {
       final shouldDisplayUpgrade = upgrader.shouldDisplayUpgrade();
 
       expect(shouldDisplayUpgrade, isTrue);
-    }, skip: true);
+    }, skip: false);
 
     test('should return true when bestItem has critical update', () async {
       final upgrader = Upgrader()
-        ..client = MockClient.setupMockClient()
+        ..client = MockITunesSearchClient.setupMockClient()
         ..debugLogging = true
         ..installPackageInfo(
           packageInfo: PackageInfo(
@@ -624,11 +629,11 @@ void main() {
       final shouldDisplayUpgrade = upgrader.shouldDisplayUpgrade();
 
       expect(shouldDisplayUpgrade, isTrue);
-    }, skip: true);
+    }, skip: false);
 
     test('packageInfo is empty', () async {
       final upgrader = Upgrader()
-        ..client = MockClient.setupMockClient()
+        ..client = MockITunesSearchClient.setupMockClient()
         ..debugLogging = true
         ..installPackageInfo(
           packageInfo: PackageInfo(
@@ -641,9 +646,9 @@ void main() {
 
       await upgrader.initialize();
       expect(upgrader.shouldDisplayUpgrade(), isFalse);
-      expect(upgrader.appName(), isNull);
-      expect(upgrader.currentInstalledVersion(), isNull);
-    }, skip: true);
+      expect(upgrader.appName(), isEmpty);
+      expect(upgrader.currentInstalledVersion(), isEmpty);
+    }, skip: false);
   });
 
   test('test UpgraderMessages', () {
@@ -661,7 +666,7 @@ void main() {
     verifyMessages(UpgraderMessages(code: 'ru'), 'ru');
     verifyMessages(UpgraderMessages(code: 'tr'), 'tr');
     verifyMessages(UpgraderMessages(code: 'vi'), 'vi');
-  }, skip: true);
+  }, skip: false);
 }
 
 void verifyMessages(UpgraderMessages messages, String code) {

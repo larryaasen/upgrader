@@ -212,10 +212,12 @@ class Upgrader {
       iTunes.client = client;
       final country = code;
       final response = await (iTunes.lookupByBundleId(_packageInfo!.packageName,
-          country: country) as FutureOr<Map<dynamic, dynamic>>);
+          country: country));
 
-      _appStoreVersion ??= ITunesResults.version(response);
-      _appStoreListingURL ??= ITunesResults.trackViewUrl(response);
+      if (response != null) {
+        _appStoreVersion ??= ITunesResults.version(response);
+        _appStoreListingURL ??= ITunesResults.trackViewUrl(response);
+      }
     }
 
     return true;

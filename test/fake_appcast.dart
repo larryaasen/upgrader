@@ -1,13 +1,8 @@
 import 'dart:io';
 
-import 'package:http/src/client.dart';
 import 'package:mockito/mockito.dart';
-
 import 'package:upgrader/src/appcast.dart';
 import 'package:upgrader/src/upgrader.dart';
-import 'mockclient.dart';
-
-class MockAppcast extends Mock implements Appcast {}
 
 class FakeAppcast extends Fake implements Appcast {
   int callCount = 0;
@@ -53,9 +48,6 @@ class FakeAppcast extends Fake implements Appcast {
     'ios',
     'fuchsia',
   ]);
-
-  @override
-  Client? client = MockClient();
 
   @override
   List<AppcastItem>? items = [];

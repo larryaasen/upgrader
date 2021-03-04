@@ -7,7 +7,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
-import 'package:mockito/mockito.dart';
+import 'package:http/testing.dart';
 import 'package:upgrader/upgrader.dart';
 
 void main() {
@@ -46,7 +46,7 @@ void main() {
     final items = await appcast.parseAppcastItemsFromUri(
         'https://sparkle-project.org/test/testappcast.xml');
     validateItems(items!, appcast);
-  }, skip: true);
+  }, skip: false);
 
   test('testing Appcast host', () async {
     final item = AppcastItem();
@@ -138,25 +138,19 @@ Future<File> getTestFile() async {
   return testFile;
 }
 
-// Create a MockClient using the Mock class provided by the Mockito package.
-// We will create a new instances of this class in each test.
-class MockClient extends Mock implements http.Client {}
-// class MockClient extends Mock implements http.Client {
-//   @override
-//   Future<http.Response> get(Uri url, {Map<String, String>? headers}) =>
-//       super.noSuchMethod(Invocation.method(#get, [url], {#headers: headers}));
-// }
-
 Future<http.Client> setupMockClient() async {
-  // Use Mockito to return a successful response when it calls the
-  // provided http.Client
-  final testFile = await getTestFile();
-  final contents = await testFile.readAsString();
+  // Use a mock to return a successful response when it calls the
+  // provided http.Client.
 
-  final client = http.Client();
-  when(client
-          .get(Uri.parse('https://sparkle-project.org/test/testappcast.xml')))
-      .thenAnswer((_) async => http.Response(contents, 200));
+  final client = MockClient((http.Request request) async {
+    if (request.url.toString() ==
+        'https://sparkle-project.org/test/testappcast.xml') {
+      final testFile = await getTestFile();
+      final contents = await testFile.readAsString();
+      return http.Response(contents, 200);
+    }
+    return http.Response('', 400);
+  });
 
   return client;
 }
