@@ -42,6 +42,7 @@ void main() {
     expect(result0['bundleId'], 'com.google.Maps');
     expect(result0['version'], '5.6');
     expect(ITunesResults.bundleId(response), 'com.google.Maps');
+    expect(ITunesResults.releaseNotes(response), 'Bug fixes.');
     expect(ITunesResults.version(response), '5.6');
   }, skip: false);
 
@@ -70,9 +71,11 @@ void main() {
     final result0 = results[0];
     expect(result0, isNotNull);
     expect(result0['bundleId'], 'com.google.Maps');
+    expect(result0['releaseNotes'], 'Bug fixes.');
     expect(result0['version'], '5.6');
     expect(result0['currency'], 'USD');
     expect(ITunesResults.bundleId(response), 'com.google.Maps');
+    expect(ITunesResults.releaseNotes(response), 'Bug fixes.');
     expect(ITunesResults.version(response), '5.6');
     expect(ITunesResults.currency(response), 'USD');
   }, skip: false);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Larry Aasen. All rights reserved.
+ * Copyright (c) 2018-2021 Larry Aasen. All rights reserved.
  */
 
 import 'dart:async';
@@ -137,6 +137,17 @@ class ITunesResults {
       value = response['results'][0]['currency'];
     } catch (e) {
       print('upgrader.ITunesResults.currency: $e');
+    }
+    return value;
+  }
+
+  /// Return field releaseNotes from iTunes results.
+  static String? releaseNotes(Map response) {
+    var value;
+    try {
+      value = response['results'][0]['releaseNotes'];
+    } catch (e) {
+      print('upgrader.ITunesResults.releaseNotes: $e');
     }
     return value;
   }

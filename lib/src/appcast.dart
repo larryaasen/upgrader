@@ -96,6 +96,7 @@ class Appcast {
         String? maximumSystemVersion;
         String? minimumSystemVersion;
         String? osString;
+        String? releaseNotesLink;
         final tags = <String>[];
         String? newVersion;
         String? itemVersion;
@@ -127,6 +128,8 @@ class Appcast {
               minimumSystemVersion = childNode.text;
             } else if (name == AppcastConstants.ElementPubDate) {
               dateString = childNode.text;
+            } else if (name == AppcastConstants.ElementReleaseNotesLink) {
+              releaseNotesLink = childNode.text;
             } else if (name == AppcastConstants.ElementTags) {
               childNode.children.forEach((XmlNode tagChildNode) {
                 if (tagChildNode is XmlElement) {
@@ -158,6 +161,7 @@ class Appcast {
           maximumSystemVersion: maximumSystemVersion,
           minimumSystemVersion: minimumSystemVersion,
           osString: osString,
+          releaseNotesURL: releaseNotesLink,
           tags: tags,
           fileURL: fileURL,
           versionString: newVersion,

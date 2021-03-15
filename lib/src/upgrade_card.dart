@@ -30,6 +30,7 @@ class UpgradeCard extends UpgradeBase {
     http.Client? client,
     bool? showIgnore,
     bool? showLater,
+    bool? showReleaseNotes,
     bool? canDismissDialog,
     String? countryCode,
     String? minAppVersion,
@@ -47,6 +48,7 @@ class UpgradeCard extends UpgradeBase {
           client: client,
           showIgnore: showIgnore,
           showLater: showLater,
+          showReleaseNotes: showReleaseNotes,
           canDismissDialog: canDismissDialog,
           countryCode: countryCode,
           minAppVersion: minAppVersion,
@@ -64,34 +66,66 @@ class UpgradeCard extends UpgradeBase {
           if (processed.connectionState == ConnectionState.done) {
             assert(Upgrader().messages != null);
             if (Upgrader().shouldDisplayUpgrade()) {
+              final title = Upgrader().messages!.message(UpgraderMessage.title);
+              final message = Upgrader().message();
+              final releaseNotes = Upgrader().releaseNotes;
+              final shouldDisplayReleaseNotes =
+                  Upgrader().shouldDisplayReleaseNotes();
               if (Upgrader().debugLogging) {
                 print('UpgradeCard: will display');
+                print('UpgradeCard: showDialog title: $title');
+                print('UpgradeCard: showDialog message: $message');
+                print(
+                    'UpgradeCard: shouldDisplayReleaseNotes: ${shouldDisplayReleaseNotes}');
+
+                print('UpgradeCard: showDialog releaseNotes: $releaseNotes');
               }
+
+              Widget? notes;
+              if (shouldDisplayReleaseNotes && releaseNotes != null) {
+                notes = Padding(
+                    padding: EdgeInsets.only(top: 15.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text('Release Notes:',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        Text(
+                          releaseNotes,
+                          maxLines: 15,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ));
+              }
+
               return Card(
                   color: Colors.white,
                   margin: margin,
                   child: AlertStyleWidget(
-                      title: Text(
-                          Upgrader().messages!.message(UpgraderMessage.title)!),
+                      title: Text(title ?? ''),
                       content: Column(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(Upgrader().message()),
+                          Text(message),
                           Padding(
                               padding: EdgeInsets.only(top: 15.0),
                               child: Text(Upgrader()
-                                  .messages!
-                                  .message(UpgraderMessage.prompt)!)),
+                                      .messages!
+                                      .message(UpgraderMessage.prompt) ??
+                                  '')),
+                          if (notes != null) notes,
                         ],
                       ),
                       actions: <Widget>[
                         if (Upgrader().showIgnore)
                           TextButton(
-                              child: Text(Upgrader()
-                                  .messages!
-                                  .message(UpgraderMessage.buttonTitleIgnore)!),
+                              child: Text(Upgrader().messages!.message(
+                                      UpgraderMessage.buttonTitleIgnore) ??
+                                  ''),
                               onPressed: () {
                                 // Save the date/time as the last time alerted.
                                 Upgrader().saveLastAlerted();
@@ -101,9 +135,9 @@ class UpgradeCard extends UpgradeBase {
                               }),
                         if (Upgrader().showLater)
                           TextButton(
-                              child: Text(Upgrader()
-                                  .messages!
-                                  .message(UpgraderMessage.buttonTitleLater)!),
+                              child: Text(Upgrader().messages!.message(
+                                      UpgraderMessage.buttonTitleLater) ??
+                                  ''),
                               onPressed: () {
                                 // Save the date/time as the last time alerted.
                                 Upgrader().saveLastAlerted();
@@ -112,9 +146,9 @@ class UpgradeCard extends UpgradeBase {
                                 state.forceUpdateState();
                               }),
                         TextButton(
-                            child: Text(Upgrader()
-                                .messages!
-                                .message(UpgraderMessage.buttonTitleUpdate)!),
+                            child: Text(Upgrader().messages!.message(
+                                    UpgraderMessage.buttonTitleUpdate) ??
+                                ''),
                             onPressed: () {
                               // Save the date/time as the last time alerted.
                               Upgrader().saveLastAlerted();

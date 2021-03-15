@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Larry Aasen. All rights reserved.
+ * Copyright (c) 2019-2021 Larry Aasen. All rights reserved.
  */
 
 /*
@@ -9,9 +9,10 @@
 
 import 'package:upgrader/src/itunes_search_api.dart';
 
-void main(List<String> arguments) {
+void main(List<String> arguments) async {
   final defaultLookupBundleId = 'com.google.Maps';
   var lookupBundleId = defaultLookupBundleId;
+  var lookupAppId;
 
   if (arguments.length == 1) {
     final arg0 = arguments[0].split('=');
@@ -21,6 +22,8 @@ void main(List<String> arguments) {
 
       if (argName == 'bundleid') {
         lookupBundleId = argValue;
+      } else if (argName == 'appid') {
+        lookupAppId = argValue;
       }
     }
   }
@@ -28,19 +31,35 @@ void main(List<String> arguments) {
   final iTunes = ITunesSearchAPI();
   iTunes.debugEnabled = true;
   final countryCode = 'US';
-  final resultsFuture = iTunes.lookupByBundleId(
-    lookupBundleId,
-    country: countryCode,
-  );
-  resultsFuture.then((results) {
-    final bundleId = ITunesResults.bundleId(results!);
-    final trackViewUrl = ITunesResults.trackViewUrl(results);
-    final version = ITunesResults.version(results);
 
-    print('itunes_lookup bundleId: $bundleId');
-    print('itunes_lookup trackViewUrl: $trackViewUrl');
-    print('itunes_lookup version: $version');
+  var results;
+  if (lookupAppId != null) {
+    results = await iTunes.lookupById(
+      lookupAppId,
+      country: countryCode,
+    );
+  } else {
+    results = await iTunes.lookupByBundleId(
+      lookupBundleId,
+      country: countryCode,
+    );
+  }
 
-    print('itunes_lookup all results:\n$results');
-  });
+  if (results == null) {
+    print('itunes_lookup there are no results');
+    return;
+  }
+
+  final bundleId = ITunesResults.bundleId(results);
+  final releaseNotes = ITunesResults.releaseNotes(results);
+  final trackViewUrl = ITunesResults.trackViewUrl(results);
+  final version = ITunesResults.version(results);
+
+  print('itunes_lookup bundleId: $bundleId');
+  print('itunes_lookup releaseNotes: $releaseNotes');
+  print('itunes_lookup trackViewUrl: $trackViewUrl');
+  print('itunes_lookup version: $version');
+
+  print('itunes_lookup all results:\n$results');
+  return;
 }

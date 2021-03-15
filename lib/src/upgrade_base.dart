@@ -47,6 +47,9 @@ class UpgradeBase extends StatefulWidget {
   /// Hide or show Later button on dialog (default: true)
   final bool? showLater;
 
+  /// Hide or show release notes (default: true)
+  final bool? showReleaseNotes;
+
   /// Can alert dialog be dismissed on tap outside of the alert dialog. Not used by alert card. (default: false)
   final bool? canDismissDialog;
 
@@ -74,6 +77,7 @@ class UpgradeBase extends StatefulWidget {
     this.client,
     this.showIgnore,
     this.showLater,
+    this.showReleaseNotes,
     this.canDismissDialog,
     this.countryCode,
     this.minAppVersion,
@@ -114,6 +118,9 @@ class UpgradeBase extends StatefulWidget {
     }
     if (showLater != null) {
       Upgrader().showLater = showLater!;
+    }
+    if (showReleaseNotes != null) {
+      Upgrader().showReleaseNotes = showReleaseNotes!;
     }
     if (canDismissDialog != null) {
       Upgrader().canDismissDialog = canDismissDialog!;

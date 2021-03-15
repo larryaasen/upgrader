@@ -145,6 +145,8 @@ void main() {
 
     expect(find.text(upgrader.messages!.title), findsOneWidget);
     expect(find.text(upgrader.message()), findsOneWidget);
+    expect(find.text('Release Notes:'), findsOneWidget);
+    expect(find.text(upgrader.releaseNotes!), findsOneWidget);
     expect(find.text(upgrader.messages!.prompt), findsOneWidget);
     expect(find.byType(TextButton), findsNWidgets(3));
     expect(find.text(upgrader.messages!.buttonTitleIgnore), findsOneWidget);
@@ -219,6 +221,8 @@ void main() {
 
     expect(find.text(upgrader.messages!.title), findsOneWidget);
     expect(find.text(upgrader.message()), findsOneWidget);
+    expect(find.text('Release Notes:'), findsOneWidget);
+    expect(find.text(upgrader.releaseNotes!), findsOneWidget);
     expect(find.text(upgrader.messages!.prompt), findsOneWidget);
     expect(find.byType(CupertinoDialogAction), findsNWidgets(3));
     expect(find.text(upgrader.messages!.buttonTitleIgnore), findsOneWidget);
@@ -357,6 +361,8 @@ void main() {
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle();
 
+    expect(find.text('Release Notes:'), findsOneWidget);
+    expect(find.text(upgrader.releaseNotes!), findsOneWidget);
     await tester.tap(find.text(upgrader.messages!.buttonTitleUpdate));
     await tester.pumpAndSettle();
 

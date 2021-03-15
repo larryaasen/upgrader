@@ -1,3 +1,7 @@
+## 3.1.0
+
+* Added release notes. On iOS the release notes are automatically displayed. For Appcast the description will be used for release notes.
+
 ## 3.0.0
 
 * Moved to Flutter 2.0.0 stable.

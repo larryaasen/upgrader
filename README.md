@@ -22,9 +22,13 @@ popup alert prompt, and the [UpgradeCard](#card-example) class is used to displa
 
 The text displayed in the upgrader package is localized in many languages, and supports customization.
 
+The release notes are displayed by default when a new version is available. On iOS the release
+notes are taken from the App Store What's New section. For [appcast](#appcast)), the
+release notes are taken from the description field.
+
 ## Alert Example
 
-Just wrap your body widget in the UpgradeAlert widget, and it will handle the rest.
+Just wrap your body widget in the `UpgradeAlert` widget, and it will handle the rest.
 ```dart
 import 'package:flutter/material.dart';
 import 'package:upgrader/upgrader.dart';
@@ -60,7 +64,7 @@ class MyApp extends StatelessWidget {
 
 ## Cupertino Alert Example
 
-You can also display a Cupertino style dialog by using the dialogStyle parameter.
+You can also display a Cupertino style dialog by using the `dialogStyle` parameter.
 ```dart
           body: UpgradeAlert(
             dialogStyle: UpgradeDialogStyle.cupertino,
@@ -74,7 +78,7 @@ You can also display a Cupertino style dialog by using the dialogStyle parameter
 
 ## Card Example
 
-Just return an UpgradeCard widget in your build method and a material design card will be displayed
+Just return an `UpgradeCard` widget in your build method and a material design card will be displayed
 when an update is detected. The widget will have width and height of 0.0 when no update is detected.
 ```dart
 return Container(
@@ -101,8 +105,9 @@ UpgradeAlert widget.
 * onIgnore: called when the ignore button is tapped, defaults to ```null```
 * onLater: called when the later button is tapped, defaults to ```null```
 * onUpdate: called when the update button is tapped, defaults to ```null```
-* showIgnore: hide or show Ignore button on dialog, which defaults to ```true```
-* showLater: hide or show Later button on dialog, which defaults to ```true```
+* showIgnore: hide or show Ignore button, which defaults to ```true```
+* showLater: hide or show Later button, which defaults to ```true```
+* showReleaseNotes: hide or show release notes, which defaults to ```true```
 * canDismissDialog: can alert dialog be dismissed on tap outside of the alert dialog, which defaults to ```false``` (not used by alert card)
 * countryCode: the country code that will override the system locale, which defaults to ```null``` (iOS only)
 * minAppVersion: the minimum app version supported by this app. Earlier versions of this app will be forced to update to the current version. Defaults to ```null```.
@@ -119,14 +124,13 @@ the app is in the `US` App Store.
 These widgets work on both Android and iOS. When running on iOS the App Store will provide the
 latest app version and will display the prompt at the appropriate times.
 
-On Android, this widget
-does nothing (unless using [appcast](#appcast)) as there is no easy way to query the Google Play Store for metadata about an app.
+On Android, this widget normally does nothing unless the [appcast](#appcast)) is used.
+There is no easy way to query the Google Play Store for metadata about an app.
 Without the metadata, the widget cannot compare the app version with the latest Play Store version.
-It will not disrupt the widget tree and can be
-included in an Android without any issues.
+It will not disrupt the widget tree and can be included in an Android app without any issues.
 
-There is now an [appcast](#appcast) that can be used for Android and iOS to remotely configure the
-latest app version.
+There is an [appcast](#appcast) that can be used to remotely configure the
+latest app version. See [appcast](#appcast) below for more details.
 
 ## Appcast
 
@@ -161,7 +165,7 @@ final bestItem = appcast.bestItem();
         <title>Debt Now App - Appcast</title>
         <item>
             <title>Version 1.15.0</title>
-            <description>desc</description>
+            <description>Minor updates and improvements.</description>
             <pubDate>Sun, 30 Dec 2018 12:00:00 +0000</pubDate>
             <enclosure url="https://play.google.com/store/apps/details?id=com.moonwink.treasury" sparkle:version="1.15.0" sparkle:os="android" />
         </item>
@@ -311,8 +315,9 @@ Results:
 upgrader: download: https://itunes.apple.com/lookup?bundleId=com.google.Maps
 upgrader: response statusCode: 200
 itunes_lookup bundleId: com.google.Maps
+itunes_lookup releaseNotes: Thanks for using Google Maps!
 itunes_lookup trackViewUrl: https://apps.apple.com/us/app/google-maps-transit-food/id585027354?uo=4
-itunes_lookup version: 5.31
+itunes_lookup version: 5.58
 itunes_lookup all results:
 {resultCount: 1, results:
 ...

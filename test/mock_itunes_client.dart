@@ -17,23 +17,23 @@ class MockITunesSearchClient {
             : '';
 
     final client = MockClient((http.Request request) async {
-      final r =
-          '{"results": [{"version": "5.6", "bundleId": "com.google.Maps", "currency": "$currency"}]}';
+      final response =
+          '{"results": [{"version": "5.6", "bundleId": "com.google.Maps", "currency": "$currency", "releaseNotes": "Bug fixes."}]}';
 
       final url = request.url.toString();
       if (url ==
           ITunesSearchAPI().lookupURLById('585027354', country: country)) {
-        return http.Response(r, 200);
+        return http.Response(response, 200);
       }
       if (url ==
           ITunesSearchAPI()
               .lookupURLByBundleId('com.google.Maps', country: country)) {
-        return http.Response(r, 200);
+        return http.Response(response, 200);
       }
       if (url ==
           ITunesSearchAPI().lookupURLByBundleId('com.larryaasen.upgrader',
               country: country)) {
-        return http.Response(r, 200);
+        return http.Response(response, 200);
       }
       if (url ==
           ITunesSearchAPI()

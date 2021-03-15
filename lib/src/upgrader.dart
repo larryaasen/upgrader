@@ -86,6 +86,9 @@ class Upgrader {
   /// Hide or show Later button on dialog (default: true)
   bool showLater = true;
 
+  /// Hide or show release notes (default: true)
+  bool showReleaseNotes = true;
+
   /// Can alert dialog be dismissed on tap outside of the alert dialog. Not used by alert card. (default: false)
   bool canDismissDialog = false;
 
@@ -106,6 +109,7 @@ class Upgrader {
   String? _installedVersion;
   String? _appStoreVersion;
   String? _appStoreListingURL;
+  String? _releaseNotes;
   String? _updateAvailable;
   DateTime? _lastTimeAlerted;
   String? _lastVersionAlerted;
@@ -191,6 +195,7 @@ class Upgrader {
         if (bestItem.isCriticalUpdate) {
           _isCriticalUpdate = true;
         }
+        _releaseNotes = bestItem.itemDescription;
       }
     } else {
       // If this platform is not iOS, skip the iTunes lookup
@@ -217,6 +222,8 @@ class Upgrader {
       if (response != null) {
         _appStoreVersion ??= ITunesResults.version(response);
         _appStoreListingURL ??= ITunesResults.trackViewUrl(response);
+        _releaseNotes ??= ITunesResults.releaseNotes(response);
+        _releaseNotes = 'Minor updates and improvements.';
       }
     }
 
@@ -253,17 +260,13 @@ class Upgrader {
     return _packageInfo?.appName ?? '';
   }
 
-  String? currentAppStoreListingURL() {
-    return _appStoreListingURL;
-  }
+  String? currentAppStoreListingURL() => _appStoreListingURL;
 
-  String? currentAppStoreVersion() {
-    return _appStoreVersion;
-  }
+  String? currentAppStoreVersion() => _appStoreVersion;
 
-  String? currentInstalledVersion() {
-    return _installedVersion;
-  }
+  String? currentInstalledVersion() => _installedVersion;
+
+  String? get releaseNotes => _releaseNotes;
 
   String message() {
     var msg = messages!.message(UpgraderMessage.body)!;
@@ -280,6 +283,8 @@ class Upgrader {
       final shouldDisplay = shouldDisplayUpgrade();
       if (debugLogging) {
         print('upgrader: shouldDisplayUpgrade: $shouldDisplay');
+        print(
+            'upgrader: shouldDisplayReleaseNotes: ${shouldDisplayReleaseNotes()}');
       }
       if (shouldDisplay) {
         _displayed = true;
@@ -288,6 +293,7 @@ class Upgrader {
               context: context,
               title: messages!.message(UpgraderMessage.title),
               message: message(),
+              releaseNotes: shouldDisplayReleaseNotes() ? _releaseNotes : null,
               canDismissDialog: canDismissDialog);
         });
       }
@@ -384,6 +390,10 @@ class Upgrader {
     return _updateAvailable != null;
   }
 
+  bool shouldDisplayReleaseNotes() {
+    return showReleaseNotes && (_releaseNotes?.isNotEmpty ?? false);
+  }
+
   /// Determine the current country code, either from the context, or
   /// from the system-reported default locale of the device. The default
   /// is `US`.
@@ -405,10 +415,12 @@ class Upgrader {
       {required BuildContext context,
       required String? title,
       required String message,
+      required String? releaseNotes,
       required bool canDismissDialog}) {
     if (debugLogging) {
       print('upgrader: showDialog title: $title');
       print('upgrader: showDialog message: $message');
+      print('upgrader: showDialog releaseNotes: $releaseNotes');
     }
 
     // Save the date/time as the last time alerted.
@@ -419,22 +431,43 @@ class Upgrader {
       context: context,
       builder: (BuildContext context) {
         return dialogStyle == UpgradeDialogStyle.material
-            ? _alertDialog(title!, message, context)
-            : _cupertinoAlertDialog(title!, message, context);
+            ? _alertDialog(title!, message, releaseNotes, context)
+            : _cupertinoAlertDialog(title!, message, releaseNotes, context);
       },
     );
   }
 
-  AlertDialog _alertDialog(String title, String message, BuildContext context) {
+  AlertDialog _alertDialog(String title, String message, String? releaseNotes,
+      BuildContext context) {
+    Widget? notes;
+    if (releaseNotes != null) {
+      notes = Padding(
+          padding: EdgeInsets.only(top: 15.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text('Release Notes:',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+              Text(
+                releaseNotes,
+                maxLines: 15,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ));
+    }
     return AlertDialog(
       title: Text(title),
       content: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Text(message),
           Padding(
               padding: EdgeInsets.only(top: 15.0),
               child: Text(messages!.message(UpgraderMessage.prompt)!)),
+          if (notes != null) notes,
         ],
       ),
       actions: <Widget>[
@@ -454,18 +487,35 @@ class Upgrader {
     );
   }
 
-  CupertinoAlertDialog _cupertinoAlertDialog(
-      String title, String message, BuildContext context) {
+  CupertinoAlertDialog _cupertinoAlertDialog(String title, String message,
+      String? releaseNotes, BuildContext context) {
+    Widget? notes;
+    if (releaseNotes != null) {
+      notes = Padding(
+          padding: EdgeInsets.only(top: 15.0),
+          child: Column(
+            children: <Widget>[
+              Text('Release Notes:',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+              Text(
+                releaseNotes,
+                maxLines: 14,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ));
+    }
     return CupertinoAlertDialog(
       title: Text(title),
       content: Column(
-        mainAxisSize: MainAxisSize.min,
+        // mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Text(message),
           Padding(
               padding: EdgeInsets.only(top: 15.0),
               child: Text(messages!.message(UpgraderMessage.prompt)!)),
+          if (notes != null) notes,
         ],
       ),
       actions: <Widget>[
