@@ -106,6 +106,14 @@ class UpgraderMessages {
         message =
             '¡Una nueva versión de {{appName}} está disponible! La versión {{currentAppStoreVersion}} ya está disponible-usted tiene {{currentInstalledVersion}}.';
         break;
+      case 'fa':
+        message =
+            'نسخه‌ی جدیدی از {{appname}} موجود است! نسخه‌ی {{currentAppStoreVersion}} در دسترس است ولی شما همچنان از نسخه‌ی {{currentInstalledVersion}} استفاده می‌کنید.';
+        break;
+      case 'fil':
+        message =
+            'May bagong bersyon ang {{appName}} na pwede nang magamit! Ang bersyong {{currentAppStoreVersion}} ay pwede nang magamit. Ikaw ay kasalukuyang gumagamit ng bersyong {{currentInstalledVersion}}.';
+        break;
       case 'fr':
         message =
             'Une nouvelle version de {{appName}} est disponible ! La version {{currentAppStoreVersion}} est maintenant disponible, vous avez la version {{currentInstalledVersion}}.';
@@ -171,6 +179,12 @@ class UpgraderMessages {
       case 'es':
         message = 'IGNORAR';
         break;
+      case 'fa':
+        message = 'ردکردن';
+        break;
+      case 'fil':
+        message = 'HUWAG PANSININ';
+        break;
       case 'fr':
         message = 'IGNORER';
         break;
@@ -223,6 +237,12 @@ class UpgraderMessages {
         break;
       case 'es':
         message = 'MÁS TARDE';
+        break;
+      case 'fa':
+        message = 'بعدا';
+        break;
+      case 'fil':
+        message = 'MAMAYA';
         break;
       case 'fr':
         message = 'PLUS TARD';
@@ -277,6 +297,12 @@ class UpgraderMessages {
       case 'es':
         message = 'ACTUALIZAR';
         break;
+      case 'fa':
+        message = 'بروزرسانی';
+        break;
+      case 'fil':
+        message = 'I-UPDATE NA NGAYON';
+        break;
       case 'fr':
         message = 'MAINTENANT';
         break;
@@ -330,6 +356,12 @@ class UpgraderMessages {
       case 'es':
         message = '¿Le gustaría actualizar ahora?';
         break;
+      case 'fa':
+        message = 'آیا بروزرسانی می‌کنید؟';
+        break;
+      case 'fil':
+        message = 'Gusto mo bang i-update ito ngayon?';
+        break;
       case 'fr':
         message = 'Voulez-vous mettre à jour maintenant?';
         break;
@@ -382,6 +414,12 @@ class UpgraderMessages {
         break;
       case 'es':
         message = '¿Actualizar la aplicación?';
+        break;
+      case 'fa':
+        message = 'نسخه‌ی جدید';
+        break;
+      case 'fil':
+        message = 'I-update ang app?';
         break;
       case 'fr':
         message = 'Mettre à jour l\'application?';

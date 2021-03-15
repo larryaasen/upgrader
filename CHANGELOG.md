@@ -1,6 +1,7 @@
 ## 3.1.0
 
 * Added release notes. On iOS the release notes are automatically displayed. For Appcast the description will be used for release notes.
+* Added new language translations for Filipino ('fil') and Persian ('fa').
 
 ## 3.0.0
 
