@@ -33,18 +33,23 @@ class ITunesSearchAPI {
       return null;
     }
 
-    final url = lookupURLByBundleId(bundleId, country: country)!;
+    final url = lookupURLByBundleId(bundleId, country: country ??= '')!;
     if (debugEnabled) {
       print('upgrader: download: $url');
     }
 
-    final response = await client!.get(Uri.parse(url));
-    if (debugEnabled) {
-      print('upgrader: response statusCode: ${response.statusCode}');
-    }
+    try {
+      final response = await client!.get(Uri.parse(url));
+      if (debugEnabled) {
+        print('upgrader: response statusCode: ${response.statusCode}');
+      }
 
-    final decodedResults = _decodeResults(response.body);
-    return decodedResults;
+      final decodedResults = _decodeResults(response.body);
+      return decodedResults;
+    } catch (e) {
+      print('upgrader: lookupByBundleId exception: $e');
+      return null;
+    }
   }
 
   /// Look up by id.
@@ -67,12 +72,13 @@ class ITunesSearchAPI {
   /// Example: look up Google Maps iOS App:
   /// ```lookupURLByBundleId('com.google.Maps');```
   /// ```lookupURLByBundleId('com.google.Maps', country: 'FR');```
-  String? lookupURLByBundleId(String bundleId, {String? country = 'US'}) {
+  String? lookupURLByBundleId(String bundleId, {String country = 'US'}) {
     if (bundleId.isEmpty) {
       return null;
     }
 
-    return lookupURLByQSP({'bundleId': bundleId, 'country': country});
+    return lookupURLByQSP(
+        {'bundleId': bundleId, 'country': country.toUpperCase()});
   }
 
   /// Look up URL by id.
@@ -84,7 +90,7 @@ class ITunesSearchAPI {
       return null;
     }
 
-    return lookupURLByQSP({'id': id, 'country': country});
+    return lookupURLByQSP({'id': id, 'country': country.toUpperCase()});
   }
 
   /// Look up URL by QSP.

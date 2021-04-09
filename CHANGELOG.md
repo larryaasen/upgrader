@@ -1,3 +1,7 @@
+## 3.2.0
+
+* Resolved issue where the country code used by the iTunes Search API should have been upper case.
+
 ## 3.1.0
 
 * Added release notes. On iOS the release notes are automatically displayed. For Appcast the description will be used for release notes.

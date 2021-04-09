@@ -152,6 +152,11 @@ class Upgrader {
 
     await _getSavedPrefs();
 
+    if (debugLogging) {
+      print('upgrader: operatingSystem: '
+          '${Platform.operatingSystem} ${Platform.operatingSystemVersion}');
+    }
+
     if (_packageInfo == null) {
       _packageInfo = await PackageInfo.fromPlatform();
       if (debugLogging) {
@@ -356,12 +361,20 @@ class Upgrader {
     }
 
     final lastAlertedDuration = DateTime.now().difference(_lastTimeAlerted!);
-    return lastAlertedDuration < durationUntilAlertAgain;
+    final rv = lastAlertedDuration < durationUntilAlertAgain;
+    if (rv && debugLogging) {
+      print('upgrader: isTooSoon: true');
+    }
+    return rv;
   }
 
   bool alreadyIgnoredThisVersion() {
-    return _userIgnoredVersion != null &&
-        _userIgnoredVersion == _appStoreVersion;
+    final rv =
+        _userIgnoredVersion != null && _userIgnoredVersion == _appStoreVersion;
+    if (rv && debugLogging) {
+      print('upgrader: alreadyIgnoredThisVersion: true');
+    }
+    return rv;
   }
 
   bool isUpdateAvailable() {

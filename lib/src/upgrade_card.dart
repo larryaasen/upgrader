@@ -76,7 +76,7 @@ class UpgradeCard extends UpgradeBase {
                 print('UpgradeCard: showDialog title: $title');
                 print('UpgradeCard: showDialog message: $message');
                 print(
-                    'UpgradeCard: shouldDisplayReleaseNotes: ${shouldDisplayReleaseNotes}');
+                    'UpgradeCard: shouldDisplayReleaseNotes: $shouldDisplayReleaseNotes');
 
                 print('UpgradeCard: showDialog releaseNotes: $releaseNotes');
               }
