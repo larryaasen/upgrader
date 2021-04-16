@@ -103,9 +103,11 @@ class Upgrader {
   bool _initCalled = false;
   PackageInfo _packageInfo;
 
+  String _iosBundleID;
   String _installedVersion;
   String _appStoreVersion;
   String _appStoreListingURL;
+  String _releaseNotes;
   String _updateAvailable;
   DateTime _lastTimeAlerted;
   String _lastVersionAlerted;
@@ -132,12 +134,13 @@ class Upgrader {
     _appStoreListingURL = url;
   }
 
-  Future<bool> initialize() async {
+  Future<bool> initialize({@required iosBundleID, minVersion}) async {
     if (_initCalled) {
       return true;
     }
-
     _initCalled = true;
+    _iosBundleID = iosBundleID;
+    minAppVersion ??= minVersion;
 
     messages ??= UpgraderMessages();
     if (messages.languageCode == null || messages.languageCode.isEmpty) {
@@ -166,59 +169,28 @@ class Upgrader {
   }
 
   Future<bool> _updateVersionInfo() async {
-    // If there is an appcast for this platform
-    if (_isAppcastThisPlatform()) {
-      if (debugLogging) {
-        print('upgrader: appcast is available for this platform');
-      }
-
-      final appcast = this.appcast ?? Appcast(client: client);
-      await appcast.parseAppcastItemsFromUri(appcastConfig.url);
-      if (debugLogging) {
-        var count = appcast.items == null ? 0 : appcast.items.length;
-        print('upgrader: appcast item count: $count');
-      }
-      final bestItem = appcast.bestItem();
-      if (bestItem != null &&
-          bestItem.versionString != null &&
-          bestItem.versionString.isNotEmpty) {
-        if (debugLogging) {
-          print(
-              'upgrader: appcast best item version: ${bestItem.versionString}');
-        }
-        _appStoreVersion ??= bestItem.versionString;
-        _appStoreListingURL ??= bestItem.fileURL;
-        if (bestItem.isCriticalUpdate) {
-          _isCriticalUpdate = true;
-        }
-      }
-    } else {
-      // If this platform is not iOS, skip the iTunes lookup
-      if (Platform.isAndroid) {
-        return false;
-      }
-
-      if (_packageInfo == null ||
-          _packageInfo.packageName == null ||
-          _packageInfo.packageName.isEmpty) {
-        return false;
-      }
-
-      // The  country code of the locale, defaulting to `US`.
-      final code = countryCode ?? findCountryCode();
-      if (debugLogging) {
-        print('upgrader: countryCode: $code');
-      }
-
-      final iTunes = ITunesSearchAPI();
-      iTunes.client = client;
-      final country = code;
-      final response = await iTunes.lookupByBundleId(_packageInfo.packageName,
-          country: country);
-
-      _appStoreVersion ??= ITunesResults.version(response);
-      _appStoreListingURL ??= ITunesResults.trackViewUrl(response);
+    if (_packageInfo == null ||
+        _packageInfo.packageName == null ||
+        _packageInfo.packageName.isEmpty) {
+      return false;
     }
+
+    // The  country code of the locale, defaulting to `US`.
+    final code = countryCode ?? findCountryCode();
+    if (debugLogging) {
+      print('upgrader: countryCode: $code');
+    }
+
+    final iTunes = ITunesSearchAPI();
+    iTunes.client = client;
+    final country = code;
+    final response =
+        await iTunes.lookupByBundleId(_iosBundleID, country: country);
+
+    _appStoreVersion ??= ITunesResults.version(response);
+    _appStoreVersion ??= ITunesResults.version(response);
+    _releaseNotes = response['results'][0]['releaseNotes'];
+    // mess ??= ITunesResults.(response);
 
     return true;
   }
@@ -287,6 +259,7 @@ class Upgrader {
               context: context,
               title: messages.message(UpgraderMessage.title),
               message: message(),
+              releaseNotes: _releaseNotes,
               canDismissDialog: canDismissDialog);
         });
       }
@@ -404,6 +377,7 @@ class Upgrader {
       {@required BuildContext context,
       @required String title,
       @required String message,
+      @required String releaseNotes,
       bool canDismissDialog}) {
     if (debugLogging) {
       print('upgrader: showDialog title: $title');
@@ -418,13 +392,33 @@ class Upgrader {
       context: context,
       builder: (BuildContext context) {
         return dialogStyle == UpgradeDialogStyle.material
-            ? _alertDialog(title, message, context)
+            ? _alertDialog(title, message, releaseNotes, context)
             : _cupertinoAlertDialog(title, message, context);
       },
     );
   }
 
-  AlertDialog _alertDialog(String title, String message, BuildContext context) {
+  AlertDialog _alertDialog(
+      String title, String message, String releaseNotes, BuildContext context) {
+    Widget notes;
+    if (releaseNotes != null) {
+      notes = Padding(
+          padding: EdgeInsets.only(top: 15.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text('Release Notes:',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
+              Text(
+                releaseNotes,
+                maxLines: 15,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ));
+    }
+
     return AlertDialog(
       title: Text(title),
       content: Column(
@@ -434,6 +428,7 @@ class Upgrader {
           Padding(
               padding: EdgeInsets.only(top: 15.0),
               child: Text(messages.message(UpgraderMessage.prompt))),
+          if (notes != null) notes,
         ],
       ),
       actions: <Widget>[
@@ -532,13 +527,7 @@ class Upgrader {
       doProcess = onUpdate();
     }
 
-    if (doProcess) {
-      _sendUserToAppStore();
-    }
-
-    if (shouldPop) {
-      _pop(context);
-    }
+    if (doProcess) {}
   }
 
   Future<bool> clearSavedSettings() async {
