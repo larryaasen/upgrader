@@ -422,12 +422,13 @@ class Upgrader {
     return AlertDialog(
       title: Text(title),
       content: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Text(message),
           Padding(
               padding: EdgeInsets.only(top: 15.0),
-              child: Text(messages.message(UpgraderMessage.prompt))),
+              child: Text(messages!.message(UpgraderMessage.prompt)!)),
           if (notes != null) notes,
         ],
       ),
