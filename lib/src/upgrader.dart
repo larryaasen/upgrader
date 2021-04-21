@@ -228,7 +228,6 @@ class Upgrader {
         _appStoreVersion ??= ITunesResults.version(response);
         _appStoreListingURL ??= ITunesResults.trackViewUrl(response);
         _releaseNotes ??= ITunesResults.releaseNotes(response);
-        _releaseNotes = 'Minor updates and improvements.';
       }
     }
 

@@ -1,3 +1,7 @@
+## 3.2.1
+
+* Resolved issue where release notes for the iOS App Store always displayed Minor updates and improvements.
+
 ## 3.2.0
 
 * Resolved issue where the country code used by the iTunes Search API should have been upper case.
