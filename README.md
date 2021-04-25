@@ -3,7 +3,6 @@
 Flutter package for prompting users to upgrade when there is a newer version of the app in the store.
 
 [![Build Status](https://travis-ci.org/larryaasen/upgrader.svg?branch=master)](https://travis-ci.org/larryaasen/upgrader)
-[![CircleCI](https://circleci.com/gh/larryaasen/upgrader.svg?style=svg)](https://circleci.com/gh/larryaasen/upgrader)
 [![Codemagic](https://api.codemagic.io/apps/5ffb7888eb8402dcd1928753/flutter-package/status_badge.svg)](https://codemagic.io/app/5ffb7888eb8402dcd1928753)
 [![codecov](https://codecov.io/gh/larryaasen/upgrader/branch/master/graph/badge.svg)](https://codecov.io/gh/larryaasen/upgrader)
 [![pub package](https://img.shields.io/pub/v/upgrader.svg)](https://pub.dartlang.org/packages/upgrader)
