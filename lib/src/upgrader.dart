@@ -80,6 +80,11 @@ class Upgrader {
   /// Return false when the default behavior should not execute.
   BoolCallback? onUpdate;
 
+  /// Called when the user taps outside of the dialog and [canDismissDialog]
+  /// is false. Also called when the back button is pressed. Return true for
+  /// the screen to be popped. Not used by [UpgradeCard].
+  BoolCallback? shouldPopScope;
+
   /// Hide or show Ignore button on dialog (default: true)
   bool showIgnore = true;
 
@@ -89,7 +94,7 @@ class Upgrader {
   /// Hide or show release notes (default: true)
   bool showReleaseNotes = true;
 
-  /// Can alert dialog be dismissed on tap outside of the alert dialog. Not used by alert card. (default: false)
+  /// Can alert dialog be dismissed on tap outside of the alert dialog. Not used by [UpgradeCard]. (default: false)
   bool canDismissDialog = false;
 
   /// The country code that will override the system locale. Optional. Used only for iOS.
@@ -282,6 +287,7 @@ class Upgrader {
     return msg;
   }
 
+  /// Only called by [UpgradeAlert].
   void checkVersion({required BuildContext context}) {
     if (!_displayed) {
       final shouldDisplay = shouldDisplayUpgrade();
@@ -442,11 +448,32 @@ class Upgrader {
       barrierDismissible: canDismissDialog,
       context: context,
       builder: (BuildContext context) {
-        return dialogStyle == UpgradeDialogStyle.material
-            ? _alertDialog(title!, message, releaseNotes, context)
-            : _cupertinoAlertDialog(title!, message, releaseNotes, context);
+        return WillPopScope(
+          onWillPop: () async => _shouldPopScope(),
+          child: dialogStyle == UpgradeDialogStyle.material
+              ? _alertDialog(title!, message, releaseNotes, context)
+              : _cupertinoAlertDialog(title!, message, releaseNotes, context),
+        );
       },
     );
+  }
+
+  /// Called when the user taps outside of the dialog and [canDismissDialog]
+  /// is false. Also called when the back button is pressed. Return true for
+  /// the screen to be popped. Defaults to false.
+  bool _shouldPopScope() {
+    if (debugLogging) {
+      print('upgrader: onWillPop called');
+    }
+    if (shouldPopScope != null) {
+      final should = shouldPopScope!();
+      if (debugLogging) {
+        print('upgrader: shouldPopScope=$should');
+      }
+      return should;
+    }
+
+    return false;
   }
 
   AlertDialog _alertDialog(String title, String message, String? releaseNotes,
