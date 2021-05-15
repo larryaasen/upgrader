@@ -104,13 +104,25 @@ UpgradeAlert widget.
 * onIgnore: called when the ignore button is tapped, defaults to ```null```
 * onLater: called when the later button is tapped, defaults to ```null```
 * onUpdate: called when the update button is tapped, defaults to ```null```
+* shouldPopScope: called when the back button is tapped, defaults to ```null```
 * showIgnore: hide or show Ignore button, which defaults to ```true```
 * showLater: hide or show Later button, which defaults to ```true```
 * showReleaseNotes: hide or show release notes, which defaults to ```true```
-* canDismissDialog: can alert dialog be dismissed on tap outside of the alert dialog, which defaults to ```false``` (not used by alert card)
+* canDismissDialog: can alert dialog be dismissed on tap outside of the alert dialog, which defaults to ```false``` (not used by UpgradeCard)
 * countryCode: the country code that will override the system locale, which defaults to ```null``` (iOS only)
 * minAppVersion: the minimum app version supported by this app. Earlier versions of this app will be forced to update to the current version. Defaults to ```null```.
 * dialogStyle: the upgrade dialog style, either ```material``` or ```cupertino```, defaults to ```material```, used only by UpgradeAlert, works on Android and iOS.
+
+## Android Back Button
+
+When using the ```UpgradeAlert``` widget, the Android back button will not
+dismiss the alert dialog by default. To allow the back button to dismiss the
+dialog, use ```shouldPopScope``` and return true like this:
+```
+UpgradeAlert(
+  shouldPopScope: () => true,
+);
+```
 
 ## iOS Country Code
 

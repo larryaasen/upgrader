@@ -31,7 +31,6 @@ class UpgradeCard extends UpgradeBase {
     bool? showIgnore,
     bool? showLater,
     bool? showReleaseNotes,
-    bool? canDismissDialog,
     String? countryCode,
     String? minAppVersion,
   }) : super(
@@ -49,7 +48,6 @@ class UpgradeCard extends UpgradeBase {
           showIgnore: showIgnore,
           showLater: showLater,
           showReleaseNotes: showReleaseNotes,
-          canDismissDialog: canDismissDialog,
           countryCode: countryCode,
           minAppVersion: minAppVersion,
         );

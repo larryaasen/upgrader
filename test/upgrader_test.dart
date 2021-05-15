@@ -323,6 +323,40 @@ void main() {
     expect(notCalled, true);
   }, skip: false);
 
+  testWidgets('test UpgradeWidget pop scope', (WidgetTester tester) async {
+    final client = MockITunesSearchClient.setupMockClient();
+    final upgrader = Upgrader();
+    upgrader.client = client;
+
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '0.9.9',
+            buildNumber: '400'));
+    await upgrader.initialize();
+
+    var called = false;
+    upgrader.shouldPopScope = () {
+      called = true;
+      return true;
+    };
+
+    expect(upgrader.isTooSoon(), false);
+
+    await tester.pumpWidget(_MyWidget());
+
+    // Pump the UI so the upgrader can display its dialog
+    await tester.pumpAndSettle();
+    await tester.pumpAndSettle();
+
+    // TODO: this test does not pop scope because there is no way to do that.
+    // await tester.pageBack();
+    // await tester.pumpAndSettle();
+    // expect(find.text(upgrader.messages!.buttonTitleLater), findsNothing);
+    expect(called, false);
+  }, skip: false);
+
   testWidgets('test UpgradeWidget Card upgrade', (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader();

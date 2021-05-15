@@ -1,3 +1,9 @@
+## 3.3.0
+
+* When using the ```UpgradeAlert``` widget, the Android back button will not
+dismiss the alert dialog by default anymore. To allow the back button to dismiss
+the dialog, use ```shouldPopScope``` and return true.
+
 ## 3.2.1
 
 * Resolved issue where release notes for the iOS App Store always displayed Minor updates and improvements.
