@@ -73,7 +73,7 @@ class UpgraderMessages {
   static String findLanguageCode({BuildContext context}) {
     Locale locale;
     if (context != null) {
-      locale = Localizations.localeOf(context, nullOk: true);
+      locale = Localizations.localeOf(context);
     } else {
       // Get the system locale
       locale = WidgetsBinding.instance.window.locale;

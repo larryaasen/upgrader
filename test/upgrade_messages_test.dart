@@ -21,22 +21,17 @@ void main() {
     var expectationMet = false;
     var widget = Text('Tester');
 
-    await tester.pumpWidget(
-      StatefulBuilder(
-        builder: (BuildContext context, StateSetter setState) {
+    await tester.pumpWidget(MaterialApp(home: Material(
+      child: Center(
+        child: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
           final code = UpgraderMessages.findLanguageCode(context: context);
           expect(code, 'en');
           expectationMet = true;
-          return MaterialApp(
-            home: Material(
-              child: Center(
-                child: widget,
-              ),
-            ),
-          );
-        },
+          return widget;
+        }),
       ),
-    );
+    )));
 
     expect(find.byWidget(widget), findsOneWidget);
     expect(expectationMet, isTrue);

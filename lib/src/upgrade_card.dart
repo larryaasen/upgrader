@@ -88,7 +88,7 @@ class UpgradeCard extends UpgradeBase {
                       ),
                       actions: <Widget>[
                         if (Upgrader().showIgnore)
-                          FlatButton(
+                          TextButton(
                               child: Text(Upgrader()
                                   .messages
                                   .message(UpgraderMessage.buttonTitleIgnore)),
@@ -100,7 +100,7 @@ class UpgradeCard extends UpgradeBase {
                                 state.forceUpdateState();
                               }),
                         if (Upgrader().showLater)
-                          FlatButton(
+                          TextButton(
                               child: Text(Upgrader()
                                   .messages
                                   .message(UpgraderMessage.buttonTitleLater)),
@@ -111,7 +111,7 @@ class UpgradeCard extends UpgradeBase {
                                 Upgrader().onUserLater(context, false);
                                 state.forceUpdateState();
                               }),
-                        FlatButton(
+                        TextButton(
                             child: Text(Upgrader()
                                 .messages
                                 .message(UpgraderMessage.buttonTitleUpdate)),

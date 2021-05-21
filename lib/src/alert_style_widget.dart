@@ -17,7 +17,7 @@ class AlertStyleWidget extends StatelessWidget {
   /// The (optional) set of actions that are displayed at the bottom of the
   /// dialog.
   ///
-  /// Typically this is a list of [FlatButton] widgets.
+  /// Typically this is a list of [TextButton] widgets.
   ///
   /// These widgets will be wrapped in a [ButtonBar], which introduces 8 pixels
   /// of padding on each side.

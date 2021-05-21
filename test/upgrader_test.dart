@@ -141,7 +141,7 @@ void main() {
     expect(find.text(upgrader.messages.title), findsOneWidget);
     expect(find.text(upgrader.message()), findsOneWidget);
     expect(find.text(upgrader.messages.prompt), findsOneWidget);
-    expect(find.byType(FlatButton), findsNWidgets(3));
+    expect(find.byType(TextButton), findsNWidgets(3));
     expect(find.text(upgrader.messages.buttonTitleIgnore), findsOneWidget);
     expect(find.text(upgrader.messages.buttonTitleLater), findsOneWidget);
     expect(find.text(upgrader.messages.buttonTitleUpdate), findsOneWidget);

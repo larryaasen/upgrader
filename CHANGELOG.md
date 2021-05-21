@@ -1,3 +1,7 @@
+## 2.8.3
+
+* Fixed the issue: No named parameter with the name 'nullOk'. Changed FlatButton to TextButton.
+
 ## 2.8.2
 
 * Fixed issue with language code that was not supported. It now defaults to 'en' English.
