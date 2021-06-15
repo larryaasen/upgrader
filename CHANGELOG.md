@@ -1,3 +1,7 @@
+## 3.3.1
+
+* Fixed the parsing of the appcast body to handle UTF-8 correctly.
+
 ## 3.3.0
 
 * When using the ```UpgradeAlert``` widget, the Android back button will not
