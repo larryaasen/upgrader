@@ -2,6 +2,7 @@
  * Copyright (c) 2018 Larry Aasen. All rights reserved.
  */
 
+import 'dart:convert' show utf8;
 import 'dart:io';
 
 import 'package:device_info/device_info.dart';
@@ -63,7 +64,7 @@ class Appcast {
       print(e);
       return null;
     }
-    final contents = response.body;
+    final contents = utf8.decode(response.bodyBytes);
     return parseItemsFromXMLString(contents);
   }
 
