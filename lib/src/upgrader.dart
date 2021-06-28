@@ -542,7 +542,10 @@ class Upgrader {
           ));
     }
     return AlertDialog(
-      title: Text(title),
+      title: Text(
+        title,
+        textAlign: TextAlign.center,
+      ),
       content: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
@@ -564,7 +567,7 @@ class Upgrader {
           TextButton(
               child: Text(messages!.message(UpgraderMessage.buttonTitleLater)!),
               onPressed: () => onUserLater(context, true)),
-        TextButton(
+        ElevatedButton(
             child: Text(messages!.message(UpgraderMessage.buttonTitleUpdate)!),
             onPressed: () => onUserUpdated(context, !blocked())),
       ],
