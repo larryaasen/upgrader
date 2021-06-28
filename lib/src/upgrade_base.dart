@@ -98,6 +98,9 @@ class UpgradeBase extends StatefulWidget {
     if (appcastConfig != null) {
       Upgrader().appcastConfig = appcastConfig;
     }
+    if (androidId != null) {
+      Upgrader().androidId = androidId;
+    }
     if (messages != null) {
       Upgrader().messages = messages;
     }
