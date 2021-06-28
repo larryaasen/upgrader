@@ -12,6 +12,7 @@ import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:version/version.dart';
+import 'package:html/parser.dart' show parse;
 
 import 'appcast.dart';
 import 'itunes_search_api.dart';
@@ -43,6 +44,11 @@ class Upgrader {
   /// The appcast configuration ([AppcastConfiguration]) used by [Appcast].
   /// When an appcast is configured for iOS, the iTunes lookup is not used.
   AppcastConfiguration? appcastConfig;
+
+  /// An optional value that can override the default packageName when
+  /// attempting to reach the Google Play Store. This is useful if your app has
+  /// a different package name in the Play Store.
+  String? androidId;
 
   /// Provide an Appcast that can be replaced for mock testing.
   Appcast? appcast;
@@ -180,6 +186,11 @@ class Upgrader {
   }
 
   Future<bool> _updateVersionInfo() async {
+    // Get android update without appcast
+    if (Platform.isAndroid) {
+      await _getAndroidStoreVersion();
+    }
+
     // If there is an appcast for this platform
     if (_isAppcastThisPlatform()) {
       if (debugLogging) {
@@ -235,6 +246,40 @@ class Upgrader {
         _releaseNotes ??= ITunesResults.releaseNotes(response);
       }
     }
+
+    return true;
+  }
+
+  /// Android info is fetched by parsing the html of the app store page.
+  Future<bool?> _getAndroidStoreVersion() async {
+    final id = androidId ?? _packageInfo!.packageName;
+    final uri =
+        Uri.https('play.google.com', '/store/apps/details', {'id': '$id'});
+    final response = await http.get(uri);
+    if (response.statusCode != 200) {
+      debugPrint('Can\'t find an app in the Play Store with the id: $id');
+      return null;
+    }
+    final document = parse(response.body);
+
+    final additionalInfoElements = document.getElementsByClassName('hAyfc');
+    final versionElement = additionalInfoElements.firstWhere(
+      (elm) => elm.querySelector('.BgcNfc')!.text == 'Current Version',
+    );
+    final storeVersion = versionElement.querySelector('.htlgb')!.text;
+
+    final sectionElements = document.getElementsByClassName('W4P4ne');
+    final releaseNotesElement = sectionElements.firstWhere(
+      (elm) => elm.querySelector('.wSaTQd')!.text == 'What\'s New',
+    );
+    final releaseNotes = releaseNotesElement
+        .querySelector('.PHBdkd')
+        ?.querySelector('.DWPxHb')
+        ?.text;
+
+    _appStoreVersion ??= storeVersion;
+    _appStoreListingURL ??= uri.toString();
+    _releaseNotes ??= releaseNotes;
 
     return true;
   }
