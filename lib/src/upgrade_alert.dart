@@ -15,6 +15,7 @@ class UpgradeAlert extends UpgradeBase {
   UpgradeAlert({
     Key? key,
     AppcastConfiguration? appcastConfig,
+    String? androidId,
     UpgraderMessages? messages,
     this.child,
     bool? debugAlwaysUpgrade,
@@ -36,6 +37,7 @@ class UpgradeAlert extends UpgradeBase {
   }) : super(
           key: key,
           appcastConfig: appcastConfig,
+          androidId: androidId,
           messages: messages,
           debugDisplayAlways: debugAlwaysUpgrade,
           debugDisplayOnce: debugDisplayOnce,
