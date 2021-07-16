@@ -10,9 +10,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:upgrader/src/play_store_search_api.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:version/version.dart';
-import 'package:html/parser.dart' show parse;
+// import 'package:html/parser.dart' show parse;
 
 import 'appcast.dart';
 import 'itunes_search_api.dart';
@@ -186,11 +187,6 @@ class Upgrader {
   }
 
   Future<bool> _updateVersionInfo() async {
-    // Get android update without appcast
-    if (Platform.isAndroid) {
-      await _getAndroidStoreVersion();
-    }
-
     // If there is an appcast for this platform
     if (_isAppcastThisPlatform()) {
       if (debugLogging) {
@@ -234,6 +230,11 @@ class Upgrader {
         print('upgrader: countryCode: $code');
       }
 
+      // Get android update without appcast
+      if (Platform.isAndroid) {
+        await _getAndroidStoreVersion();
+      }
+
       final iTunes = ITunesSearchAPI();
       iTunes.client = client;
       final country = code;
@@ -253,33 +254,17 @@ class Upgrader {
   /// Android info is fetched by parsing the html of the app store page.
   Future<bool?> _getAndroidStoreVersion() async {
     final id = androidId ?? _packageInfo!.packageName;
-    final uri =
-        Uri.https('play.google.com', '/store/apps/details', {'id': '$id'});
-    final response = await http.get(uri);
-    if (response.statusCode != 200) {
-      debugPrint('Can\'t find an app in the Play Store with the id: $id');
-      return null;
+
+    final PlayStore = PlayStroeSearchApi();
+    PlayStore.client = client;
+
+    final response = await (PlayStore.lookupById(id));
+
+    if (response != null) {
+      _appStoreVersion ??= PlayStoreResults.version(response);
+      _appStoreListingURL ??= PlayStoreResults.trackViewUrl(id);
+      _releaseNotes ??= PlayStoreResults.releaseNotes(response);
     }
-    final document = parse(response.body);
-
-    final additionalInfoElements = document.getElementsByClassName('hAyfc');
-    final versionElement = additionalInfoElements.firstWhere(
-      (elm) => elm.querySelector('.BgcNfc')!.text == 'Current Version',
-    );
-    final storeVersion = versionElement.querySelector('.htlgb')!.text;
-
-    final sectionElements = document.getElementsByClassName('W4P4ne');
-    final releaseNotesElement = sectionElements.firstWhere(
-      (elm) => elm.querySelector('.wSaTQd')!.text == 'What\'s New',
-    );
-    final releaseNotes = releaseNotesElement
-        .querySelector('.PHBdkd')
-        ?.querySelector('.DWPxHb')
-        ?.text;
-
-    _appStoreVersion ??= storeVersion;
-    _appStoreListingURL ??= uri.toString();
-    _releaseNotes ??= releaseNotes;
 
     return true;
   }
