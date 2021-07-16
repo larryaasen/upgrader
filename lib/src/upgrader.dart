@@ -10,8 +10,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:upgrader/src/play_store_search_api.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:version/version.dart';
+// import 'package:html/parser.dart' show parse;
 
 import 'appcast.dart';
 import 'itunes_search_api.dart';
@@ -43,6 +45,11 @@ class Upgrader {
   /// The appcast configuration ([AppcastConfiguration]) used by [Appcast].
   /// When an appcast is configured for iOS, the iTunes lookup is not used.
   AppcastConfiguration? appcastConfig;
+
+  /// An optional value that can override the default packageName when
+  /// attempting to reach the Google Play Store. This is useful if your app has
+  /// a different package name in the Play Store.
+  String? androidId;
 
   /// Provide an Appcast that can be replaced for mock testing.
   Appcast? appcast;
@@ -223,6 +230,11 @@ class Upgrader {
         print('upgrader: countryCode: $code');
       }
 
+      // Get android update without appcast
+      if (Platform.isAndroid) {
+        await _getAndroidStoreVersion();
+      }
+
       final iTunes = ITunesSearchAPI();
       iTunes.client = client;
       final country = code;
@@ -234,6 +246,23 @@ class Upgrader {
         _appStoreListingURL ??= ITunesResults.trackViewUrl(response);
         _releaseNotes ??= ITunesResults.releaseNotes(response);
       }
+    }
+
+    return true;
+  }
+
+  /// Android info is fetched by parsing the html of the app store page.
+  Future<bool?> _getAndroidStoreVersion() async {
+    final id = androidId ?? _packageInfo!.packageName;
+
+    final PlayStore = PlayStroeSearchApi();
+
+    final response = await (PlayStore.lookupById(id));
+
+    if (response != null) {
+      _appStoreVersion ??= PlayStoreResults.version(response);
+      _appStoreListingURL ??= PlayStoreResults.trackViewUrl(id);
+      _releaseNotes ??= PlayStoreResults.releaseNotes(response);
     }
 
     return true;
