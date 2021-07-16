@@ -256,7 +256,6 @@ class Upgrader {
     final id = androidId ?? _packageInfo!.packageName;
 
     final PlayStore = PlayStroeSearchApi();
-    PlayStore.client = client;
 
     final response = await (PlayStore.lookupById(id));
 
