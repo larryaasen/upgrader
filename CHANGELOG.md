@@ -1,3 +1,7 @@
+## 3.4.0
+
+* Added new language translations for Tamil ('ta'), 
+
 ## 3.3.1
 
 * Fixed the parsing of the appcast body to handle UTF-8 correctly.
