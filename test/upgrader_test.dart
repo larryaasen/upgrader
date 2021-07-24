@@ -702,6 +702,7 @@ void main() {
     verifyMessages(UpgraderMessages(code: 'hu'), 'hu');
     verifyMessages(UpgraderMessages(code: 'id'), 'id');
     verifyMessages(UpgraderMessages(code: 'it'), 'it');
+    verifyMessages(UpgraderMessages(code: 'kk'), 'kk');
     verifyMessages(UpgraderMessages(code: 'ko'), 'ko');
     verifyMessages(UpgraderMessages(code: 'pt'), 'pt');
     verifyMessages(UpgraderMessages(code: 'pl'), 'pl');

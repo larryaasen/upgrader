@@ -1,6 +1,6 @@
 ## 3.4.0
 
-* Added new language translations for Tamil ('ta'), 
+* Added new language translations for Tamil ('ta'), Kazakh ('kk),
 
 ## 3.3.1
 
