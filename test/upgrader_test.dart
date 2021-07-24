@@ -694,6 +694,7 @@ void main() {
   test('test UpgraderMessages', () {
     verifyMessages(UpgraderMessages(code: 'en'), 'en');
     verifyMessages(UpgraderMessages(code: 'ar'), 'ar');
+    verifyMessages(UpgraderMessages(code: 'bn'), 'bn');
     verifyMessages(UpgraderMessages(code: 'es'), 'es');
     verifyMessages(UpgraderMessages(code: 'fa'), 'fa');
     verifyMessages(UpgraderMessages(code: 'fil'), 'fil');

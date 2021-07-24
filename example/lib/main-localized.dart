@@ -28,6 +28,7 @@ class Demo extends StatelessWidget {
       supportedLocales: [
         const Locale('en', ''), // English, no country code
         const Locale('ar', ''), // Arabic, no country code
+        const Locale('bn', ''), // Bengali, no country code
         const Locale('es', ''), // Spanish, no country code
         const Locale('fa', ''), // Persian, no country code
         const Locale('fil', ''), // Filipino, no country code
@@ -113,6 +114,7 @@ class DemoLocalizationsDelegate
   bool isSupported(Locale locale) => [
         'en',
         'ar',
+        'bn',
         'es',
         'fa',
         'fil',

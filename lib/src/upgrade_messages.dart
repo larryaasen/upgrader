@@ -102,6 +102,10 @@ class UpgraderMessages {
         message =
             'نسخة جديدة من {{appName}} متوفرة! النسخة {{currentAppStoreVersion}} متوفرة الآن, أنت تستخدم النسخة {{currentInstalledVersion}}.';
         break;
+      case 'bn':
+        message =
+            '{{appName}} এর একটি নতুন সংস্করণ {{currentAppStoreVersion}} পাওয়া যাচ্ছে। আপনার অ্যাপলিকেশনের সংস্করণ হচ্ছে {{currentInstalledVersion}}।';
+        break;
       case 'es':
         message =
             '¡Una nueva versión de {{appName}} está disponible! La versión {{currentAppStoreVersion}} ya está disponible-usted tiene {{currentInstalledVersion}}.';
@@ -184,6 +188,9 @@ class UpgraderMessages {
       case 'ar':
         message = 'تجاهل';
         break;
+      case 'bn':
+        message = 'বাতিল';
+        break;
       case 'es':
         message = 'IGNORAR';
         break;
@@ -248,6 +255,9 @@ class UpgraderMessages {
     switch (languageCode) {
       case 'ar':
         message = 'لاحقاً';
+        break;
+      case 'bn':
+        message = 'পরে';
         break;
       case 'es':
         message = 'MÁS TARDE';
@@ -314,6 +324,9 @@ class UpgraderMessages {
       case 'ar':
         message = 'حدث الآن';
         break;
+      case 'bn':
+        message = 'এখন আপডেট করুন';
+        break;
       case 'es':
         message = 'ACTUALIZAR';
         break;
@@ -379,6 +392,9 @@ class UpgraderMessages {
       case 'ar':
         message = 'هل تفضل أن يتم التحديث الآن';
         break;
+      case 'bn':
+        message = 'আপনি কি এখনই এটি আপডেট করতে চান?';
+        break;
       case 'es':
         message = '¿Le gustaría actualizar ahora?';
         break;
@@ -443,6 +459,9 @@ class UpgraderMessages {
     switch (languageCode) {
       case 'ar':
         message = 'هل تريد تحديث التطبيق؟';
+        break;
+      case 'bn':
+        message = 'আপডেট অ্যাপ্লিকেশন?';
         break;
       case 'es':
         message = '¿Actualizar la aplicación?';
