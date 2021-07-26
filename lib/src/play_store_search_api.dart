@@ -2,21 +2,15 @@
  * Copyright (c) 2021 William Kwabla. All rights reserved.
  */
 
+import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parse;
 import 'package:http/http.dart' as http;
 
-class PlayStroeSearchApi {
+class PlayStroeSearchAPI {
   /// Play Store Search Api URL
   final String playStorePrefixURL = 'play.google.com';
 
-  /// Provide an HTTP Client that can be replaced for mock testing.
-  http.Client? client = http.Client();
-
   bool debugEnabled = false;
-
-  /// Look up by id.
-  /// Example: look up Kotoko Express Android App:
-  /// ```lookupURLById('com.kotoko.express');```
 
   dynamic lookupById(String id) async {
     if (id.isEmpty) {
@@ -31,7 +25,7 @@ class PlayStroeSearchApi {
       return null;
     }
 
-    final decodedResults = decodeResults(response.body);
+    final decodedResults = _decodeResults(response.body);
     return decodedResults;
   }
 
@@ -42,7 +36,7 @@ class PlayStroeSearchApi {
     return uri;
   }
 
-  dynamic decodeResults(jsonResponse) {
+  Document? _decodeResults(jsonResponse) {
     if (jsonResponse.isNotEmpty) {
       final decodedResults = parse(jsonResponse);
 

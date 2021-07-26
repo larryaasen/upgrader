@@ -13,7 +13,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upgrader/src/play_store_search_api.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:version/version.dart';
-// import 'package:html/parser.dart' show parse;
 
 import 'appcast.dart';
 import 'itunes_search_api.dart';
@@ -49,7 +48,7 @@ class Upgrader {
   /// An optional value that can override the default packageName when
   /// attempting to reach the Google Play Store. This is useful if your app has
   /// a different package name in the Play Store.
-  String? androidId;
+  String? applicationId;
 
   /// Provide an Appcast that can be replaced for mock testing.
   Appcast? appcast;
@@ -215,11 +214,6 @@ class Upgrader {
         _releaseNotes = bestItem.itemDescription;
       }
     } else {
-      // If this platform is not iOS, skip the iTunes lookup
-      if (Platform.isAndroid) {
-        return false;
-      }
-
       if (_packageInfo == null || _packageInfo!.packageName.isEmpty) {
         return false;
       }
@@ -230,6 +224,7 @@ class Upgrader {
         print('upgrader: countryCode: $code');
       }
 
+      // If this platform is not iOS, skip the iTunes lookup
       // Get android update without appcast
       if (Platform.isAndroid) {
         await _getAndroidStoreVersion();
@@ -253,9 +248,9 @@ class Upgrader {
 
   /// Android info is fetched by parsing the html of the app store page.
   Future<bool?> _getAndroidStoreVersion() async {
-    final id = androidId ?? _packageInfo!.packageName;
+    final id = applicationId ?? _packageInfo!.packageName;
 
-    final PlayStore = PlayStroeSearchApi();
+    final PlayStore = PlayStroeSearchAPI();
 
     final response = await (PlayStore.lookupById(id));
 

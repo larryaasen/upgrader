@@ -19,7 +19,7 @@ class UpgradeCard extends UpgradeBase {
     this.margin = const EdgeInsets.all(4.0),
     Key? key,
     AppcastConfiguration? appcastConfig,
-    String? androidId,
+    String? applicationId,
     UpgraderMessages? messages,
     bool? debugAlwaysUpgrade,
     bool? debugDisplayOnce,
@@ -37,7 +37,7 @@ class UpgradeCard extends UpgradeBase {
   }) : super(
           key: key,
           appcastConfig: appcastConfig,
-          androidId: androidId,
+          applicationId: applicationId,
           messages: messages,
           debugDisplayAlways: debugAlwaysUpgrade,
           debugDisplayOnce: debugDisplayOnce,
