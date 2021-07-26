@@ -55,6 +55,12 @@ class UpgradeAlert extends UpgradeBase {
           dialogStyle: dialogStyle,
         );
 
+  Future<void> _checkVersion(BuildContext context) async {
+    return Upgrader()
+        .initialize()
+        .then((value) => Upgrader().checkVersion(context: context));
+  }
+
   @override
   Widget build(BuildContext context, UpgradeBaseState state) {
     if (Upgrader().debugLogging) {
@@ -62,11 +68,8 @@ class UpgradeAlert extends UpgradeBase {
     }
 
     return FutureBuilder(
-        future: Upgrader().initialize(),
-        builder: (BuildContext context, AsyncSnapshot<bool> processed) {
-          if (processed.connectionState == ConnectionState.done) {
-            Upgrader().checkVersion(context: context);
-          }
+        future: _checkVersion(context),
+        builder: (BuildContext context, AsyncSnapshot<void> processed) {
           return child!;
         });
   }
