@@ -154,16 +154,14 @@ class UpgradeBase extends StatefulWidget {
 }
 
 class UpgradeBaseState extends State<UpgradeBase> {
-  bool rebuildNeeded = false;
+  final _initialized = Upgrader().initialize();
+
+  Future<bool> get initialized => _initialized;
 
   @override
-  Widget build(BuildContext context) {
-    return widget.build(context, this)!;
-  }
+  Widget build(BuildContext context) => widget.build(context, this)!;
 
   void forceUpdateState() {
-    setState(() {
-      rebuildNeeded = true;
-    });
+    setState(() {});
   }
 }

@@ -59,9 +59,11 @@ class UpgradeCard extends UpgradeBase {
     }
 
     return FutureBuilder(
-        future: Upgrader().initialize(),
+        future: state.initialized,
         builder: (BuildContext context, AsyncSnapshot<bool> processed) {
-          if (processed.connectionState == ConnectionState.done) {
+          if (processed.connectionState == ConnectionState.done &&
+              processed.data != null &&
+              processed.data!) {
             assert(Upgrader().messages != null);
             if (Upgrader().shouldDisplayUpgrade()) {
               final title = Upgrader().messages!.message(UpgraderMessage.title);

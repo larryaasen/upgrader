@@ -10,6 +10,8 @@ Flutter package for prompting users to upgrade when there is a newer version of 
 <a href="https://www.buymeacoffee.com/larryaasen">
   <img alt="Buy me a coffee" src="https://img.shields.io/badge/Donate-Buy%20Me%20A%20Coffee-yellow.svg">
 </a>
+<br/>
+[![Twitter](https://img.shields.io/twitter/url/https/twitter.com/upgraderpackage.svg?style=social&label=Follow%20%40upgraderpackage)](https://twitter.com/upgraderpackage)
 
 When a newer app version is availabe in the app store, a simple alert prompt widget or card is
 displayed. With today's modern app stores, there is little need to persuade users to upgrade
