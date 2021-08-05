@@ -10,13 +10,13 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:upgrader/src/play_store_search_api.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:version/version.dart';
 
 import 'appcast.dart';
 import 'itunes_search_api.dart';
 import 'upgrade_messages.dart';
+import 'package:upgrader/src/play_store_search_api.dart';
 
 /// Signature of callbacks that have no arguments and return bool.
 typedef BoolCallback = bool Function();
@@ -228,18 +228,18 @@ class Upgrader {
       // Get android update without appcast
       if (Platform.isAndroid) {
         await _getAndroidStoreVersion();
-      }
+      } else if (Platform.isIOS) {
+        final iTunes = ITunesSearchAPI();
+        iTunes.client = client;
+        final country = code;
+        final response = await (iTunes
+            .lookupByBundleId(_packageInfo!.packageName, country: country));
 
-      final iTunes = ITunesSearchAPI();
-      iTunes.client = client;
-      final country = code;
-      final response = await (iTunes.lookupByBundleId(_packageInfo!.packageName,
-          country: country));
-
-      if (response != null) {
-        _appStoreVersion ??= ITunesResults.version(response);
-        _appStoreListingURL ??= ITunesResults.trackViewUrl(response);
-        _releaseNotes ??= ITunesResults.releaseNotes(response);
+        if (response != null) {
+          _appStoreVersion ??= ITunesResults.version(response);
+          _appStoreListingURL ??= ITunesResults.trackViewUrl(response);
+          _releaseNotes ??= ITunesResults.releaseNotes(response);
+        }
       }
     }
 
@@ -250,9 +250,9 @@ class Upgrader {
   Future<bool?> _getAndroidStoreVersion() async {
     final id = applicationId ?? _packageInfo!.packageName;
 
-    final PlayStore = PlayStoreSearchAPI();
+    final playStore = PlayStoreSearchAPI();
 
-    final response = await (PlayStore.lookupById(id));
+    final response = await (playStore.lookupById(id));
 
     if (response != null) {
       _appStoreVersion ??= PlayStoreResults.version(response);

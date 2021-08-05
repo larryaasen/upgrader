@@ -23,7 +23,7 @@ class PlayStoreSearchAPI {
 
     final url = lookupURLById(id)!;
 
-    final response = await http.get(url);
+    final response = await http.get(Uri.parse(url));
 
     if (response.statusCode != 200) {
       print('Can\'t find an app in the Play Store with the id: $id');
@@ -32,14 +32,17 @@ class PlayStoreSearchAPI {
 
     final decodedResults = _decodeResults(response.body);
 
+    print(decodedResults);
+
     return decodedResults;
   }
 
-  Uri? lookupURLById(id) {
-    final uri =
-        Uri.https(playStorePrefixURL, '/store/apps/details', {'id': '$id'});
+  String? lookupURLById(id) {
+    final url =
+        Uri.https(playStorePrefixURL, '/store/apps/details', {'id': '$id'})
+            .toString();
 
-    return uri;
+    return url;
   }
 
   Document? _decodeResults(jsonResponse) {

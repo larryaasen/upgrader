@@ -18,8 +18,7 @@ class MockPlayStoreSearchClient {
 
       final url = request.url.toString();
 
-      // ignore: unrelated_type_equality_checks
-      if (url == PlayStoreSearchAPI().lookupById(id)) {
+      if (url == PlayStoreSearchAPI().lookupURLById(id)) {
         return http.Response(response, 200);
       }
 

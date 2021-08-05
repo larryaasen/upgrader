@@ -19,8 +19,8 @@ void main() {
 
     expect(
         playStore.lookupURLById(applicationId),
-        equals(Uri.https(
-            'play.google.com', '/store/apps/details', {'id': applicationId})));
+        equals(
+            'https://play.google.com/store/apps/details?id=com.kotoko.express'));
   });
 
   test('testing lookupById', () async {
