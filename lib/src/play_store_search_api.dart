@@ -6,18 +6,23 @@ import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parse;
 import 'package:http/http.dart' as http;
 
-class PlayStroeSearchAPI {
+class PlayStoreSearchAPI {
   /// Play Store Search Api URL
   final String playStorePrefixURL = 'play.google.com';
 
+  /// Provide an HTTP Client that can be replaced for mock testing.
+  http.Client? client = http.Client();
+
   bool debugEnabled = false;
 
-  dynamic lookupById(String id) async {
+  /// Look up by id.
+  Future<Document?> lookupById(String id) async {
     if (id.isEmpty) {
       return null;
     }
 
     final url = lookupURLById(id)!;
+
     final response = await http.get(url);
 
     if (response.statusCode != 200) {
@@ -26,6 +31,7 @@ class PlayStroeSearchAPI {
     }
 
     final decodedResults = _decodeResults(response.body);
+
     return decodedResults;
   }
 

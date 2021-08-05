@@ -250,7 +250,7 @@ class Upgrader {
   Future<bool?> _getAndroidStoreVersion() async {
     final id = applicationId ?? _packageInfo!.packageName;
 
-    final PlayStore = PlayStroeSearchAPI();
+    final PlayStore = PlayStoreSearchAPI();
 
     final response = await (PlayStore.lookupById(id));
 

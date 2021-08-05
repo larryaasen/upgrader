@@ -3,12 +3,15 @@
  */
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:html/dom.dart';
 import 'package:upgrader/upgrader.dart';
+
+import 'mock_play_store_client.dart';
 
 void main() {
   var applicationId = 'com.kotoko.express';
   test('testing PlayStoreSearchAPI properties', () async {
-    final playStore = PlayStroeSearchAPI();
+    final playStore = PlayStoreSearchAPI();
     expect(playStore.debugEnabled, equals(false));
     playStore.debugEnabled = true;
     expect(playStore.debugEnabled, equals(true));
@@ -21,9 +24,12 @@ void main() {
   });
 
   test('testing lookupById', () async {
-    final playStore = PlayStroeSearchAPI();
+    final client = MockPlayStoreSearchClient.setupMockClient();
+    final playStore = PlayStoreSearchAPI();
+    playStore.client = client;
 
     final response = await playStore.lookupById(applicationId);
+    expect(response, isInstanceOf<Document>());
 
     final results = response!;
     expect(results, isNotNull);
