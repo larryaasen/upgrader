@@ -20,7 +20,7 @@ script:
   - flutter packages get
   - flutter analyze --no-pub --no-current-package ./lib ./test ./example
   - dartfmt -n --set-exit-if-changed ./lib ./test ./example || travis_terminate 1
-    - flutter test test/play_store_test.dart
+  - flutter test test/play_store_test.dart
   - flutter test --coverage --coverage-path=lcov.info
 
 after_success:
