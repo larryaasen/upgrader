@@ -1,3 +1,7 @@
+## 3.4.2
+
+* Migrated from the deprecated package_info plugin to package_info_plus.
+
 ## 3.4.1
 
 * Fixed issue with Appcast where the upgrade message was not displayed.

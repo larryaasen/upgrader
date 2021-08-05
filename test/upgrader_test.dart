@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upgrader/upgrader.dart';
 
@@ -64,7 +64,8 @@ void main() {
             appName: 'Upgrader',
             packageName: 'com.larryaasen.upgrader',
             version: '1.9.9',
-            buildNumber: '400'));
+            buildNumber: '400',
+            buildSignature: ''));
     await upgrader.initialize();
 
     // Calling initialize() a second time should do nothing
@@ -99,7 +100,8 @@ void main() {
             appName: 'Upgrader',
             packageName: 'com.larryaasen.upgrader',
             version: '0.9.9',
-            buildNumber: '400'));
+            buildNumber: '400',
+            buildSignature: ''));
     await upgrader.initialize();
 
     var called = false;
@@ -173,7 +175,8 @@ void main() {
             appName: 'Upgrader',
             packageName: 'com.larryaasen.upgrader',
             version: '0.9.9',
-            buildNumber: '400'));
+            buildNumber: '400',
+            buildSignature: ''));
     await upgrader.initialize();
 
     var called = false;
@@ -247,7 +250,8 @@ void main() {
             appName: 'Upgrader',
             packageName: 'com.larryaasen.upgrader',
             version: '0.9.9',
-            buildNumber: '400'));
+            buildNumber: '400',
+            buildSignature: ''));
     await upgrader.initialize();
 
     var called = false;
@@ -290,7 +294,8 @@ void main() {
             appName: 'Upgrader',
             packageName: 'com.larryaasen.upgrader',
             version: '0.9.9',
-            buildNumber: '400'));
+            buildNumber: '400',
+            buildSignature: ''));
     await upgrader.initialize();
 
     var called = false;
@@ -333,7 +338,8 @@ void main() {
             appName: 'Upgrader',
             packageName: 'com.larryaasen.upgrader',
             version: '0.9.9',
-            buildNumber: '400'));
+            buildNumber: '400',
+            buildSignature: ''));
     await upgrader.initialize();
 
     var called = false;
@@ -368,7 +374,8 @@ void main() {
             appName: 'Upgrader',
             packageName: 'com.larryaasen.upgrader',
             version: '0.9.9',
-            buildNumber: '400'));
+            buildNumber: '400',
+            buildSignature: ''));
     await upgrader.initialize();
 
     expect(upgrader.messages, isNotNull);
@@ -416,7 +423,8 @@ void main() {
             appName: 'Upgrader',
             packageName: 'com.larryaasen.upgrader',
             version: '0.9.9',
-            buildNumber: '400'));
+            buildNumber: '400',
+            buildSignature: ''));
     await upgrader.initialize();
 
     var called = false;
@@ -460,7 +468,8 @@ void main() {
             appName: 'Upgrader',
             packageName: 'com.larryaasen.upgrader',
             version: '0.9.9',
-            buildNumber: '400'));
+            buildNumber: '400',
+            buildSignature: ''));
     await upgrader.initialize();
 
     var called = false;
@@ -505,7 +514,8 @@ void main() {
             appName: 'Upgrader',
             packageName: 'com.larryaasen.upgrader',
             version: '0.9.9',
-            buildNumber: '400'));
+            buildNumber: '400',
+            buildSignature: ''));
     await upgrader.initialize();
 
     expect(upgrader.isTooSoon(), false);
@@ -541,7 +551,8 @@ void main() {
             appName: 'MyApp',
             packageName: 'com.google.MyApp',
             version: '0.1.0',
-            buildNumber: '1'));
+            buildNumber: '1',
+            buildSignature: ''));
     await upgrader.initialize();
 
     var called = false;
@@ -588,6 +599,7 @@ void main() {
             packageName: 'com.larryaasen.upgrader',
             version: '1.9.6',
             buildNumber: '42',
+            buildSignature: '',
           ),
         );
 
@@ -641,6 +653,7 @@ void main() {
             packageName: 'com.larryaasen.upgrader',
             version: '1.9.6',
             buildNumber: '42',
+            buildSignature: '',
           ),
         );
 
@@ -661,6 +674,7 @@ void main() {
             packageName: 'com.larryaasen.upgrader',
             version: '2.0.0',
             buildNumber: '42',
+            buildSignature: '',
           ),
         );
 
@@ -681,6 +695,7 @@ void main() {
             packageName: '',
             version: '',
             buildNumber: '',
+            buildSignature: '',
           ),
         );
 
