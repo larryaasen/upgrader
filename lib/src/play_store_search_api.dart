@@ -32,8 +32,6 @@ class PlayStoreSearchAPI {
 
     final decodedResults = _decodeResults(response.body);
 
-    print(decodedResults);
-
     return decodedResults;
   }
 
