@@ -15,8 +15,8 @@ import 'package:version/version.dart';
 
 import 'appcast.dart';
 import 'itunes_search_api.dart';
+import 'play_store_search_api.dart';
 import 'upgrade_messages.dart';
-import 'package:upgrader/src/play_store_search_api.dart';
 
 /// Signature of callbacks that have no arguments and return bool.
 typedef BoolCallback = bool Function();
@@ -44,11 +44,6 @@ class Upgrader {
   /// The appcast configuration ([AppcastConfiguration]) used by [Appcast].
   /// When an appcast is configured for iOS, the iTunes lookup is not used.
   AppcastConfiguration? appcastConfig;
-
-  /// An optional value that can override the default packageName when
-  /// attempting to reach the Google Play Store. This is useful if your app has
-  /// a different package name in the Play Store.
-  String? applicationId;
 
   /// Provide an Appcast that can be replaced for mock testing.
   Appcast? appcast;
@@ -248,12 +243,9 @@ class Upgrader {
 
   /// Android info is fetched by parsing the html of the app store page.
   Future<bool?> _getAndroidStoreVersion() async {
-    final id = applicationId ?? _packageInfo!.packageName;
-
+    final id = _packageInfo!.packageName;
     final playStore = PlayStoreSearchAPI();
-
     final response = await (playStore.lookupById(id));
-
     if (response != null) {
       _appStoreVersion ??= PlayStoreResults.version(response);
       _appStoreListingURL ??= PlayStoreResults.trackViewUrl(id);

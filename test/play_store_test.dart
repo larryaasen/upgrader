@@ -31,9 +31,6 @@ void main() {
     final response = await playStore.lookupById(applicationId);
     expect(response, isInstanceOf<Document>());
 
-    final results = response!;
-    expect(results, isNotNull);
-
     expect(PlayStoreResults.releaseNotes(response),
         'Bug fixes and performance enhancements');
     expect(

@@ -21,7 +21,6 @@ script:
   - flutter analyze --no-pub --no-current-package ./lib ./test ./example
   - flutter format -n --set-exit-if-changed ./lib ./test ./example || travis_terminate 1
   - flutter test --coverage --coverage-path=lcov.info
-  - flutter test test/play_store_test.dart
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 
