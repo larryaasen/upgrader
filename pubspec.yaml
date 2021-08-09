@@ -32,6 +32,9 @@ dependencies:
   # A dart library for parsing, traversing, querying, transforming and building XML documents.
   xml: ^5.0.2
 
+  # Pure Dart library for HTML5 parsing
+  html: ^0.15.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -39,5 +42,5 @@ dev_dependencies:
   # From Dart Team: Mock library for Dart inspired by Mockito.
   mockito: ^5.0.0
   pedantic: ^1.11.0
- 
+
 flutter:

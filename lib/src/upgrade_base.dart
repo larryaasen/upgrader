@@ -11,6 +11,11 @@ class UpgradeBase extends StatefulWidget {
   /// The appcast configuration ([AppcastConfiguration]) used by [Appcast].
   final AppcastConfiguration? appcastConfig;
 
+  /// An optional value that can override the default packageName when
+  /// attempting to reach the Google Play Store. This is useful if your app has
+  /// a different package name in the Play Store.
+  final String? applicationId;
+
   /// The localized messages used for display in upgrader.
   final UpgraderMessages? messages;
 
@@ -71,6 +76,7 @@ class UpgradeBase extends StatefulWidget {
   UpgradeBase({
     Key? key,
     this.appcastConfig,
+    this.applicationId,
     this.messages,
     this.debugDisplayAlways = false,
     this.debugDisplayOnce = false,
@@ -91,6 +97,9 @@ class UpgradeBase extends StatefulWidget {
   }) : super(key: key) {
     if (appcastConfig != null) {
       Upgrader().appcastConfig = appcastConfig;
+    }
+    if (applicationId != null) {
+      Upgrader().applicationId = applicationId;
     }
     if (messages != null) {
       Upgrader().messages = messages;

@@ -16,6 +16,7 @@ import 'package:version/version.dart';
 import 'appcast.dart';
 import 'itunes_search_api.dart';
 import 'upgrade_messages.dart';
+import 'package:upgrader/src/play_store_search_api.dart';
 
 /// Signature of callbacks that have no arguments and return bool.
 typedef BoolCallback = bool Function();
@@ -43,6 +44,11 @@ class Upgrader {
   /// The appcast configuration ([AppcastConfiguration]) used by [Appcast].
   /// When an appcast is configured for iOS, the iTunes lookup is not used.
   AppcastConfiguration? appcastConfig;
+
+  /// An optional value that can override the default packageName when
+  /// attempting to reach the Google Play Store. This is useful if your app has
+  /// a different package name in the Play Store.
+  String? applicationId;
 
   /// Provide an Appcast that can be replaced for mock testing.
   Appcast? appcast;
@@ -208,11 +214,6 @@ class Upgrader {
         _releaseNotes = bestItem.itemDescription;
       }
     } else {
-      // If this platform is not iOS, skip the iTunes lookup
-      if (Platform.isAndroid) {
-        return false;
-      }
-
       if (_packageInfo == null || _packageInfo!.packageName.isEmpty) {
         return false;
       }
@@ -223,17 +224,40 @@ class Upgrader {
         print('upgrader: countryCode: $code');
       }
 
-      final iTunes = ITunesSearchAPI();
-      iTunes.client = client;
-      final country = code;
-      final response = await (iTunes.lookupByBundleId(_packageInfo!.packageName,
-          country: country));
+      // If this platform is not iOS, skip the iTunes lookup
+      // Get android update without appcast
+      if (Platform.isAndroid) {
+        await _getAndroidStoreVersion();
+      } else if (Platform.isIOS) {
+        final iTunes = ITunesSearchAPI();
+        iTunes.client = client;
+        final country = code;
+        final response = await (iTunes
+            .lookupByBundleId(_packageInfo!.packageName, country: country));
 
-      if (response != null) {
-        _appStoreVersion ??= ITunesResults.version(response);
-        _appStoreListingURL ??= ITunesResults.trackViewUrl(response);
-        _releaseNotes ??= ITunesResults.releaseNotes(response);
+        if (response != null) {
+          _appStoreVersion ??= ITunesResults.version(response);
+          _appStoreListingURL ??= ITunesResults.trackViewUrl(response);
+          _releaseNotes ??= ITunesResults.releaseNotes(response);
+        }
       }
+    }
+
+    return true;
+  }
+
+  /// Android info is fetched by parsing the html of the app store page.
+  Future<bool?> _getAndroidStoreVersion() async {
+    final id = applicationId ?? _packageInfo!.packageName;
+
+    final playStore = PlayStoreSearchAPI();
+
+    final response = await (playStore.lookupById(id));
+
+    if (response != null) {
+      _appStoreVersion ??= PlayStoreResults.version(response);
+      _appStoreListingURL ??= PlayStoreResults.trackViewUrl(id);
+      _releaseNotes ??= PlayStoreResults.releaseNotes(response);
     }
 
     return true;
