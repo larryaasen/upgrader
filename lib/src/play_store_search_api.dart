@@ -23,10 +23,10 @@ class PlayStoreSearchAPI {
 
     final url = lookupURLById(id)!;
 
-    final response = await http.get(Uri.parse(url));
+    final response = await client!.get(Uri.parse(url));
 
     if (response.statusCode != 200) {
-      print('Can\'t find an app in the Play Store with the id: $id');
+      print('upgrader: Can\'t find an app in the Play Store with the id: $id');
       return null;
     }
 
@@ -56,16 +56,21 @@ class PlayStoreSearchAPI {
 class PlayStoreResults {
   /// Return field releaseNotes from Play Store results.
   static String? releaseNotes(response) {
-    final sectionElements = response.getElementsByClassName('W4P4ne');
-    final releaseNotesElement = sectionElements.firstWhere(
-      (elm) => elm.querySelector('.wSaTQd')!.text == 'What\'s New',
-    );
-    final releaseNotes = releaseNotesElement
-        .querySelector('.PHBdkd')
-        ?.querySelector('.DWPxHb')
-        ?.text;
+    try {
+      final sectionElements = response.getElementsByClassName('W4P4ne');
+      final releaseNotesElement = sectionElements.firstWhere(
+        (elm) => elm.querySelector('.wSaTQd')!.text == 'What\'s New',
+      );
+      final releaseNotes = releaseNotesElement
+          .querySelector('.PHBdkd')
+          ?.querySelector('.DWPxHb')
+          ?.text;
 
-    return releaseNotes;
+      return releaseNotes;
+    } catch (e) {
+      print('upgrader: PlayStoreResults.releaseNotes exception: $e');
+    }
+    return null;
   }
 
   /// Return field trackViewUrl from Play Store results.
