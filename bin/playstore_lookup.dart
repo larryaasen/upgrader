@@ -36,11 +36,9 @@ void main(List<String> arguments) async {
   }
 
   final releaseNotes = PlayStoreResults.releaseNotes(results);
-  final trackViewUrl = PlayStoreResults.trackViewUrl(results);
   final version = PlayStoreResults.version(results);
 
   print('playstore_lookup releaseNotes: $releaseNotes');
-  print('playstore_lookup trackViewUrl: $trackViewUrl');
   print('playstore_lookup version: $version');
 
   print('playstore_lookup all results:\n$results');

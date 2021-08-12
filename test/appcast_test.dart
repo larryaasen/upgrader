@@ -16,12 +16,17 @@ void main() {
 
   tearDown(() async {});
 
+  test('testing defaultTargetPlatform', () async {
+    // Platform.operatingSystem can be "macos" or "linux" in a unit test.
+    // defaultTargetPlatform is TargetPlatform.android in a unit test.
+
+    // Flutter testings assumes the platform is android, so verify it.
+    expect(defaultTargetPlatform, equals(TargetPlatform.android));
+  });
+
   /// These tests inspired by:
   ///   https://github.com/sparkle-project/Sparkle/blob/master/Tests/SUAppcastTest.swift
   test('testing Appcast', () async {
-    // Flutter testings assumes the platform is android, so verify it.
-    expect(defaultTargetPlatform, equals(TargetPlatform.android));
-
     final appcast = Appcast();
     expect(appcast.bestItem(), isNull);
     expect(appcast.osVersionString, isNull);
@@ -32,9 +37,6 @@ void main() {
   });
 
   test('testing Appcast file', () async {
-    // Flutter testings assumes the platform is android, so verify it.
-    expect(defaultTargetPlatform, equals(TargetPlatform.android));
-
     final appcast = Appcast();
     var testFile = await getTestFile();
     final items = await appcast.parseAppcastItemsFromFile(testFile);

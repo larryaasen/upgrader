@@ -1,4 +1,4 @@
-package com.google.maps
+package com.moonwink.treasury
 
 import io.flutter.embedding.android.FlutterActivity
 

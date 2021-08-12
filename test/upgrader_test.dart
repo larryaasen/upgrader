@@ -13,6 +13,9 @@ import 'package:upgrader/upgrader.dart';
 import 'fake_appcast.dart';
 import 'mock_itunes_client.dart';
 
+// Platform.operatingSystem can be "macos" or "linux" in a unit test.
+// defaultTargetPlatform is TargetPlatform.android in a unit test.
+
 void main() {
   late SharedPreferences preferences;
 
@@ -49,6 +52,7 @@ void main() {
   testWidgets('test Upgrader class', (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader();
+    upgrader.platform = TargetPlatform.iOS;
     upgrader.client = client;
 
     expect(tester.takeException(), null);
@@ -91,6 +95,7 @@ void main() {
   testWidgets('test UpgradeWidget', (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader();
+    upgrader.platform = TargetPlatform.iOS;
     upgrader.client = client;
     upgrader.debugLogging = true;
 
@@ -165,6 +170,7 @@ void main() {
   testWidgets('test UpgradeWidget Cupertino', (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader();
+    upgrader.platform = TargetPlatform.iOS;
     upgrader.client = client;
     upgrader.debugLogging = true;
 
@@ -240,6 +246,7 @@ void main() {
   testWidgets('test UpgradeWidget ignore', (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader();
+    upgrader.platform = TargetPlatform.iOS;
     upgrader.client = client;
 
     upgrader.installPackageInfo(
@@ -283,6 +290,7 @@ void main() {
   testWidgets('test UpgradeWidget later', (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader();
+    upgrader.platform = TargetPlatform.iOS;
     upgrader.client = client;
 
     upgrader.installPackageInfo(
@@ -326,6 +334,7 @@ void main() {
   testWidgets('test UpgradeWidget pop scope', (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader();
+    upgrader.platform = TargetPlatform.iOS;
     upgrader.client = client;
 
     upgrader.installPackageInfo(
@@ -361,6 +370,7 @@ void main() {
     final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader();
     upgrader.client = client;
+    upgrader.platform = TargetPlatform.iOS;
     upgrader.debugLogging = true;
 
     upgrader.installPackageInfo(
@@ -408,6 +418,7 @@ void main() {
   testWidgets('test UpgradeWidget Card ignore', (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader();
+    upgrader.platform = TargetPlatform.iOS;
     upgrader.client = client;
     upgrader.debugLogging = true;
 
@@ -452,6 +463,7 @@ void main() {
   testWidgets('test UpgradeWidget Card later', (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader();
+    upgrader.platform = TargetPlatform.iOS;
     upgrader.client = client;
     upgrader.debugLogging = true;
 
@@ -496,6 +508,7 @@ void main() {
   testWidgets('test upgrader minAppVersion', (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader();
+    upgrader.platform = TargetPlatform.iOS;
     upgrader.client = client;
     upgrader.debugLogging = true;
     upgrader.minAppVersion = '1.0.0';
@@ -532,6 +545,7 @@ void main() {
   testWidgets('test UpgradeWidget unknown app', (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader();
+    upgrader.platform = TargetPlatform.iOS;
     upgrader.client = client;
     upgrader.debugLogging = true;
     upgrader.countryCode = 'IT';
@@ -578,6 +592,7 @@ void main() {
       final fakeAppcast = FakeAppcast();
       final client = MockITunesSearchClient.setupMockClient();
       final upgrader = Upgrader()
+        ..platform = TargetPlatform.iOS
         ..client = client
         ..appcastConfig = fakeAppcast.config
         ..debugLogging = true
@@ -620,6 +635,7 @@ void main() {
     test('should respect debugDisplayAlways property', () {
       final client = MockITunesSearchClient.setupMockClient();
       final upgrader = Upgrader()
+        ..platform = TargetPlatform.iOS
         ..client = client
         ..debugLogging = true;
 
@@ -633,6 +649,7 @@ void main() {
     test('should return true when version is below minAppVersion', () async {
       final upgrader = Upgrader()
         ..client = MockITunesSearchClient.setupMockClient()
+        ..platform = TargetPlatform.iOS
         ..debugLogging = true
         ..minAppVersion = '2.0.0'
         ..installPackageInfo(
@@ -654,6 +671,7 @@ void main() {
     test('should return true when bestItem has critical update', () async {
       final upgrader = Upgrader()
         ..client = MockITunesSearchClient.setupMockClient()
+        ..platform = TargetPlatform.iOS
         ..debugLogging = true
         ..installPackageInfo(
           packageInfo: PackageInfo(
@@ -674,6 +692,7 @@ void main() {
     test('packageInfo is empty', () async {
       final upgrader = Upgrader()
         ..client = MockITunesSearchClient.setupMockClient()
+        ..platform = TargetPlatform.iOS
         ..debugLogging = true
         ..installPackageInfo(
           packageInfo: PackageInfo(

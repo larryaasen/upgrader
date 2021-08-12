@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
             title: Text('Upgrader Example'),
           ),
           body: UpgradeAlert(
-            appcastConfig: cfg,
+            // appcastConfig: cfg,
             debugLogging: true,
             child: Center(child: Text('Checking...')),
           )),

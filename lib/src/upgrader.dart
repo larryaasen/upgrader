@@ -6,6 +6,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info/package_info.dart';
@@ -108,6 +109,12 @@ class Upgrader {
   /// The upgrade dialog style. Optional. Used only on UpgradeAlert. (default: material)
   UpgradeDialogStyle? dialogStyle = UpgradeDialogStyle.material;
 
+  /// The target platform.
+  TargetPlatform platform = defaultTargetPlatform;
+
+  /// The target operating system.
+  String operatingSystem = Platform.operatingSystem;
+
   bool _displayed = false;
   bool _initCalled = false;
   PackageInfo? _packageInfo;
@@ -159,8 +166,10 @@ class Upgrader {
     await _getSavedPrefs();
 
     if (debugLogging) {
-      print('upgrader: operatingSystem: '
+      print('upgrader: default operatingSystem: '
           '${Platform.operatingSystem} ${Platform.operatingSystemVersion}');
+      print('upgrader: operatingSystem: $operatingSystem');
+      print('upgrader: platform: $platform');
     }
 
     if (_packageInfo == null) {
@@ -219,11 +228,11 @@ class Upgrader {
         print('upgrader: countryCode: $code');
       }
 
-      // If this platform is not iOS, skip the iTunes lookup
-      // Get android update without appcast
-      if (Platform.isAndroid) {
+      // Get Android version from Google Play Store, or
+      // get iOS version from iTunes Store.
+      if (platform == TargetPlatform.android) {
         await _getAndroidStoreVersion();
-      } else if (Platform.isIOS) {
+      } else if (platform == TargetPlatform.iOS) {
         final iTunes = ITunesSearchAPI();
         iTunes.client = client;
         final country = code;
@@ -248,7 +257,7 @@ class Upgrader {
     final response = await (playStore.lookupById(id));
     if (response != null) {
       _appStoreVersion ??= PlayStoreResults.version(response);
-      _appStoreListingURL ??= PlayStoreResults.trackViewUrl(id);
+      _appStoreListingURL ??= playStore.lookupURLById(id);
       _releaseNotes ??= PlayStoreResults.releaseNotes(response);
     }
 
@@ -267,8 +276,7 @@ class Upgrader {
     // When there are no supported OSes listed, they are all supported.
     var supported = true;
     if (appcastConfig!.supportedOS != null) {
-      supported =
-          appcastConfig!.supportedOS!.contains(Platform.operatingSystem);
+      supported = appcastConfig!.supportedOS!.contains(operatingSystem);
     }
     return supported;
   }
