@@ -13,22 +13,26 @@ Flutter package for prompting users to upgrade when there is a newer version of 
 <br/>
 [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/upgraderpackage.svg?style=social&label=Follow%20%40upgraderpackage)](https://twitter.com/upgraderpackage)
 
-When a newer app version is availabe in the app store, a simple alert prompt widget or card is
+When a newer app version is availabe in the app store, a simple alert prompt or card is
 displayed. With today's modern app stores, there is little need to persuade users to upgrade
-because most of them are already using the auto upgrade feature. However, there may be times when
+because most are already using the auto upgrade feature. However, there may be times when
 an app needs to be updated more quickly than usual, and nagging a user to upgrade will entice
-the upgrade sooner. Also, with Flutter supporting more than just Android and iOS app stores in the
+the upgrade sooner. Also, with Flutter supporting more than just Android and iOS platforms in the
 future, it will become more likely that users on other app stores need to be nagged about
 upgrading.
 
+### UI
 The UI comes in two flavors: alert or card. The [UpgradeAlert](#alert-example) class is used to display the
 popup alert prompt, and the [UpgradeCard](#card-example) class is used to display the inline material design card.
 
+### Localization
 The text displayed in the upgrader package is localized in many languages, and supports customization.
 
-The release notes are displayed by default when a new version is available. On iOS the release
-notes are taken from the App Store What's New section. For [appcast](#appcast)), the
-release notes are taken from the description field.
+### Release Notes
+The release notes are displayed by default when a new version is available. On Android
+the release notes are taken from the the WHAT'S NEW section on Google Play.
+On iOS the release notes are taken from the App Store What's New section.
+For [appcast](#appcast)), the release notes are taken from the description field.
 
 ## Alert Example
 
@@ -137,13 +141,18 @@ which country app store to use because it is not provided by Apple. It assumes
 the app is in the `US` App Store.
 
 ## Limitations
-These widgets work on both Android and iOS. When running on iOS the App Store will provide the
-latest app version and will display the prompt at the appropriate times.
+These widgets work on both Android and iOS. When running on Android the Google
+Play Store will provide the latest app version.
+ When running on iOS the App Store will provide the
+latest app version. In all cases, the widget will display the prompt at the
+appropriate times.
 
-On Android, this widget normally does nothing unless the [appcast](#appcast)) is used.
-There is no easy way to query the Google Play Store for metadata about an app.
-Without the metadata, the widget cannot compare the app version with the latest Play Store version.
-It will not disrupt the widget tree and can be included in an Android app without any issues.
+On Android, the version number is often not available from the Google Play
+Store, such as with the
+[Google Maps](https://play.google.com/store/apps/details?id=com.google.android.apps.maps)
+app. In this case, the version is listed as `Varies with device`. That is not a
+valid version for upgrader and cannot be used. The upgrader widget will not be
+displayed in this case.
 
 There is an [appcast](#appcast) that can be used to remotely configure the
 latest app version. See [appcast](#appcast) below for more details.
@@ -167,10 +176,28 @@ is available on the app store.
 The Appcast class can be used stand alone or as part of Upgrader.
 
 ### Appcast Example
+This is an Appcast example for Android.
 ```dart
-final appcast = Appcast();
-final items = await appcast.parseAppcastItemsFromUri('https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast.xml');
-final bestItem = appcast.bestItem();
+@override
+Widget build(BuildContext context) {
+  // On Android, setup the Appcast.
+  // On iOS, the default behavior will be to use the App Store version.
+  final appcastURL =
+      'https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast.xml';
+  final cfg = AppcastConfiguration(url: appcastURL, supportedOS: ['android']);
+
+  return MaterialApp(
+    title: 'Upgrader Example',
+    home: Scaffold(
+        appBar: AppBar(
+          title: Text('Upgrader Example'),
+        ),
+        body: UpgradeAlert(
+          appcastConfig: cfg,
+          child: Center(child: Text('Checking...')),
+        )),
+  );
+}
 ```
 
 ### Appcast Sample File
@@ -189,31 +216,11 @@ final bestItem = appcast.bestItem();
 </rss>
 ```
 
-## Combined Android & iOS Example
-
+### Appcast Class
 ```dart
-@override
-Widget build(BuildContext context) {
-  // On Android, setup the Appcast.
-  // On iOS, the default behavior will be to use the App Store version of
-  // the app, so update the Bundle Identifier in example/ios/Runner with a
-  // valid identifier already in the App Store.
-  final appcastURL = 'https://www.mydomain.com/myappcast.xml';
-  final cfg = AppcastConfiguration(url: appcastURL, supportedOS: ['android']);
-
-  return MaterialApp(
-    title: 'Upgrader Example',
-    home: Scaffold(
-        appBar: AppBar(
-          title: Text('Upgrader Example'),
-        ),
-        body: UpgradeAlert(
-          appcastConfig: cfg,
-          debugLogging: true,
-          child: Center(child: Text('Checking...')),
-        )),
-  );
-}
+final appcast = Appcast();
+final items = await appcast.parseAppcastItemsFromUri('https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast.xml');
+final bestItem = appcast.bestItem();
 ```
 
 ## Customizing the display
@@ -326,7 +333,22 @@ resultsFuture.then((results) {
 ### Results
 [![image](screenshots/results.png)](screenshots/results.png)
 
-### Command Line App
+
+### Command Line App - Android
+
+There is a command line app used to display the results from Google Play Store. The code is located in
+bin/playstore_lookup.dart, and can be run from the command line like this:
+```
+$ dart playstore_lookup.dart id=com.google.android.apps.mapslite
+```
+Results:
+```
+playstore_lookup releaseNotes: • Support plus.codes URLs• Bug fixes
+playstore_lookup version: 152.0.0
+...
+```
+
+### Command Line App - iOS
 There is a command line app used to display the results from iTunes Search. The code is located in
 bin/itunes_lookup.dart, and can be run from the command line like this:
 ```

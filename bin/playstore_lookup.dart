@@ -4,13 +4,13 @@
 
 /*
   Usage:
-  $  dart playstore_lookup.dart id=com.google.android.apps.maps
+  $  dart playstore_lookup.dart id=com.google.android.apps.mapslite
  */
 
 import 'package:upgrader/src/play_store_search_api.dart';
 
 void main(List<String> arguments) async {
-  final defaultLookupId = 'com.google.android.apps.maps';
+  final defaultLookupId = 'com.google.android.apps.mapslite';
   var lookupId = defaultLookupId;
 
   if (arguments.length == 1) {

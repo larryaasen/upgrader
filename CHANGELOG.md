@@ -1,3 +1,10 @@
+## 3.5.0
+
+* Added support for Android using the Google Play Store. Now, by default on
+Android, the version of the app on the Google Play Store will be used, and there
+is no need to setup the Appcast. You can continue using the Appcast on Android,
+but it is no longer needed when the app is in the Google Play Store.
+
 ## 3.4.1
 
 * Fixed issue with Appcast where the upgrade message was not displayed.
