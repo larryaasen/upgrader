@@ -4,6 +4,7 @@
 Android, the version of the app on the Google Play Store will be used, and there
 is no need to setup the Appcast. You can continue using the Appcast on Android,
 but it is no longer needed when the app is in the Google Play Store.
+* Added a cache buster to the iTunes API URL to break the HTTP caching.
 
 ## 3.4.1
 
