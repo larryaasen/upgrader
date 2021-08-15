@@ -20,24 +20,29 @@ class MockITunesSearchClient {
       final response =
           '{"results": [{"version": "5.6", "bundleId": "com.google.Maps", "currency": "$currency", "releaseNotes": "Bug fixes."}]}';
 
-      final url = request.url.toString();
+      var url = request.url.toString();
+      final index = url.indexOf('_cb=');
+      if (index > 0) {
+        url = url.substring(0, index - 1);
+      }
       if (url ==
-          ITunesSearchAPI().lookupURLById('585027354', country: country)) {
+          ITunesSearchAPI().lookupURLById('585027354',
+              country: country, useCacheBuster: false)) {
         return http.Response(response, 200);
       }
       if (url ==
-          ITunesSearchAPI()
-              .lookupURLByBundleId('com.google.Maps', country: country)) {
+          ITunesSearchAPI().lookupURLByBundleId('com.google.Maps',
+              country: country, useCacheBuster: false)) {
         return http.Response(response, 200);
       }
       if (url ==
           ITunesSearchAPI().lookupURLByBundleId('com.larryaasen.upgrader',
-              country: country)) {
+              country: country, useCacheBuster: false)) {
         return http.Response(response, 200);
       }
       if (url ==
-          ITunesSearchAPI()
-              .lookupURLByBundleId('com.google.MyApp', country: country)) {
+          ITunesSearchAPI().lookupURLByBundleId('com.google.MyApp',
+              country: country, useCacheBuster: false)) {
         final responseMyApp = '{"resultCount": 0,"results": []}';
         return http.Response(responseMyApp, 200);
       }
