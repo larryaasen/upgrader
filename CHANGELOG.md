@@ -1,3 +1,7 @@
+## 3.5.1
+
+* Fixed issue with large text on a small device. Now, the content will scroll.
+
 ## 3.5.0
 
 * Added support for Android using the Google Play Store. Now, by default on

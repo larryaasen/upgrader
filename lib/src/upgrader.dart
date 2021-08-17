@@ -522,7 +522,8 @@ class Upgrader {
     }
     return AlertDialog(
       title: Text(title),
-      content: Column(
+      content: SingleChildScrollView(
+          child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -532,7 +533,7 @@ class Upgrader {
               child: Text(messages!.message(UpgraderMessage.prompt)!)),
           if (notes != null) notes,
         ],
-      ),
+      )),
       actions: <Widget>[
         if (showIgnore)
           TextButton(
