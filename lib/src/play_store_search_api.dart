@@ -59,7 +59,7 @@ class PlayStoreResults {
     try {
       final sectionElements = response.getElementsByClassName('W4P4ne');
       final releaseNotesElement = sectionElements.firstWhere(
-        (elm) => elm.querySelector('.wSaTQd')!.text == 'What\'s New',
+        (elm) => elm.querySelector('.wSaTQd')!.text == 'What\'s New',orElse:()=> sectionElements[0]
       );
       final releaseNotes = releaseNotesElement
           .querySelector('.PHBdkd')
