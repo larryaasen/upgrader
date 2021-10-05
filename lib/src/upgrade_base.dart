@@ -38,6 +38,9 @@ class UpgradeBase extends StatefulWidget {
   /// Return false when the default behavior should not execute.
   final BoolCallback? onUpdate;
 
+  /// Called when no update is available.
+  final VoidCallback? onNoUpdate;
+
   /// Called when the user taps outside of the dialog and [canDismissDialog]
   /// is false. Also called when the back button is pressed. Return true for
   /// the screen to be popped. Not used by [UpgradeCard].
@@ -79,6 +82,7 @@ class UpgradeBase extends StatefulWidget {
     this.onIgnore,
     this.onLater,
     this.onUpdate,
+    this.onNoUpdate,
     this.shouldPopScope,
     this.client,
     this.showIgnore,
@@ -118,6 +122,9 @@ class UpgradeBase extends StatefulWidget {
     }
     if (onUpdate != null) {
       Upgrader().onUpdate = onUpdate;
+    }
+    if (onNoUpdate != null) {
+      Upgrader().onNoUpdate = onNoUpdate;
     }
     if (shouldPopScope != null) {
       Upgrader().shouldPopScope = shouldPopScope;

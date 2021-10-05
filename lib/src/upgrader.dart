@@ -82,6 +82,9 @@ class Upgrader {
   /// Return false when the default behavior should not execute.
   BoolCallback? onUpdate;
 
+  /// Called when no update information is available.
+  VoidCallback? onNoUpdate;
+
   /// Called when the user taps outside of the dialog and [canDismissDialog]
   /// is false. Also called when the back button is pressed. Return true for
   /// the screen to be popped. Not used by [UpgradeCard].
@@ -358,6 +361,7 @@ class Upgrader {
       return true;
     }
     if (!isUpdateAvailable()) {
+      onNoUpdate?.call();
       return false;
     }
     if (isBlocked) {
