@@ -29,7 +29,8 @@ The text displayed in the upgrader package is localized in many languages, and s
 
 ### Release Notes
 The release notes are displayed by default when a new version is available. On Android
-the release notes are taken from the the WHAT'S NEW section on Google Play.
+the release notes are taken from the the WHAT'S NEW section on Google Play when
+available, otherwise the main app description is used.
 On iOS the release notes are taken from the App Store What's New section.
 For [appcast](#appcast)), the release notes are taken from the description field.
 

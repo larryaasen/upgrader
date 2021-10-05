@@ -31,6 +31,10 @@ class PlayStoreSearchAPI {
       return null;
     }
 
+    // Uncomment for creating unit test input files.
+    // final file = io.File('file.txt');
+    // await file.writeAsBytes(response.bodyBytes);
+
     final decodedResults = _decodeResults(response.body);
 
     return decodedResults;
@@ -54,13 +58,14 @@ class PlayStoreSearchAPI {
 }
 
 class PlayStoreResults {
-  /// Return field releaseNotes from Play Store results.
+  /// Returns field releaseNotes from Play Store results. When there are no
+  /// release notes, the main app description is used.
   static String? releaseNotes(Document response) {
     try {
       final sectionElements = response.getElementsByClassName('W4P4ne');
       final releaseNotesElement = sectionElements.firstWhere(
-        (elm) => elm.querySelector('.wSaTQd')!.text == 'What\'s New',
-      );
+          (elm) => elm.querySelector('.wSaTQd')!.text == 'What\'s New',
+          orElse: () => sectionElements[0]);
       final releaseNotes = releaseNotesElement
           .querySelector('.PHBdkd')
           ?.querySelector('.DWPxHb')

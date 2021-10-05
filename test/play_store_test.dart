@@ -10,8 +10,6 @@ import 'package:version/version.dart';
 import 'mock_play_store_client.dart';
 
 void main() {
-  final applicationId = 'com.kotoko.express';
-
   test('testing version assumptions', () async {
     expect(() => Version.parse(null), throwsA(isA<FormatException>()));
     expect(() => Version.parse(''), throwsA(isA<FormatException>()));
@@ -30,7 +28,7 @@ void main() {
     expect(playStore.playStorePrefixURL.length, greaterThan(0));
 
     expect(
-        playStore.lookupURLById(applicationId),
+        playStore.lookupURLById('com.kotoko.express'),
         equals(
             'https://play.google.com/store/apps/details?id=com.kotoko.express'));
   }, skip: false);
@@ -40,7 +38,7 @@ void main() {
     final playStore = PlayStoreSearchAPI();
     playStore.client = client;
 
-    final response = await playStore.lookupById(applicationId);
+    final response = await playStore.lookupById('com.kotoko.express');
     expect(response, isNotNull);
     expect(response, isInstanceOf<Document>());
 
@@ -49,6 +47,20 @@ void main() {
     expect(PlayStoreResults.version(response), '1.23.0');
 
     expect(await playStore.lookupById('com.not.a.valid.application'), isNull);
+  }, skip: false);
+
+  test('testing release notes', () async {
+    final client = await MockPlayStoreSearchClient.setupMockClient();
+    final playStore = PlayStoreSearchAPI();
+    playStore.client = client;
+
+    final response = await playStore.lookupById('com.testing.test2');
+    expect(response, isNotNull);
+    expect(response, isInstanceOf<Document>());
+
+    expect(PlayStoreResults.releaseNotes(response!),
+        'This is a new release of a previously available application.');
+    expect(PlayStoreResults.version(response), '1.0.6');
   }, skip: false);
 
   test('testing PlayStoreResults', () async {

@@ -1,3 +1,8 @@
+## 3.6.0
+
+* Fixed exception for Android release notes when there was no WHAT'S NEW section
+on Google Play. Now, the main app description will be used for release notes.
+
 ## 3.5.1
 
 * Fixed issue with large text on a small device. Now, the content will scroll.
