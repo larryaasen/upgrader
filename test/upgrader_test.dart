@@ -108,12 +108,8 @@ void main() {
 
     var called = false;
 
-    upgrader.onNoUpdate = () {
-      called = true;
-    };
     await upgrader.initialize();
-
-    await tester.pumpWidget(_MyWidget());
+    await tester.pumpWidget(_MyWidget(onNoUpdate: () => called = true));
 
     expect(find.text('Upgrader test'), findsOneWidget);
     expect(find.text('Upgrading'), findsOneWidget);
@@ -795,10 +791,12 @@ void verifyMessages(UpgraderMessages messages, String code) {
 }
 
 class _MyWidget extends StatelessWidget {
+  final VoidCallback? onNoUpdate;
   final dialogStyle;
   const _MyWidget({
     Key? key,
     this.dialogStyle = UpgradeDialogStyle.material,
+    this.onNoUpdate,
   }) : super(key: key);
 
   @override
@@ -812,6 +810,7 @@ class _MyWidget extends StatelessWidget {
         body: UpgradeAlert(
             debugLogging: true,
             dialogStyle: dialogStyle,
+            onNoUpdate: onNoUpdate,
             child: Column(
               children: <Widget>[Text('Upgrading')],
             )),
@@ -821,8 +820,11 @@ class _MyWidget extends StatelessWidget {
 }
 
 class _MyWidgetCard extends StatelessWidget {
+  final VoidCallback? onNoUpdate;
+
   const _MyWidgetCard({
     Key? key,
+    this.onNoUpdate,
   }) : super(key: key);
 
   @override
@@ -834,7 +836,12 @@ class _MyWidgetCard extends StatelessWidget {
           title: Text('Upgrader test'),
         ),
         body: Column(
-          children: <Widget>[UpgradeCard(debugLogging: true)],
+          children: <Widget>[
+            UpgradeCard(
+              debugLogging: true,
+              onNoUpdate: onNoUpdate,
+            )
+          ],
         ),
       ),
     );
