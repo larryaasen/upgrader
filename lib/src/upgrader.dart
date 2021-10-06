@@ -368,6 +368,7 @@ class Upgrader {
       return true;
     }
     if (isTooSoon() || alreadyIgnoredThisVersion()) {
+      onNoUpdate?.call();
       return false;
     }
     return true;
