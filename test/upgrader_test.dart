@@ -107,21 +107,6 @@ void main() {
             buildNumber: '400'));
     await upgrader.initialize();
 
-    var called = false;
-    var notCalled = true;
-    upgrader.onUpdate = () {
-      called = true;
-      return true;
-    };
-    upgrader.onIgnore = () {
-      notCalled = false;
-      return true;
-    };
-    upgrader.onLater = () {
-      notCalled = false;
-      return true;
-    };
-
     expect(upgrader.isUpdateAvailable(), true);
     expect(upgrader.isTooSoon(), false);
 
@@ -137,7 +122,23 @@ void main() {
     expect(upgrader.messages!.buttonTitleLater, 'bbb');
     expect(upgrader.messages!.buttonTitleUpdate, 'ccc');
 
-    await tester.pumpWidget(_MyWidget());
+    var called = false;
+    var notCalled = true;
+
+    await tester.pumpWidget(_MyWidget(
+      onUpdate: () {
+        called = true;
+        return true;
+      },
+      onIgnore: () {
+        notCalled = false;
+        return true;
+      },
+      onLater: () {
+        notCalled = false;
+        return true;
+      },
+    ));
 
     expect(find.text('Upgrader test'), findsOneWidget);
     expect(find.text('Upgrading'), findsOneWidget);
@@ -163,6 +164,7 @@ void main() {
     expect(find.text(upgrader.messages!.buttonTitleIgnore), findsNothing);
     expect(find.text(upgrader.messages!.buttonTitleLater), findsNothing);
     expect(find.text(upgrader.messages!.buttonTitleUpdate), findsNothing);
+
     expect(called, true);
     expect(notCalled, true);
   }, skip: false);
@@ -182,21 +184,6 @@ void main() {
             buildNumber: '400'));
     await upgrader.initialize();
 
-    var called = false;
-    var notCalled = true;
-    upgrader.onUpdate = () {
-      called = true;
-      return true;
-    };
-    upgrader.onIgnore = () {
-      notCalled = false;
-      return true;
-    };
-    upgrader.onLater = () {
-      notCalled = false;
-      return true;
-    };
-
     expect(upgrader.isUpdateAvailable(), true);
     expect(upgrader.isTooSoon(), false);
 
@@ -212,8 +199,22 @@ void main() {
     expect(upgrader.messages!.buttonTitleLater, 'bbb');
     expect(upgrader.messages!.buttonTitleUpdate, 'ccc');
 
+    var called = false;
+    var notCalled = true;
     await tester.pumpWidget(_MyWidget(
       dialogStyle: UpgradeDialogStyle.cupertino,
+      onUpdate: () {
+        called = true;
+        return true;
+      },
+      onIgnore: () {
+        notCalled = false;
+        return true;
+      },
+      onLater: () {
+        notCalled = false;
+        return true;
+      },
     ));
 
     expect(find.text('Upgrader test'), findsOneWidget);
@@ -257,24 +258,24 @@ void main() {
             buildNumber: '400'));
     await upgrader.initialize();
 
-    var called = false;
-    var notCalled = true;
-    upgrader.onIgnore = () {
-      called = true;
-      return true;
-    };
-    upgrader.onUpdate = () {
-      notCalled = false;
-      return true;
-    };
-    upgrader.onLater = () {
-      notCalled = false;
-      return true;
-    };
-
     expect(upgrader.isTooSoon(), false);
 
-    await tester.pumpWidget(_MyWidget());
+    var called = false;
+    var notCalled = true;
+    await tester.pumpWidget(_MyWidget(
+      onIgnore: () {
+        called = true;
+        return true;
+      },
+      onUpdate: () {
+        notCalled = false;
+        return true;
+      },
+      onLater: () {
+        notCalled = false;
+        return true;
+      },
+    ));
 
     // Pump the UI so the upgrader can display its dialog
     await tester.pumpAndSettle();
@@ -301,24 +302,24 @@ void main() {
             buildNumber: '400'));
     await upgrader.initialize();
 
-    var called = false;
-    var notCalled = true;
-    upgrader.onLater = () {
-      called = true;
-      return true;
-    };
-    upgrader.onIgnore = () {
-      notCalled = false;
-      return true;
-    };
-    upgrader.onUpdate = () {
-      notCalled = false;
-      return true;
-    };
-
     expect(upgrader.isTooSoon(), false);
 
-    await tester.pumpWidget(_MyWidget());
+    var called = false;
+    var notCalled = true;
+    await tester.pumpWidget(_MyWidget(
+      onLater: () {
+        called = true;
+        return true;
+      },
+      onIgnore: () {
+        notCalled = false;
+        return true;
+      },
+      onUpdate: () {
+        notCalled = false;
+        return true;
+      },
+    ));
 
     // Pump the UI so the upgrader can display its dialog
     await tester.pumpAndSettle();
@@ -383,24 +384,24 @@ void main() {
 
     expect(upgrader.messages, isNotNull);
 
-    var called = false;
-    var notCalled = true;
-    upgrader.onUpdate = () {
-      called = true;
-      return true;
-    };
-    upgrader.onLater = () {
-      notCalled = false;
-      return true;
-    };
-    upgrader.onIgnore = () {
-      notCalled = false;
-      return true;
-    };
-
     expect(upgrader.isTooSoon(), false);
 
-    await tester.pumpWidget(_MyWidgetCard());
+    var called = false;
+    var notCalled = true;
+    await tester.pumpWidget(_MyWidgetCard(
+      onUpdate: () {
+        called = true;
+        return true;
+      },
+      onLater: () {
+        notCalled = false;
+        return true;
+      },
+      onIgnore: () {
+        notCalled = false;
+        return true;
+      },
+    ));
 
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle();
@@ -430,24 +431,24 @@ void main() {
             buildNumber: '400'));
     await upgrader.initialize();
 
-    var called = false;
-    var notCalled = true;
-    upgrader.onIgnore = () {
-      called = true;
-      return true;
-    };
-    upgrader.onLater = () {
-      notCalled = false;
-      return true;
-    };
-    upgrader.onUpdate = () {
-      notCalled = false;
-      return true;
-    };
-
     expect(upgrader.isTooSoon(), false);
 
-    await tester.pumpWidget(_MyWidgetCard());
+    var called = false;
+    var notCalled = true;
+    await tester.pumpWidget(_MyWidgetCard(
+      onIgnore: () {
+        called = true;
+        return true;
+      },
+      onLater: () {
+        notCalled = false;
+        return true;
+      },
+      onUpdate: () {
+        notCalled = false;
+        return true;
+      },
+    ));
 
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle();
@@ -475,24 +476,24 @@ void main() {
             buildNumber: '400'));
     await upgrader.initialize();
 
-    var called = false;
-    var notCalled = true;
-    upgrader.onLater = () {
-      called = true;
-      return true;
-    };
-    upgrader.onIgnore = () {
-      notCalled = false;
-      return true;
-    };
-    upgrader.onUpdate = () {
-      notCalled = false;
-      return true;
-    };
-
     expect(upgrader.isTooSoon(), false);
 
-    await tester.pumpWidget(_MyWidgetCard());
+    var called = false;
+    var notCalled = true;
+    await tester.pumpWidget(_MyWidgetCard(
+      onLater: () {
+        called = true;
+        return true;
+      },
+      onIgnore: () {
+        notCalled = false;
+        return true;
+      },
+      onUpdate: () {
+        notCalled = false;
+        return true;
+      },
+    ));
 
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle(const Duration(milliseconds: 5000));
@@ -558,24 +559,25 @@ void main() {
             buildNumber: '1'));
     await upgrader.initialize();
 
-    var called = false;
-    var notCalled = true;
-    upgrader.onLater = () {
-      called = true;
-      return true;
-    };
-    upgrader.onIgnore = () {
-      notCalled = false;
-      return true;
-    };
-    upgrader.onUpdate = () {
-      notCalled = false;
-      return true;
-    };
 
     expect(upgrader.isTooSoon(), false);
-
-    await tester.pumpWidget(_MyWidgetCard());
+    
+    var called = false;
+    var notCalled = true;
+    await tester.pumpWidget(_MyWidgetCard(
+      onLater: () {
+        called = true;
+        return true;
+      },
+      onIgnore: () {
+        notCalled = false;
+        return true;
+      },
+      onUpdate: () {
+        notCalled = false;
+        return true;
+      },
+    ));
 
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle();
@@ -748,9 +750,16 @@ void verifyMessages(UpgraderMessages messages, String code) {
 }
 
 class _MyWidget extends StatelessWidget {
+  final BoolCallback? onUpdate;
+  final BoolCallback? onLater;
+  final BoolCallback? onIgnore;
+
   final dialogStyle;
   const _MyWidget({
     Key? key,
+    this.onIgnore,
+    this.onLater,
+    this.onUpdate,
     this.dialogStyle = UpgradeDialogStyle.material,
   }) : super(key: key);
 
@@ -765,6 +774,9 @@ class _MyWidget extends StatelessWidget {
         body: UpgradeAlert(
             debugLogging: true,
             dialogStyle: dialogStyle,
+            onIgnore: onIgnore,
+            onLater: onLater,
+            onUpdate: onUpdate,
             child: Column(
               children: <Widget>[Text('Upgrading')],
             )),
@@ -774,8 +786,15 @@ class _MyWidget extends StatelessWidget {
 }
 
 class _MyWidgetCard extends StatelessWidget {
+  final BoolCallback? onUpdate;
+  final BoolCallback? onLater;
+  final BoolCallback? onIgnore;
+
   const _MyWidgetCard({
     Key? key,
+    this.onIgnore,
+    this.onLater,
+    this.onUpdate,
   }) : super(key: key);
 
   @override
@@ -787,7 +806,14 @@ class _MyWidgetCard extends StatelessWidget {
           title: Text('Upgrader test'),
         ),
         body: Column(
-          children: <Widget>[UpgradeCard(debugLogging: true)],
+          children: <Widget>[
+            UpgradeCard(
+              debugLogging: true,
+              onIgnore: onIgnore,
+              onLater: onLater,
+              onUpdate: onUpdate,
+            )
+          ],
         ),
       ),
     );
