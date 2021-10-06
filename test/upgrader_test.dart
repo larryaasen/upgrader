@@ -346,15 +346,13 @@ void main() {
             buildNumber: '400'));
     await upgrader.initialize();
 
-    var called = false;
-    upgrader.shouldPopScope = () {
-      called = true;
-      return true;
-    };
-
     expect(upgrader.isTooSoon(), false);
 
-    await tester.pumpWidget(_MyWidget());
+    var called = false;
+    await tester.pumpWidget(_MyWidget(shouldPopScope: () {
+      called = true;
+      return true;
+    }));
 
     // Pump the UI so the upgrader can display its dialog
     await tester.pumpAndSettle();
@@ -559,9 +557,8 @@ void main() {
             buildNumber: '1'));
     await upgrader.initialize();
 
-
     expect(upgrader.isTooSoon(), false);
-    
+
     var called = false;
     var notCalled = true;
     await tester.pumpWidget(_MyWidgetCard(
@@ -750,6 +747,7 @@ void verifyMessages(UpgraderMessages messages, String code) {
 }
 
 class _MyWidget extends StatelessWidget {
+  final BoolCallback? shouldPopScope;
   final BoolCallback? onUpdate;
   final BoolCallback? onLater;
   final BoolCallback? onIgnore;
@@ -759,6 +757,7 @@ class _MyWidget extends StatelessWidget {
     Key? key,
     this.onIgnore,
     this.onLater,
+    this.shouldPopScope,
     this.onUpdate,
     this.dialogStyle = UpgradeDialogStyle.material,
   }) : super(key: key);
@@ -776,6 +775,7 @@ class _MyWidget extends StatelessWidget {
             dialogStyle: dialogStyle,
             onIgnore: onIgnore,
             onLater: onLater,
+            shouldPopScope: shouldPopScope,
             onUpdate: onUpdate,
             child: Column(
               children: <Widget>[Text('Upgrading')],
