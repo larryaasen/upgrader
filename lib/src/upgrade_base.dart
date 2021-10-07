@@ -69,7 +69,7 @@ class UpgradeBase extends StatefulWidget {
   final UpgradeDialogStyle? dialogStyle;
 
   /// The function which returns the custom widget to be shown in place of default alert dialogs
-  Widget? Function(BuildContext context,
+  final Widget? Function(BuildContext context,
       {String? title,
       String? message,
       String? releaseNotes,
