@@ -115,7 +115,8 @@ class Upgrader {
   /// The target operating system.
   String operatingSystem = Platform.operatingSystem;
 
-  /// The function which returns the custom widget to be shown in place of default alert dialogs
+  /// The function which returns the custom widget to be shown
+  /// in place of default alert dialogs
   Widget? Function(BuildContext context,
       {String? title,
       String? message,

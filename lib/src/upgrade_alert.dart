@@ -33,7 +33,16 @@ class UpgradeAlert extends UpgradeBase {
     String? countryCode,
     String? minAppVersion,
     UpgradeDialogStyle? dialogStyle,
-    Widget? Function(BuildContext context, {String? title, String? message, String? releaseNotes, void Function()? onUserIgnored, void Function()? onUserLater, void Function()? onUserUpdated})? getCustomDialog,
+    Widget? Function(
+      BuildContext context, {
+      String? title,
+      String? message,
+      String? releaseNotes,
+      void Function()? onUserIgnored,
+      void Function()? onUserLater,
+      void Function()? onUserUpdated,
+    })?
+        getCustomDialog,
   }) : super(
           key: key,
           appcastConfig: appcastConfig,

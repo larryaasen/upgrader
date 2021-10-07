@@ -68,7 +68,8 @@ class UpgradeBase extends StatefulWidget {
   /// The upgrade dialog style. Optional. Used only on UpgradeAlert. (default: material)
   final UpgradeDialogStyle? dialogStyle;
 
-  /// The function which returns the custom widget to be shown in place of default alert dialogs
+  /// The function which returns the custom widget to be shown
+  /// in place of default alert dialogs
   final Widget? Function(BuildContext context,
       {String? title,
       String? message,
