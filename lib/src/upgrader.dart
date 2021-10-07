@@ -115,6 +115,15 @@ class Upgrader {
   /// The target operating system.
   String operatingSystem = Platform.operatingSystem;
 
+  /// The function which returns the custom widget to be shown in place of default alert dialogs
+  Widget? Function(BuildContext context,
+      {String? title,
+      String? message,
+      String? releaseNotes,
+      void Function()? onUserIgnored,
+      void Function()? onUserLater,
+      void Function()? onUserUpdated})? getCustomDialog;
+
   bool _displayed = false;
   bool _initCalled = false;
   PackageInfo? _packageInfo;
@@ -474,9 +483,26 @@ class Upgrader {
       builder: (BuildContext context) {
         return WillPopScope(
           onWillPop: () async => _shouldPopScope(),
-          child: dialogStyle == UpgradeDialogStyle.material
-              ? _alertDialog(title!, message, releaseNotes, context)
-              : _cupertinoAlertDialog(title!, message, releaseNotes, context),
+          child: getCustomDialog != null
+              ? getCustomDialog!(
+                  context,
+                  title: title,
+                  message: message,
+                  releaseNotes: releaseNotes,
+                  onUserIgnored: () {
+                    onUserIgnored(context, true);
+                  },
+                  onUserLater: () {
+                    onUserLater(context, true);
+                  },
+                  onUserUpdated: () {
+                    onUserUpdated(context, !blocked());
+                  },
+                )!
+              : dialogStyle == UpgradeDialogStyle.material
+                  ? _alertDialog(title!, message, releaseNotes, context)
+                  : _cupertinoAlertDialog(
+                      title!, message, releaseNotes, context),
         );
       },
     );

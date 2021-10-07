@@ -68,6 +68,15 @@ class UpgradeBase extends StatefulWidget {
   /// The upgrade dialog style. Optional. Used only on UpgradeAlert. (default: material)
   final UpgradeDialogStyle? dialogStyle;
 
+  /// The function which returns the custom widget to be shown in place of default alert dialogs
+  Widget? Function(BuildContext context,
+      {String? title,
+      String? message,
+      String? releaseNotes,
+      void Function()? onUserIgnored,
+      void Function()? onUserLater,
+      void Function()? onUserUpdated})? getCustomDialog;
+
   UpgradeBase({
     Key? key,
     this.appcastConfig,
@@ -88,6 +97,7 @@ class UpgradeBase extends StatefulWidget {
     this.countryCode,
     this.minAppVersion,
     this.dialogStyle = UpgradeDialogStyle.material,
+    this.getCustomDialog,
   }) : super(key: key) {
     if (appcastConfig != null) {
       Upgrader().appcastConfig = appcastConfig;
@@ -142,6 +152,9 @@ class UpgradeBase extends StatefulWidget {
     }
     if (dialogStyle != null) {
       Upgrader().dialogStyle = dialogStyle;
+    }
+    if (getCustomDialog != null) {
+      Upgrader().getCustomDialog = getCustomDialog;
     }
   }
 
