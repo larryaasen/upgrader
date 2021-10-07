@@ -243,6 +243,116 @@ void main() {
     expect(called, true);
     expect(notCalled, true);
   }, skip: false);
+
+  testWidgets('test UpgradeWidget Custom Dialog', (WidgetTester tester) async {
+    final client = MockITunesSearchClient.setupMockClient();
+    final upgrader = Upgrader();
+    upgrader.platform = TargetPlatform.iOS;
+    upgrader.client = client;
+    upgrader.debugLogging = true;
+
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '0.9.9',
+            buildNumber: '400'));
+    await upgrader.initialize();
+
+    var called = false;
+    var notCalled = true;
+    upgrader.onUpdate = () {
+      called = true;
+      return true;
+    };
+    upgrader.onIgnore = () {
+      notCalled = false;
+      return true;
+    };
+    upgrader.onLater = () {
+      notCalled = false;
+      return true;
+    };
+
+    upgrader.getCustomDialog = (BuildContext context,
+        {String? title,
+        String? message,
+        String? releaseNotes,
+        void Function()? onUserIgnored,
+        void Function()? onUserLater,
+        void Function()? onUserUpdated}) {
+      return Center(
+        child: Container(
+          height: 124,
+          width: MediaQuery.of(context).size.width * 0.8,
+          color: Colors.white,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                'Your Custom Upgrader Dialog',
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextButton(onPressed: onUserIgnored, child: Text('IGNORE')),
+                  TextButton(onPressed: onUserLater, child: Text('LATER')),
+                  TextButton(
+                    onPressed: onUserUpdated,
+                    child: Text(
+                      'UPDATE NOW',
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
+    };
+
+    expect(upgrader.isUpdateAvailable(), true);
+    expect(upgrader.isTooSoon(), false);
+
+    expect(upgrader.messages, isNotNull);
+
+    expect(upgrader.messages!.buttonTitleIgnore, 'IGNORE');
+    expect(upgrader.messages!.buttonTitleLater, 'LATER');
+    expect(upgrader.messages!.buttonTitleUpdate, 'UPDATE NOW');
+
+    await tester.pumpWidget(_MyWidget(
+      dialogStyle: UpgradeDialogStyle.cupertino,
+      getCustomDialog: upgrader.getCustomDialog,
+    ));
+
+    expect(find.text('Upgrader test'), findsOneWidget);
+    expect(find.text('Upgrading'), findsOneWidget);
+
+    // Pump the UI so the upgrader can display its dialog
+    await tester.pumpAndSettle();
+    await tester.pumpAndSettle();
+
+    expect(upgrader.isTooSoon(), true);
+
+    expect(find.text('Your Custom Upgrader Dialog'), findsOneWidget);
+    // expect(find.byType(CupertinoDialogAction), findsNWidgets(3));
+    expect(find.text(upgrader.messages!.buttonTitleIgnore), findsOneWidget);
+    expect(find.text(upgrader.messages!.buttonTitleLater), findsOneWidget);
+    expect(find.text(upgrader.messages!.buttonTitleUpdate), findsOneWidget);
+
+    await tester.tap(find.text(upgrader.messages!.buttonTitleUpdate));
+    await tester.pumpAndSettle();
+    expect(find.text(upgrader.messages!.buttonTitleIgnore), findsNothing);
+    expect(find.text(upgrader.messages!.buttonTitleLater), findsNothing);
+    expect(find.text(upgrader.messages!.buttonTitleUpdate), findsNothing);
+    expect(called, true);
+    expect(notCalled, true);
+  }, skip: false);
+
   testWidgets('test UpgradeWidget ignore', (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader();
@@ -749,9 +859,11 @@ void verifyMessages(UpgraderMessages messages, String code) {
 
 class _MyWidget extends StatelessWidget {
   final dialogStyle;
+  final getCustomDialog;
   const _MyWidget({
     Key? key,
     this.dialogStyle = UpgradeDialogStyle.material,
+    this.getCustomDialog,
   }) : super(key: key);
 
   @override
@@ -765,6 +877,7 @@ class _MyWidget extends StatelessWidget {
         body: UpgradeAlert(
             debugLogging: true,
             dialogStyle: dialogStyle,
+            getCustomDialog: getCustomDialog,
             child: Column(
               children: <Widget>[Text('Upgrading')],
             )),
