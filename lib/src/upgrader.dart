@@ -223,9 +223,9 @@ class Upgrader {
       }
 
       // The  country code of the locale, defaulting to `US`.
-      final code = countryCode ?? findCountryCode();
+      final country = countryCode ?? findCountryCode();
       if (debugLogging) {
-        print('upgrader: countryCode: $code');
+        print('upgrader: countryCode: $country');
       }
 
       // Get Android version from Google Play Store, or
@@ -235,7 +235,6 @@ class Upgrader {
       } else if (platform == TargetPlatform.iOS) {
         final iTunes = ITunesSearchAPI();
         iTunes.client = client;
-        final country = code;
         final response = await (iTunes
             .lookupByBundleId(_packageInfo!.packageName, country: country));
 

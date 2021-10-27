@@ -6,7 +6,7 @@ labels: ''
 assignees: ''
 
 ---
-
+<!--
 To better assist in analyzing issues, please include all of the upgrader log, which should look something like this:
 ```
 flutter: upgrader: languageCode: en
@@ -42,3 +42,4 @@ Also, please include the upgrader version number from the pubspec.lock file, whi
     source: path
     version: "3.6.0"
 ```
+-->
