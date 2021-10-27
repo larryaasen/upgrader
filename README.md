@@ -369,6 +369,7 @@ itunes_lookup all results:
 
 ## Reporting Issues
 
+Please submit issue reports [here on GitHub](https://github.com/larryaasen/upgrader/issues/new/choose).
 To better assist in analyzing issues, please include all of the upgrader log, which should look something like this:
 ```
 flutter: upgrader: languageCode: en
