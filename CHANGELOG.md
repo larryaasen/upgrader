@@ -1,3 +1,7 @@
+## 3.7.0.
+
+* Migrated from the deprecated package_info plugin to package_info_plus.
+
 ## 3.6.0
 
 * Fixed exception for Android release notes when there was no WHAT'S NEW section
