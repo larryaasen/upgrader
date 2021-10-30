@@ -530,6 +530,13 @@ void main() {
     expect(upgrader.belowMinAppVersion(), false);
     upgrader.minAppVersion = 'empty';
     expect(upgrader.belowMinAppVersion(), false);
+    upgrader.minAppVersion = '0.9.9+4';
+    expect(upgrader.belowMinAppVersion(), false);
+    upgrader.minAppVersion = '0.9.9-5.2.pre';
+    expect(upgrader.belowMinAppVersion(), false);
+    upgrader.minAppVersion = '1.0.0-5.2.pre';
+    expect(upgrader.belowMinAppVersion(), true);
+
     upgrader.minAppVersion = '1.0.0';
 
     await tester.pumpWidget(_MyWidgetCard());
