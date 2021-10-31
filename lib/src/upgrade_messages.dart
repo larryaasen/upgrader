@@ -174,6 +174,10 @@ class UpgraderMessages {
         message =
             'Đã có phiên bản mới của {{appName}}. Phiên bản {{currentAppStoreVersion}} đã sẵn sàng, bạn đang dùng {{currentInstalledVersion}}.';
         break;
+      case 'nb':
+        message =
+            'En ny versjon av {{appName}} er tilgjengelig! {{currentAppStoreVersion}} er nå tilgjengelig - du har {{currentInstalledVersion}}.';
+        break;
       case 'en':
       default:
         message =
@@ -246,6 +250,9 @@ class UpgraderMessages {
       case 'vi':
         message = 'BỎ QUA';
         break;
+      case 'nb':
+        message = 'IGNORER';
+        break;
       case 'en':
       default:
         message = 'IGNORE';
@@ -316,6 +323,9 @@ class UpgraderMessages {
         break;
       case 'vi':
         message = 'ĐỂ SAU';
+        break;
+      case 'nb':
+        message = 'SENERE';
         break;
       case 'en':
       default:
@@ -388,6 +398,9 @@ class UpgraderMessages {
       case 'vi':
         message = 'CẬP NHẬT';
         break;
+      case 'nb':
+        message = 'OPPDATER NÅ';
+        break;
       case 'en':
       default:
         message = 'UPDATE NOW';
@@ -459,6 +472,9 @@ class UpgraderMessages {
       case 'vi':
         message = 'Bạn có muốn cập nhật ứng dụng?';
         break;
+      case 'nb':
+        message = 'Ønsker du å oppdatere nå?';
+        break;
       case 'en':
       default:
         message = 'Would you like to update it now?';
@@ -529,6 +545,9 @@ class UpgraderMessages {
         break;
       case 'vi':
         message = 'Cập nhật ứng dụng?';
+        break;
+      case 'nb':
+        message = 'Oppdater app?';
         break;
       case 'en':
       default:
