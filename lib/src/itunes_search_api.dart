@@ -158,6 +158,35 @@ class ITunesResults {
     return value;
   }
 
+  /// Return field description from iTunes results.
+  static String? description(Map response) {
+    var value;
+    try {
+      value = response['results'][0]['description'];
+    } catch (e) {
+      print('upgrader.ITunesResults.description: $e');
+    }
+    return value;
+  }
+
+  /// Return the minimum app version as taken from the description field from iTunes results.
+  /// The format is: [min app version 1.0.0]
+  static String? minAppVersion(Map response) {
+    var version;
+    try {
+      final description = ITunesResults.description(response);
+      if (description != null) {
+        final regExpSource = r'\[min app version (?<version>[^\s]+)\]';
+        final regExp = RegExp(regExpSource, caseSensitive: false);
+        final match = regExp.firstMatch(description);
+        version = match!.namedGroup('version');
+      }
+    } on Exception catch (e) {
+      print('upgrader.ITunesResults.minAppVersion : $e');
+    }
+    return version;
+  }
+
   /// Return field releaseNotes from iTunes results.
   static String? releaseNotes(Map response) {
     var value;
