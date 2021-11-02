@@ -1,4 +1,8 @@
-## 3.7.0.
+## 3.8.0
+
+* Added new language translations for Norwegian ('nb').
+
+## 3.7.0
 
 * Migrated from the deprecated package_info plugin to package_info_plus.
 

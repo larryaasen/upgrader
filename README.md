@@ -259,6 +259,7 @@ Languages supported:
 * Italian ('it')
 * Kazakh ('kk')
 * Korean ('ko')
+* Norwegian ('nb')
 * Persian ('fa')
 * Polish ('pl')
 * Portuguese ('pt')

@@ -146,6 +146,10 @@ class UpgraderMessages {
         message =
             '{{appName}}이 새 버전으로 업데이트되었습니다! 최신 버전 {{currentAppStoreVersion}}으로 업그레이드 가능합니다 - 현재 버전 {{currentInstalledVersion}}.';
         break;
+      case 'nb':
+        message =
+            'En ny versjon av {{appName}} er tilgjengelig! {{currentAppStoreVersion}} er nå tilgjengelig - du har {{currentInstalledVersion}}.';
+        break;
       case 'pt':
         message =
             'Há uma nova versão do {{appName}} disponível! A versão {{currentAppStoreVersion}} já está disponível, você tem a {{currentInstalledVersion}}.';
@@ -173,10 +177,6 @@ class UpgraderMessages {
       case 'vi':
         message =
             'Đã có phiên bản mới của {{appName}}. Phiên bản {{currentAppStoreVersion}} đã sẵn sàng, bạn đang dùng {{currentInstalledVersion}}.';
-        break;
-      case 'nb':
-        message =
-            'En ny versjon av {{appName}} er tilgjengelig! {{currentAppStoreVersion}} er nå tilgjengelig - du har {{currentInstalledVersion}}.';
         break;
       case 'en':
       default:
@@ -229,6 +229,9 @@ class UpgraderMessages {
       case 'ko':
         message = '무시';
         break;
+      case 'nb':
+        message = 'IGNORER';
+        break;
       case 'pt':
         message = 'IGNORAR';
         break;
@@ -249,9 +252,6 @@ class UpgraderMessages {
         break;
       case 'vi':
         message = 'BỎ QUA';
-        break;
-      case 'nb':
-        message = 'IGNORER';
         break;
       case 'en':
       default:
@@ -303,6 +303,9 @@ class UpgraderMessages {
       case 'ko':
         message = '나중에';
         break;
+      case 'nb':
+        message = 'SENERE';
+        break;
       case 'pt':
         message = 'MAIS TARDE';
         break;
@@ -323,9 +326,6 @@ class UpgraderMessages {
         break;
       case 'vi':
         message = 'ĐỂ SAU';
-        break;
-      case 'nb':
-        message = 'SENERE';
         break;
       case 'en':
       default:
@@ -377,6 +377,9 @@ class UpgraderMessages {
       case 'ko':
         message = '지금 업데이트';
         break;
+      case 'nb':
+        message = 'OPPDATER NÅ';
+        break;
       case 'pt':
         message = 'ATUALIZAR';
         break;
@@ -397,9 +400,6 @@ class UpgraderMessages {
         break;
       case 'vi':
         message = 'CẬP NHẬT';
-        break;
-      case 'nb':
-        message = 'OPPDATER NÅ';
         break;
       case 'en':
       default:
@@ -451,6 +451,9 @@ class UpgraderMessages {
       case 'ko':
         message = '지금 업데이트를 시작하시겠습니까?';
         break;
+      case 'nb':
+        message = 'Ønsker du å oppdatere nå?';
+        break;
       case 'pt':
         message = 'Você quer atualizar agora?';
         break;
@@ -471,9 +474,6 @@ class UpgraderMessages {
         break;
       case 'vi':
         message = 'Bạn có muốn cập nhật ứng dụng?';
-        break;
-      case 'nb':
-        message = 'Ønsker du å oppdatere nå?';
         break;
       case 'en':
       default:
@@ -525,6 +525,9 @@ class UpgraderMessages {
       case 'ko':
         message = '앱을 업데이트하시겠습니까?';
         break;
+      case 'nb':
+        message = 'Oppdater app?';
+        break;
       case 'pt':
         message = 'Atualizar aplicação?';
         break;
@@ -545,9 +548,6 @@ class UpgraderMessages {
         break;
       case 'vi':
         message = 'Cập nhật ứng dụng?';
-        break;
-      case 'nb':
-        message = 'Oppdater app?';
         break;
       case 'en':
       default:
