@@ -242,6 +242,11 @@ class Upgrader {
           _appStoreVersion ??= ITunesResults.version(response);
           _appStoreListingURL ??= ITunesResults.trackViewUrl(response);
           _releaseNotes ??= ITunesResults.releaseNotes(response);
+          final mav = ITunesResults.minAppVersion(response);
+          if (mav != null) {
+            minAppVersion = mav.toString();
+            print('upgrader: ITunesResults.minAppVersion: $minAppVersion');
+          }
         }
       }
     }

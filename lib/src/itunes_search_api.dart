@@ -4,7 +4,7 @@
 
 import 'dart:async';
 import 'dart:convert';
-
+import 'package:version/version.dart';
 import 'package:http/http.dart' as http;
 
 class ITunesSearchAPI {
@@ -156,6 +156,38 @@ class ITunesResults {
       print('upgrader.ITunesResults.currency: $e');
     }
     return value;
+  }
+
+  /// Return field description from iTunes results.
+  static String? description(Map response) {
+    var value;
+    try {
+      value = response['results'][0]['description'];
+    } catch (e) {
+      print('upgrader.ITunesResults.description: $e');
+    }
+    return value;
+  }
+
+  /// Return the minimum app version taken from the tag in the description field
+  /// from iTunes results. The format is: [:mav: 1.2.3].
+  /// Returns version, such as 1.2.3, or null.
+  static Version? minAppVersion(Map response, {String tagName = 'mav'}) {
+    var version;
+    try {
+      final description = ITunesResults.description(response);
+      if (description != null) {
+        final regExpSource = r'\[\:mav\:[\s]*(?<version>[^\s]+)[\s]*\]';
+        final regExp = RegExp(regExpSource, caseSensitive: false);
+        final match = regExp.firstMatch(description);
+        final mav = match != null ? match.namedGroup('version') : null;
+        // Verify version string using class Version
+        version = mav != null ? Version.parse(mav) : null;
+      }
+    } on Exception catch (e) {
+      print('upgrader.ITunesResults.minAppVersion : $e');
+    }
+    return version;
   }
 
   /// Return field releaseNotes from iTunes results.

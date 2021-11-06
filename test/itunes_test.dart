@@ -114,4 +114,32 @@ void main() {
     expect(ITunesResults.version(response), '5.6');
     expect(ITunesResults.currency(response), 'EUR');
   }, skip: false);
+
+  /// Helper method
+  Map resDesc(String description) {
+    return {
+      'results': [
+        {'description': description}
+      ]
+    };
+  }
+
+  /// Helper method
+  String? imav(Map response) {
+    final mav = ITunesResults.minAppVersion(response);
+    return mav == null ? null : mav.toString();
+  }
+
+  test('testing minAppVersion', () async {
+    expect(imav(resDesc('test [:mav: 1.2.3]')), '1.2.3');
+    expect(imav(resDesc('test [:mav:1.2.3]')), '1.2.3');
+    expect(imav(resDesc('test [:mav:1.2.3 ]')), '1.2.3');
+    expect(imav(resDesc('test [:mav: 1]')), '1.0.0');
+    expect(imav(resDesc('[:mav: 0.9.9+4]')), '0.9.9+4');
+    expect(imav(resDesc('[:mav: 1.0.0-5.2.pre]')), '1.0.0-5.2.pre');
+    expect(imav({}), isNull);
+    expect(imav(resDesc('test')), isNull);
+    expect(imav(resDesc('test [:mav:]')), isNull);
+    expect(imav(resDesc('test [:mv: 1.2.3]')), isNull);
+  }, skip: false);
 }
