@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Larry Aasen. All rights reserved.
+ * Copyright (c) 2019-2021 Larry Aasen. All rights reserved.
  */
 
 import 'package:flutter_test/flutter_test.dart';
@@ -61,11 +61,38 @@ void main() {
     expect(PlayStoreResults.releaseNotes(response!),
         'This is a new release of a previously available application.');
     expect(PlayStoreResults.version(response), '1.0.6');
+    expect(PlayStoreResults.description(response)?.length, greaterThan(10));
   }, skip: false);
 
   test('testing PlayStoreResults', () async {
     expect(PlayStoreResults(), isNotNull);
     expect(PlayStoreResults.releaseNotes(Document()), isNull);
     expect(PlayStoreResults.version(Document()), isNull);
+  }, skip: false);
+
+  /// Helper method
+  Document resDesc(String description) {
+    final html =
+        '<div class="W4P4ne">hello<div class="PHBdkd">inside<div class="DWPxHb">$description</div></div></div>';
+    return Document.html(html);
+  }
+
+  /// Helper method
+  String? pmav(Document response) {
+    final mav = PlayStoreResults.minAppVersion(response);
+    return mav == null ? null : mav.toString();
+  }
+
+  test('testing minAppVersion', () async {
+    expect(pmav(resDesc('test [:mav: 1.2.3]')), '1.2.3');
+    expect(pmav(resDesc('test [:mav:1.2.3]')), '1.2.3');
+    expect(pmav(resDesc('test [:mav:1.2.3 ]')), '1.2.3');
+    expect(pmav(resDesc('test [:mav: 1]')), '1.0.0');
+    expect(pmav(resDesc('[:mav: 0.9.9+4]')), '0.9.9+4');
+    expect(pmav(resDesc('[:mav: 1.0.0-5.2.pre]')), '1.0.0-5.2.pre');
+    expect(pmav(Document()), isNull);
+    expect(pmav(resDesc('test')), isNull);
+    expect(pmav(resDesc('test [:mav:]')), isNull);
+    expect(pmav(resDesc('test [:mv: 1.2.3]')), isNull);
   }, skip: false);
 }

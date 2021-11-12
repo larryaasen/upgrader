@@ -1,3 +1,8 @@
+## 3.9.0
+
+* Added support for minimum app version in the app store description field. See
+README for more details.
+
 ## 3.8.0
 
 * Added new language translations for Norwegian ('nb').

@@ -170,7 +170,7 @@ class ITunesResults {
   }
 
   /// Return the minimum app version taken from the tag in the description field
-  /// from iTunes results. The format is: [:mav: 1.2.3].
+  /// from the store response. The format is: [:mav: 1.2.3].
   /// Returns version, such as 1.2.3, or null.
   static Version? minAppVersion(Map response, {String tagName = 'mav'}) {
     var version;
