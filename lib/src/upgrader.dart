@@ -263,6 +263,11 @@ class Upgrader {
       _appStoreVersion ??= PlayStoreResults.version(response);
       _appStoreListingURL ??= playStore.lookupURLById(id);
       _releaseNotes ??= PlayStoreResults.releaseNotes(response);
+      final mav = PlayStoreResults.minAppVersion(response);
+      if (mav != null) {
+        minAppVersion = mav.toString();
+        print('upgrader: PlayStoreResults.minAppVersion: $minAppVersion');
+      }
     }
 
     return true;
