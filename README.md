@@ -25,7 +25,7 @@ The UI comes in two flavors: alert or card. The [UpgradeAlert](#alert-example) c
 popup alert prompt, and the [UpgradeCard](#card-example) class is used to display the inline material design card.
 
 ### Localization
-The text displayed in the `upgrader` package is localized in many languages, and supports customization.
+The text displayed in the `upgrader` package is localized in [many languages](#language-localization), and supports customization.
 
 ### Release Notes
 The release notes are displayed by default when a new version is available. On Android
@@ -33,6 +33,31 @@ the release notes are taken from the the WHAT'S NEW section on Google Play when
 available, otherwise the main app description is used.
 On iOS the release notes are taken from the App Store What's New section.
 For [appcast](#appcast)), the release notes are taken from the description field.
+
+### Minimum App Version
+The `upgrader` package can use a forced upgrade version (minimum app version)
+simply by adding that 
+version number to the description field in the app stores. Use this format:
+```
+[:mav: 1.2.3]
+```
+
+Using that text says that the minimum app version is 1.2.3 and that earlier
+versions of this app will be forced to update to the current version.
+
+After the app containing this text has been submitted for review, approved, and
+released on the app store, the version number will be visible to the upgrader
+package. When the minimum app version is updated in the future, all previously
+installed apps with this package (version 3.9.0+) will recognize and honor
+that vaule.
+
+#### Android
+Add this text to the bottom of the Full description field in the Google Play
+Console under the Main store listing.
+
+#### iOS
+Add this text to the bottom of the Description field in AppStoreConnet in the
+Desctiption field.
 
 ## Alert Example
 

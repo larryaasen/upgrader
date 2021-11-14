@@ -35,9 +35,13 @@ void main(List<String> arguments) async {
     return;
   }
 
+  final description = PlayStoreResults.description(results);
+  final minAppVersion = PlayStoreResults.minAppVersion(results);
   final releaseNotes = PlayStoreResults.releaseNotes(results);
   final version = PlayStoreResults.version(results);
 
+  print('playstore_lookup description: $description');
+  print('playstore_lookup minAppVersion: $minAppVersion');
   print('playstore_lookup releaseNotes: $releaseNotes');
   print('playstore_lookup version: $version');
 

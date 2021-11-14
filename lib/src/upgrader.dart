@@ -242,6 +242,11 @@ class Upgrader {
           _appStoreVersion ??= ITunesResults.version(response);
           _appStoreListingURL ??= ITunesResults.trackViewUrl(response);
           _releaseNotes ??= ITunesResults.releaseNotes(response);
+          final mav = ITunesResults.minAppVersion(response);
+          if (mav != null) {
+            minAppVersion = mav.toString();
+            print('upgrader: ITunesResults.minAppVersion: $minAppVersion');
+          }
         }
       }
     }
@@ -253,11 +258,17 @@ class Upgrader {
   Future<bool?> _getAndroidStoreVersion() async {
     final id = _packageInfo!.packageName;
     final playStore = PlayStoreSearchAPI();
+    playStore.client = client;
     final response = await (playStore.lookupById(id));
     if (response != null) {
       _appStoreVersion ??= PlayStoreResults.version(response);
       _appStoreListingURL ??= playStore.lookupURLById(id);
       _releaseNotes ??= PlayStoreResults.releaseNotes(response);
+      final mav = PlayStoreResults.minAppVersion(response);
+      if (mav != null) {
+        minAppVersion = mav.toString();
+        print('upgrader: PlayStoreResults.minAppVersion: $minAppVersion');
+      }
     }
 
     return true;
