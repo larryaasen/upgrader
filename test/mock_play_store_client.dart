@@ -25,7 +25,7 @@ class MockPlayStoreSearchClient {
         if (filename != null && filename.isNotEmpty) {
           if (url == PlayStoreSearchAPI().lookupURLById(id)) {
             final testPage = await getTestPage(filename);
-            final contents = await testPage.readAsString();
+            final contents = testPage.readAsStringSync();
             return http.Response(contents, 200, headers: {
               HttpHeaders.contentTypeHeader: 'text/html; charset=utf-8',
             });
@@ -41,7 +41,7 @@ class MockPlayStoreSearchClient {
 
   static Future<File> getTestPage(String filename) async {
     var testFile = File('test/$filename');
-    final exists = await testFile.exists();
+    final exists = testFile.existsSync();
     if (!exists) {
       testFile = File(filename);
     }

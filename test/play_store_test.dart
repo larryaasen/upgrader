@@ -59,8 +59,8 @@ void main() {
     expect(response, isInstanceOf<Document>());
 
     expect(PlayStoreResults.releaseNotes(response!),
-        'This is a new release of a previously available application.');
-    expect(PlayStoreResults.version(response), '1.0.6');
+        'Minor updates and improvements.');
+    expect(PlayStoreResults.version(response), '2.0.2');
     expect(PlayStoreResults.description(response)?.length, greaterThan(10));
   }, skip: false);
 

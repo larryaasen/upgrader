@@ -12,6 +12,7 @@ import 'package:upgrader/upgrader.dart';
 
 import 'fake_appcast.dart';
 import 'mock_itunes_client.dart';
+import 'mock_play_store_client.dart';
 
 // Platform.operatingSystem can be "macos" or "linux" in a unit test.
 // defaultTargetPlatform is TargetPlatform.android in a unit test.
@@ -547,6 +548,48 @@ void main() {
     expect(find.text(upgrader.messages!.buttonTitleIgnore), findsNothing);
     expect(find.text(upgrader.messages!.buttonTitleLater), findsNothing);
     expect(find.text(upgrader.messages!.buttonTitleUpdate), findsOneWidget);
+  }, skip: false);
+
+  testWidgets('test upgrader minAppVersion description android',
+      (WidgetTester tester) async {
+    final client = await MockPlayStoreSearchClient.setupMockClient();
+    final upgrader = Upgrader();
+    upgrader.platform = TargetPlatform.android;
+    upgrader.client = client;
+    upgrader.debugLogging = true;
+
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.testing.test2',
+            version: '2.9.9',
+            buildNumber: '400'));
+    await upgrader.initialize();
+
+    expect(upgrader.belowMinAppVersion(), true);
+    expect(upgrader.minAppVersion, '4.5.6');
+  }, skip: false);
+
+  testWidgets('test upgrader minAppVersion description ios',
+      (WidgetTester tester) async {
+    final client = MockITunesSearchClient.setupMockClient(
+      description: 'Use this app. [:mav: 4.5.6]',
+    );
+    final upgrader = Upgrader();
+    upgrader.platform = TargetPlatform.iOS;
+    upgrader.client = client;
+    upgrader.debugLogging = true;
+
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '2.9.9',
+            buildNumber: '400'));
+    await upgrader.initialize();
+
+    expect(upgrader.belowMinAppVersion(), true);
+    expect(upgrader.minAppVersion, '4.5.6');
   }, skip: false);
 
   testWidgets('test UpgradeWidget unknown app', (WidgetTester tester) async {
