@@ -1,3 +1,7 @@
+## 3.10.0
+
+* Added new language translations for Lithuanian ('lt').
+
 ## 3.9.0
 
 * Added support for minimum app version in the app store description field. See

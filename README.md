@@ -284,6 +284,7 @@ Languages supported:
 * Italian ('it')
 * Kazakh ('kk')
 * Korean ('ko')
+* Lithuanian ('lt')
 * Norwegian ('nb')
 * Persian ('fa')
 * Polish ('pl')

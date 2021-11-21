@@ -146,6 +146,10 @@ class UpgraderMessages {
         message =
             '{{appName}}이 새 버전으로 업데이트되었습니다! 최신 버전 {{currentAppStoreVersion}}으로 업그레이드 가능합니다 - 현재 버전 {{currentInstalledVersion}}.';
         break;
+      case 'lt':
+        message =
+            'Išleista nauja programos {{appName}} versija! Versija {{currentAppStoreVersion}} yra prieinama, jūs turite {{currentInstalledVersion}}.';
+        break;
       case 'nb':
         message =
             'En ny versjon av {{appName}} er tilgjengelig! {{currentAppStoreVersion}} er nå tilgjengelig - du har {{currentInstalledVersion}}.';
@@ -229,6 +233,9 @@ class UpgraderMessages {
       case 'ko':
         message = '무시';
         break;
+      case 'lt':
+        message = 'IGNORUOTI';
+        break;
       case 'nb':
         message = 'IGNORER';
         break;
@@ -302,6 +309,9 @@ class UpgraderMessages {
         break;
       case 'ko':
         message = '나중에';
+        break;
+      case 'lt':
+        message = 'ATNAUJINTI VĖLIAU';
         break;
       case 'nb':
         message = 'SENERE';
@@ -377,6 +387,9 @@ class UpgraderMessages {
       case 'ko':
         message = '지금 업데이트';
         break;
+      case 'lt':
+        message = 'ATNAUJINTI DABAR';
+        break;
       case 'nb':
         message = 'OPPDATER NÅ';
         break;
@@ -451,6 +464,9 @@ class UpgraderMessages {
       case 'ko':
         message = '지금 업데이트를 시작하시겠습니까?';
         break;
+      case 'lt':
+        message = 'Ar norite atnaujinti dabar?';
+        break;
       case 'nb':
         message = 'Ønsker du å oppdatere nå?';
         break;
@@ -524,6 +540,9 @@ class UpgraderMessages {
         break;
       case 'ko':
         message = '앱을 업데이트하시겠습니까?';
+        break;
+      case 'lt':
+        message = 'Atnaujinti programą?';
         break;
       case 'nb':
         message = 'Oppdater app?';
