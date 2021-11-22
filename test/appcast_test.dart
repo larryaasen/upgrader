@@ -2,6 +2,7 @@
  * Copyright (c) 2018 Larry Aasen. All rights reserved.
  */
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -15,12 +16,17 @@ void main() {
 
   tearDown(() async {});
 
+  test('testing defaultTargetPlatform', () async {
+    // Platform.operatingSystem can be "macos" or "linux" in a unit test.
+    // defaultTargetPlatform is TargetPlatform.android in a unit test.
+
+    // Flutter testings assumes the platform is android, so verify it.
+    expect(defaultTargetPlatform, equals(TargetPlatform.android));
+  });
+
   /// These tests inspired by:
   ///   https://github.com/sparkle-project/Sparkle/blob/master/Tests/SUAppcastTest.swift
   test('testing Appcast', () async {
-    // Flutter testings assumes the platform is android, so verify it.
-    expect(defaultTargetPlatform, equals(TargetPlatform.android));
-
     final appcast = Appcast();
     expect(appcast.bestItem(), isNull);
     expect(appcast.osVersionString, isNull);
@@ -31,9 +37,6 @@ void main() {
   });
 
   test('testing Appcast file', () async {
-    // Flutter testings assumes the platform is android, so verify it.
-    expect(defaultTargetPlatform, equals(TargetPlatform.android));
-
     final appcast = Appcast();
     var testFile = await getTestFile();
     final items = await appcast.parseAppcastItemsFromFile(testFile);
@@ -73,7 +76,7 @@ void validateItems(List<AppcastItem> items, Appcast appcast) {
   appcast.osVersionString = '0.0.1';
 
   expect(items[0].title, equals('Version 2.0'));
-  expect(items[0].itemDescription, equals('desc'));
+  expect(items[0].itemDescription, equals('desc Версия'));
   expect(items[0].dateString, equals('Sat, 26 Jul 2014 15:20:11 +0000'));
   expect(
       items[0].fileURL, equals('http://localhost:1337/Sparkle_Test_App.zip'));
@@ -147,7 +150,7 @@ Future<http.Client> setupMockClient() async {
         'https://sparkle-project.org/test/testappcast.xml') {
       final testFile = await getTestFile();
       final contents = await testFile.readAsString();
-      return http.Response(contents, 200);
+      return http.Response.bytes(utf8.encode(contents), 200);
     }
     return http.Response('', 400);
   });

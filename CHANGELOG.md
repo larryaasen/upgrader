@@ -1,3 +1,55 @@
+## 3.10.0
+
+* Added new language translations for Lithuanian ('lt').
+
+## 3.9.0
+
+* Added support for minimum app version in the app store description field. See
+README for more details.
+
+## 3.8.0
+
+* Added new language translations for Norwegian ('nb').
+
+## 3.7.0
+
+* Migrated from the deprecated package_info plugin to package_info_plus.
+
+## 3.6.0
+
+* Fixed exception for Android release notes when there was no WHAT'S NEW section
+on Google Play. Now, the main app description will be used for release notes.
+
+## 3.5.1
+
+* Fixed issue with large text on a small device. Now, the content will scroll.
+
+## 3.5.0
+
+* Added support for Android using the Google Play Store. Now, by default on
+Android, the version of the app on the Google Play Store will be used, and there
+is no need to setup the Appcast. You can continue using the Appcast on Android,
+but it is no longer needed when the app is in the Google Play Store.
+* Added a cache buster to the iTunes API URL to break the HTTP caching.
+
+## 3.4.1
+
+* Fixed issue with Appcast where the upgrade message was not displayed.
+
+## 3.4.0
+
+* Added new language translations for Tamil ('ta'), Kazakh ('kk'), Bengali ('bn'), Ukrainian ('uk').
+
+## 3.3.1
+
+* Fixed the parsing of the Appcast body to handle UTF-8 correctly.
+
+## 3.3.0
+
+* When using the ```UpgradeAlert``` widget, the Android back button will not
+dismiss the alert dialog by default anymore. To allow the back button to dismiss
+the dialog, use ```shouldPopScope``` and return true.
+
 ## 3.2.1
 
 * Resolved issue where release notes for the iOS App Store always displayed Minor updates and improvements.

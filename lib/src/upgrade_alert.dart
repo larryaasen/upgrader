@@ -2,7 +2,6 @@
  * Copyright (c) 2021 Larry Aasen. All rights reserved.
  */
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:upgrader/upgrader.dart';
@@ -24,6 +23,7 @@ class UpgradeAlert extends UpgradeBase {
     BoolCallback? onIgnore,
     BoolCallback? onLater,
     BoolCallback? onUpdate,
+    BoolCallback? shouldPopScope,
     http.Client? client,
     bool? showIgnore,
     bool? showLater,
@@ -43,6 +43,7 @@ class UpgradeAlert extends UpgradeBase {
           onIgnore: onIgnore,
           onLater: onLater,
           onUpdate: onUpdate,
+          shouldPopScope: shouldPopScope,
           client: client,
           showIgnore: showIgnore,
           showLater: showLater,
@@ -60,9 +61,11 @@ class UpgradeAlert extends UpgradeBase {
     }
 
     return FutureBuilder(
-        future: Upgrader().initialize(),
+        future: state.initialized,
         builder: (BuildContext context, AsyncSnapshot<bool> processed) {
-          if (processed.connectionState == ConnectionState.done) {
+          if (processed.connectionState == ConnectionState.done &&
+              processed.data != null &&
+              processed.data!) {
             Upgrader().checkVersion(context: context);
           }
           return child!;

@@ -28,6 +28,7 @@ class Demo extends StatelessWidget {
       supportedLocales: [
         const Locale('en', ''), // English, no country code
         const Locale('ar', ''), // Arabic, no country code
+        const Locale('bn', ''), // Bengali, no country code
         const Locale('es', ''), // Spanish, no country code
         const Locale('fa', ''), // Persian, no country code
         const Locale('fil', ''), // Filipino, no country code
@@ -36,11 +37,16 @@ class Demo extends StatelessWidget {
         const Locale('hu', ''), // Hungarian, no country code
         const Locale('id', ''), // Indonesian, no country code
         const Locale('it', ''), // Italian, no country code
+        const Locale('kk', ''), // Kazakh, no country code
         const Locale('ko', ''), // Korean, no country code
+        const Locale('lt', ''), // Lithuanian, no country code
+        const Locale('nb', ''), // Norwegian, no country code
         const Locale('pt', ''), // Portuguese, no country code
         const Locale('pl', ''), // Polish, no country code
         const Locale('ru', ''), // Russian, no country code
+        const Locale('ta', ''), // Tamil, no country code
         const Locale('tr', ''), // Turkish, no country code
+        const Locale('uk', ''), // Ukrainian, no country code
         const Locale('vi', ''), // Vietnamese, no country code
       ],
     );
@@ -51,7 +57,7 @@ class DemoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Only call clearSavedSettings() during testing to reset internal values.
-    Upgrader().clearSavedSettings();
+    Upgrader().clearSavedSettings(); // REMOVE this for release builds
 
     // On Android, setup the Appcast.
     // On iOS, the default behavior will be to use the App Store version of
@@ -111,6 +117,7 @@ class DemoLocalizationsDelegate
   bool isSupported(Locale locale) => [
         'en',
         'ar',
+        'bn',
         'es',
         'fa',
         'fil',
@@ -119,11 +126,16 @@ class DemoLocalizationsDelegate
         'hu',
         'id',
         'it',
+        'kk',
         'ko',
+        'lt',
+        'nb',
         'pt',
         'pl',
         'ru',
+        'ta',
         'tr',
+        'uk',
         'vi'
       ].contains(locale.languageCode);
 

@@ -6,15 +6,17 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:version/version.dart';
 
 import 'appcast.dart';
 import 'itunes_search_api.dart';
+import 'play_store_search_api.dart';
 import 'upgrade_messages.dart';
 
 /// Signature of callbacks that have no arguments and return bool.
@@ -80,6 +82,11 @@ class Upgrader {
   /// Return false when the default behavior should not execute.
   BoolCallback? onUpdate;
 
+  /// Called when the user taps outside of the dialog and [canDismissDialog]
+  /// is false. Also called when the back button is pressed. Return true for
+  /// the screen to be popped. Not used by [UpgradeCard].
+  BoolCallback? shouldPopScope;
+
   /// Hide or show Ignore button on dialog (default: true)
   bool showIgnore = true;
 
@@ -89,7 +96,7 @@ class Upgrader {
   /// Hide or show release notes (default: true)
   bool showReleaseNotes = true;
 
-  /// Can alert dialog be dismissed on tap outside of the alert dialog. Not used by alert card. (default: false)
+  /// Can alert dialog be dismissed on tap outside of the alert dialog. Not used by [UpgradeCard]. (default: false)
   bool canDismissDialog = false;
 
   /// The country code that will override the system locale. Optional. Used only for iOS.
@@ -101,6 +108,12 @@ class Upgrader {
 
   /// The upgrade dialog style. Optional. Used only on UpgradeAlert. (default: material)
   UpgradeDialogStyle? dialogStyle = UpgradeDialogStyle.material;
+
+  /// The target platform.
+  TargetPlatform platform = defaultTargetPlatform;
+
+  /// The target operating system.
+  String operatingSystem = Platform.operatingSystem;
 
   bool _displayed = false;
   bool _initCalled = false;
@@ -153,8 +166,10 @@ class Upgrader {
     await _getSavedPrefs();
 
     if (debugLogging) {
-      print('upgrader: operatingSystem: '
+      print('upgrader: default operatingSystem: '
           '${Platform.operatingSystem} ${Platform.operatingSystemVersion}');
+      print('upgrader: operatingSystem: $operatingSystem');
+      print('upgrader: platform: $platform');
     }
 
     if (_packageInfo == null) {
@@ -203,31 +218,56 @@ class Upgrader {
         _releaseNotes = bestItem.itemDescription;
       }
     } else {
-      // If this platform is not iOS, skip the iTunes lookup
-      if (Platform.isAndroid) {
-        return false;
-      }
-
       if (_packageInfo == null || _packageInfo!.packageName.isEmpty) {
         return false;
       }
 
       // The  country code of the locale, defaulting to `US`.
-      final code = countryCode ?? findCountryCode();
+      final country = countryCode ?? findCountryCode();
       if (debugLogging) {
-        print('upgrader: countryCode: $code');
+        print('upgrader: countryCode: $country');
       }
 
-      final iTunes = ITunesSearchAPI();
-      iTunes.client = client;
-      final country = code;
-      final response = await (iTunes.lookupByBundleId(_packageInfo!.packageName,
-          country: country));
+      // Get Android version from Google Play Store, or
+      // get iOS version from iTunes Store.
+      if (platform == TargetPlatform.android) {
+        await _getAndroidStoreVersion();
+      } else if (platform == TargetPlatform.iOS) {
+        final iTunes = ITunesSearchAPI();
+        iTunes.client = client;
+        final response = await (iTunes
+            .lookupByBundleId(_packageInfo!.packageName, country: country));
 
-      if (response != null) {
-        _appStoreVersion ??= ITunesResults.version(response);
-        _appStoreListingURL ??= ITunesResults.trackViewUrl(response);
-        _releaseNotes ??= ITunesResults.releaseNotes(response);
+        if (response != null) {
+          _appStoreVersion ??= ITunesResults.version(response);
+          _appStoreListingURL ??= ITunesResults.trackViewUrl(response);
+          _releaseNotes ??= ITunesResults.releaseNotes(response);
+          final mav = ITunesResults.minAppVersion(response);
+          if (mav != null) {
+            minAppVersion = mav.toString();
+            print('upgrader: ITunesResults.minAppVersion: $minAppVersion');
+          }
+        }
+      }
+    }
+
+    return true;
+  }
+
+  /// Android info is fetched by parsing the html of the app store page.
+  Future<bool?> _getAndroidStoreVersion() async {
+    final id = _packageInfo!.packageName;
+    final playStore = PlayStoreSearchAPI();
+    playStore.client = client;
+    final response = await (playStore.lookupById(id));
+    if (response != null) {
+      _appStoreVersion ??= PlayStoreResults.version(response);
+      _appStoreListingURL ??= playStore.lookupURLById(id);
+      _releaseNotes ??= PlayStoreResults.releaseNotes(response);
+      final mav = PlayStoreResults.minAppVersion(response);
+      if (mav != null) {
+        minAppVersion = mav.toString();
+        print('upgrader: PlayStoreResults.minAppVersion: $minAppVersion');
       }
     }
 
@@ -246,8 +286,7 @@ class Upgrader {
     // When there are no supported OSes listed, they are all supported.
     var supported = true;
     if (appcastConfig!.supportedOS != null) {
-      supported =
-          appcastConfig!.supportedOS!.contains(Platform.operatingSystem);
+      supported = appcastConfig!.supportedOS!.contains(operatingSystem);
     }
     return supported;
   }
@@ -282,6 +321,7 @@ class Upgrader {
     return msg;
   }
 
+  /// Only called by [UpgradeAlert].
   void checkVersion({required BuildContext context}) {
     if (!_displayed) {
       final shouldDisplay = shouldDisplayUpgrade();
@@ -442,11 +482,32 @@ class Upgrader {
       barrierDismissible: canDismissDialog,
       context: context,
       builder: (BuildContext context) {
-        return dialogStyle == UpgradeDialogStyle.material
-            ? _alertDialog(title!, message, releaseNotes, context)
-            : _cupertinoAlertDialog(title!, message, releaseNotes, context);
+        return WillPopScope(
+          onWillPop: () async => _shouldPopScope(),
+          child: dialogStyle == UpgradeDialogStyle.material
+              ? _alertDialog(title!, message, releaseNotes, context)
+              : _cupertinoAlertDialog(title!, message, releaseNotes, context),
+        );
       },
     );
+  }
+
+  /// Called when the user taps outside of the dialog and [canDismissDialog]
+  /// is false. Also called when the back button is pressed. Return true for
+  /// the screen to be popped. Defaults to false.
+  bool _shouldPopScope() {
+    if (debugLogging) {
+      print('upgrader: onWillPop called');
+    }
+    if (shouldPopScope != null) {
+      final should = shouldPopScope!();
+      if (debugLogging) {
+        print('upgrader: shouldPopScope=$should');
+      }
+      return should;
+    }
+
+    return false;
   }
 
   AlertDialog _alertDialog(String title, String message, String? releaseNotes,
@@ -471,7 +532,8 @@ class Upgrader {
     }
     return AlertDialog(
       title: Text(title),
-      content: Column(
+      content: SingleChildScrollView(
+          child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -481,7 +543,7 @@ class Upgrader {
               child: Text(messages!.message(UpgraderMessage.prompt)!)),
           if (notes != null) notes,
         ],
-      ),
+      )),
       actions: <Widget>[
         if (showIgnore)
           TextButton(

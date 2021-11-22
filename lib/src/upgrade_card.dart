@@ -2,7 +2,6 @@
  * Copyright (c) 2021 Larry Aasen. All rights reserved.
  */
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:upgrader/upgrader.dart';
@@ -31,7 +30,6 @@ class UpgradeCard extends UpgradeBase {
     bool? showIgnore,
     bool? showLater,
     bool? showReleaseNotes,
-    bool? canDismissDialog,
     String? countryCode,
     String? minAppVersion,
   }) : super(
@@ -49,7 +47,6 @@ class UpgradeCard extends UpgradeBase {
           showIgnore: showIgnore,
           showLater: showLater,
           showReleaseNotes: showReleaseNotes,
-          canDismissDialog: canDismissDialog,
           countryCode: countryCode,
           minAppVersion: minAppVersion,
         );
@@ -61,9 +58,11 @@ class UpgradeCard extends UpgradeBase {
     }
 
     return FutureBuilder(
-        future: Upgrader().initialize(),
+        future: state.initialized,
         builder: (BuildContext context, AsyncSnapshot<bool> processed) {
-          if (processed.connectionState == ConnectionState.done) {
+          if (processed.connectionState == ConnectionState.done &&
+              processed.data != null &&
+              processed.data!) {
             assert(Upgrader().messages != null);
             if (Upgrader().shouldDisplayUpgrade()) {
               final title = Upgrader().messages!.message(UpgraderMessage.title);

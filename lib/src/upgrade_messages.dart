@@ -102,6 +102,10 @@ class UpgraderMessages {
         message =
             'نسخة جديدة من {{appName}} متوفرة! النسخة {{currentAppStoreVersion}} متوفرة الآن, أنت تستخدم النسخة {{currentInstalledVersion}}.';
         break;
+      case 'bn':
+        message =
+            '{{appName}} এর একটি নতুন সংস্করণ {{currentAppStoreVersion}} পাওয়া যাচ্ছে। আপনার অ্যাপলিকেশনের সংস্করণ হচ্ছে {{currentInstalledVersion}}।';
+        break;
       case 'es':
         message =
             '¡Una nueva versión de {{appName}} está disponible! La versión {{currentAppStoreVersion}} ya está disponible-usted tiene {{currentInstalledVersion}}.';
@@ -134,9 +138,21 @@ class UpgraderMessages {
         message =
             'Una nuova versione di {{appName}} è disponibile! La versione {{currentAppStoreVersion}} è ora disponibile, voi avete {{currentInstalledVersion}}.';
         break;
+      case 'kk':
+        message =
+            '{{appName}} қосымша жаңа нұсқасын жүктеп алыңыз! Жаңа нұсқасы: {{currentAppStoreVersion}}, қазіргі нұсқасы: {{currentInstalledVersion}}';
+        break;
       case 'ko':
         message =
             '{{appName}}이 새 버전으로 업데이트되었습니다! 최신 버전 {{currentAppStoreVersion}}으로 업그레이드 가능합니다 - 현재 버전 {{currentInstalledVersion}}.';
+        break;
+      case 'lt':
+        message =
+            'Išleista nauja programos {{appName}} versija! Versija {{currentAppStoreVersion}} yra prieinama, jūs turite {{currentInstalledVersion}}.';
+        break;
+      case 'nb':
+        message =
+            'En ny versjon av {{appName}} er tilgjengelig! {{currentAppStoreVersion}} er nå tilgjengelig - du har {{currentInstalledVersion}}.';
         break;
       case 'pt':
         message =
@@ -150,9 +166,17 @@ class UpgraderMessages {
         message =
             'Доступна новая версия приложения {{appName}}! Новая версия: {{currentAppStoreVersion}}, текущая версия: {{currentInstalledVersion}}.';
         break;
+      case 'ta':
+        message =
+            '{{appName}}-ன் புதிய பதிப்பு {{currentAppStoreVersion}} இப்போது கிடைக்கிறது! உங்களிடம் {{currentInstalledVersion}} உள்ளது.';
+        break;
       case 'tr':
         message =
             '{{appName}} uygulamanızın yeni bir versiyonu mevcut! Versiyon {{currentAppStoreVersion}} şu anda erişilebilir, mevcut sürümünüz {{currentInstalledVersion}}.';
+        break;
+      case 'uk':
+        message =
+            'Доступна нова версія додатка {{appName}}! Нова версія: {{currentAppStoreVersion}}, поточна версія: {{currentInstalledVersion}}.';
         break;
       case 'vi':
         message =
@@ -180,6 +204,9 @@ class UpgraderMessages {
       case 'ar':
         message = 'تجاهل';
         break;
+      case 'bn':
+        message = 'বাতিল';
+        break;
       case 'es':
         message = 'IGNORAR';
         break;
@@ -204,8 +231,17 @@ class UpgraderMessages {
       case 'it':
         message = 'IGNORA';
         break;
+      case 'kk':
+        message = 'ЖОҚ';
+        break;
       case 'ko':
         message = '무시';
+        break;
+      case 'lt':
+        message = 'IGNORUOTI';
+        break;
+      case 'nb':
+        message = 'IGNORER';
         break;
       case 'pt':
         message = 'IGNORAR';
@@ -216,8 +252,14 @@ class UpgraderMessages {
       case 'ru':
         message = 'НЕТ';
         break;
+      case 'ta':
+        message = 'புறக்கணி';
+        break;
       case 'tr':
         message = 'YOKSAY';
+        break;
+      case 'uk':
+        message = 'НІ';
         break;
       case 'vi':
         message = 'BỎ QUA';
@@ -241,6 +283,9 @@ class UpgraderMessages {
     switch (languageCode) {
       case 'ar':
         message = 'لاحقاً';
+        break;
+      case 'bn':
+        message = 'পরে';
         break;
       case 'es':
         message = 'MÁS TARDE';
@@ -266,8 +311,17 @@ class UpgraderMessages {
       case 'it':
         message = 'DOPO';
         break;
+      case 'kk':
+        message = 'КЕЙІН';
+        break;
       case 'ko':
         message = '나중에';
+        break;
+      case 'lt':
+        message = 'ATNAUJINTI VĖLIAU';
+        break;
+      case 'nb':
+        message = 'SENERE';
         break;
       case 'pt':
         message = 'MAIS TARDE';
@@ -278,8 +332,14 @@ class UpgraderMessages {
       case 'ru':
         message = 'ПОЗЖЕ';
         break;
+      case 'ta':
+        message = 'பிறகு';
+        break;
       case 'tr':
         message = 'SONRA';
+        break;
+      case 'uk':
+        message = 'ПІЗНІШЕ';
         break;
       case 'vi':
         message = 'ĐỂ SAU';
@@ -303,6 +363,9 @@ class UpgraderMessages {
     switch (languageCode) {
       case 'ar':
         message = 'حدث الآن';
+        break;
+      case 'bn':
+        message = 'এখন আপডেট করুন';
         break;
       case 'es':
         message = 'ACTUALIZAR';
@@ -328,8 +391,17 @@ class UpgraderMessages {
       case 'it':
         message = 'AGGIORNA ORA';
         break;
+      case 'kk':
+        message = 'ЖАҢАРТУ';
+        break;
       case 'ko':
         message = '지금 업데이트';
+        break;
+      case 'lt':
+        message = 'ATNAUJINTI DABAR';
+        break;
+      case 'nb':
+        message = 'OPPDATER NÅ';
         break;
       case 'pt':
         message = 'ATUALIZAR';
@@ -340,8 +412,14 @@ class UpgraderMessages {
       case 'ru':
         message = 'ОБНОВИТЬ';
         break;
+      case 'ta':
+        message = 'இப்பொழுது புதுப்பிக்கவும்';
+        break;
       case 'tr':
         message = 'ŞİMDİ GÜNCELLE';
+        break;
+      case 'uk':
+        message = 'ОНОВИТИ';
         break;
       case 'vi':
         message = 'CẬP NHẬT';
@@ -365,6 +443,9 @@ class UpgraderMessages {
     switch (languageCode) {
       case 'ar':
         message = 'هل تفضل أن يتم التحديث الآن';
+        break;
+      case 'bn':
+        message = 'আপনি কি এখনই এটি আপডেট করতে চান?';
         break;
       case 'es':
         message = '¿Le gustaría actualizar ahora?';
@@ -390,8 +471,17 @@ class UpgraderMessages {
       case 'it':
         message = 'Ti piacerebbe aggiornare ora?';
         break;
+      case 'kk':
+        message = 'Қазір жаңартқыңыз келе ме?';
+        break;
       case 'ko':
         message = '지금 업데이트를 시작하시겠습니까?';
+        break;
+      case 'lt':
+        message = 'Ar norite atnaujinti dabar?';
+        break;
+      case 'nb':
+        message = 'Ønsker du å oppdatere nå?';
         break;
       case 'pt':
         message = 'Você quer atualizar agora?';
@@ -402,8 +492,14 @@ class UpgraderMessages {
       case 'ru':
         message = 'Хотите обновить сейчас?';
         break;
+      case 'ta':
+        message = 'இப்போது புதுப்பிக்க விரும்புகிறீர்களா?';
+        break;
       case 'tr':
         message = 'Şimdi güncellemek ister misiniz?';
+        break;
+      case 'uk':
+        message = 'Бажаєте оновити зараз?';
         break;
       case 'vi':
         message = 'Bạn có muốn cập nhật ứng dụng?';
@@ -427,6 +523,9 @@ class UpgraderMessages {
     switch (languageCode) {
       case 'ar':
         message = 'هل تريد تحديث التطبيق؟';
+        break;
+      case 'bn':
+        message = 'আপডেট অ্যাপ্লিকেশন?';
         break;
       case 'es':
         message = '¿Actualizar la aplicación?';
@@ -452,8 +551,17 @@ class UpgraderMessages {
       case 'it':
         message = 'Aggiornare l\'applicazione?';
         break;
+      case 'kk':
+        message = 'Жаңарту керек пе?';
+        break;
       case 'ko':
         message = '앱을 업데이트하시겠습니까?';
+        break;
+      case 'lt':
+        message = 'Atnaujinti programą?';
+        break;
+      case 'nb':
+        message = 'Oppdater app?';
         break;
       case 'pt':
         message = 'Atualizar aplicação?';
@@ -464,8 +572,14 @@ class UpgraderMessages {
       case 'ru':
         message = 'Обновить?';
         break;
+      case 'ta':
+        message = 'செயலியை புதுப்பிக்கவா?';
+        break;
       case 'tr':
         message = 'Uygulamayı Güncelle?';
+        break;
+      case 'uk':
+        message = 'Оновити?';
         break;
       case 'vi':
         message = 'Cập nhật ứng dụng?';

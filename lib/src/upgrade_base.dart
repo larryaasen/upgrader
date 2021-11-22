@@ -2,7 +2,6 @@
  * Copyright (c) 2018 Larry Aasen. All rights reserved.
  */
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:upgrader/upgrader.dart';
@@ -38,6 +37,11 @@ class UpgradeBase extends StatefulWidget {
   /// Return false when the default behavior should not execute.
   final BoolCallback? onUpdate;
 
+  /// Called when the user taps outside of the dialog and [canDismissDialog]
+  /// is false. Also called when the back button is pressed. Return true for
+  /// the screen to be popped. Not used by [UpgradeCard].
+  final BoolCallback? shouldPopScope;
+
   /// Provide an HTTP Client that can be replaced for mock testing.
   final http.Client? client;
 
@@ -50,7 +54,7 @@ class UpgradeBase extends StatefulWidget {
   /// Hide or show release notes (default: true)
   final bool? showReleaseNotes;
 
-  /// Can alert dialog be dismissed on tap outside of the alert dialog. Not used by alert card. (default: false)
+  /// Can alert dialog be dismissed on tap outside of the alert dialog. Not used by [UpgradeCard]. (default: false)
   final bool? canDismissDialog;
 
   /// The country code that will override the system locale. Optional. Used only for iOS.
@@ -74,6 +78,7 @@ class UpgradeBase extends StatefulWidget {
     this.onIgnore,
     this.onLater,
     this.onUpdate,
+    this.shouldPopScope,
     this.client,
     this.showIgnore,
     this.showLater,
@@ -113,6 +118,9 @@ class UpgradeBase extends StatefulWidget {
     if (onUpdate != null) {
       Upgrader().onUpdate = onUpdate;
     }
+    if (shouldPopScope != null) {
+      Upgrader().shouldPopScope = shouldPopScope;
+    }
     if (showIgnore != null) {
       Upgrader().showIgnore = showIgnore!;
     }
@@ -145,16 +153,14 @@ class UpgradeBase extends StatefulWidget {
 }
 
 class UpgradeBaseState extends State<UpgradeBase> {
-  bool rebuildNeeded = false;
+  final _initialized = Upgrader().initialize();
+
+  Future<bool> get initialized => _initialized;
 
   @override
-  Widget build(BuildContext context) {
-    return widget.build(context, this)!;
-  }
+  Widget build(BuildContext context) => widget.build(context, this)!;
 
   void forceUpdateState() {
-    setState(() {
-      rebuildNeeded = true;
-    });
+    setState(() {});
   }
 }

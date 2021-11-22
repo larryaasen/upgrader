@@ -2,6 +2,7 @@
  * Copyright (c) 2019-2021 Larry Aasen. All rights reserved.
  */
 
+import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:upgrader/upgrader.dart';
@@ -9,7 +10,10 @@ import 'package:upgrader/upgrader.dart';
 // Create a MockClient using the Mock class provided by the Mockito package.
 // We will create a new instances of this class in each test.
 class MockITunesSearchClient {
-  static http.Client setupMockClient({String country = 'US'}) {
+  static http.Client setupMockClient({
+    String country = 'US',
+    String description = '',
+  }) {
     final currency = country == 'US'
         ? 'USD'
         : country == 'FR'
@@ -17,27 +21,42 @@ class MockITunesSearchClient {
             : '';
 
     final client = MockClient((http.Request request) async {
-      final response =
-          '{"results": [{"version": "5.6", "bundleId": "com.google.Maps", "currency": "$currency", "releaseNotes": "Bug fixes."}]}';
+      final resultsMap = {
+        'results': [
+          {
+            'version': '5.6',
+            'bundleId': 'com.google.Maps',
+            'currency': '$currency',
+            'releaseNotes': 'Bug fixes.',
+            if (description.isNotEmpty) 'description': description
+          }
+        ]
+      };
+      final response = json.encode(resultsMap);
 
-      final url = request.url.toString();
+      var url = request.url.toString();
+      final index = url.indexOf('_cb=');
+      if (index > 0) {
+        url = url.substring(0, index - 1);
+      }
       if (url ==
-          ITunesSearchAPI().lookupURLById('585027354', country: country)) {
+          ITunesSearchAPI().lookupURLById('585027354',
+              country: country, useCacheBuster: false)) {
         return http.Response(response, 200);
       }
       if (url ==
-          ITunesSearchAPI()
-              .lookupURLByBundleId('com.google.Maps', country: country)) {
+          ITunesSearchAPI().lookupURLByBundleId('com.google.Maps',
+              country: country, useCacheBuster: false)) {
         return http.Response(response, 200);
       }
       if (url ==
           ITunesSearchAPI().lookupURLByBundleId('com.larryaasen.upgrader',
-              country: country)) {
+              country: country, useCacheBuster: false)) {
         return http.Response(response, 200);
       }
       if (url ==
-          ITunesSearchAPI()
-              .lookupURLByBundleId('com.google.MyApp', country: country)) {
+          ITunesSearchAPI().lookupURLByBundleId('com.google.MyApp',
+              country: country, useCacheBuster: false)) {
         final responseMyApp = '{"resultCount": 0,"results": []}';
         return http.Response(responseMyApp, 200);
       }

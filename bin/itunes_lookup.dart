@@ -51,11 +51,15 @@ void main(List<String> arguments) async {
   }
 
   final bundleId = ITunesResults.bundleId(results);
+  final description = ITunesResults.description(results);
+  final minAppVersion = ITunesResults.minAppVersion(results);
   final releaseNotes = ITunesResults.releaseNotes(results);
   final trackViewUrl = ITunesResults.trackViewUrl(results);
   final version = ITunesResults.version(results);
 
   print('itunes_lookup bundleId: $bundleId');
+  print('itunes_lookup description: $description');
+  print('itunes_lookup minAppVersion: $minAppVersion');
   print('itunes_lookup releaseNotes: $releaseNotes');
   print('itunes_lookup trackViewUrl: $trackViewUrl');
   print('itunes_lookup version: $version');
