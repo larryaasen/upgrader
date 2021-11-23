@@ -106,6 +106,10 @@ class UpgraderMessages {
         message =
             '{{appName}} এর একটি নতুন সংস্করণ {{currentAppStoreVersion}} পাওয়া যাচ্ছে। আপনার অ্যাপলিকেশনের সংস্করণ হচ্ছে {{currentInstalledVersion}}।';
         break;
+      case 'el':
+        message =
+            'Μια νέα έκδοση του {{appName}} είναι διαθέσιμη! Η έκδοση {{currentAppStoreVersion}} είναι διαθέσιμη-έχετε την {{currentInstalledVersion}}.';
+        break;
       case 'es':
         message =
             '¡Una nueva versión de {{appName}} está disponible! La versión {{currentAppStoreVersion}} ya está disponible-usted tiene {{currentInstalledVersion}}.';
@@ -203,6 +207,9 @@ class UpgraderMessages {
       case 'bn':
         message = 'বাতিল';
         break;
+      case 'el':
+        message = 'ΑΓΝΟΗΣTΕ';
+        break;
       case 'es':
         message = 'IGNORAR';
         break;
@@ -279,6 +286,9 @@ class UpgraderMessages {
         break;
       case 'bn':
         message = 'পরে';
+        break;
+      case 'el':
+        message = 'ΑΡΓΟΤΕΡΑ';
         break;
       case 'es':
         message = 'MÁS TARDE';
@@ -357,6 +367,9 @@ class UpgraderMessages {
       case 'bn':
         message = 'এখন আপডেট করুন';
         break;
+      case 'el':
+        message = 'ΕΝΗΜΕΡΩΣΗ';
+        break;
       case 'es':
         message = 'ACTUALIZAR';
         break;
@@ -434,6 +447,9 @@ class UpgraderMessages {
       case 'bn':
         message = 'আপনি কি এখনই এটি আপডেট করতে চান?';
         break;
+      case 'el':
+        message = 'Θέλετε να κάνετε την ενημέρωση τώρα;';
+        break;
       case 'es':
         message = '¿Le gustaría actualizar ahora?';
         break;
@@ -510,6 +526,9 @@ class UpgraderMessages {
         break;
       case 'bn':
         message = 'আপডেট অ্যাপ্লিকেশন?';
+        break;
+      case 'el':
+        message = 'Ενημέρωση εφαρμογής;';
         break;
       case 'es':
         message = '¿Actualizar la aplicación?';
