@@ -279,6 +279,7 @@ Languages supported:
 * Filipino ('fil')
 * French ('fr')
 * German ('de')
+* Greek ('el')
 * Hungarian ('hu')
 * Indonesian ('id')
 * Italian ('it')
