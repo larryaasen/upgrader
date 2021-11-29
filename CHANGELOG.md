@@ -1,3 +1,7 @@
+## 3.11.0
+
+* Added new language translations for Greek ('el').
+
 ## 3.10.0
 
 * Added new language translations for Lithuanian ('lt').
