@@ -14,7 +14,7 @@ class UpgradeCard extends UpgradeBase {
   /// `EdgeInsets.all(4.0)`.
   final EdgeInsetsGeometry margin;
 
-  UpgradeCard({
+  const UpgradeCard({
     this.margin = const EdgeInsets.all(4.0),
     Key? key,
     AppcastConfiguration? appcastConfig,
