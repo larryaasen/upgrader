@@ -87,9 +87,7 @@ class UpgradeBase extends StatefulWidget {
     this.countryCode,
     this.minAppVersion,
     this.dialogStyle = UpgradeDialogStyle.material,
-  }) : super(key: key) {
-    
-  }
+  }) : super(key: key);
 
   Widget? build(BuildContext context, UpgradeBaseState state) {
     return null;
