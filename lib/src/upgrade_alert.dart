@@ -11,7 +11,7 @@ class UpgradeAlert extends UpgradeBase {
   /// The [child] contained by the widget.
   final Widget? child;
 
-  UpgradeAlert({
+  const UpgradeAlert({
     Key? key,
     AppcastConfiguration? appcastConfig,
     UpgraderMessages? messages,
