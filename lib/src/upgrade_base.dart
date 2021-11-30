@@ -159,7 +159,7 @@ class UpgradeBaseState extends State<UpgradeBase> {
     }
     Upgrader().initialize();
   }
-  
+
   @override
   Widget build(BuildContext context) => widget.build(context, this)!;
 
