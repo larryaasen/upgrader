@@ -19,7 +19,7 @@ class UpgradeAlert extends UpgradeBase {
     bool? debugAlwaysUpgrade,
     bool? debugDisplayOnce,
     bool? debugLogging,
-    Duration? durationToAlertAgain,
+    Duration durationToAlertAgain = const Duration(days: 3),
     BoolCallback? onIgnore,
     BoolCallback? onLater,
     BoolCallback? onUpdate,

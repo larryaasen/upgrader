@@ -802,6 +802,7 @@ void verifyMessages(UpgraderMessages messages, String code) {
 
 class _MyWidget extends StatelessWidget {
   final dialogStyle;
+
   const _MyWidget({
     Key? key,
     this.dialogStyle = UpgradeDialogStyle.material,
@@ -850,8 +851,10 @@ class _MyWidgetCard extends StatelessWidget {
 class MyUpgraderMessages extends UpgraderMessages {
   @override
   String get buttonTitleIgnore => 'aaa';
+
   @override
   String get buttonTitleLater => 'bbb';
+
   @override
   String get buttonTitleUpdate => 'ccc';
 }

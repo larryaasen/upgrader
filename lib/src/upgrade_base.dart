@@ -23,7 +23,7 @@ class UpgradeBase extends StatefulWidget {
   final bool? debugLogging;
 
   /// Duration until alerting user again after later.
-  Duration get durationToAlertAgain => Upgrader().durationUntilAlertAgain;
+  final Duration durationToAlertAgain;
 
   /// Called when the ignore button is tapped or otherwise activated.
   /// Return false when the default behavior should not execute.
@@ -74,7 +74,7 @@ class UpgradeBase extends StatefulWidget {
     this.debugDisplayAlways = false,
     this.debugDisplayOnce = false,
     this.debugLogging = false,
-    Duration? durationToAlertAgain = const Duration(days: 3),
+    this.durationToAlertAgain = const Duration(days: 3),
     this.onIgnore,
     this.onLater,
     this.onUpdate,
