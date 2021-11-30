@@ -88,60 +88,7 @@ class UpgradeBase extends StatefulWidget {
     this.minAppVersion,
     this.dialogStyle = UpgradeDialogStyle.material,
   }) : super(key: key) {
-    if (appcastConfig != null) {
-      Upgrader().appcastConfig = appcastConfig;
-    }
-    if (messages != null) {
-      Upgrader().messages = messages;
-    }
-    if (client != null) {
-      Upgrader().client = client;
-    }
-    if (debugDisplayAlways != null) {
-      Upgrader().debugDisplayAlways = debugDisplayAlways!;
-    }
-    if (debugDisplayOnce != null) {
-      Upgrader().debugDisplayOnce = debugDisplayOnce!;
-    }
-    if (debugLogging != null) {
-      Upgrader().debugLogging = debugLogging!;
-    }
-    if (durationToAlertAgain != null) {
-      Upgrader().durationUntilAlertAgain = durationToAlertAgain;
-    }
-    if (onIgnore != null) {
-      Upgrader().onIgnore = onIgnore;
-    }
-    if (onLater != null) {
-      Upgrader().onLater = onLater;
-    }
-    if (onUpdate != null) {
-      Upgrader().onUpdate = onUpdate;
-    }
-    if (shouldPopScope != null) {
-      Upgrader().shouldPopScope = shouldPopScope;
-    }
-    if (showIgnore != null) {
-      Upgrader().showIgnore = showIgnore!;
-    }
-    if (showLater != null) {
-      Upgrader().showLater = showLater!;
-    }
-    if (showReleaseNotes != null) {
-      Upgrader().showReleaseNotes = showReleaseNotes!;
-    }
-    if (canDismissDialog != null) {
-      Upgrader().canDismissDialog = canDismissDialog!;
-    }
-    if (countryCode != null) {
-      Upgrader().countryCode = countryCode;
-    }
-    if (minAppVersion != null) {
-      Upgrader().minAppVersion = minAppVersion;
-    }
-    if (dialogStyle != null) {
-      Upgrader().dialogStyle = dialogStyle;
-    }
+    
   }
 
   Widget? build(BuildContext context, UpgradeBaseState state) {
@@ -153,14 +100,70 @@ class UpgradeBase extends StatefulWidget {
 }
 
 class UpgradeBaseState extends State<UpgradeBase> {
-  final _initialized = Upgrader().initialize();
+  Future<bool> get initialized => Updater().initialize();
 
-  Future<bool> get initialized => _initialized;
-
+  @override
+  void initState() {
+    super.initState();
+    if (widget.appcastConfig != null) {
+      Upgrader().appcastConfig = appcastConfig;
+    }
+    if (widget.messages != null) {
+      Upgrader().messages = messages;
+    }
+    if (widget.client != null) {
+      Upgrader().client = client;
+    }
+    if (widget.debugDisplayAlways != null) {
+      Upgrader().debugDisplayAlways = debugDisplayAlways!;
+    }
+    if (widget.debugDisplayOnce != null) {
+      Upgrader().debugDisplayOnce = debugDisplayOnce!;
+    }
+    if (widget.debugLogging != null) {
+      Upgrader().debugLogging = debugLogging!;
+    }
+    if (widget.durationToAlertAgain != null) {
+      Upgrader().durationUntilAlertAgain = durationToAlertAgain;
+    }
+    if (widget.onIgnore != null) {
+      Upgrader().onIgnore = onIgnore;
+    }
+    if (widget.onLater != null) {
+      Upgrader().onLater = onLater;
+    }
+    if (widget.onUpdate != null) {
+      Upgrader().onUpdate = onUpdate;
+    }
+    if (widget.shouldPopScope != null) {
+      Upgrader().shouldPopScope = shouldPopScope;
+    }
+    if (widget.showIgnore != null) {
+      Upgrader().showIgnore = showIgnore!;
+    }
+    if (widget.showLater != null) {
+      Upgrader().showLater = showLater!;
+    }
+    if (widget.showReleaseNotes != null) {
+      Upgrader().showReleaseNotes = showReleaseNotes!;
+    }
+    if (widget.canDismissDialog != null) {
+      Upgrader().canDismissDialog = canDismissDialog!;
+    }
+    if (widget.countryCode != null) {
+      Upgrader().countryCode = countryCode;
+    }
+    if (widget.minAppVersion != null) {
+      Upgrader().minAppVersion = minAppVersion;
+    }
+    if (widget.dialogStyle != null) {
+      Upgrader().dialogStyle = dialogStyle;
+    }
+    Upgrader().initialize();
+  }
+  
   @override
   Widget build(BuildContext context) => widget.build(context, this)!;
 
-  void forceUpdateState() {
-    setState(() {});
-  }
+  void forceUpdateState() => setState(() {});
 }
