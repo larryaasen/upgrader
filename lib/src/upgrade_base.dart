@@ -98,64 +98,62 @@ class UpgradeBase extends StatefulWidget {
 }
 
 class UpgradeBaseState extends State<UpgradeBase> {
-  Future<bool> get initialized => Updater().initialize();
+  Future<bool> get initialized => Upgrader().initialize();
 
   @override
   void initState() {
     super.initState();
     if (widget.appcastConfig != null) {
-      Upgrader().appcastConfig = appcastConfig;
+      Upgrader().appcastConfig = widget.appcastConfig;
     }
     if (widget.messages != null) {
-      Upgrader().messages = messages;
+      Upgrader().messages = widget.messages;
     }
     if (widget.client != null) {
-      Upgrader().client = client;
+      Upgrader().client = widget.client;
     }
     if (widget.debugDisplayAlways != null) {
-      Upgrader().debugDisplayAlways = debugDisplayAlways!;
+      Upgrader().debugDisplayAlways = widget.debugDisplayAlways!;
     }
     if (widget.debugDisplayOnce != null) {
-      Upgrader().debugDisplayOnce = debugDisplayOnce!;
+      Upgrader().debugDisplayOnce = widget.debugDisplayOnce!;
     }
     if (widget.debugLogging != null) {
-      Upgrader().debugLogging = debugLogging!;
+      Upgrader().debugLogging = widget.debugLogging!;
     }
-    if (widget.durationToAlertAgain != null) {
-      Upgrader().durationUntilAlertAgain = durationToAlertAgain;
-    }
+    Upgrader().durationUntilAlertAgain = widget.durationToAlertAgain;
     if (widget.onIgnore != null) {
-      Upgrader().onIgnore = onIgnore;
+      Upgrader().onIgnore = widget.onIgnore;
     }
     if (widget.onLater != null) {
-      Upgrader().onLater = onLater;
+      Upgrader().onLater = widget.onLater;
     }
     if (widget.onUpdate != null) {
-      Upgrader().onUpdate = onUpdate;
+      Upgrader().onUpdate = widget.onUpdate;
     }
     if (widget.shouldPopScope != null) {
-      Upgrader().shouldPopScope = shouldPopScope;
+      Upgrader().shouldPopScope = widget.shouldPopScope;
     }
     if (widget.showIgnore != null) {
-      Upgrader().showIgnore = showIgnore!;
+      Upgrader().showIgnore = widget.showIgnore!;
     }
     if (widget.showLater != null) {
-      Upgrader().showLater = showLater!;
+      Upgrader().showLater = widget.showLater!;
     }
     if (widget.showReleaseNotes != null) {
-      Upgrader().showReleaseNotes = showReleaseNotes!;
+      Upgrader().showReleaseNotes = widget.showReleaseNotes!;
     }
     if (widget.canDismissDialog != null) {
-      Upgrader().canDismissDialog = canDismissDialog!;
+      Upgrader().canDismissDialog = widget.canDismissDialog!;
     }
     if (widget.countryCode != null) {
-      Upgrader().countryCode = countryCode;
+      Upgrader().countryCode = widget.countryCode;
     }
     if (widget.minAppVersion != null) {
-      Upgrader().minAppVersion = minAppVersion;
+      Upgrader().minAppVersion = widget.minAppVersion;
     }
     if (widget.dialogStyle != null) {
-      Upgrader().dialogStyle = dialogStyle;
+      Upgrader().dialogStyle = widget.dialogStyle;
     }
     Upgrader().initialize();
   }
