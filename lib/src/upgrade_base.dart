@@ -67,7 +67,7 @@ class UpgradeBase extends StatefulWidget {
   /// The upgrade dialog style. Optional. Used only on UpgradeAlert. (default: material)
   final UpgradeDialogStyle? dialogStyle;
 
-  UpgradeBase({
+  const UpgradeBase({
     Key? key,
     this.appcastConfig,
     this.messages,
