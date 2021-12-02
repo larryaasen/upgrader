@@ -1,7 +1,6 @@
 ## 3.12.0
 
 * Make `const` constructors
-* Migrated from the deprecated device_info plugin to device_info_plus.
 
 ## 3.11.0
 
