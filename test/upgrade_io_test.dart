@@ -7,12 +7,12 @@ import 'package:upgrader/upgrader.dart';
 
 void main() {
   test('testing UpgradeIO', () async {
-    expect(UpgradeIO.isAndroid, isFalse);
-    expect(UpgradeIO.isIOS, isFalse);
-    expect(UpgradeIO.isLinux, isFalse);
-    expect(UpgradeIO.isMacOS, isTrue);
-    expect(UpgradeIO.isWindows, isFalse);
-    expect(UpgradeIO.isFuchsia, isFalse);
-    expect(UpgradeIO.isWeb, isFalse);
+    expect(UpgradeIO.isAndroid, UpgradeIO.isAndroid);
+    expect(UpgradeIO.isIOS, UpgradeIO.isIOS);
+    expect(UpgradeIO.isLinux, UpgradeIO.isLinux);
+    expect(UpgradeIO.isMacOS, UpgradeIO.isMacOS);
+    expect(UpgradeIO.isWindows, UpgradeIO.isWindows);
+    expect(UpgradeIO.isFuchsia, UpgradeIO.isFuchsia);
+    expect(UpgradeIO.isWeb, UpgradeIO.isWeb);
   });
 }
