@@ -11,6 +11,8 @@ import 'package:http/http.dart' as http;
 import 'package:version/version.dart';
 import 'package:xml/xml.dart';
 
+import 'upgrade_io.dart';
+
 /// The [Appcast] class is used to download an Appcast, based on the Sparkle
 /// framework by Andy Matuschak.
 /// Documentation: https://sparkle-project.org/documentation/publishing/
@@ -180,10 +182,10 @@ class Appcast {
 
   Future<bool> _getDeviceInfo() async {
     final deviceInfo = DeviceInfoPlugin();
-    if (Platform.isAndroid) {
+    if (UpgradeIO.isAndroid) {
       _androidInfo = await deviceInfo.androidInfo;
       osVersionString = _androidInfo.version.baseOS;
-    } else if (Platform.isIOS) {
+    } else if (UpgradeIO.isIOS) {
       _iosInfo = await deviceInfo.iosInfo;
       osVersionString = _iosInfo.systemVersion;
     }

@@ -3,7 +3,6 @@
  */
 
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -17,6 +16,7 @@ import 'package:version/version.dart';
 import 'appcast.dart';
 import 'itunes_search_api.dart';
 import 'play_store_search_api.dart';
+import 'upgrade_io.dart';
 import 'upgrade_messages.dart';
 
 /// Signature of callbacks that have no arguments and return bool.
@@ -113,7 +113,7 @@ class Upgrader {
   TargetPlatform platform = defaultTargetPlatform;
 
   /// The target operating system.
-  String operatingSystem = Platform.operatingSystem;
+  String operatingSystem = UpgradeIO.operatingSystem;
 
   bool _displayed = false;
   bool _initCalled = false;
@@ -167,9 +167,17 @@ class Upgrader {
 
     if (debugLogging) {
       print('upgrader: default operatingSystem: '
-          '${Platform.operatingSystem} ${Platform.operatingSystemVersion}');
+          '${UpgradeIO.operatingSystem} ${UpgradeIO.operatingSystemVersion}');
       print('upgrader: operatingSystem: $operatingSystem');
       print('upgrader: platform: $platform');
+      print('upgrader: '
+          'isAndroid: ${UpgradeIO.isAndroid}, '
+          'isIOS: ${UpgradeIO.isIOS}, '
+          'isLinux: ${UpgradeIO.isLinux}, '
+          'isMacOS: ${UpgradeIO.isMacOS}, '
+          'isWindows: ${UpgradeIO.isWindows}, '
+          'isFuchsia: ${UpgradeIO.isFuchsia}, '
+          'isWeb: ${UpgradeIO.isWeb}');
     }
 
     if (_packageInfo == null) {
