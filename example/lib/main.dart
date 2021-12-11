@@ -8,7 +8,7 @@ import 'package:upgrader/upgrader.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  MyApp({
+  const MyApp({
     Key key,
   }) : super(key: key);
 
