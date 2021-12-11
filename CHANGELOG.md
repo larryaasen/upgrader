@@ -1,3 +1,7 @@
+## 3.11.1
+
+* Fixed exception while running in the browser. Added example support for web.
+
 ## 3.11.0
 
 * Added new language translations for Greek ('el').
