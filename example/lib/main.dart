@@ -32,7 +32,50 @@ class MyApp extends StatelessWidget {
           body: UpgradeAlert(
             debugLogging: true,
             child: Center(child: Text('Checking...')),
+            getCustomDialog: getCustomDialog,
           )),
     );
   }
+}
+
+/// Example Custom Dialog Widget
+Widget getCustomDialog(BuildContext context,
+    {String title,
+    String message,
+    String releaseNotes,
+    void Function() onUserIgnored,
+    void Function() onUserLater,
+    void Function() onUserUpdated}) {
+  return Center(
+    child: Container(
+      height: 124,
+      width: MediaQuery.of(context).size.width * 0.8,
+      color: Colors.white,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            'Your Custom Upgrader Dialog',
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextButton(onPressed: onUserIgnored, child: Text('IGNORE')),
+              TextButton(onPressed: onUserLater, child: Text('LATER')),
+              TextButton(
+                onPressed: onUserUpdated,
+                child: Text(
+                  'UPDATE',
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
 }
