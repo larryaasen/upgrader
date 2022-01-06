@@ -7,7 +7,7 @@
 import 'dart:convert' show utf8;
 import 'dart:io';
 
-import 'package:device_info/device_info.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:version/version.dart';
@@ -35,6 +35,7 @@ class Appcast {
 
   late AndroidDeviceInfo _androidInfo;
   late IosDeviceInfo _iosInfo;
+  late WebBrowserInfo _webInfo;
   String? osVersionString;
 
   /// Returns the latest item in the Appcast based on OS, OS version, and app
@@ -190,6 +191,9 @@ class Appcast {
     } else if (UpgradeIO.isIOS) {
       _iosInfo = await deviceInfo.iosInfo;
       osVersionString = _iosInfo.systemVersion;
+    } else if (UpgradeIO.isWeb) {
+      _webInfo = await deviceInfo.webBrowserInfo;
+      osVersionString = '0.0.0';
     }
 
     // If the OS version string is not valid, don't use it.
