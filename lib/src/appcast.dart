@@ -35,7 +35,6 @@ class Appcast {
 
   late AndroidDeviceInfo _androidInfo;
   late IosDeviceInfo _iosInfo;
-  late WebBrowserInfo _webInfo;
   String? osVersionString;
 
   /// Returns the latest item in the Appcast based on OS, OS version, and app
@@ -192,7 +191,6 @@ class Appcast {
       _iosInfo = await deviceInfo.iosInfo;
       osVersionString = _iosInfo.systemVersion;
     } else if (UpgradeIO.isWeb) {
-      _webInfo = await deviceInfo.webBrowserInfo;
       osVersionString = '0.0.0';
     }
 
