@@ -10,7 +10,7 @@
 import 'package:upgrader/src/play_store_search_api.dart';
 
 void main(List<String> arguments) async {
-  final defaultLookupId = 'com.google.android.apps.mapslite';
+  const defaultLookupId = 'com.google.android.apps.mapslite';
   var lookupId = defaultLookupId;
 
   if (arguments.length == 1) {

@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 /*
  * Copyright (c) 2018 Larry Aasen. All rights reserved.
  */
@@ -154,7 +156,7 @@ class Appcast {
 
         // There must be a version
         if (newVersion == null || newVersion.isEmpty) {
-          return null;
+          return;
         }
 
         final item = AppcastItem(
@@ -249,7 +251,7 @@ class AppcastItem {
     }
 
     if (supported && osVersion != null && osVersion.isNotEmpty) {
-      var osVersionValue;
+      Version osVersionValue;
       try {
         osVersionValue = Version.parse(osVersion);
       } catch (e) {

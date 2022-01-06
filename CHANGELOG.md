@@ -1,3 +1,10 @@
+## 3.11.2
+
+* Changed from using pedantic to flutter_lints. Now using the rules from
+flutter_lints/flutter.yaml.
+* Now using const instead of final on many variables.
+* Resolved linting issues. Used typed over untyped uninitialized variables.
+
 ## 3.11.1
 
 * Fixed exception while running in the browser. Added example support for web.

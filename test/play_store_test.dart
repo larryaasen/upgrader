@@ -80,7 +80,7 @@ void main() {
   /// Helper method
   String? pmav(Document response) {
     final mav = PlayStoreResults.minAppVersion(response);
-    return mav == null ? null : mav.toString();
+    return mav?.toString();
   }
 
   test('testing minAppVersion', () async {

@@ -83,12 +83,12 @@ class UpgradeCard extends UpgradeBase {
               Widget? notes;
               if (shouldDisplayReleaseNotes && releaseNotes != null) {
                 notes = Padding(
-                    padding: EdgeInsets.only(top: 15.0),
+                    padding: const EdgeInsets.only(top: 15.0),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text('Release Notes:',
+                        const Text('Release Notes:',
                             style: TextStyle(fontWeight: FontWeight.bold)),
                         Text(
                           releaseNotes,
@@ -111,7 +111,7 @@ class UpgradeCard extends UpgradeBase {
                         children: <Widget>[
                           Text(message),
                           Padding(
-                              padding: EdgeInsets.only(top: 15.0),
+                              padding: const EdgeInsets.only(top: 15.0),
                               child: Text(Upgrader()
                                       .messages!
                                       .message(UpgraderMessage.prompt) ??
@@ -162,7 +162,7 @@ class UpgradeCard extends UpgradeBase {
               }
             }
           }
-          return Container(width: 0.0, height: 0.0);
+          return const SizedBox(width: 0.0, height: 0.0);
         });
   }
 }

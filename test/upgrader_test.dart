@@ -138,7 +138,7 @@ void main() {
     expect(upgrader.messages!.buttonTitleLater, 'bbb');
     expect(upgrader.messages!.buttonTitleUpdate, 'ccc');
 
-    await tester.pumpWidget(_MyWidget());
+    await tester.pumpWidget(const _MyWidget());
 
     expect(find.text('Upgrader test'), findsOneWidget);
     expect(find.text('Upgrading'), findsOneWidget);
@@ -213,7 +213,7 @@ void main() {
     expect(upgrader.messages!.buttonTitleLater, 'bbb');
     expect(upgrader.messages!.buttonTitleUpdate, 'ccc');
 
-    await tester.pumpWidget(_MyWidget(
+    await tester.pumpWidget(const _MyWidget(
       dialogStyle: UpgradeDialogStyle.cupertino,
     ));
 
@@ -275,7 +275,7 @@ void main() {
 
     expect(upgrader.isTooSoon(), false);
 
-    await tester.pumpWidget(_MyWidget());
+    await tester.pumpWidget(const _MyWidget());
 
     // Pump the UI so the upgrader can display its dialog
     await tester.pumpAndSettle();
@@ -319,7 +319,7 @@ void main() {
 
     expect(upgrader.isTooSoon(), false);
 
-    await tester.pumpWidget(_MyWidget());
+    await tester.pumpWidget(const _MyWidget());
 
     // Pump the UI so the upgrader can display its dialog
     await tester.pumpAndSettle();
@@ -354,7 +354,7 @@ void main() {
 
     expect(upgrader.isTooSoon(), false);
 
-    await tester.pumpWidget(_MyWidget());
+    await tester.pumpWidget(const _MyWidget());
 
     // Pump the UI so the upgrader can display its dialog
     await tester.pumpAndSettle();
@@ -401,7 +401,7 @@ void main() {
 
     expect(upgrader.isTooSoon(), false);
 
-    await tester.pumpWidget(_MyWidgetCard());
+    await tester.pumpWidget(const _MyWidgetCard());
 
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle();
@@ -448,7 +448,7 @@ void main() {
 
     expect(upgrader.isTooSoon(), false);
 
-    await tester.pumpWidget(_MyWidgetCard());
+    await tester.pumpWidget(const _MyWidgetCard());
 
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle();
@@ -493,7 +493,7 @@ void main() {
 
     expect(upgrader.isTooSoon(), false);
 
-    await tester.pumpWidget(_MyWidgetCard());
+    await tester.pumpWidget(const _MyWidgetCard());
 
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle(const Duration(milliseconds: 5000));
@@ -540,7 +540,7 @@ void main() {
 
     upgrader.minAppVersion = '1.0.0';
 
-    await tester.pumpWidget(_MyWidgetCard());
+    await tester.pumpWidget(const _MyWidgetCard());
 
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle(const Duration(milliseconds: 5000));
@@ -625,7 +625,7 @@ void main() {
 
     expect(upgrader.isTooSoon(), false);
 
-    await tester.pumpWidget(_MyWidgetCard());
+    await tester.pumpWidget(const _MyWidgetCard());
 
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle();
@@ -663,21 +663,22 @@ void main() {
 
     test('durationUntilAlertAgain defaults to 3 days', () async {
       final upgrader = Upgrader();
-      expect(upgrader.durationUntilAlertAgain, Duration(days: 3));
+      expect(upgrader.durationUntilAlertAgain, const Duration(days: 3));
     }, skip: false);
 
     test('durationUntilAlertAgain card is valid', () async {
       final card1 = UpgradeCard();
-      expect(card1.durationToAlertAgain, Duration(days: 3));
-      final card2 = UpgradeCard(durationToAlertAgain: Duration(days: 10));
-      expect(card2.durationToAlertAgain, Duration(days: 10));
+      expect(card1.durationToAlertAgain, const Duration(days: 3));
+      final card2 = UpgradeCard(durationToAlertAgain: const Duration(days: 10));
+      expect(card2.durationToAlertAgain, const Duration(days: 10));
     }, skip: false);
 
     test('durationUntilAlertAgain alert is valid', () async {
       final alert1 = UpgradeAlert();
-      expect(alert1.durationToAlertAgain, Duration(days: 3));
-      final alert2 = UpgradeAlert(durationToAlertAgain: Duration(days: 10));
-      expect(alert2.durationToAlertAgain, Duration(days: 10));
+      expect(alert1.durationToAlertAgain, const Duration(days: 3));
+      final alert2 =
+          UpgradeAlert(durationToAlertAgain: const Duration(days: 10));
+      expect(alert2.durationToAlertAgain, const Duration(days: 10));
     }, skip: false);
   });
 
@@ -801,7 +802,7 @@ void verifyMessages(UpgraderMessages messages, String code) {
 }
 
 class _MyWidget extends StatelessWidget {
-  final dialogStyle;
+  final UpgradeDialogStyle dialogStyle;
   const _MyWidget({
     Key? key,
     this.dialogStyle = UpgradeDialogStyle.material,
@@ -813,13 +814,13 @@ class _MyWidget extends StatelessWidget {
       title: 'Upgrader test',
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Upgrader test'),
+          title: const Text('Upgrader test'),
         ),
         body: UpgradeAlert(
             debugLogging: true,
             dialogStyle: dialogStyle,
             child: Column(
-              children: <Widget>[Text('Upgrading')],
+              children: const <Widget>[Text('Upgrading')],
             )),
       ),
     );
@@ -837,7 +838,7 @@ class _MyWidgetCard extends StatelessWidget {
       title: 'Upgrader test',
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Upgrader test'),
+          title: const Text('Upgrader test'),
         ),
         body: Column(
           children: <Widget>[UpgradeCard(debugLogging: true)],

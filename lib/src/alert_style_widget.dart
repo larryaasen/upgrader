@@ -45,15 +45,16 @@ class AlertStyleWidget extends StatelessWidget {
     assert(debugCheckHasMaterialLocalizations(context));
     final children = <Widget>[];
     const semanticLabel = 'semanticLabel';
-    final EdgeInsetsGeometry? titlePadding = null;
-    final EdgeInsetsGeometry contentPadding =
-        const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 24.0);
+    const EdgeInsetsGeometry? titlePadding = null;
+    const EdgeInsetsGeometry contentPadding =
+        EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 24.0);
 
     var label = semanticLabel;
 
     if (title != null) {
       children.add(Padding(
-        padding: titlePadding ?? EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 0.0),
+        padding:
+            titlePadding ?? const EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 0.0),
         child: DefaultTextStyle(
           style: Theme.of(context).textTheme.headline6!,
           child: Semantics(child: title, namesRoute: true),

@@ -138,7 +138,7 @@ class ITunesSearchAPI {
 class ITunesResults {
   /// Return field bundleId from iTunes results.
   static String? bundleId(Map response) {
-    var value;
+    String? value;
     try {
       value = response['results'][0]['bundleId'];
     } catch (e) {
@@ -149,7 +149,7 @@ class ITunesResults {
 
   /// Return field currency from iTunes results.
   static String? currency(Map response) {
-    var value;
+    String? value;
     try {
       value = response['results'][0]['currency'];
     } catch (e) {
@@ -160,7 +160,7 @@ class ITunesResults {
 
   /// Return field description from iTunes results.
   static String? description(Map response) {
-    var value;
+    String? value;
     try {
       value = response['results'][0]['description'];
     } catch (e) {
@@ -173,14 +173,14 @@ class ITunesResults {
   /// from the store response. The format is: [:mav: 1.2.3].
   /// Returns version, such as 1.2.3, or null.
   static Version? minAppVersion(Map response, {String tagName = 'mav'}) {
-    var version;
+    Version? version;
     try {
       final description = ITunesResults.description(response);
       if (description != null) {
-        final regExpSource = r'\[\:mav\:[\s]*(?<version>[^\s]+)[\s]*\]';
+        const regExpSource = r'\[\:mav\:[\s]*(?<version>[^\s]+)[\s]*\]';
         final regExp = RegExp(regExpSource, caseSensitive: false);
         final match = regExp.firstMatch(description);
-        final mav = match != null ? match.namedGroup('version') : null;
+        final mav = match?.namedGroup('version');
         // Verify version string using class Version
         version = mav != null ? Version.parse(mav) : null;
       }
@@ -192,7 +192,7 @@ class ITunesResults {
 
   /// Return field releaseNotes from iTunes results.
   static String? releaseNotes(Map response) {
-    var value;
+    String? value;
     try {
       value = response['results'][0]['releaseNotes'];
     } catch (e) {
@@ -203,7 +203,7 @@ class ITunesResults {
 
   /// Return field trackViewUrl from iTunes results.
   static String? trackViewUrl(Map response) {
-    var value;
+    String? value;
     try {
       value = response['results'][0]['trackViewUrl'];
     } catch (e) {
@@ -214,7 +214,7 @@ class ITunesResults {
 
   /// Return field version from iTunes results.
   static String? version(Map response) {
-    var value;
+    String? value;
     try {
       value = response['results'][0]['version'];
     } catch (e) {

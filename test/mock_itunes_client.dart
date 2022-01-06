@@ -26,7 +26,7 @@ class MockITunesSearchClient {
           {
             'version': '5.6',
             'bundleId': 'com.google.Maps',
-            'currency': '$currency',
+            'currency': currency,
             'releaseNotes': 'Bug fixes.',
             if (description.isNotEmpty) 'description': description
           }
@@ -57,7 +57,7 @@ class MockITunesSearchClient {
       if (url ==
           ITunesSearchAPI().lookupURLByBundleId('com.google.MyApp',
               country: country, useCacheBuster: false)) {
-        final responseMyApp = '{"resultCount": 0,"results": []}';
+        const responseMyApp = '{"resultCount": 0,"results": []}';
         return http.Response(responseMyApp, 200);
       }
       return http.Response('', 400);
