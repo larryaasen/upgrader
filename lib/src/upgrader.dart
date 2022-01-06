@@ -53,7 +53,7 @@ class Upgrader {
   http.Client? client = http.Client();
 
   /// Duration until alerting user again
-  Duration durationUntilAlertAgain = Duration(days: 3);
+  Duration durationUntilAlertAgain = const Duration(days: 3);
 
   /// For debugging, always force the upgrade to be available.
   bool debugDisplayAlways = false;
@@ -340,7 +340,7 @@ class Upgrader {
       }
       if (shouldDisplay) {
         _displayed = true;
-        Future.delayed(Duration(milliseconds: 0), () {
+        Future.delayed(const Duration(milliseconds: 0), () {
           _showDialog(
               context: context,
               title: messages!.message(UpgraderMessage.title),
@@ -523,12 +523,12 @@ class Upgrader {
     Widget? notes;
     if (releaseNotes != null) {
       notes = Padding(
-          padding: EdgeInsets.only(top: 15.0),
+          padding: const EdgeInsets.only(top: 15.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('Release Notes:',
+              const Text('Release Notes:',
                   style: TextStyle(fontWeight: FontWeight.bold)),
               Text(
                 releaseNotes,
@@ -547,7 +547,7 @@ class Upgrader {
         children: <Widget>[
           Text(message),
           Padding(
-              padding: EdgeInsets.only(top: 15.0),
+              padding: const EdgeInsets.only(top: 15.0),
               child: Text(messages!.message(UpgraderMessage.prompt)!)),
           if (notes != null) notes,
         ],
@@ -574,10 +574,10 @@ class Upgrader {
     Widget? notes;
     if (releaseNotes != null) {
       notes = Padding(
-          padding: EdgeInsets.only(top: 15.0),
+          padding: const EdgeInsets.only(top: 15.0),
           child: Column(
             children: <Widget>[
-              Text('Release Notes:',
+              const Text('Release Notes:',
                   style: TextStyle(fontWeight: FontWeight.bold)),
               Text(
                 releaseNotes,
@@ -595,7 +595,7 @@ class Upgrader {
         children: <Widget>[
           Text(message),
           Padding(
-              padding: EdgeInsets.only(top: 15.0),
+              padding: const EdgeInsets.only(top: 15.0),
               child: Text(messages!.message(UpgraderMessage.prompt)!)),
           if (notes != null) notes,
         ],

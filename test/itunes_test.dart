@@ -29,7 +29,7 @@ void main() {
         equals('https://itunes.apple.com/lookup?id=909253&entity=album'));
 
     // Test the URL using the cache buster and remove it from the URL
-    final testUrl =
+    const testUrl =
         'https://itunes.apple.com/lookup?bundleId=com.google.Maps&country=US&_cb=';
     final url = iTunes
         .lookupURLByBundleId('com.google.Maps', useCacheBuster: true)!
@@ -127,7 +127,7 @@ void main() {
   /// Helper method
   String? imav(Map response) {
     final mav = ITunesResults.minAppVersion(response);
-    return mav == null ? null : mav.toString();
+    return mav?.toString();
   }
 
   test('testing minAppVersion', () async {

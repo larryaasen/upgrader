@@ -19,7 +19,7 @@ void main() {
     expect(messages, isNotNull);
 
     var expectationMet = false;
-    var widget = Text('Tester');
+    var widget = const Text('Tester');
 
     await tester.pumpWidget(
       StatefulBuilder(
