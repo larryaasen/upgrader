@@ -1,3 +1,7 @@
+## 3.12.0
+
+* Updated to device_info_plus.
+
 ## 3.11.2
 
 * Changed from using pedantic to flutter_lints. Now using the rules from
