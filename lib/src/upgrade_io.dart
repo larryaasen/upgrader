@@ -1,15 +1,15 @@
 /*
- * Copyright (c) 2021 Larry Aasen. All rights reserved.
+ * Copyright (c) 2021-2022 Larry Aasen. All rights reserved.
  */
 
-import 'dart:io';
+import "package:os_detect/os_detect.dart" as platform;
 import 'package:flutter/foundation.dart';
 
 class UpgradeIO {
   /// The target operating system.
   static String get operatingSystem {
     try {
-      return Platform.operatingSystem;
+      return platform.operatingSystem;
     } catch (e) {
       return '';
     }
@@ -18,7 +18,7 @@ class UpgradeIO {
   /// A string representing the version of the operating system or platform.
   static String get operatingSystemVersion {
     try {
-      return Platform.operatingSystemVersion;
+      return platform.operatingSystemVersion;
     } catch (e) {
       return '';
     }
@@ -27,7 +27,7 @@ class UpgradeIO {
   /// Whether the operating system is a version of Android.
   static bool get isAndroid {
     try {
-      return Platform.isAndroid;
+      return platform.isAndroid;
     } catch (e) {
       return false;
     }
@@ -36,7 +36,7 @@ class UpgradeIO {
   /// Whether the operating system is a version of Fuchsia.
   static bool get isFuchsia {
     try {
-      return Platform.isFuchsia;
+      return platform.isFuchsia;
     } catch (e) {
       return false;
     }
@@ -45,7 +45,7 @@ class UpgradeIO {
   /// Whether the operating system is a version of iOS.
   static bool get isIOS {
     try {
-      return Platform.isIOS;
+      return platform.isIOS;
     } catch (e) {
       return false;
     }
@@ -54,7 +54,7 @@ class UpgradeIO {
   /// Whether the operating system is a version of Linux.
   static bool get isLinux {
     try {
-      return Platform.isLinux;
+      return platform.isLinux;
     } catch (e) {
       return false;
     }
@@ -63,7 +63,7 @@ class UpgradeIO {
   /// Whether the operating system is a version of macOS.
   static bool get isMacOS {
     try {
-      return Platform.isMacOS;
+      return platform.isMacOS;
     } catch (e) {
       return false;
     }
@@ -81,7 +81,7 @@ class UpgradeIO {
   /// Whether the operating system is a version of Windows.
   static bool get isWindows {
     try {
-      return Platform.isWindows;
+      return platform.isWindows;
     } catch (e) {
       return false;
     }

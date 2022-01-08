@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Larry Aasen. All rights reserved.
+ * Copyright (c) 2018-2022 Larry Aasen. All rights reserved.
  */
 
 import 'dart:convert';
@@ -37,7 +37,7 @@ void main() {
   });
 
   test('testing Appcast file', () async {
-    final appcast = Appcast();
+    final appcast = TestAppcast();
     var testFile = await getTestFile();
     final items = await appcast.parseAppcastItemsFromFile(testFile);
     validateItems(items!, appcast);
@@ -156,4 +156,12 @@ Future<http.Client> setupMockClient() async {
   });
 
   return client;
+}
+
+class TestAppcast extends Appcast {
+  /// Load the Appcast from [file].
+  Future<List<AppcastItem>?> parseAppcastItemsFromFile(File file) async {
+    final contents = await file.readAsString();
+    return parseAppcastItems(contents);
+  }
 }

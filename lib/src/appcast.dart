@@ -1,11 +1,10 @@
 // ignore_for_file: constant_identifier_names
 
 /*
- * Copyright (c) 2018 Larry Aasen. All rights reserved.
+ * Copyright (c) 2018-2022 Larry Aasen. All rights reserved.
  */
 
 import 'dart:convert' show utf8;
-import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
@@ -59,8 +58,6 @@ class Appcast {
 
   /// Download the Appcast from [appCastURL].
   Future<List<AppcastItem>?> parseAppcastItemsFromUri(String appCastURL) async {
-    await _getDeviceInfo();
-
     http.Response response;
     try {
       response = await client!.get(Uri.parse(appCastURL));
@@ -69,13 +66,12 @@ class Appcast {
       return null;
     }
     final contents = utf8.decode(response.bodyBytes);
-    return parseItemsFromXMLString(contents);
+    return parseAppcastItems(contents);
   }
 
-  /// Load the Appcast from [file].
-  Future<List<AppcastItem>?> parseAppcastItemsFromFile(File file) async {
+  /// Parse the Appcast from XML string.
+  Future<List<AppcastItem>?> parseAppcastItems(String contents) async {
     await _getDeviceInfo();
-    final contents = await file.readAsString();
     return parseItemsFromXMLString(contents);
   }
 

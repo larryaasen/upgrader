@@ -1,9 +1,11 @@
+## 3.12.1
+
+* Removed the use of dart:io from the package to allow for compatibility on web.
+Added use of pacakge os_detect instead. Testing still uses dart:io.
+
 ## 3.12.0
 
 * Updated to device_info_plus.
-
-## 3.11.2
-
 * Changed from using pedantic to flutter_lints. Now using the rules from
 flutter_lints/flutter.yaml.
 * Now using const instead of final on many variables.
