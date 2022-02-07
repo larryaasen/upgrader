@@ -614,4 +614,3 @@ class UpgraderMessages {
     return message;
   }
 }
-
