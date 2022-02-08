@@ -170,6 +170,10 @@ class UpgraderMessages {
         message =
             'Доступна новая версия приложения {{appName}}! Новая версия: {{currentAppStoreVersion}}, текущая версия: {{currentInstalledVersion}}.';
         break;
+      case 'sv':
+        message =
+            'En ny version av {{appName}} är tillgänglig! Version {{currentAppStoreVersion}} är tillgänglig - du har {{currentInstalledVersion}}.';
+        break;
       case 'ta':
         message =
             '{{appName}}-ன் புதிய பதிப்பு {{currentAppStoreVersion}} இப்போது கிடைக்கிறது! உங்களிடம் {{currentInstalledVersion}} உள்ளது.';
@@ -255,6 +259,9 @@ class UpgraderMessages {
       case 'ru':
         message = 'НЕТ';
         break;
+      case 'sv':
+        message = 'AVBRYT';
+        break;
       case 'ta':
         message = 'புறக்கணி';
         break;
@@ -334,6 +341,9 @@ class UpgraderMessages {
         break;
       case 'ru':
         message = 'ПОЗЖЕ';
+        break;
+      case 'sv':
+        message = 'SENARE';
         break;
       case 'ta':
         message = 'பிறகு';
@@ -415,6 +425,9 @@ class UpgraderMessages {
       case 'ru':
         message = 'ОБНОВИТЬ';
         break;
+      case 'sv':
+        message = 'UPPDATERA NU';
+        break;
       case 'ta':
         message = 'இப்பொழுது புதுப்பிக்கவும்';
         break;
@@ -495,6 +508,9 @@ class UpgraderMessages {
       case 'ru':
         message = 'Хотите обновить сейчас?';
         break;
+      case 'sv':
+        message = 'Vill du uppdatera nu?';
+        break;
       case 'ta':
         message = 'இப்போது புதுப்பிக்க விரும்புகிறீர்களா?';
         break;
@@ -574,6 +590,9 @@ class UpgraderMessages {
         break;
       case 'ru':
         message = 'Обновить?';
+        break;
+      case 'sv':
+        message = 'Uppdatera App?';
         break;
       case 'ta':
         message = 'செயலியை புதுப்பிக்கவா?';
