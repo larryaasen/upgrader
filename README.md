@@ -292,6 +292,7 @@ Languages supported:
 * Portuguese ('pt')
 * Russian ('ru')
 * Spanish ('es')
+* Swedish ('sv')
 * Tamil ('ta')
 * Turkish ('tr')
 * Ukrainian ('uk')

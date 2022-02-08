@@ -1,3 +1,6 @@
+## 3.13.0
+
+* Added new language translation for Swedish ('sv').
 ## 3.12.1
 
 * Removed the use of dart:io from the package to allow for compatibility on web.
