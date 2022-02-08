@@ -666,6 +666,20 @@ void main() {
       expect(upgrader.durationUntilAlertAgain, const Duration(days: 3));
     }, skip: false);
 
+    test('durationUntilAlertAgain is 0 days', () async {
+      final upgrader = Upgrader();
+      upgrader.durationUntilAlertAgain = const Duration(seconds: 0);
+      expect(upgrader.durationUntilAlertAgain, const Duration(seconds: 0));
+
+      final alert1 =
+          UpgradeAlert(durationToAlertAgain: const Duration(seconds: 0));
+      expect(alert1.durationToAlertAgain, const Duration(seconds: 0));
+
+      final card1 =
+          UpgradeCard(durationToAlertAgain: const Duration(seconds: 0));
+      expect(card1.durationToAlertAgain, const Duration(seconds: 0));
+    }, skip: false);
+
     test('durationUntilAlertAgain card is valid', () async {
       final card1 = UpgradeCard();
       expect(card1.durationToAlertAgain, const Duration(days: 3));
