@@ -276,6 +276,7 @@ Languages supported:
 * English ('en')
 * Arabic ('ar')
 * Bengali ('bn')
+* Dutch ('nl')
 * Filipino ('fil')
 * French ('fr')
 * German ('de')

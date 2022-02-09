@@ -158,6 +158,10 @@ class UpgraderMessages {
         message =
             'En ny versjon av {{appName}} er tilgjengelig! {{currentAppStoreVersion}} er nå tilgjengelig - du har {{currentInstalledVersion}}.';
         break;
+      case 'nl':
+        message =
+            'Er is een nieuwe versie van {{appName}} beschikbaar! De nieuwe versie is {{currentAppStoreVersion}}, je gebruikt nu versie {{currentInstalledVersion}}.';
+        break;
       case 'pt':
         message =
             'Há uma nova versão do {{appName}} disponível! A versão {{currentAppStoreVersion}} já está disponível, você tem a {{currentInstalledVersion}}.';
@@ -250,6 +254,9 @@ class UpgraderMessages {
       case 'nb':
         message = 'IGNORER';
         break;
+      case 'nl':
+        message = 'NEGEREN';
+        break;
       case 'pt':
         message = 'IGNORAR';
         break;
@@ -332,6 +339,9 @@ class UpgraderMessages {
         break;
       case 'nb':
         message = 'SENERE';
+        break;
+      case 'nl':
+        message = 'LATER';
         break;
       case 'pt':
         message = 'MAIS TARDE';
@@ -416,6 +426,9 @@ class UpgraderMessages {
       case 'nb':
         message = 'OPPDATER NÅ';
         break;
+      case 'nl':
+        message = 'NU UPDATEN';
+        break;
       case 'pt':
         message = 'ATUALIZAR';
         break;
@@ -499,6 +512,9 @@ class UpgraderMessages {
       case 'nb':
         message = 'Ønsker du å oppdatere nå?';
         break;
+      case 'nl':
+        message = 'Wil je de app nu updaten?';
+        break;
       case 'pt':
         message = 'Você quer atualizar agora?';
         break;
@@ -581,6 +597,9 @@ class UpgraderMessages {
         break;
       case 'nb':
         message = 'Oppdater app?';
+        break;
+      case 'nl':
+        message = 'App updaten?';
         break;
       case 'pt':
         message = 'Atualizar aplicação?';

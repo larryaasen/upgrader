@@ -1,12 +1,14 @@
 ## 3.14.0
 
-* BREAKING (Minor): changed the parameter name `debugAlwaysUpgrade` to `debugDisplayAlways`
+* BREAKING (Minor): Changed the parameter name `debugAlwaysUpgrade` to `debugDisplayAlways`
 in `UpgradeAlert` and `UpgradeCard` to be consistent with the rest of the code
 and with the README.
+* Added new language translation for Dutch ('nl').
 
 ## 3.13.0
 
 * Added new language translation for Swedish ('sv').
+
 ## 3.12.1
 
 * Removed the use of dart:io from the package to allow for compatibility on web.

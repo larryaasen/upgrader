@@ -42,6 +42,7 @@ class Demo extends StatelessWidget {
         const Locale('ko', ''), // Korean, no country code
         const Locale('lt', ''), // Lithuanian, no country code
         const Locale('nb', ''), // Norwegian, no country code
+        const Locale('nl', ''), // Dutch, no country code
         const Locale('pt', ''), // Portuguese, no country code
         const Locale('pl', ''), // Polish, no country code
         const Locale('ru', ''), // Russian, no country code
@@ -133,6 +134,7 @@ class DemoLocalizationsDelegate
         'ko',
         'lt',
         'nb',
+        'nl',
         'pt',
         'pl',
         'ru',
