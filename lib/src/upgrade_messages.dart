@@ -130,6 +130,10 @@ class UpgraderMessages {
         message =
             'Eine neue Version von {{appName}} ist verfügbar! Die Version {{currentAppStoreVersion}} ist verfügbar, installiert ist die Version {{currentInstalledVersion}}.';
         break;
+      case 'ht':
+        message =
+            'Yon nouvo vèsyon {{appName}} disponib! Vèsyon {{currentAppStoreVersion}} disponib, epi ou gen vèsyon {{currentInstalledVersion}}.';
+        break;
       case 'hu':
         message =
             'Új verzió érhető el az alkalmazásból {{appName}} ! Az elérhető új verzió: {{currentAppStoreVersion}} - a jelenlegi verzió: {{currentInstalledVersion}}.';
@@ -237,6 +241,9 @@ class UpgraderMessages {
       case 'de':
         message = 'IGNORIEREN';
         break;
+      case 'ht':
+        message = 'IGNORE';
+        break;
       case 'hu':
         message = 'KIHAGYOM';
         break;
@@ -325,6 +332,9 @@ class UpgraderMessages {
         break;
       case 'de':
         message = 'SPÄTER';
+        break;
+      case 'ht':
+        message = 'PITA';
         break;
       case 'hu':
         message = 'KÉSŐBB';
@@ -415,6 +425,9 @@ class UpgraderMessages {
       case 'de':
         message = 'AKTUALISIEREN';
         break;
+      case 'ht':
+        message = 'MIZAJOU KOUNYE A';
+        break;
       case 'hu':
         message = 'FRISSÍTSE MOST';
         break;
@@ -504,6 +517,9 @@ class UpgraderMessages {
       case 'de':
         message = 'Möchtest du jetzt aktualisieren?';
         break;
+      case 'ht':
+        message = 'Èske ou vle mete ajou aplikasyon an kounye a?';
+        break;
       case 'hu':
         message = 'Akarja most frissíteni?';
         break;
@@ -592,6 +608,9 @@ class UpgraderMessages {
         break;
       case 'de':
         message = 'App aktualisieren?';
+        break;
+      case 'ht':
+        message = 'Mete ajou app a?';
         break;
       case 'hu':
         message = 'FrissÍtés?';

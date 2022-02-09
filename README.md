@@ -281,6 +281,7 @@ Languages supported:
 * French ('fr')
 * German ('de')
 * Greek ('el')
+* Haitian Creole ('ht')
 * Hungarian ('hu')
 * Indonesian ('id')
 * Italian ('it')

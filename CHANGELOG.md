@@ -5,6 +5,7 @@ in `UpgradeAlert` and `UpgradeCard` to be consistent with the rest of the code
 and with the README.
 * Added new language translation for Dutch ('nl').
 * Added new language translation for Khmer ('km').
+* Added new language translation for Haitian Creole ('ht').
 
 ## 3.13.0
 
