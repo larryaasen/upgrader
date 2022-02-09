@@ -285,6 +285,7 @@ Languages supported:
 * Indonesian ('id')
 * Italian ('it')
 * Kazakh ('kk')
+* Khmer ('km')
 * Korean ('ko')
 * Lithuanian ('lt')
 * Norwegian ('nb')

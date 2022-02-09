@@ -789,6 +789,7 @@ void main() {
     verifyMessages(UpgraderMessages(code: 'id'), 'id');
     verifyMessages(UpgraderMessages(code: 'it'), 'it');
     verifyMessages(UpgraderMessages(code: 'kk'), 'kk');
+    verifyMessages(UpgraderMessages(code: 'km'), 'km');
     verifyMessages(UpgraderMessages(code: 'ko'), 'ko');
     verifyMessages(UpgraderMessages(code: 'lt'), 'lt');
     verifyMessages(UpgraderMessages(code: 'nb'), 'nb');

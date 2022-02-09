@@ -146,6 +146,10 @@ class UpgraderMessages {
         message =
             '{{appName}} қосымша жаңа нұсқасын жүктеп алыңыз! Жаңа нұсқасы: {{currentAppStoreVersion}}, қазіргі нұсқасы: {{currentInstalledVersion}}';
         break;
+      case 'km':
+        message =
+            'មានការអាប់ដេតថ្មីកម្មវិធី {{appName}} ហើយ! កំណែអាប់ដែត {{currentAppStoreVersion}} គឺអាចប្រើប្រាប់បានជំនួស {{currentInstalledVersion}} បានហើយ។';
+        break;
       case 'ko':
         message =
             '{{appName}}이 새 버전으로 업데이트되었습니다! 최신 버전 {{currentAppStoreVersion}}으로 업그레이드 가능합니다 - 현재 버전 {{currentInstalledVersion}}.';
@@ -245,6 +249,9 @@ class UpgraderMessages {
       case 'kk':
         message = 'ЖОҚ';
         break;
+      case 'km':
+        message = 'មិនអើពើ';
+        break;
       case 'ko':
         message = '무시';
         break;
@@ -330,6 +337,9 @@ class UpgraderMessages {
         break;
       case 'kk':
         message = 'КЕЙІН';
+        break;
+      case 'km':
+        message = 'ពេលក្រោយ';
         break;
       case 'ko':
         message = '나중에';
@@ -417,6 +427,9 @@ class UpgraderMessages {
       case 'kk':
         message = 'ЖАҢАРТУ';
         break;
+      case 'km':
+        message = 'អាប់ដេតឥឡូវនេះ';
+        break;
       case 'ko':
         message = '지금 업데이트';
         break;
@@ -503,6 +516,9 @@ class UpgraderMessages {
       case 'kk':
         message = 'Қазір жаңартқыңыз келе ме?';
         break;
+      case 'km':
+        message = 'តើអ្នកចង់អាប់ដេតវាឥឡូវនេះទេ?';
+        break;
       case 'ko':
         message = '지금 업데이트를 시작하시겠습니까?';
         break;
@@ -588,6 +604,9 @@ class UpgraderMessages {
         break;
       case 'kk':
         message = 'Жаңарту керек пе?';
+        break;
+      case 'km':
+        message = 'អាប់ដេតកម្មវិធីទេ?';
         break;
       case 'ko':
         message = '앱을 업데이트하시겠습니까?';
