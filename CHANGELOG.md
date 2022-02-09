@@ -1,3 +1,9 @@
+## 3.14.0
+
+* BREAKING (Minor): changed the parameter name `debugAlwaysUpgrade` to `debugDisplayAlways`
+in `UpgradeAlert` and `UpgradeCard` to be consistent with the rest of the code
+and with the README.
+
 ## 3.13.0
 
 * Added new language translation for Swedish ('sv').
