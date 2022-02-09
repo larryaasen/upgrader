@@ -22,6 +22,9 @@ import 'upgrade_messages.dart';
 /// Signature of callbacks that have no arguments and return bool.
 typedef BoolCallback = bool Function();
 
+/// Signature of callbacks that have a bool argument and no return.
+typedef VoidBoolCallback = void Function(bool value);
+
 /// There are two different dialog styles: Cupertino and Material
 enum UpgradeDialogStyle { cupertino, material }
 
@@ -86,6 +89,12 @@ class Upgrader {
   /// is false. Also called when the back button is pressed. Return true for
   /// the screen to be popped. Not used by [UpgradeCard].
   BoolCallback? shouldPopScope;
+
+  /// Called when [Upgrader] determines that an upgrade may or may not be
+  /// displayed. The [value] parameter will be true when it should be displayed,
+  /// and false when it should not be displayed. One good use for this callback
+  /// is logging metrics for your app.
+  VoidBoolCallback? willDisplayUpgrade;
 
   /// Hide or show Ignore button on dialog (default: true)
   bool showIgnore = true;
@@ -334,7 +343,6 @@ class Upgrader {
     if (!_displayed) {
       final shouldDisplay = shouldDisplayUpgrade();
       if (debugLogging) {
-        print('upgrader: shouldDisplayUpgrade: $shouldDisplay');
         print(
             'upgrader: shouldDisplayReleaseNotes: ${shouldDisplayReleaseNotes()}');
       }
@@ -372,19 +380,24 @@ class Upgrader {
       showIgnore = false;
       showLater = false;
     }
+    bool rv = true;
     if (debugDisplayAlways || (debugDisplayOnce && !_hasAlerted)) {
-      return true;
+      rv = true;
+    } else if (!isUpdateAvailable()) {
+      rv = false;
+    } else if (isBlocked) {
+      rv = true;
+    } else if (isTooSoon() || alreadyIgnoredThisVersion()) {
+      rv = false;
     }
-    if (!isUpdateAvailable()) {
-      return false;
+    if (debugLogging) {
+      print('upgrader: shouldDisplayUpgrade: $rv');
     }
-    if (isBlocked) {
-      return true;
+    // Call the [willDisplayUpgrade] callback when available.
+    if (willDisplayUpgrade != null) {
+      willDisplayUpgrade!(rv);
     }
-    if (isTooSoon() || alreadyIgnoredThisVersion()) {
-      return false;
-    }
-    return true;
+    return rv;
   }
 
   /// Is installed version below minimum app version?

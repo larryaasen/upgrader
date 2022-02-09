@@ -42,6 +42,12 @@ class UpgradeBase extends StatefulWidget {
   /// the screen to be popped. Not used by [UpgradeCard].
   final BoolCallback? shouldPopScope;
 
+  /// Called when [Upgrader] determines that an upgrade may or may not be
+  /// displayed. The [value] parameter will be true when it should be displayed,
+  /// and false when it should not be displayed. One good use for this callback
+  /// is logging metrics for your app.
+  VoidBoolCallback? willDisplayUpgrade;
+
   /// Provide an HTTP Client that can be replaced for mock testing.
   final http.Client? client;
 
@@ -79,6 +85,7 @@ class UpgradeBase extends StatefulWidget {
     this.onLater,
     this.onUpdate,
     this.shouldPopScope,
+    this.willDisplayUpgrade,
     this.client,
     this.showIgnore,
     this.showLater,
@@ -120,6 +127,9 @@ class UpgradeBase extends StatefulWidget {
     }
     if (shouldPopScope != null) {
       Upgrader().shouldPopScope = shouldPopScope;
+    }
+    if (willDisplayUpgrade != null) {
+      Upgrader().willDisplayUpgrade = willDisplayUpgrade;
     }
     if (showIgnore != null) {
       Upgrader().showIgnore = showIgnore!;

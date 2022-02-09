@@ -139,6 +139,8 @@ UpgradeAlert widget.
 * onLater: called when the later button is tapped, defaults to ```null```
 * onUpdate: called when the update button is tapped, defaults to ```null```
 * shouldPopScope: called when the back button is tapped, defaults to ```null```
+* willDisplayUpgrade: called when ```upgrader``` determines that an upgrade may
+or may not be displayed, defaults to ```null```
 * showIgnore: hide or show Ignore button, which defaults to ```true```
 * showLater: hide or show Later button, which defaults to ```true```
 * showReleaseNotes: hide or show release notes, which defaults to ```true```
