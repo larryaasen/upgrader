@@ -46,7 +46,7 @@ class UpgradeBase extends StatefulWidget {
   /// displayed. The [value] parameter will be true when it should be displayed,
   /// and false when it should not be displayed. One good use for this callback
   /// is logging metrics for your app.
-  VoidBoolCallback? willDisplayUpgrade;
+  final VoidBoolCallback? willDisplayUpgrade;
 
   /// Provide an HTTP Client that can be replaced for mock testing.
   final http.Client? client;
