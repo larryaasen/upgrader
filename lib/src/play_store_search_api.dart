@@ -99,15 +99,34 @@ class PlayStoreResults {
   /// Returns field releaseNotes from Play Store results. When there are no
   /// release notes, the main app description is used.
   static String? releaseNotes(Document response) {
+    RegExp releaseNotesSpan = RegExp(r'>(.*?)</span>');
     try {
       final sectionElements = response.getElementsByClassName('W4P4ne');
       final releaseNotesElement = sectionElements.firstWhere(
           (elm) => elm.querySelector('.wSaTQd')!.text == 'What\'s New',
           orElse: () => sectionElements[0]);
-      final releaseNotes = releaseNotesElement
+
+      String? releaseNotes;
+      
+      Element? rawReleaseNotes = releaseNotesElement
           .querySelector('.PHBdkd')
-          ?.querySelector('.DWPxHb')
-          ?.text;
+          ?.querySelector('.DWPxHb');
+      String? innerHtml = rawReleaseNotes!.innerHtml.toString();
+
+      /// Solve the multiline problem with release notes
+      if (releaseNotesSpan.hasMatch(innerHtml)) {
+        releaseNotes =
+            releaseNotesSpan.firstMatch(innerHtml.toString())!.group(1);
+        // Detect default multiline replacement
+        releaseNotes = releaseNotes!.contains('<br><br>')
+            ? releaseNotes.replaceAll('<br><br>', '\n')
+            : releaseNotes.replaceAll('<br>', '\n');
+      } else {
+        /// Fallback to normal method
+        releaseNotes = rawReleaseNotes.text;
+      }
+
+      // print(releaseNotes);
 
       return releaseNotes;
     } catch (e) {
