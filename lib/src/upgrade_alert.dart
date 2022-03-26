@@ -32,6 +32,8 @@ class UpgradeAlert extends UpgradeBase {
     String? countryCode,
     String? minAppVersion,
     UpgradeDialogStyle? dialogStyle,
+    Widget? titleWidget,
+    Widget? contentWidget,
   }) : super(
           key: key,
           appcastConfig: appcastConfig,
@@ -52,6 +54,8 @@ class UpgradeAlert extends UpgradeBase {
           countryCode: countryCode,
           minAppVersion: minAppVersion,
           dialogStyle: dialogStyle,
+          titleWidget: titleWidget,
+          contentWidget: contentWidget,
         );
 
   @override
@@ -66,7 +70,11 @@ class UpgradeAlert extends UpgradeBase {
           if (processed.connectionState == ConnectionState.done &&
               processed.data != null &&
               processed.data!) {
-            Upgrader().checkVersion(context: context);
+            Upgrader().checkVersion(
+              context: context,
+              titleWidget: titleWidget,
+              contentWidget: contentWidget,
+            );
           }
           return child!;
         });
