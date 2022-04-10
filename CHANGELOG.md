@@ -6,6 +6,7 @@ and with the README.
 * Added new language translation for Dutch ('nl').
 * Added new language translation for Khmer ('km').
 * Added new language translation for Haitian Creole ('ht').
+* Added new language translation for Japanese ('ja').
 
 ## 3.13.0
 

@@ -39,6 +39,7 @@ class Demo extends StatelessWidget {
         const Locale('hu', ''), // Hungarian, no country code
         const Locale('id', ''), // Indonesian, no country code
         const Locale('it', ''), // Italian, no country code
+        const Locale('ja', ''), // Japanese, no country code
         const Locale('kk', ''), // Kazakh, no country code
         const Locale('km', ''), // Khmer, no country code
         const Locale('ko', ''), // Korean, no country code
