@@ -134,6 +134,7 @@ class DemoLocalizationsDelegate
         'hu',
         'id',
         'it',
+        'ja',
         'kk',
         'km',
         'ko',
