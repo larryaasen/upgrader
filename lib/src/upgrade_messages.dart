@@ -146,6 +146,10 @@ class UpgraderMessages {
         message =
             'Una nuova versione di {{appName}} è disponibile! La versione {{currentAppStoreVersion}} è ora disponibile, voi avete {{currentInstalledVersion}}.';
         break;
+      case 'ja':
+        message =
+            '現在のバージョンは、{{currentInstalledVersion}}です。{{appName}}の最新バージョン({{currentAppStoreVersion}})があります。';
+        break;
       case 'kk':
         message =
             '{{appName}} қосымша жаңа нұсқасын жүктеп алыңыз! Жаңа нұсқасы: {{currentAppStoreVersion}}, қазіргі нұсқасы: {{currentInstalledVersion}}';
@@ -253,6 +257,9 @@ class UpgraderMessages {
       case 'it':
         message = 'IGNORA';
         break;
+      case 'ja':
+        message = '今はしない';
+        break;
       case 'kk':
         message = 'ЖОҚ';
         break;
@@ -344,6 +351,9 @@ class UpgraderMessages {
         break;
       case 'it':
         message = 'DOPO';
+        break;
+      case 'ja':
+        message = '後で通知';
         break;
       case 'kk':
         message = 'КЕЙІН';
@@ -437,6 +447,9 @@ class UpgraderMessages {
       case 'it':
         message = 'AGGIORNA ORA';
         break;
+      case 'ja':
+        message = 'アップデート';
+        break;
       case 'kk':
         message = 'ЖАҢАРТУ';
         break;
@@ -529,6 +542,9 @@ class UpgraderMessages {
       case 'it':
         message = 'Ti piacerebbe aggiornare ora?';
         break;
+      case 'ja':
+        message = '今すぐアップデートしますか?';
+        break;
       case 'kk':
         message = 'Қазір жаңартқыңыз келе ме?';
         break;
@@ -620,6 +636,9 @@ class UpgraderMessages {
         break;
       case 'it':
         message = 'Aggiornare l\'applicazione?';
+        break;
+      case 'ja':
+        message = 'アプリのアップデート';
         break;
       case 'kk':
         message = 'Жаңарту керек пе?';

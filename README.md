@@ -287,6 +287,7 @@ Languages supported:
 * Hungarian ('hu')
 * Indonesian ('id')
 * Italian ('it')
+* Japanese ('ja')
 * Kazakh ('kk')
 * Khmer ('km')
 * Korean ('ko')
