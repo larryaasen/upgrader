@@ -8,6 +8,11 @@ and with the README.
 * Added new language translation for Haitian Creole ('ht').
 * Added new language translation for Japanese ('ja').
 
+* Added new callback: `willDisplayUpgrade`: called when `upgrader` determines that
+an upgrade may or may not be displayed, defaults to ```null```. The `value`
+parameter will be true when it should be displayed, and false when it should not
+be displayed. One good use for this callback is logging metrics for your app.
+
 ## 3.13.0
 
 * Added new language translation for Swedish ('sv').

@@ -709,6 +709,24 @@ void main() {
       expect(upgrader.shouldDisplayUpgrade(), true);
       upgrader.debugDisplayAlways = false;
       expect(upgrader.shouldDisplayUpgrade(), false);
+
+      // Test the willDisplayUpgrade callback
+      var notCalled = true;
+      upgrader.willDisplayUpgrade = (bool value) {
+        expect(value, false);
+        notCalled = false;
+      };
+      expect(upgrader.shouldDisplayUpgrade(), false);
+      expect(notCalled, false);
+
+      upgrader.debugDisplayAlways = true;
+      notCalled = true;
+      upgrader.willDisplayUpgrade = (bool value) {
+        expect(value, true);
+        notCalled = false;
+      };
+      expect(upgrader.shouldDisplayUpgrade(), true);
+      expect(notCalled, false);
     }, skip: false);
 
     test('should return true when version is below minAppVersion', () async {
@@ -838,6 +856,7 @@ class _MyWidget extends StatelessWidget {
         body: UpgradeAlert(
             debugLogging: true,
             dialogStyle: dialogStyle,
+            willDisplayUpgrade: (bool value) {},
             child: Column(
               children: const <Widget>[Text('Upgrading')],
             )),
@@ -860,7 +879,12 @@ class _MyWidgetCard extends StatelessWidget {
           title: const Text('Upgrader test'),
         ),
         body: Column(
-          children: <Widget>[UpgradeCard(debugLogging: true)],
+          children: <Widget>[
+            UpgradeCard(
+              debugLogging: true,
+              willDisplayUpgrade: (bool value) {},
+            )
+          ],
         ),
       ),
     );
