@@ -118,9 +118,7 @@ class PlayStoreResults {
         releaseNotes =
             releaseNotesSpan.firstMatch(innerHtml.toString())!.group(1);
         // Detect default multiline replacement
-        releaseNotes = releaseNotes!.contains('<br><br>')
-            ? releaseNotes.replaceAll('<br><br>', '\n')
-            : releaseNotes.replaceAll('<br>', '\n');
+        releaseNotes = releaseNotes!.replaceAll('<br>', '\n');
       } else {
         /// Fallback to normal method
         releaseNotes = rawReleaseNotes.text;
