@@ -125,6 +125,7 @@ class PlayStoreResults {
         (elm) => elm.querySelector('.BgcNfc')!.text == 'Current Version',
       );
       final storeVersion = versionElement.querySelector('.htlgb')!.text;
+      // storeVersion might be: 'Varies with device', which is not a valid version.
       version = Version.parse(storeVersion).toString();
     } catch (e) {
       print('upgrader: PlayStoreResults.version exception: $e');
