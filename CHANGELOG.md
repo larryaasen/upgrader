@@ -1,4 +1,4 @@
-## next
+## 3.14.1
 
 * Updated url_launcher to version 6.1.0, and fixed two deprecations from that upgrade.
 
