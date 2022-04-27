@@ -27,7 +27,7 @@ dependencies:
   shared_preferences: ^2.0.3
 
   # From Flutter Team: A Flutter plugin for launching a URL in the mobile platform.
-  url_launcher: ^6.0.2
+  url_launcher: ^6.1.0
 
   # A dart library for comparing and incrementing version numbers with Semantic Versioning.
   version:  ^2.0.0

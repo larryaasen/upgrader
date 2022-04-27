@@ -1,3 +1,7 @@
+## next
+
+* Updated url_launcher to version 6.1.0, and fixed two deprecations from that upgrade.
+
 ## 3.14.0
 
 * BREAKING (Minor): Changed the parameter name `debugAlwaysUpgrade` to `debugDisplayAlways`
