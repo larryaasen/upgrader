@@ -1,3 +1,11 @@
+## 4.0.0-alpha.1
+
+* No more singleton. This is a huge update to remove the use of a singleton for Upgrader.
+It is now a normal class that is passed to either UpgradeAlert or UpgradeCard.
+This makes it easy to subclass Upgrader and change its behavior. The parameters
+to UpgradeAlert and UpgradeCard have been removed, and can be set on Upgrader.
+See the various examples for more information.
+
 ## 3.14.0
 
 * BREAKING (Minor): Changed the parameter name `debugAlwaysUpgrade` to `debugDisplayAlways`

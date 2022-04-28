@@ -7,12 +7,21 @@ import 'package:flutter/foundation.dart' show SynchronousFuture;
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:upgrader/upgrader.dart';
 
-void main() => runApp(Demo());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Only call clearSavedSettings() during testing to reset internal values.
+  await Upgrader.clearSavedSettings(); // REMOVE this for release builds
+
+  // On Android, setup the Appcast.
+  // On iOS, the default behavior will be to use the App Store version of
+  // the app, so update the Bundle Identifier in example/ios/Runner with a
+  // valid identifier already in the App Store.
+  runApp(Demo());
+}
 
 class Demo extends StatelessWidget {
-  Demo({
-    Key key,
-  }) : super(key: key);
+  Demo({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -62,25 +71,18 @@ class Demo extends StatelessWidget {
 class DemoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Only call clearSavedSettings() during testing to reset internal values.
-    Upgrader().clearSavedSettings(); // REMOVE this for release builds
-
-    // On Android, setup the Appcast.
-    // On iOS, the default behavior will be to use the App Store version of
-    // the app, so update the Bundle Identifier in example/ios/Runner with a
-    // valid identifier already in the App Store.
     final appcastURL =
         'https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast.xml';
     final cfg = AppcastConfiguration(url: appcastURL, supportedOS: ['android']);
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text(DemoLocalizations.of(context).title),
-        ),
+        appBar: AppBar(title: Text(DemoLocalizations.of(context).title)),
         body: UpgradeAlert(
-          appcastConfig: cfg,
-          debugLogging: true,
-          messages: MyUpgraderMessages(),
+          Upgrader(
+            appcastConfig: cfg,
+            debugLogging: true,
+            messages: MyUpgraderMessages(code: 'es'),
+          ),
           child: Center(child: Text(DemoLocalizations.of(context).checking)),
         ));
   }
@@ -166,6 +168,8 @@ class MyUpgraderMessages extends UpgraderMessages {
   /// provided in the [message] function will be used over this value.
   @override
   String get buttonTitleIgnore => 'My Ignore 1';
+
+  MyUpgraderMessages({String code}) : super(code: code);
 
   /// Override the message function to provide your own language localization.
   @override

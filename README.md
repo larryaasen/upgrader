@@ -69,22 +69,18 @@ import 'package:upgrader/upgrader.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  MyApp({
-    Key key,
-  }) : super(key: key);
+  const MyApp({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Upgrader Example',
       home: Scaffold(
-          appBar: AppBar(
-            title: Text('Upgrader Example'),
-          ),
+          appBar: AppBar(title: Text('Upgrader Example')),
           body: UpgradeAlert(
+            Upgrader(),
             child: Center(child: Text('Checking...')),
-          )
-      ),
+          )),
     );
   }
 }
@@ -100,7 +96,7 @@ class MyApp extends StatelessWidget {
 You can also display a Cupertino style dialog by using the `dialogStyle` parameter.
 ```dart
           body: UpgradeAlert(
-            dialogStyle: UpgradeDialogStyle.cupertino,
+            Upgrader(dialogStyle: UpgradeDialogStyle.cupertino),
             child: Center(child: Text('Checking...')),
           )
 ```
@@ -116,7 +112,7 @@ when an update is detected. The widget will have width and height of 0.0 when no
 ```dart
 return Container(
         margin: EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 0.0),
-        child: UpgradeCard());
+        child: UpgradeCard(Upgrader()));
 ```
 
 ## Screenshot of card
@@ -125,29 +121,30 @@ return Container(
 
 ## Customization
 
-The UpgradeAlert widget can be customized by setting parameters in the constructor of the
-UpgradeAlert widget.
+The Upgrader class can be customized by setting parameters in the constructor.
 
+* appcast: Provide an Appcast that can be replaced for mock testing, defaults to ```null```
 * appcastConfig: the appcast configuration, defaults to ```null```
+* canDismissDialog: can alert dialog be dismissed on tap outside of the alert dialog, which defaults to ```false``` (not used by UpgradeCard)
+* countryCode: the country code that will override the system locale, which defaults to ```null``` (iOS only)
 * client: an HTTP Client that can be replaced for mock testing, defaults to ```null```
-* durationUntilAlertAgain: duration until alerting user again, which defaults to ```3 days```
 * debugDisplayAlways: always force the upgrade to be available, defaults to ```false```
 * debugDisplayOnce: display the upgrade at least once once, defaults to ```false```
 * debugLogging: display logging statements, which defaults to ```false```
+* dialogStyle: the upgrade dialog style, either ```material``` or ```cupertino```, defaults to ```material```, used only by UpgradeAlert, works on Android and iOS.
+* durationUntilAlertAgain: duration until alerting user again, which defaults to ```3 days```
 * messages: optional localized messages used for display in `upgrader`
+* minAppVersion: the minimum app version supported by this app. Earlier versions of this app will be forced to update to the current version. Defaults to ```null```.
 * onIgnore: called when the ignore button is tapped, defaults to ```null```
 * onLater: called when the later button is tapped, defaults to ```null```
 * onUpdate: called when the update button is tapped, defaults to ```null```
+* platform: The target platform, defaults to ```defaultTargetPlatform```
 * shouldPopScope: called when the back button is tapped, defaults to ```null```
-* willDisplayUpgrade: called when ```upgrader``` determines that an upgrade may
-or may not be displayed, defaults to ```null```
 * showIgnore: hide or show Ignore button, which defaults to ```true```
 * showLater: hide or show Later button, which defaults to ```true```
 * showReleaseNotes: hide or show release notes, which defaults to ```true```
-* canDismissDialog: can alert dialog be dismissed on tap outside of the alert dialog, which defaults to ```false``` (not used by UpgradeCard)
-* countryCode: the country code that will override the system locale, which defaults to ```null``` (iOS only)
-* minAppVersion: the minimum app version supported by this app. Earlier versions of this app will be forced to update to the current version. Defaults to ```null```.
-* dialogStyle: the upgrade dialog style, either ```material``` or ```cupertino```, defaults to ```material```, used only by UpgradeAlert, works on Android and iOS.
+* willDisplayUpgrade: called when ```upgrader``` determines that an upgrade may
+or may not be displayed, defaults to ```null```
 
 ## Android Back Button
 
@@ -155,7 +152,7 @@ When using the ```UpgradeAlert``` widget, the Android back button will not
 dismiss the alert dialog by default. To allow the back button to dismiss the
 dialog, use ```shouldPopScope``` and return true like this:
 ```
-UpgradeAlert(
+Upgrader(
   shouldPopScope: () => true,
 );
 ```
@@ -220,7 +217,7 @@ Widget build(BuildContext context) {
           title: Text('Upgrader Example'),
         ),
         body: UpgradeAlert(
-          appcastConfig: cfg,
+          Upgrader(appcastConfig: cfg),
           child: Center(child: Text('Checking...')),
         )),
   );
@@ -266,7 +263,7 @@ class MyUpgraderMessages extends UpgraderMessages {
   String get buttonTitleIgnore => 'My Ignore';
 }
 
-UpgradeAlert(messages: MyUpgraderMessages());
+UpgradeAlert(Upgrader(messages: MyUpgraderMessages()));
 ```
 
 ## Language localization
@@ -338,7 +335,7 @@ class MySpanishMessages extends UpgraderMessages {
   }
 }
 
-UpgradeAlert(messages: MySpanishMessages());
+UpgradeAlert(Upgrader(messages: MySpanishMessages()));
 ```
 
 You can even force the `upgrader` package to use a specific language, instead of the
@@ -346,7 +343,7 @@ system language on the device. Just pass the language code to an instance of
 UpgraderMessages when displaying the alert or card. Here is an example:
 
 ```dart
-UpgradeAlert(messages: UpgraderMessages(code: 'es'));
+UpgradeAlert(Upgrader(messages: UpgraderMessages(code: 'es')));
 ```
 
 ## Semantic Versioning
