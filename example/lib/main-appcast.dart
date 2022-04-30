@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
           appBar: AppBar(title: Text('Upgrader Example')),
           body: UpgradeAlert(
-            Upgrader(
+            upgrader: Upgrader(
               appcastConfig: cfg,
               debugLogging: true,
             ),

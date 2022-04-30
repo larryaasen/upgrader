@@ -10,9 +10,11 @@ class UpgradeAlert extends UpgradeBase {
   /// The [child] contained by the widget.
   final Widget? child;
 
-  const UpgradeAlert(Upgrader upgrader, {Key? key, this.child})
-      : super(upgrader, key: key);
+  /// Creates a new [UpgradeAlert].
+  UpgradeAlert({Key? key, Upgrader? upgrader, this.child})
+      : super(upgrader ?? Upgrader.sharedInstance, key: key);
 
+  /// Describes the part of the user interface represented by this widget.
   @override
   Widget build(BuildContext context, UpgradeBaseState state) {
     if (upgrader.debugLogging) {
@@ -27,7 +29,7 @@ class UpgradeAlert extends UpgradeBase {
               processed.data!) {
             upgrader.checkVersion(context: context);
           }
-          return child!;
+          return child ?? Container();
         });
   }
 }

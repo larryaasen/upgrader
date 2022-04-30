@@ -9,10 +9,7 @@ class UpgradeBase extends StatefulWidget {
   /// The upgraders used to configure the upgrade dialog.
   final Upgrader upgrader;
 
-  const UpgradeBase(
-    this.upgrader, {
-    Key? key,
-  }) : super(key: key);
+  const UpgradeBase(this.upgrader, {Key? key}) : super(key: key);
 
   Widget build(BuildContext context, UpgradeBaseState state) {
     return Container();

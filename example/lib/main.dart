@@ -29,7 +29,6 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
           appBar: AppBar(title: Text('Upgrader Example')),
           body: UpgradeAlert(
-            Upgrader(debugLogging: true),
             child: Center(child: Text('Checking...')),
           )),
     );

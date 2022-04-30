@@ -78,7 +78,6 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
           appBar: AppBar(title: Text('Upgrader Example')),
           body: UpgradeAlert(
-            Upgrader(),
             child: Center(child: Text('Checking...')),
           )),
     );
@@ -112,7 +111,7 @@ when an update is detected. The widget will have width and height of 0.0 when no
 ```dart
 return Container(
         margin: EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 0.0),
-        child: UpgradeCard(Upgrader()));
+        child: UpgradeCard());
 ```
 
 ## Screenshot of card

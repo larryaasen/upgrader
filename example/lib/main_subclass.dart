@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
           appBar: AppBar(title: Text('Upgrader Subclass Example')),
           body: UpgradeAlert(
-            MyUpgrader(),
+            upgrader: MyUpgrader(),
             child: Center(child: Text('Checking...')),
           )),
     );

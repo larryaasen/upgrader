@@ -48,6 +48,14 @@ void main() {
     await preferences.clear();
   });
 
+  testWidgets('test Upgrader sharedInstance', (WidgetTester tester) async {
+    final upgrader1 = Upgrader.sharedInstance;
+    expect(upgrader1, isNotNull);
+    final upgrader2 = Upgrader.sharedInstance;
+    expect(upgrader2, isNotNull);
+    expect(upgrader1 == upgrader2, isTrue);
+  }, skip: false);
+
   testWidgets('test Upgrader class', (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader(platform: TargetPlatform.iOS, client: client);
@@ -644,7 +652,7 @@ void main() {
           Upgrader(durationUntilAlertAgain: const Duration(seconds: 0));
       expect(upgrader.durationUntilAlertAgain, const Duration(seconds: 0));
 
-      UpgradeAlert(upgrader);
+      UpgradeAlert(upgrader: upgrader);
       expect(upgrader.durationUntilAlertAgain, const Duration(seconds: 0));
 
       UpgradeCard(upgrader);
@@ -666,12 +674,12 @@ void main() {
     test('durationUntilAlertAgain alert is valid', () async {
       final upgrader =
           Upgrader(durationUntilAlertAgain: const Duration(days: 3));
-      UpgradeAlert(upgrader);
+      UpgradeAlert(upgrader: upgrader);
       expect(upgrader.durationUntilAlertAgain, const Duration(days: 3));
 
       final upgrader2 =
           Upgrader(durationUntilAlertAgain: const Duration(days: 10));
-      UpgradeAlert(upgrader2);
+      UpgradeAlert(upgrader: upgrader2);
       expect(upgrader2.durationUntilAlertAgain, const Duration(days: 10));
     }, skip: false);
   });
@@ -828,7 +836,8 @@ class _MyWidget extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Upgrader test'),
         ),
-        body: UpgradeAlert(upgrader,
+        body: UpgradeAlert(
+            upgrader: upgrader,
             child: Column(
               children: const <Widget>[Text('Upgrading')],
             )),

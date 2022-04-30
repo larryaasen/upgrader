@@ -78,7 +78,7 @@ class DemoApp extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(title: Text(DemoLocalizations.of(context).title)),
         body: UpgradeAlert(
-          Upgrader(
+          upgrader: Upgrader(
             appcastConfig: cfg,
             debugLogging: true,
             messages: MyUpgraderMessages(code: 'es'),

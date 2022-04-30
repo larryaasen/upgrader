@@ -41,7 +41,10 @@ class AppcastConfiguration {
   });
 }
 
-/// A singleton class to configure the upgrade dialog.
+/// Creates a shared instance of [Upgrader].
+late Upgrader _sharedInstance = Upgrader();
+
+/// A class to configure the upgrade dialog.
 class Upgrader {
   /// Provide an Appcast that can be replaced for mock testing.
   final Appcast? appcast;
@@ -164,6 +167,9 @@ class Upgrader {
         platform = platform ?? defaultTargetPlatform {
     print("upgrader: instantiated."); // TODO: remove this!
   }
+
+  /// A shared instance of [Upgrader].
+  static get sharedInstance => _sharedInstance;
 
   void installPackageInfo({PackageInfo? packageInfo}) {
     _packageInfo = packageInfo;

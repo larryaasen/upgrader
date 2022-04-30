@@ -1,3 +1,9 @@
+## 4.0.0-alpha.2
+
+The Upgrader class is now used as a shared instance with UpgradeAlert and UpgradeCard.
+
+There are no new features, no feature updates, and no bug fixes in this release.
+
 ## 4.0.0-alpha.1
 
 [BREAKING]
@@ -6,6 +12,8 @@ It is now a normal class that is passed to either UpgradeAlert or UpgradeCard.
 This makes it easy to subclass Upgrader and change its behavior. The parameters
 to UpgradeAlert and UpgradeCard have been removed, and can be set on Upgrader.
 See the various examples for more information.
+
+There are no new features, no feature updates, and no bug fixes in this release.
 
 ## 3.14.0
 
