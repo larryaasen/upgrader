@@ -664,7 +664,7 @@ class Upgrader {
     }
 
     if (shouldPop) {
-      _pop(context);
+      popNavigator(context);
     }
   }
 
@@ -682,7 +682,7 @@ class Upgrader {
     if (doProcess) {}
 
     if (shouldPop) {
-      _pop(context);
+      popNavigator(context);
     }
   }
 
@@ -702,7 +702,7 @@ class Upgrader {
     }
 
     if (shouldPop) {
-      _pop(context);
+      popNavigator(context);
     }
   }
 
@@ -715,7 +715,7 @@ class Upgrader {
     return;
   }
 
-  void _pop(BuildContext context) {
+  void popNavigator(BuildContext context) {
     Navigator.of(context).pop();
     _displayed = false;
   }
