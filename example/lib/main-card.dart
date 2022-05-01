@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
               child: Container(
                   margin: EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 0.0),
                   child: UpgradeCard(
-                    Upgrader(
+                    upgrader: Upgrader(
                       appcastConfig: cfg,
                       debugLogging: true,
                     ),

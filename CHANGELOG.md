@@ -1,3 +1,9 @@
+## 4.0.0-alpha.3
+
+Moved the upgrader parameter for UpgradeCard to a named parameter.
+
+There are no new features, no feature updates, and no bug fixes in this release.
+
 ## 4.0.0-alpha.2
 
 The Upgrader class is now used as a shared instance with UpgradeAlert and UpgradeCard.

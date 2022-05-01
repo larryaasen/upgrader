@@ -14,8 +14,8 @@ class UpgradeCard extends UpgradeBase {
   final EdgeInsetsGeometry margin;
 
   /// Creates a new [UpgradeCard].
-  UpgradeCard(Upgrader? upgrader,
-      {Key? key, this.margin = const EdgeInsets.all(4.0)})
+  UpgradeCard(
+      {Key? key, Upgrader? upgrader, this.margin = const EdgeInsets.all(4.0)})
       : super(upgrader ?? Upgrader.sharedInstance, key: key);
 
   /// Describes the part of the user interface represented by this widget.

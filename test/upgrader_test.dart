@@ -655,19 +655,19 @@ void main() {
       UpgradeAlert(upgrader: upgrader);
       expect(upgrader.durationUntilAlertAgain, const Duration(seconds: 0));
 
-      UpgradeCard(upgrader);
+      UpgradeCard(upgrader: upgrader);
       expect(upgrader.durationUntilAlertAgain, const Duration(seconds: 0));
     }, skip: false);
 
     test('durationUntilAlertAgain card is valid', () async {
       final upgrader =
           Upgrader(durationUntilAlertAgain: const Duration(days: 3));
-      UpgradeCard(upgrader);
+      UpgradeCard(upgrader: upgrader);
       expect(upgrader.durationUntilAlertAgain, const Duration(days: 3));
 
       final upgrader2 =
           Upgrader(durationUntilAlertAgain: const Duration(days: 10));
-      final _ = UpgradeCard(upgrader2);
+      final _ = UpgradeCard(upgrader: upgrader2);
       expect(upgrader2.durationUntilAlertAgain, const Duration(days: 10));
     }, skip: false);
 
@@ -859,7 +859,7 @@ class _MyWidgetCard extends StatelessWidget {
           title: const Text('Upgrader test'),
         ),
         body: Column(
-          children: <Widget>[UpgradeCard(upgrader)],
+          children: <Widget>[UpgradeCard(upgrader: upgrader)],
         ),
       ),
     );
