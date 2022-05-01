@@ -151,9 +151,7 @@ When using the ```UpgradeAlert``` widget, the Android back button will not
 dismiss the alert dialog by default. To allow the back button to dismiss the
 dialog, use ```shouldPopScope``` and return true like this:
 ```
-Upgrader(
-  shouldPopScope: () => true,
-);
+UpgradeAlert(Upgrader(shouldPopScope: () => true));
 ```
 
 ## iOS Country Code

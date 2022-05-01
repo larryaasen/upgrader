@@ -13,6 +13,8 @@ This makes it easy to subclass Upgrader and change its behavior. The parameters
 to UpgradeAlert and UpgradeCard have been removed, and can be set on Upgrader.
 See the various examples for more information.
 
+Updated url_launcher to version 6.1.0.
+
 There are no new features, no feature updates, and no bug fixes in this release.
 
 ## 3.14.0
