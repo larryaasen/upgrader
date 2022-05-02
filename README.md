@@ -292,6 +292,7 @@ Languages supported:
 * Khmer ('km')
 * Korean ('ko')
 * Lithuanian ('lt')
+* Mongolian ('mn')
 * Norwegian ('nb')
 * Persian ('fa')
 * Polish ('pl')

@@ -171,6 +171,10 @@ class UpgraderMessages {
         message =
             'Išleista nauja programos {{appName}} versija! Versija {{currentAppStoreVersion}} yra prieinama, jūs turite {{currentInstalledVersion}}.';
         break;
+      case 'mn':
+        message =
+            '{{appName}}-н шинэ хувилбар бэлэн боллоо! Таны одоогийн ашиглаж буй хувилбар {{currentInstalledVersion}} - Шинээр бэлэн болсон хувилбар нь {{currentAppStoreVersion}} юм .';
+        break;
       case 'nb':
         message =
             'En ny versjon av {{appName}} er tilgjengelig! {{currentAppStoreVersion}} er nå tilgjengelig - du har {{currentInstalledVersion}}.';
@@ -277,6 +281,9 @@ class UpgraderMessages {
       case 'lt':
         message = 'IGNORUOTI';
         break;
+      case 'mn':
+        message = 'Татгалзах';
+        break;
       case 'nb':
         message = 'IGNORER';
         break;
@@ -371,6 +378,9 @@ class UpgraderMessages {
         break;
       case 'lt':
         message = 'ATNAUJINTI VĖLIAU';
+        break;
+      case 'mn':
+        message = 'Дараа суулгах';
         break;
       case 'nb':
         message = 'SENERE';
@@ -467,6 +477,9 @@ class UpgraderMessages {
       case 'lt':
         message = 'ATNAUJINTI DABAR';
         break;
+      case 'mn':
+        message = 'Шинэчлэх';
+        break;
       case 'nb':
         message = 'OPPDATER NÅ';
         break;
@@ -562,6 +575,9 @@ class UpgraderMessages {
       case 'lt':
         message = 'Ar norite atnaujinti dabar?';
         break;
+      case 'mn':
+        message = 'Та одоо шинэчлэлтийг татаж авах уу?';
+        break;
       case 'nb':
         message = 'Ønsker du å oppdatere nå?';
         break;
@@ -625,6 +641,7 @@ class UpgraderMessages {
       case 'km':
       case 'ko':
       case 'lt':
+      case 'mn':
       case 'nb':
       case 'nl':
       case 'pt':
@@ -699,6 +716,9 @@ class UpgraderMessages {
         break;
       case 'lt':
         message = 'Atnaujinti programą?';
+        break;
+      case 'mn':
+        message = 'Та шинэчлэлт хийх үү?';
         break;
       case 'nb':
         message = 'Oppdater app?';

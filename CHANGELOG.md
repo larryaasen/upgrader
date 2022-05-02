@@ -1,5 +1,6 @@
 ## 3.15.0
 
+* Added new language translations for Mongolian ('mn').
 * Added new message phrase for 'Release Notes'. All language translations need
 to be updated to include a translation. The English and Spanish translations are
 included.
