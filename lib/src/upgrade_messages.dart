@@ -21,6 +21,9 @@ enum UpgraderMessage {
   /// Prompt message
   prompt,
 
+  /// Release Notes
+  releaseNotes,
+
   /// Title
   title,
 }
@@ -62,6 +65,8 @@ class UpgraderMessages {
         return buttonTitleUpdate;
       case UpgraderMessage.prompt:
         return prompt;
+      case UpgraderMessage.releaseNotes:
+        return releaseNotes;
       case UpgraderMessage.title:
         return title;
       default:
@@ -590,6 +595,49 @@ class UpgraderMessages {
       case 'en':
       default:
         message = 'Would you like to update it now?';
+        break;
+    }
+    return message;
+  }
+
+  /// The release notes message.
+  /// Override this getter to provide a custom value. Values provided in the
+  /// [message] function will be used over this value.
+  String get releaseNotes {
+    String message;
+    switch (languageCode) {
+      case 'es':
+        message = 'Notas De Lanzamiento';
+        break;
+      case 'ar':
+      case 'bn':
+      case 'el':
+      case 'fa':
+      case 'fil':
+      case 'fr':
+      case 'de':
+      case 'ht':
+      case 'hu':
+      case 'id':
+      case 'it':
+      case 'ja':
+      case 'kk':
+      case 'km':
+      case 'ko':
+      case 'lt':
+      case 'nb':
+      case 'nl':
+      case 'pt':
+      case 'pl':
+      case 'ru':
+      case 'sv':
+      case 'ta':
+      case 'tr':
+      case 'uk':
+      case 'vi':
+      case 'en':
+      default:
+        message = 'Release Notes';
         break;
     }
     return message;

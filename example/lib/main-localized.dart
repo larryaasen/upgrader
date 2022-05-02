@@ -182,6 +182,8 @@ class MyUpgraderMessages extends UpgraderMessages {
           return 'es Update Now';
         case UpgraderMessage.prompt:
           return 'es Want to update?';
+        case UpgraderMessage.releaseNotes:
+          return 'es Release Notes';
         case UpgraderMessage.title:
           return 'es Update App?';
       }
