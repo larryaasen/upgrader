@@ -39,10 +39,12 @@ class Demo extends StatelessWidget {
         const Locale('hu', ''), // Hungarian, no country code
         const Locale('id', ''), // Indonesian, no country code
         const Locale('it', ''), // Italian, no country code
+        const Locale('ja', ''), // Japanese, no country code
         const Locale('kk', ''), // Kazakh, no country code
         const Locale('km', ''), // Khmer, no country code
         const Locale('ko', ''), // Korean, no country code
         const Locale('lt', ''), // Lithuanian, no country code
+        const Locale('mn', ''), // Mongolian, no country code
         const Locale('nb', ''), // Norwegian, no country code
         const Locale('nl', ''), // Dutch, no country code
         const Locale('pt', ''), // Portuguese, no country code
@@ -133,10 +135,12 @@ class DemoLocalizationsDelegate
         'hu',
         'id',
         'it',
+        'ja',
         'kk',
         'km',
         'ko',
         'lt',
+        'mn',
         'nb',
         'nl',
         'pt',
@@ -180,6 +184,8 @@ class MyUpgraderMessages extends UpgraderMessages {
           return 'es Update Now';
         case UpgraderMessage.prompt:
           return 'es Want to update?';
+        case UpgraderMessage.releaseNotes:
+          return 'es Release Notes';
         case UpgraderMessage.title:
           return 'es Update App?';
       }

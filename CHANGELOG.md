@@ -1,3 +1,11 @@
+## 3.15.0
+
+* Added new language translations for Mongolian ('mn').
+* Added new message phrase for 'Release Notes'. All language translations need
+to be updated to include a translation. The English and Spanish translations are
+included.
+* Updated url_launcher to version 6.1.0, and fixed two deprecations from that upgrade.
+
 ## 3.14.0
 
 * BREAKING (Minor): Changed the parameter name `debugAlwaysUpgrade` to `debugDisplayAlways`
@@ -6,6 +14,11 @@ and with the README.
 * Added new language translation for Dutch ('nl').
 * Added new language translation for Khmer ('km').
 * Added new language translation for Haitian Creole ('ht').
+* Added new language translation for Japanese ('ja').
+* Added new callback: `willDisplayUpgrade`: called when `upgrader` determines that
+an upgrade may or may not be displayed, defaults to ```null```. The `value`
+parameter will be true when it should be displayed, and false when it should not
+be displayed. One good use for this callback is logging metrics for your app.
 
 ## 3.13.0
 

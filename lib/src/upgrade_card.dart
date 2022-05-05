@@ -26,6 +26,7 @@ class UpgradeCard extends UpgradeBase {
     BoolCallback? onIgnore,
     BoolCallback? onLater,
     BoolCallback? onUpdate,
+    VoidBoolCallback? willDisplayUpgrade,
     http.Client? client,
     bool? showIgnore,
     bool? showLater,
@@ -43,6 +44,7 @@ class UpgradeCard extends UpgradeBase {
           onIgnore: onIgnore,
           onLater: onLater,
           onUpdate: onUpdate,
+          willDisplayUpgrade: willDisplayUpgrade,
           client: client,
           showIgnore: showIgnore,
           showLater: showLater,
@@ -88,8 +90,13 @@ class UpgradeCard extends UpgradeBase {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        const Text('Release Notes:',
-                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        Text(
+                            Upgrader()
+                                    .messages!
+                                    .message(UpgraderMessage.releaseNotes) ??
+                                '',
+                            style:
+                                const TextStyle(fontWeight: FontWeight.bold)),
                         Text(
                           releaseNotes,
                           maxLines: 15,

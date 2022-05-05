@@ -12,7 +12,7 @@ Flutter package for prompting users to upgrade when there is a newer version of 
 </a>
 [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/upgraderpackage.svg?style=social&label=Follow%20%40upgraderpackage)](https://twitter.com/upgraderpackage)
 
-When a newer app version is availabe in the app store, a simple alert prompt or card is
+When a newer app version is available in the app store, a simple alert prompt or card is
 displayed. With today's modern app stores, there is little need to persuade users to upgrade
 because most are already using the auto upgrade feature. However, there may be times when
 an app needs to be updated more quickly than usual, and nagging a user to upgrade will entice
@@ -49,15 +49,15 @@ After the app containing this text has been submitted for review, approved, and
 released on the app store, the version number will be visible to the upgrader
 package. When the minimum app version is updated in the future, all previously
 installed apps with this package (version 3.9.0+) will recognize and honor
-that vaule.
+that value.
 
 #### Android
-Add this text to the bottom of the Full description field in the Google Play
-Console under the Main store listing.
+Add this text to the bottom of the full description field in the Google Play
+Console under the main store listing.
 
 #### iOS
-Add this text to the bottom of the Description field in AppStoreConnet in the
-Desctiption field.
+Add this text to the bottom of the description field in App Store Connect in the
+description field.
 
 ## Alert Example
 
@@ -139,6 +139,8 @@ UpgradeAlert widget.
 * onLater: called when the later button is tapped, defaults to ```null```
 * onUpdate: called when the update button is tapped, defaults to ```null```
 * shouldPopScope: called when the back button is tapped, defaults to ```null```
+* willDisplayUpgrade: called when ```upgrader``` determines that an upgrade may
+or may not be displayed, defaults to ```null```
 * showIgnore: hide or show Ignore button, which defaults to ```true```
 * showLater: hide or show Later button, which defaults to ```true```
 * showReleaseNotes: hide or show release notes, which defaults to ```true```
@@ -191,7 +193,7 @@ You can read the Sparkle documentation here:
 https://sparkle-project.org/documentation/publishing/.
 
 An appcast is an RSS feed with one channel that has a collection of items that each describe
-one app version. The appcast will decscribe each app version and will provide the latest app
+one app version. The appcast will describe each app version and will provide the latest app
 version to `upgrader` that indicates when an upgrade should be recommended.
 
 The appcast must be hosted on a server that can be reached by everyone from the app. The appcast
@@ -255,7 +257,7 @@ to provide custom values.
 
 As an example, to replace the Ignore button with a custom value, first create a new
 class that extends UpgraderMessages, and override the buttonTitleIgnore function. Next,
-when calling UpgradeAlert (or UpgradeCard), add the paramter messages with an instance
+when calling UpgradeAlert (or UpgradeCard), add the parameter messages with an instance
 of your extended class. Here is an example:
 
 ```dart
@@ -269,7 +271,7 @@ UpgradeAlert(messages: MyUpgraderMessages());
 
 ## Language localization
 
-The strings displayed in `upgrader` are already localized in various languages. New languages will be
+The strings displayed in `upgrader` are already localized in 29 languages. New languages will be
 supported in the future with minor updates.
 
 Languages supported:
@@ -285,10 +287,12 @@ Languages supported:
 * Hungarian ('hu')
 * Indonesian ('id')
 * Italian ('it')
+* Japanese ('ja')
 * Kazakh ('kk')
 * Khmer ('km')
 * Korean ('ko')
 * Lithuanian ('lt')
+* Mongolian ('mn')
 * Norwegian ('nb')
 * Persian ('fa')
 * Polish ('pl')
@@ -306,7 +310,7 @@ to provide custom values.
 
 As an example, to add the Spanish (es) language (which is already provided), first create a new
 class that extends UpgraderMessages, and override the message function. Next, add a string for
-each of the messages. Finally, when calling UpgradeAlert (or UpgradeCard), add the paramter messages with an instance
+each of the messages. Finally, when calling UpgradeAlert (or UpgradeCard), add the parameter messages with an instance
 of your extended class. Here is an example:
 
 ```dart
@@ -326,6 +330,8 @@ class MySpanishMessages extends UpgraderMessages {
           return 'es Update Now';
         case UpgraderMessage.prompt:
           return 'es Want to update?';
+        case UpgraderMessage.releaseNotes:
+          return 'es Release Notes';
         case UpgraderMessage.title:
           return 'es Update App?';
       }

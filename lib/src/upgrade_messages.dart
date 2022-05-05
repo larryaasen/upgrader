@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Larry Aasen. All rights reserved.
+ * Copyright (c) 2020-2022 Larry Aasen. All rights reserved.
  */
 
 import 'package:flutter/material.dart';
@@ -20,6 +20,9 @@ enum UpgraderMessage {
 
   /// Prompt message
   prompt,
+
+  /// Release Notes
+  releaseNotes,
 
   /// Title
   title,
@@ -62,6 +65,8 @@ class UpgraderMessages {
         return buttonTitleUpdate;
       case UpgraderMessage.prompt:
         return prompt;
+      case UpgraderMessage.releaseNotes:
+        return releaseNotes;
       case UpgraderMessage.title:
         return title;
       default:
@@ -146,6 +151,10 @@ class UpgraderMessages {
         message =
             'Una nuova versione di {{appName}} è disponibile! La versione {{currentAppStoreVersion}} è ora disponibile, voi avete {{currentInstalledVersion}}.';
         break;
+      case 'ja':
+        message =
+            '現在のバージョンは、{{currentInstalledVersion}}です。{{appName}}の最新バージョン({{currentAppStoreVersion}})があります。';
+        break;
       case 'kk':
         message =
             '{{appName}} қосымша жаңа нұсқасын жүктеп алыңыз! Жаңа нұсқасы: {{currentAppStoreVersion}}, қазіргі нұсқасы: {{currentInstalledVersion}}';
@@ -161,6 +170,10 @@ class UpgraderMessages {
       case 'lt':
         message =
             'Išleista nauja programos {{appName}} versija! Versija {{currentAppStoreVersion}} yra prieinama, jūs turite {{currentInstalledVersion}}.';
+        break;
+      case 'mn':
+        message =
+            '{{appName}}-н шинэ хувилбар бэлэн боллоо! Таны одоогийн ашиглаж буй хувилбар {{currentInstalledVersion}} - Шинээр бэлэн болсон хувилбар нь {{currentAppStoreVersion}} юм .';
         break;
       case 'nb':
         message =
@@ -253,6 +266,9 @@ class UpgraderMessages {
       case 'it':
         message = 'IGNORA';
         break;
+      case 'ja':
+        message = '今はしない';
+        break;
       case 'kk':
         message = 'ЖОҚ';
         break;
@@ -264,6 +280,9 @@ class UpgraderMessages {
         break;
       case 'lt':
         message = 'IGNORUOTI';
+        break;
+      case 'mn':
+        message = 'Татгалзах';
         break;
       case 'nb':
         message = 'IGNORER';
@@ -345,6 +364,9 @@ class UpgraderMessages {
       case 'it':
         message = 'DOPO';
         break;
+      case 'ja':
+        message = '後で通知';
+        break;
       case 'kk':
         message = 'КЕЙІН';
         break;
@@ -356,6 +378,9 @@ class UpgraderMessages {
         break;
       case 'lt':
         message = 'ATNAUJINTI VĖLIAU';
+        break;
+      case 'mn':
+        message = 'Дараа суулгах';
         break;
       case 'nb':
         message = 'SENERE';
@@ -437,6 +462,9 @@ class UpgraderMessages {
       case 'it':
         message = 'AGGIORNA ORA';
         break;
+      case 'ja':
+        message = 'アップデート';
+        break;
       case 'kk':
         message = 'ЖАҢАРТУ';
         break;
@@ -448,6 +476,9 @@ class UpgraderMessages {
         break;
       case 'lt':
         message = 'ATNAUJINTI DABAR';
+        break;
+      case 'mn':
+        message = 'Шинэчлэх';
         break;
       case 'nb':
         message = 'OPPDATER NÅ';
@@ -529,6 +560,9 @@ class UpgraderMessages {
       case 'it':
         message = 'Ti piacerebbe aggiornare ora?';
         break;
+      case 'ja':
+        message = '今すぐアップデートしますか?';
+        break;
       case 'kk':
         message = 'Қазір жаңартқыңыз келе ме?';
         break;
@@ -540,6 +574,9 @@ class UpgraderMessages {
         break;
       case 'lt':
         message = 'Ar norite atnaujinti dabar?';
+        break;
+      case 'mn':
+        message = 'Та одоо шинэчлэлтийг татаж авах уу?';
         break;
       case 'nb':
         message = 'Ønsker du å oppdatere nå?';
@@ -574,6 +611,50 @@ class UpgraderMessages {
       case 'en':
       default:
         message = 'Would you like to update it now?';
+        break;
+    }
+    return message;
+  }
+
+  /// The release notes message.
+  /// Override this getter to provide a custom value. Values provided in the
+  /// [message] function will be used over this value.
+  String get releaseNotes {
+    String message;
+    switch (languageCode) {
+      case 'es':
+        message = 'Notas De Lanzamiento';
+        break;
+      case 'ar':
+      case 'bn':
+      case 'el':
+      case 'fa':
+      case 'fil':
+      case 'fr':
+      case 'de':
+      case 'ht':
+      case 'hu':
+      case 'id':
+      case 'it':
+      case 'ja':
+      case 'kk':
+      case 'km':
+      case 'ko':
+      case 'lt':
+      case 'mn':
+      case 'nb':
+      case 'nl':
+      case 'pt':
+      case 'pl':
+      case 'ru':
+      case 'sv':
+      case 'ta':
+      case 'tr':
+      case 'uk':
+      case 'vi':
+      case 'en':
+      default:
+        message = 'Release Notes';
         break;
     }
     return message;
@@ -621,6 +702,9 @@ class UpgraderMessages {
       case 'it':
         message = 'Aggiornare l\'applicazione?';
         break;
+      case 'ja':
+        message = 'アプリのアップデート?';
+        break;
       case 'kk':
         message = 'Жаңарту керек пе?';
         break;
@@ -632,6 +716,9 @@ class UpgraderMessages {
         break;
       case 'lt':
         message = 'Atnaujinti programą?';
+        break;
+      case 'mn':
+        message = 'Та шинэчлэлт хийх үү?';
         break;
       case 'nb':
         message = 'Oppdater app?';
