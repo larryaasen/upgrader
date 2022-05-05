@@ -59,6 +59,8 @@ class PlayStoreSearchAPI {
 }
 
 class PlayStoreResults {
+  static RegExp releaseNotesSpan = RegExp(r'>(.*?)</span>');
+  
   /// Return field description from Play Store results.
   static String? description(Document response) {
     try {
@@ -99,7 +101,6 @@ class PlayStoreResults {
   /// Returns field releaseNotes from Play Store results. When there are no
   /// release notes, the main app description is used.
   static String? releaseNotes(Document response) {
-    RegExp releaseNotesSpan = RegExp(r'>(.*?)</span>');
     try {
       final sectionElements = response.getElementsByClassName('W4P4ne');
       final releaseNotesElement = sectionElements.firstWhere(
