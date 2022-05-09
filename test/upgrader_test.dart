@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Larry Aasen. All rights reserved.
+ * Copyright (c) 2018-2022 Larry Aasen. All rights reserved.
  */
 
 import 'package:flutter/cupertino.dart';
@@ -698,8 +698,15 @@ void main() {
 
       // Test the willDisplayUpgrade callback
       var notCalled = true;
-      upgrader.willDisplayUpgrade = (bool value) {
-        expect(value, false);
+      upgrader.willDisplayUpgrade = (
+          {required bool display,
+          String? minAppVersion,
+          String? installedVersion,
+          String? appStoreVersion}) {
+        expect(display, false);
+        expect(minAppVersion, isNull);
+        expect(installedVersion, isNull);
+        expect(appStoreVersion, isNull);
         notCalled = false;
       };
       expect(upgrader.shouldDisplayUpgrade(), false);
@@ -707,8 +714,15 @@ void main() {
 
       upgrader.debugDisplayAlways = true;
       notCalled = true;
-      upgrader.willDisplayUpgrade = (bool value) {
-        expect(value, true);
+      upgrader.willDisplayUpgrade = (
+          {required bool display,
+          String? minAppVersion,
+          String? installedVersion,
+          String? appStoreVersion}) {
+        expect(display, true);
+        expect(minAppVersion, isNull);
+        expect(installedVersion, isNull);
+        expect(appStoreVersion, isNull);
         notCalled = false;
       };
       expect(upgrader.shouldDisplayUpgrade(), true);
@@ -731,10 +745,24 @@ void main() {
         );
 
       await upgrader.initialize();
+      var notCalled = true;
+      upgrader.willDisplayUpgrade = (
+          {required bool display,
+          String? minAppVersion,
+          String? installedVersion,
+          String? appStoreVersion}) {
+        expect(display, true);
+        expect(minAppVersion, '2.0.0');
+        expect(upgrader.minAppVersion, '2.0.0');
+        expect(installedVersion, '1.9.6');
+        expect(appStoreVersion, '5.6');
+        notCalled = false;
+      };
 
       final shouldDisplayUpgrade = upgrader.shouldDisplayUpgrade();
 
       expect(shouldDisplayUpgrade, isTrue);
+      expect(notCalled, false);
     }, skip: false);
 
     test('should return true when bestItem has critical update', () async {

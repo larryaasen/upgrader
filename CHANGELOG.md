@@ -1,3 +1,9 @@
+## 4.0.0-alpha.4
+
+[BREAKING]
+Changed the callback signature for the willDisplayUpgrade callback to add
+minAppVersion, installedVersion, and appStoreVersion parameters.
+
 ## 4.0.0-alpha.3
 
 Moved the upgrader parameter for UpgradeCard to a named parameter.

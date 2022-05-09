@@ -25,6 +25,14 @@ typedef BoolCallback = bool Function();
 /// Signature of callbacks that have a bool argument and no return.
 typedef VoidBoolCallback = void Function(bool value);
 
+/// Signature of callback for willDisplayUpgrade. Includes display,
+/// minAppVersion, installedVersion, and appStoreVersion.
+typedef WillDisplayUpgradeCallback = void Function(
+    {required bool display,
+    String? minAppVersion,
+    String? installedVersion,
+    String? appStoreVersion});
+
 /// There are two different dialog styles: Cupertino and Material
 enum UpgradeDialogStyle { cupertino, material }
 
@@ -117,7 +125,7 @@ class Upgrader {
   /// displayed. The [value] parameter will be true when it should be displayed,
   /// and false when it should not be displayed. One good use for this callback
   /// is logging metrics for your app.
-  VoidBoolCallback? willDisplayUpgrade;
+  WillDisplayUpgradeCallback? willDisplayUpgrade;
 
   /// The target operating system.
   final String operatingSystem = UpgradeIO.operatingSystem;
@@ -418,10 +426,16 @@ class Upgrader {
     if (debugLogging) {
       print('upgrader: shouldDisplayUpgrade: $rv');
     }
+
     // Call the [willDisplayUpgrade] callback when available.
     if (willDisplayUpgrade != null) {
-      willDisplayUpgrade!(rv);
+      willDisplayUpgrade!(
+          display: rv,
+          minAppVersion: minAppVersion,
+          installedVersion: _installedVersion,
+          appStoreVersion: _appStoreVersion);
     }
+
     return rv;
   }
 
