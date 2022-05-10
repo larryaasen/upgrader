@@ -1,3 +1,18 @@
+## 4.0.0
+
+* [BREAKING] No more singleton. This is a huge update to remove the use of a singleton for Upgrader.
+It is now a normal class that is passed to either UpgradeAlert or UpgradeCard.
+This makes it easy to subclass Upgrader and change its behavior. The parameters
+to UpgradeAlert and UpgradeCard have been removed, and can be set on Upgrader.
+See the various examples for more information.
+
+* Changed the callback signature for the willDisplayUpgrade callback to add
+minAppVersion, installedVersion, and appStoreVersion parameters.
+
+* Updated url_launcher to version 6.1.0.
+
+* There are no new features, no feature updates, and no bug fixes in this release.
+
 ## 4.0.0-alpha.4
 
 [BREAKING]
