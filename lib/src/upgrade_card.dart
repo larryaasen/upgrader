@@ -1,9 +1,8 @@
 /*
- * Copyright (c) 2021 Larry Aasen. All rights reserved.
+ * Copyright (c) 2021-2022 Larry Aasen. All rights reserved.
  */
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:upgrader/upgrader.dart';
 
 /// A widget to display the upgrade card.
@@ -14,48 +13,15 @@ class UpgradeCard extends UpgradeBase {
   /// `EdgeInsets.all(4.0)`.
   final EdgeInsetsGeometry margin;
 
-  UpgradeCard({
-    this.margin = const EdgeInsets.all(4.0),
-    Key? key,
-    AppcastConfiguration? appcastConfig,
-    UpgraderMessages? messages,
-    bool? debugDisplayAlways,
-    bool? debugDisplayOnce,
-    bool? debugLogging,
-    Duration? durationToAlertAgain,
-    BoolCallback? onIgnore,
-    BoolCallback? onLater,
-    BoolCallback? onUpdate,
-    VoidBoolCallback? willDisplayUpgrade,
-    http.Client? client,
-    bool? showIgnore,
-    bool? showLater,
-    bool? showReleaseNotes,
-    String? countryCode,
-    String? minAppVersion,
-  }) : super(
-          key: key,
-          appcastConfig: appcastConfig,
-          messages: messages,
-          debugDisplayAlways: debugDisplayAlways,
-          debugDisplayOnce: debugDisplayOnce,
-          debugLogging: debugLogging,
-          durationToAlertAgain: durationToAlertAgain,
-          onIgnore: onIgnore,
-          onLater: onLater,
-          onUpdate: onUpdate,
-          willDisplayUpgrade: willDisplayUpgrade,
-          client: client,
-          showIgnore: showIgnore,
-          showLater: showLater,
-          showReleaseNotes: showReleaseNotes,
-          countryCode: countryCode,
-          minAppVersion: minAppVersion,
-        );
+  /// Creates a new [UpgradeCard].
+  UpgradeCard(
+      {Key? key, Upgrader? upgrader, this.margin = const EdgeInsets.all(4.0)})
+      : super(upgrader ?? Upgrader.sharedInstance, key: key);
 
+  /// Describes the part of the user interface represented by this widget.
   @override
   Widget build(BuildContext context, UpgradeBaseState state) {
-    if (Upgrader().debugLogging) {
+    if (upgrader.debugLogging) {
       print('UpgradeCard: build UpgradeCard');
     }
 
@@ -65,14 +31,13 @@ class UpgradeCard extends UpgradeBase {
           if (processed.connectionState == ConnectionState.done &&
               processed.data != null &&
               processed.data!) {
-            assert(Upgrader().messages != null);
-            if (Upgrader().shouldDisplayUpgrade()) {
-              final title = Upgrader().messages!.message(UpgraderMessage.title);
-              final message = Upgrader().message();
-              final releaseNotes = Upgrader().releaseNotes;
+            if (upgrader.shouldDisplayUpgrade()) {
+              final title = upgrader.messages.message(UpgraderMessage.title);
+              final message = upgrader.message();
+              final releaseNotes = upgrader.releaseNotes;
               final shouldDisplayReleaseNotes =
-                  Upgrader().shouldDisplayReleaseNotes();
-              if (Upgrader().debugLogging) {
+                  upgrader.shouldDisplayReleaseNotes();
+              if (upgrader.debugLogging) {
                 print('UpgradeCard: will display');
                 print('UpgradeCard: showDialog title: $title');
                 print('UpgradeCard: showDialog message: $message');
@@ -92,7 +57,7 @@ class UpgradeCard extends UpgradeBase {
                       children: <Widget>[
                         Text(
                             Upgrader()
-                                    .messages!
+                                    .messages
                                     .message(UpgraderMessage.releaseNotes) ??
                                 '',
                             style:
@@ -119,52 +84,51 @@ class UpgradeCard extends UpgradeBase {
                           Text(message),
                           Padding(
                               padding: const EdgeInsets.only(top: 15.0),
-                              child: Text(Upgrader()
-                                      .messages!
+                              child: Text(upgrader.messages
                                       .message(UpgraderMessage.prompt) ??
                                   '')),
                           if (notes != null) notes,
                         ],
                       ),
                       actions: <Widget>[
-                        if (Upgrader().showIgnore)
+                        if (upgrader.showIgnore)
                           TextButton(
-                              child: Text(Upgrader().messages!.message(
+                              child: Text(upgrader.messages.message(
                                       UpgraderMessage.buttonTitleIgnore) ??
                                   ''),
                               onPressed: () {
                                 // Save the date/time as the last time alerted.
-                                Upgrader().saveLastAlerted();
+                                upgrader.saveLastAlerted();
 
-                                Upgrader().onUserIgnored(context, false);
+                                upgrader.onUserIgnored(context, false);
                                 state.forceUpdateState();
                               }),
-                        if (Upgrader().showLater)
+                        if (upgrader.showLater)
                           TextButton(
-                              child: Text(Upgrader().messages!.message(
+                              child: Text(upgrader.messages.message(
                                       UpgraderMessage.buttonTitleLater) ??
                                   ''),
                               onPressed: () {
                                 // Save the date/time as the last time alerted.
-                                Upgrader().saveLastAlerted();
+                                upgrader.saveLastAlerted();
 
-                                Upgrader().onUserLater(context, false);
+                                upgrader.onUserLater(context, false);
                                 state.forceUpdateState();
                               }),
                         TextButton(
-                            child: Text(Upgrader().messages!.message(
+                            child: Text(upgrader.messages.message(
                                     UpgraderMessage.buttonTitleUpdate) ??
                                 ''),
                             onPressed: () {
                               // Save the date/time as the last time alerted.
-                              Upgrader().saveLastAlerted();
+                              upgrader.saveLastAlerted();
 
-                              Upgrader().onUserUpdated(context, false);
+                              upgrader.onUserUpdated(context, false);
                               state.forceUpdateState();
                             }),
                       ]));
             } else {
-              if (Upgrader().debugLogging) {
+              if (upgrader.debugLogging) {
                 print('UpgradeCard: will not display');
               }
             }

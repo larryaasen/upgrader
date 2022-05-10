@@ -11,7 +11,8 @@ void main() async {
   // Only call clearSavedSettings() during testing to reset internal values.
   await Upgrader.clearSavedSettings(); // REMOVE this for release builds
 
-  // On Android, setup the Appcast.
+  // On Android, the default behavior will be to use the Google Play Store
+  // version of the app.
   // On iOS, the default behavior will be to use the App Store version of
   // the app, so update the Bundle Identifier in example/ios/Runner with a
   // valid identifier already in the App Store.
@@ -19,26 +20,30 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key key}) : super(key: key);
+  const MyApp({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final appcastURL =
-        'https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast.xml';
-    final cfg = AppcastConfiguration(url: appcastURL, supportedOS: ['android']);
-
     return MaterialApp(
-      title: 'Upgrader Example',
+      title: 'Upgrader Subclass Example',
       home: Scaffold(
-          appBar: AppBar(title: Text('Upgrader Example')),
+          appBar: AppBar(title: Text('Upgrader Subclass Example')),
           body: UpgradeAlert(
-            upgrader: Upgrader(
-              appcastConfig: cfg,
-              debugLogging: true,
-              minAppVersion: '1.1.0',
-            ),
+            upgrader: MyUpgrader(),
             child: Center(child: Text('Checking...')),
           )),
     );
+  }
+}
+
+/// This class extends / subclasses Upgrader.
+class MyUpgrader extends Upgrader {
+  MyUpgrader() : super(debugLogging: true);
+
+  /// This method overrides super class method.
+  @override
+  void popNavigator(BuildContext context) {
+    print('this method overrides popNavigator');
+    super.popNavigator(context);
   }
 }
