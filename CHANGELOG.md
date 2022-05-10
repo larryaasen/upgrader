@@ -29,6 +29,14 @@ Updated url_launcher to version 6.1.0.
 
 There are no new features, no feature updates, and no bug fixes in this release.
 
+## 3.15.0
+
+* Added new language translations for Mongolian ('mn').
+* Added new message phrase for 'Release Notes'. All language translations need
+to be updated to include a translation. The English and Spanish translations are
+included.
+* Updated url_launcher to version 6.1.0, and fixed two deprecations from that upgrade.
+
 ## 3.14.0
 
 * BREAKING (Minor): Changed the parameter name `debugAlwaysUpgrade` to `debugDisplayAlways`

@@ -55,8 +55,13 @@ class UpgradeCard extends UpgradeBase {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        const Text('Release Notes:',
-                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        Text(
+                            Upgrader()
+                                    .messages!
+                                    .message(UpgraderMessage.releaseNotes) ??
+                                '',
+                            style:
+                                const TextStyle(fontWeight: FontWeight.bold)),
                         Text(
                           releaseNotes,
                           maxLines: 15,

@@ -265,7 +265,7 @@ UpgradeAlert(Upgrader(messages: MyUpgraderMessages()));
 
 ## Language localization
 
-The strings displayed in `upgrader` are already localized in various languages. New languages will be
+The strings displayed in `upgrader` are already localized in 29 languages. New languages will be
 supported in the future with minor updates.
 
 Languages supported:
@@ -286,6 +286,7 @@ Languages supported:
 * Khmer ('km')
 * Korean ('ko')
 * Lithuanian ('lt')
+* Mongolian ('mn')
 * Norwegian ('nb')
 * Persian ('fa')
 * Polish ('pl')
@@ -323,6 +324,8 @@ class MySpanishMessages extends UpgraderMessages {
           return 'es Update Now';
         case UpgraderMessage.prompt:
           return 'es Want to update?';
+        case UpgraderMessage.releaseNotes:
+          return 'es Release Notes';
         case UpgraderMessage.title:
           return 'es Update App?';
       }
