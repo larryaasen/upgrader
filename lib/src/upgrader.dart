@@ -580,7 +580,7 @@ class Upgrader {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(messages!.message(UpgraderMessage.releaseNotes)!,
+              Text(messages.message(UpgraderMessage.releaseNotes)!,
                   style: const TextStyle(fontWeight: FontWeight.bold)),
               Text(
                 releaseNotes,
@@ -628,7 +628,7 @@ class Upgrader {
           padding: const EdgeInsets.only(top: 15.0),
           child: Column(
             children: <Widget>[
-              Text(messages!.message(UpgraderMessage.releaseNotes)!,
+              Text(messages.message(UpgraderMessage.releaseNotes)!,
                   style: const TextStyle(fontWeight: FontWeight.bold)),
               Text(
                 releaseNotes,

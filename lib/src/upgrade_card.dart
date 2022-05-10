@@ -57,7 +57,7 @@ class UpgradeCard extends UpgradeBase {
                       children: <Widget>[
                         Text(
                             Upgrader()
-                                    .messages!
+                                    .messages
                                     .message(UpgraderMessage.releaseNotes) ??
                                 '',
                             style:
