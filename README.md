@@ -12,7 +12,7 @@ Flutter package for prompting users to upgrade when there is a newer version of 
 </a>
 [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/upgraderpackage.svg?style=social&label=Follow%20%40upgraderpackage)](https://twitter.com/upgraderpackage)
 
-When a newer app version is availabe in the app store, a simple alert prompt or card is
+When a newer app version is available in the app store, a simple alert prompt or card is
 displayed. With today's modern app stores, there is little need to persuade users to upgrade
 because most are already using the auto upgrade feature. However, there may be times when
 an app needs to be updated more quickly than usual, and nagging a user to upgrade will entice
@@ -49,15 +49,15 @@ After the app containing this text has been submitted for review, approved, and
 released on the app store, the version number will be visible to the upgrader
 package. When the minimum app version is updated in the future, all previously
 installed apps with this package (version 3.9.0+) will recognize and honor
-that vaule.
+that value.
 
 #### Android
-Add this text to the bottom of the Full description field in the Google Play
-Console under the Main store listing.
+Add this text to the bottom of the full description field in the Google Play
+Console under the main store listing.
 
 #### iOS
-Add this text to the bottom of the Description field in AppStoreConnet in the
-Desctiption field.
+Add this text to the bottom of the description field in App Store Connect in the
+description field.
 
 ## Alert Example
 
@@ -69,22 +69,17 @@ import 'package:upgrader/upgrader.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  MyApp({
-    Key key,
-  }) : super(key: key);
+  const MyApp({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Upgrader Example',
       home: Scaffold(
-          appBar: AppBar(
-            title: Text('Upgrader Example'),
-          ),
+          appBar: AppBar(title: Text('Upgrader Example')),
           body: UpgradeAlert(
             child: Center(child: Text('Checking...')),
-          )
-      ),
+          )),
     );
   }
 }
@@ -100,7 +95,7 @@ class MyApp extends StatelessWidget {
 You can also display a Cupertino style dialog by using the `dialogStyle` parameter.
 ```dart
           body: UpgradeAlert(
-            dialogStyle: UpgradeDialogStyle.cupertino,
+            Upgrader(dialogStyle: UpgradeDialogStyle.cupertino),
             child: Center(child: Text('Checking...')),
           )
 ```
@@ -125,27 +120,30 @@ return Container(
 
 ## Customization
 
-The UpgradeAlert widget can be customized by setting parameters in the constructor of the
-UpgradeAlert widget.
+The Upgrader class can be customized by setting parameters in the constructor.
 
+* appcast: Provide an Appcast that can be replaced for mock testing, defaults to ```null```
 * appcastConfig: the appcast configuration, defaults to ```null```
+* canDismissDialog: can alert dialog be dismissed on tap outside of the alert dialog, which defaults to ```false``` (not used by UpgradeCard)
+* countryCode: the country code that will override the system locale, which defaults to ```null``` (iOS only)
 * client: an HTTP Client that can be replaced for mock testing, defaults to ```null```
-* durationUntilAlertAgain: duration until alerting user again, which defaults to ```3 days```
 * debugDisplayAlways: always force the upgrade to be available, defaults to ```false```
 * debugDisplayOnce: display the upgrade at least once once, defaults to ```false```
 * debugLogging: display logging statements, which defaults to ```false```
+* dialogStyle: the upgrade dialog style, either ```material``` or ```cupertino```, defaults to ```material```, used only by UpgradeAlert, works on Android and iOS.
+* durationUntilAlertAgain: duration until alerting user again, which defaults to ```3 days```
 * messages: optional localized messages used for display in `upgrader`
+* minAppVersion: the minimum app version supported by this app. Earlier versions of this app will be forced to update to the current version. Defaults to ```null```.
 * onIgnore: called when the ignore button is tapped, defaults to ```null```
 * onLater: called when the later button is tapped, defaults to ```null```
 * onUpdate: called when the update button is tapped, defaults to ```null```
+* platform: The target platform, defaults to ```defaultTargetPlatform```
 * shouldPopScope: called when the back button is tapped, defaults to ```null```
 * showIgnore: hide or show Ignore button, which defaults to ```true```
 * showLater: hide or show Later button, which defaults to ```true```
 * showReleaseNotes: hide or show release notes, which defaults to ```true```
-* canDismissDialog: can alert dialog be dismissed on tap outside of the alert dialog, which defaults to ```false``` (not used by UpgradeCard)
-* countryCode: the country code that will override the system locale, which defaults to ```null``` (iOS only)
-* minAppVersion: the minimum app version supported by this app. Earlier versions of this app will be forced to update to the current version. Defaults to ```null```.
-* dialogStyle: the upgrade dialog style, either ```material``` or ```cupertino```, defaults to ```material```, used only by UpgradeAlert, works on Android and iOS.
+* willDisplayUpgrade: called when ```upgrader``` determines that an upgrade may
+or may not be displayed, defaults to ```null```
 
 ## Android Back Button
 
@@ -153,9 +151,7 @@ When using the ```UpgradeAlert``` widget, the Android back button will not
 dismiss the alert dialog by default. To allow the back button to dismiss the
 dialog, use ```shouldPopScope``` and return true like this:
 ```
-UpgradeAlert(
-  shouldPopScope: () => true,
-);
+UpgradeAlert(Upgrader(shouldPopScope: () => true));
 ```
 
 ## iOS Country Code
@@ -191,7 +187,7 @@ You can read the Sparkle documentation here:
 https://sparkle-project.org/documentation/publishing/.
 
 An appcast is an RSS feed with one channel that has a collection of items that each describe
-one app version. The appcast will decscribe each app version and will provide the latest app
+one app version. The appcast will describe each app version and will provide the latest app
 version to `upgrader` that indicates when an upgrade should be recommended.
 
 The appcast must be hosted on a server that can be reached by everyone from the app. The appcast
@@ -218,7 +214,7 @@ Widget build(BuildContext context) {
           title: Text('Upgrader Example'),
         ),
         body: UpgradeAlert(
-          appcastConfig: cfg,
+          Upgrader(appcastConfig: cfg),
           child: Center(child: Text('Checking...')),
         )),
   );
@@ -255,7 +251,7 @@ to provide custom values.
 
 As an example, to replace the Ignore button with a custom value, first create a new
 class that extends UpgraderMessages, and override the buttonTitleIgnore function. Next,
-when calling UpgradeAlert (or UpgradeCard), add the paramter messages with an instance
+when calling UpgradeAlert (or UpgradeCard), add the parameter messages with an instance
 of your extended class. Here is an example:
 
 ```dart
@@ -264,33 +260,40 @@ class MyUpgraderMessages extends UpgraderMessages {
   String get buttonTitleIgnore => 'My Ignore';
 }
 
-UpgradeAlert(messages: MyUpgraderMessages());
+UpgradeAlert(Upgrader(messages: MyUpgraderMessages()));
 ```
 
 ## Language localization
 
-The strings displayed in `upgrader` are already localized in various languages. New languages will be
+The strings displayed in `upgrader` are already localized in 29 languages. New languages will be
 supported in the future with minor updates.
 
 Languages supported:
 * English ('en')
 * Arabic ('ar')
 * Bengali ('bn')
+* Dutch ('nl')
 * Filipino ('fil')
 * French ('fr')
 * German ('de')
+* Greek ('el')
+* Haitian Creole ('ht')
 * Hungarian ('hu')
 * Indonesian ('id')
 * Italian ('it')
+* Japanese ('ja')
 * Kazakh ('kk')
+* Khmer ('km')
 * Korean ('ko')
 * Lithuanian ('lt')
+* Mongolian ('mn')
 * Norwegian ('nb')
 * Persian ('fa')
 * Polish ('pl')
 * Portuguese ('pt')
 * Russian ('ru')
 * Spanish ('es')
+* Swedish ('sv')
 * Tamil ('ta')
 * Turkish ('tr')
 * Ukrainian ('uk')
@@ -301,7 +304,7 @@ to provide custom values.
 
 As an example, to add the Spanish (es) language (which is already provided), first create a new
 class that extends UpgraderMessages, and override the message function. Next, add a string for
-each of the messages. Finally, when calling UpgradeAlert (or UpgradeCard), add the paramter messages with an instance
+each of the messages. Finally, when calling UpgradeAlert (or UpgradeCard), add the parameter messages with an instance
 of your extended class. Here is an example:
 
 ```dart
@@ -321,6 +324,8 @@ class MySpanishMessages extends UpgraderMessages {
           return 'es Update Now';
         case UpgraderMessage.prompt:
           return 'es Want to update?';
+        case UpgraderMessage.releaseNotes:
+          return 'es Release Notes';
         case UpgraderMessage.title:
           return 'es Update App?';
       }
@@ -330,7 +335,7 @@ class MySpanishMessages extends UpgraderMessages {
   }
 }
 
-UpgradeAlert(messages: MySpanishMessages());
+UpgradeAlert(Upgrader(messages: MySpanishMessages()));
 ```
 
 You can even force the `upgrader` package to use a specific language, instead of the
@@ -338,7 +343,7 @@ system language on the device. Just pass the language code to an instance of
 UpgraderMessages when displaying the alert or card. Here is an example:
 
 ```dart
-UpgradeAlert(messages: UpgraderMessages(code: 'es'));
+UpgradeAlert(Upgrader(messages: UpgraderMessages(code: 'es')));
 ```
 
 ## Semantic Versioning

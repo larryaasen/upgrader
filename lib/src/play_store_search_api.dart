@@ -43,9 +43,8 @@ class PlayStoreSearchAPI {
   }
 
   String? lookupURLById(String id) {
-    final url =
-        Uri.https(playStorePrefixURL, '/store/apps/details', {'id': '$id'})
-            .toString();
+    final url = Uri.https(playStorePrefixURL, '/store/apps/details', {'id': id})
+        .toString();
 
     return url;
   }
@@ -80,14 +79,14 @@ class PlayStoreResults {
   /// from the store response. The format is: [:mav: 1.2.3].
   /// Returns version, such as 1.2.3, or null.
   static Version? minAppVersion(Document response, {String tagName = 'mav'}) {
-    var version;
+    Version? version;
     try {
       final description = PlayStoreResults.description(response);
       if (description != null) {
-        final regExpSource = r'\[\:mav\:[\s]*(?<version>[^\s]+)[\s]*\]';
+        const regExpSource = r'\[\:mav\:[\s]*(?<version>[^\s]+)[\s]*\]';
         final regExp = RegExp(regExpSource, caseSensitive: false);
         final match = regExp.firstMatch(description);
-        final mav = match != null ? match.namedGroup('version') : null;
+        final mav = match?.namedGroup('version');
         // Verify version string using class Version
         version = mav != null ? Version.parse(mav) : null;
       }
@@ -126,6 +125,7 @@ class PlayStoreResults {
         (elm) => elm.querySelector('.BgcNfc')!.text == 'Current Version',
       );
       final storeVersion = versionElement.querySelector('.htlgb')!.text;
+      // storeVersion might be: 'Varies with device', which is not a valid version.
       version = Version.parse(storeVersion).toString();
     } catch (e) {
       print('upgrader: PlayStoreResults.version exception: $e');

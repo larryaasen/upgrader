@@ -1,15 +1,18 @@
+// ignore_for_file: constant_identifier_names
+
 /*
- * Copyright (c) 2018 Larry Aasen. All rights reserved.
+ * Copyright (c) 2018-2022 Larry Aasen. All rights reserved.
  */
 
 import 'dart:convert' show utf8;
-import 'dart:io';
 
-import 'package:device_info/device_info.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:version/version.dart';
 import 'package:xml/xml.dart';
+
+import 'upgrade_io.dart';
 
 /// The [Appcast] class is used to download an Appcast, based on the Sparkle
 /// framework by Andy Matuschak.
@@ -55,8 +58,6 @@ class Appcast {
 
   /// Download the Appcast from [appCastURL].
   Future<List<AppcastItem>?> parseAppcastItemsFromUri(String appCastURL) async {
-    await _getDeviceInfo();
-
     http.Response response;
     try {
       response = await client!.get(Uri.parse(appCastURL));
@@ -65,13 +66,12 @@ class Appcast {
       return null;
     }
     final contents = utf8.decode(response.bodyBytes);
-    return parseItemsFromXMLString(contents);
+    return parseAppcastItems(contents);
   }
 
-  /// Load the Appcast from [file].
-  Future<List<AppcastItem>?> parseAppcastItemsFromFile(File file) async {
+  /// Parse the Appcast from XML string.
+  Future<List<AppcastItem>?> parseAppcastItems(String contents) async {
     await _getDeviceInfo();
-    final contents = await file.readAsString();
     return parseItemsFromXMLString(contents);
   }
 
@@ -152,7 +152,7 @@ class Appcast {
 
         // There must be a version
         if (newVersion == null || newVersion.isEmpty) {
-          return null;
+          return;
         }
 
         final item = AppcastItem(
@@ -180,12 +180,14 @@ class Appcast {
 
   Future<bool> _getDeviceInfo() async {
     final deviceInfo = DeviceInfoPlugin();
-    if (Platform.isAndroid) {
+    if (UpgradeIO.isAndroid) {
       _androidInfo = await deviceInfo.androidInfo;
       osVersionString = _androidInfo.version.baseOS;
-    } else if (Platform.isIOS) {
+    } else if (UpgradeIO.isIOS) {
       _iosInfo = await deviceInfo.iosInfo;
       osVersionString = _iosInfo.systemVersion;
+    } else if (UpgradeIO.isWeb) {
+      osVersionString = '0.0.0';
     }
 
     // If the OS version string is not valid, don't use it.
@@ -247,7 +249,7 @@ class AppcastItem {
     }
 
     if (supported && osVersion != null && osVersion.isNotEmpty) {
-      var osVersionValue;
+      Version osVersionValue;
       try {
         osVersionValue = Version.parse(osVersion);
       } catch (e) {

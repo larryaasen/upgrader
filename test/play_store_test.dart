@@ -18,6 +18,8 @@ void main() {
 
     expect(Version.parse('1.2.3').toString(), '1.2.3');
     expect(Version.parse('1.2.3+1').toString(), '1.2.3+1');
+    expect(Version.parse('0.0.0').toString(), '0.0.0');
+    expect(Version.parse('0.0.0+1').toString(), '0.0.0+1');
   }, skip: false);
 
   test('testing PlayStoreSearchAPI properties', () async {
@@ -80,7 +82,7 @@ void main() {
   /// Helper method
   String? pmav(Document response) {
     final mav = PlayStoreResults.minAppVersion(response);
-    return mav == null ? null : mav.toString();
+    return mav?.toString();
   }
 
   test('testing minAppVersion', () async {

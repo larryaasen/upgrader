@@ -1,10 +1,15 @@
+/*
+ * Copyright (c) 2018-2022 Larry Aasen. All rights reserved.
+ */
 import 'dart:io';
 
 import 'package:mockito/mockito.dart';
 import 'package:upgrader/src/appcast.dart';
 import 'package:upgrader/src/upgrader.dart';
 
-class FakeAppcast extends Fake implements Appcast {
+import 'appcast_test.dart';
+
+class FakeAppcast extends Fake implements TestAppcast {
   int callCount = 0;
 
   @override

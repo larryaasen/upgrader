@@ -19,7 +19,7 @@ void main() {
     expect(messages, isNotNull);
 
     var expectationMet = false;
-    var widget = Text('Tester');
+    var widget = const Text('Tester');
 
     await tester.pumpWidget(
       StatefulBuilder(
@@ -51,6 +51,7 @@ void main() {
     expect(messages.buttonTitleLater, 'MÁS TARDE');
     expect(messages.buttonTitleUpdate, 'ACTUALIZAR');
     expect(messages.prompt, '¿Le gustaría actualizar ahora?');
+    expect(messages.releaseNotes, 'Notas De Lanzamiento');
     expect(messages.title, '¿Actualizar la aplicación?');
   });
 
@@ -67,6 +68,8 @@ void main() {
         en.message(UpgraderMessage.buttonTitleUpdate));
     expect(
         bb.message(UpgraderMessage.prompt), en.message(UpgraderMessage.prompt));
+    expect(bb.message(UpgraderMessage.releaseNotes),
+        en.message(UpgraderMessage.releaseNotes));
     expect(
         bb.message(UpgraderMessage.title), en.message(UpgraderMessage.title));
   });
