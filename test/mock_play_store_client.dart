@@ -11,6 +11,7 @@ import 'package:upgrader/upgrader.dart';
 final _filenames = {
   'com.kotoko.express': 'test_play_store_page1.txt',
   'com.testing.test2': 'test_play_store_page2.txt',
+  'com.kulture.android': 'test_play_store_page3.txt'
 };
 
 // Create a MockClient using the Mock class provided by the Mockito package.

@@ -107,7 +107,10 @@ class PlayStoreResults {
       final releaseNotes = releaseNotesElement
           .querySelector('.PHBdkd')
           ?.querySelector('.DWPxHb')
-          ?.text;
+          ?.querySelector('span')
+          ?.nodes
+          .map((n) => n is Element && n.localName == 'br' ? '\n' : n.text)
+          .join('');
 
       return releaseNotes;
     } catch (e) {

@@ -66,6 +66,21 @@ void main() {
     expect(PlayStoreResults.description(response)?.length, greaterThan(10));
   }, skip: false);
 
+  test('testing release notes', () async {
+    final client = await MockPlayStoreSearchClient.setupMockClient();
+    final playStore = PlayStoreSearchAPI();
+    playStore.client = client;
+
+    final response = await playStore.lookupById('com.kulture.android');
+    expect(response, isNotNull);
+    expect(response, isInstanceOf<Document>());
+
+    expect(PlayStoreResults.releaseNotes(response!),
+        '* easier access to priority notes\n* bug fixes\n* performance improvements');
+    expect(PlayStoreResults.version(response), '1.0.18');
+    expect(PlayStoreResults.description(response)?.length, greaterThan(10));
+  }, skip: false);
+
   test('testing PlayStoreResults', () async {
     expect(PlayStoreResults(), isNotNull);
     expect(PlayStoreResults.releaseNotes(Document()), isNull);
