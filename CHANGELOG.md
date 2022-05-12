@@ -1,3 +1,7 @@
+## 4.1.0
+
+* Minor updates after upgrading Flutter to 3.0.0 and Dart to 2.17.0.
+
 ## 4.0.0
 
 * [BREAKING] No more singleton. This is a huge update to remove the use of a singleton for Upgrader.
