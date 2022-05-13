@@ -1,3 +1,7 @@
+## 4.1.1
+
+* Fixed error from pub.dev because it used Flutter 2.10.5: "The property 'window' can't be unconditionally accessed because the receiver can be 'null'."
+
 ## 4.1.0
 
 * Minor updates after upgrading Flutter to 3.0.0 and Dart to 2.17.0.

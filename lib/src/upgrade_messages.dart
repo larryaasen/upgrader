@@ -82,7 +82,7 @@ class UpgraderMessages {
       locale = Localizations.maybeLocaleOf(context);
     } else {
       // Get the system locale
-      locale = WidgetsBinding.instance.window.locale;
+      locale = WidgetsBinding.instance!.window.locale;
     }
     final code = locale == null || locale.languageCode.isEmpty
         ? 'en'
