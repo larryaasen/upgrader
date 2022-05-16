@@ -34,7 +34,7 @@ typedef WillDisplayUpgradeCallback = void Function(
     String? appStoreVersion});
 
 /// There are two different dialog styles: Cupertino and Material
-enum UpgradeDialogStyle { cupertino, material }
+enum UpgradeDialogStyle { cupertino, material, custom }
 
 /// A class to define the configuration for the appcast. The configuration
 /// contains two parts: a URL to the appcast, and a list of supported OS
@@ -537,19 +537,45 @@ class Upgrader {
 
     // Save the date/time as the last time alerted.
     saveLastAlerted();
-
-    showDialog(
-      barrierDismissible: canDismissDialog,
-      context: context,
-      builder: (BuildContext context) {
-        return WillPopScope(
-          onWillPop: () async => _shouldPopScope(),
-          child: dialogStyle == UpgradeDialogStyle.material
-              ? _alertDialog(title!, message, releaseNotes, context)
-              : _cupertinoAlertDialog(title!, message, releaseNotes, context),
+    switch (dialogStyle) {
+      case UpgradeDialogStyle.cupertino:
+        showDialog(
+          barrierDismissible: canDismissDialog,
+          context: context,
+          builder: (BuildContext context) {
+            return WillPopScope(
+              onWillPop: () async => _shouldPopScope(),
+              child:
+                  _cupertinoAlertDialog(title!, message, releaseNotes, context),
+            );
+          },
         );
-      },
-    );
+        break;
+      case UpgradeDialogStyle.material:
+        showDialog(
+          barrierDismissible: canDismissDialog,
+          context: context,
+          builder: (BuildContext context) {
+            return WillPopScope(
+              onWillPop: () async => _shouldPopScope(),
+              child: _alertDialog(title!, message, releaseNotes, context),
+            );
+          },
+        );
+        break;
+      case UpgradeDialogStyle.custom:
+        showDialog(
+          barrierDismissible: canDismissDialog,
+          context: context,
+          builder: (BuildContext context) {
+            return WillPopScope(
+              onWillPop: () async => _shouldPopScope(),
+              child: customAlertDialog(title!, message, releaseNotes, context),
+            );
+          },
+        );
+        break;
+    }
   }
 
   /// Called when the user taps outside of the dialog and [canDismissDialog]
@@ -618,6 +644,11 @@ class Upgrader {
             onPressed: () => onUserUpdated(context, !blocked())),
       ],
     );
+  }
+  /// override this method for showing customAlertDialog
+  Widget customAlertDialog(String title, String message, String? releaseNotes,
+      BuildContext context) {
+    return const Dialog();
   }
 
   CupertinoAlertDialog _cupertinoAlertDialog(String title, String message,
