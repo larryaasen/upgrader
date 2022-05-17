@@ -4,6 +4,12 @@
 
 import 'package:flutter/material.dart';
 
+/// This allows a value of type T or T? to be treated as a value of type T?.
+///
+/// We use this so that APIs that have become non-nullable can still be used
+/// with `!` and `?` to support older versions of the API as well.
+T? ambiguate<T>(T? value) => value;
+
 /// The message identifiers used in upgrader.
 enum UpgraderMessage {
   /// Body of the upgrade message
@@ -82,7 +88,7 @@ class UpgraderMessages {
       locale = Localizations.maybeLocaleOf(context);
     } else {
       // Get the system locale
-      locale = WidgetsBinding.instance!.window.locale;
+      locale = ambiguate(WidgetsBinding.instance)!.window.locale;
     }
     final code = locale == null || locale.languageCode.isEmpty
         ? 'en'

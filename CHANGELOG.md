@@ -1,3 +1,9 @@
+## 4.1.2
+
+* Fixed Flutter 3 warnings related to `WidgetsBinding.instance`.
+* Fixed a typo in the Persian body message.
+* Updated xml dependency to ">=5.0.2 <7.0.0".
+
 ## 4.1.1
 
 * Fixed error from pub.dev because it used Flutter 2.10.5: "The property 'window' can't be unconditionally accessed because the receiver can be 'null'."

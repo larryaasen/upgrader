@@ -515,7 +515,7 @@ class Upgrader {
       locale = Localizations.maybeLocaleOf(context);
     } else {
       // Get the system locale
-      locale = WidgetsBinding.instance!.window.locale;
+      locale = ambiguate(WidgetsBinding.instance)!.window.locale;
     }
     final code = locale == null || locale.countryCode == null
         ? 'US'

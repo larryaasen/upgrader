@@ -86,7 +86,10 @@ class Appcast {
       // Parse the XML
       final document = XmlDocument.parse(xmlString);
 
-      var items = <AppcastItem>[];
+      // Ensure the root element is valid
+      document.rootElement;
+
+      var localItems = <AppcastItem>[];
 
       // look for all item elements in the rss/channel
       document.findAllElements('item').forEach((XmlElement itemElement) {
@@ -167,10 +170,10 @@ class Appcast {
           fileURL: fileURL,
           versionString: newVersion,
         );
-        items.add(item);
+        localItems.add(item);
       });
 
-      this.items = items;
+      items = localItems;
     } catch (e) {
       print(e);
     }
