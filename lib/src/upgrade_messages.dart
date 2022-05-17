@@ -121,7 +121,7 @@ class UpgraderMessages {
         break;
       case 'fa':
         message =
-            'نسخه‌ی جدیدی از {{appname}} موجود است! نسخه‌ی {{currentAppStoreVersion}} در دسترس است ولی شما همچنان از نسخه‌ی {{currentInstalledVersion}} استفاده می‌کنید.';
+            'نسخه‌ی جدیدی از {{appName}} موجود است! نسخه‌ی {{currentAppStoreVersion}} در دسترس است ولی شما همچنان از نسخه‌ی {{currentInstalledVersion}} استفاده می‌کنید.';
         break;
       case 'fil':
         message =
