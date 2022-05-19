@@ -1,3 +1,7 @@
+## 4.2.0
+
+* Updated Play Store release notes containing <br> to use newline ('\n') instead.
+
 ## 4.1.2
 
 * Fixed Flutter 3 warnings related to `WidgetsBinding.instance`.
