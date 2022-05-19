@@ -59,6 +59,8 @@ class PlayStoreSearchAPI {
 }
 
 class PlayStoreResults {
+  static RegExp releaseNotesSpan = RegExp(r'>(.*?)</span>');
+  
   /// Return field description from Play Store results.
   static String? description(Document response) {
     try {
@@ -104,10 +106,26 @@ class PlayStoreResults {
       final releaseNotesElement = sectionElements.firstWhere(
           (elm) => elm.querySelector('.wSaTQd')!.text == 'What\'s New',
           orElse: () => sectionElements[0]);
-      final releaseNotes = releaseNotesElement
+
+      String? releaseNotes;
+      
+      Element? rawReleaseNotes = releaseNotesElement
           .querySelector('.PHBdkd')
-          ?.querySelector('.DWPxHb')
-          ?.text;
+          ?.querySelector('.DWPxHb');
+      String? innerHtml = rawReleaseNotes!.innerHtml.toString();
+
+      /// Solve the multiline problem with release notes
+      if (releaseNotesSpan.hasMatch(innerHtml)) {
+        releaseNotes =
+            releaseNotesSpan.firstMatch(innerHtml.toString())!.group(1);
+        // Detect default multiline replacement
+        releaseNotes = releaseNotes!.replaceAll('<br>', '\n');
+      } else {
+        /// Fallback to normal method
+        releaseNotes = rawReleaseNotes.text;
+      }
+
+      // print(releaseNotes);
 
       return releaseNotes;
     } catch (e) {
