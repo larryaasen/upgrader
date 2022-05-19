@@ -60,7 +60,7 @@ class PlayStoreSearchAPI {
 
 class PlayStoreResults {
   static RegExp releaseNotesSpan = RegExp(r'>(.*?)</span>');
-  
+
   /// Return field description from Play Store results.
   static String? description(Document response) {
     try {
@@ -108,7 +108,7 @@ class PlayStoreResults {
           orElse: () => sectionElements[0]);
 
       String? releaseNotes;
-      
+
       Element? rawReleaseNotes = releaseNotesElement
           .querySelector('.PHBdkd')
           ?.querySelector('.DWPxHb');
