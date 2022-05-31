@@ -95,7 +95,7 @@ class MyApp extends StatelessWidget {
 You can also display a Cupertino style dialog by using the `dialogStyle` parameter.
 ```dart
           body: UpgradeAlert(
-            Upgrader(dialogStyle: UpgradeDialogStyle.cupertino),
+            upgrader: Upgrader(dialogStyle: UpgradeDialogStyle.cupertino),
             child: Center(child: Text('Checking...')),
           )
 ```
