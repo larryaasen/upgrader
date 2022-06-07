@@ -107,31 +107,53 @@ class PlayStoreResults {
           (elm) => elm.querySelector('.wSaTQd')!.text == 'What\'s New',
           orElse: () => sectionElements[0]);
 
-      String? releaseNotes;
-
       Element? rawReleaseNotes = releaseNotesElement
           .querySelector('.PHBdkd')
           ?.querySelector('.DWPxHb');
       String? innerHtml = rawReleaseNotes!.innerHtml.toString();
-
-      /// Solve the multiline problem with release notes
-      if (releaseNotesSpan.hasMatch(innerHtml)) {
-        releaseNotes =
-            releaseNotesSpan.firstMatch(innerHtml.toString())!.group(1);
-        // Detect default multiline replacement
-        releaseNotes = releaseNotes!.replaceAll('<br>', '\n');
-      } else {
-        /// Fallback to normal method
-        releaseNotes = rawReleaseNotes.text;
-      }
-
-      // print(releaseNotes);
+      String? releaseNotes = multilineDescription(innerHtml, rawReleaseNotes);
 
       return releaseNotes;
     } catch (e) {
-      print('upgrader: PlayStoreResults.releaseNotes exception: $e');
+      print(
+          'upgrader: PlayStoreResults.releaseNotes exception, trying redesignedVersion: $e');
+      return redesignedReleaseNotes(response);
+    }
+  }
+
+  /// Returns field releaseNotes from Redesigned Play Store results. When there are no
+  /// release notes, the main app description is used.
+  static String? redesignedReleaseNotes(Document response) {
+    try {
+      final sectionElements =
+          response.querySelectorAll('[itemprop="description"]');
+
+      Element? rawReleaseNotes = sectionElements.last;
+      String? innerHtml = rawReleaseNotes.innerHtml.toString();
+      String? releaseNotes = multilineDescription(innerHtml, rawReleaseNotes);
+
+      return releaseNotes;
+    } catch (e) {
+      print('upgrader: PlayStoreResults.redesignedReleaseNotes exception: $e');
     }
     return null;
+  }
+
+  static String? multilineDescription(
+      String innerHtml, Element rawReleaseNotes) {
+    String? releaseNotes;
+
+    if (releaseNotesSpan.hasMatch(innerHtml)) {
+      releaseNotes =
+          releaseNotesSpan.firstMatch(innerHtml.toString())!.group(1);
+      // Detect default multiline replacement
+      releaseNotes = releaseNotes!.replaceAll('<br>', '\n');
+    } else {
+      /// Fallback to normal method
+      releaseNotes = rawReleaseNotes.text;
+    }
+
+    return releaseNotes;
   }
 
   /// Return field version from Play Store results.
