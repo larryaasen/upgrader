@@ -60,10 +60,9 @@ void main() {
     expect(response, isNotNull);
     expect(response, isInstanceOf<Document>());
 
-    // TODO: test releaseNotes
-    // expect(PlayStoreResults.releaseNotes(response!),
-    //     'Minor updates and improvements.');
-    expect(PlayStoreResults.version(response!), '2.3.0');
+    expect(PlayStoreResults.releaseNotes(response!),
+        'Minor updates and improvements.');
+    expect(PlayStoreResults.version(response), '2.3.0');
 
     expect(await playStore.lookupById('com.not.a.valid.application'), isNull);
   }, skip: false);
