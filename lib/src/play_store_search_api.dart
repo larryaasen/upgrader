@@ -146,7 +146,59 @@ class PlayStoreResults {
       // storeVersion might be: 'Varies with device', which is not a valid version.
       version = Version.parse(storeVersion).toString();
     } catch (e) {
-      print('upgrader: PlayStoreResults.version exception: $e');
+      print(
+        'upgrader: PlayStoreResults.version exception, trying redesignedVersion: $e',
+      );
+      return redesignedVersion(response);
+    }
+
+    return version;
+  }
+
+  /// Return field version from Redesigned Play Store results.
+  static String? redesignedVersion(Document response) {
+    String? version;
+    try {
+      const patternName = ",\"name\":\"";
+      const patternVersion = ",[[[\"";
+      const patternCallback = "AF_initDataCallback";
+      const patternEndOfString = "\"";
+
+      final scripts = response.getElementsByTagName("script");
+      final infoElements =
+          scripts.where((element) => element.text.contains(patternName));
+      final additionalInfoElements =
+          scripts.where((element) => element.text.contains(patternCallback));
+      final additionalInfoElementsFiltered = additionalInfoElements
+          .where((element) => element.text.contains(patternVersion));
+
+      final nameElement = infoElements.first.text;
+      final storeNameStartIndex =
+          nameElement.indexOf(patternName) + patternName.length;
+      final storeNameEndIndex = storeNameStartIndex +
+          nameElement
+              .substring(storeNameStartIndex)
+              .indexOf(patternEndOfString);
+      final storeName =
+          nameElement.substring(storeNameStartIndex, storeNameEndIndex);
+
+      final versionElement = additionalInfoElementsFiltered
+          .where((element) => element.text.contains("\"$storeName\""))
+          .first
+          .text;
+      final storeVersionStartIndex =
+          versionElement.lastIndexOf(patternVersion) + patternVersion.length;
+      final storeVersionEndIndex = storeVersionStartIndex +
+          versionElement
+              .substring(storeVersionStartIndex)
+              .indexOf(patternEndOfString);
+      final storeVersion = versionElement.substring(
+          storeVersionStartIndex, storeVersionEndIndex);
+
+      // storeVersion might be: 'Varies with device', which is not a valid version.
+      version = Version.parse(storeVersion).toString();
+    } catch (e) {
+      print('upgrader: PlayStoreResults.redesignedVersion exception: $e');
     }
 
     return version;

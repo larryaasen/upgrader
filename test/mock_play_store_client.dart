@@ -12,6 +12,7 @@ final _filenames = {
   'com.kotoko.express': 'test_play_store_page1.txt',
   'com.testing.test2': 'test_play_store_page2.txt',
   'com.testing.test3': 'test_play_store_page3.txt',
+  'com.testing.test4': 'test_play_store_page4.txt',
 };
 
 // Create a MockClient using the Mock class provided by the Mockito package.
