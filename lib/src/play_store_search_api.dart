@@ -111,7 +111,7 @@ class PlayStoreResults {
           .querySelector('.PHBdkd')
           ?.querySelector('.DWPxHb');
       String? innerHtml = rawReleaseNotes!.innerHtml.toString();
-      String? releaseNotes = multilineDescription(innerHtml, rawReleaseNotes);
+      String? releaseNotes = multilineReleaseNotes(innerHtml, rawReleaseNotes);
 
       return releaseNotes;
     } catch (e) {
@@ -130,7 +130,7 @@ class PlayStoreResults {
 
       Element? rawReleaseNotes = sectionElements.last;
       String? innerHtml = rawReleaseNotes.innerHtml.toString();
-      String? releaseNotes = multilineDescription(innerHtml, rawReleaseNotes);
+      String? releaseNotes = multilineReleaseNotes(innerHtml, rawReleaseNotes);
 
       return releaseNotes;
     } catch (e) {
@@ -139,7 +139,7 @@ class PlayStoreResults {
     return null;
   }
 
-  static String? multilineDescription(
+  static String? multilineReleaseNotes(
       String innerHtml, Element rawReleaseNotes) {
     String? releaseNotes;
 
