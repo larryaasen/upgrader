@@ -63,6 +63,7 @@ void main() {
     expect(PlayStoreResults.releaseNotes(response!),
         'Minor updates and improvements.');
     expect(PlayStoreResults.version(response), '2.3.0');
+    expect(PlayStoreResults.description(response)?.length, greaterThan(10));
 
     expect(await playStore.lookupById('com.not.a.valid.application'), isNull);
   }, skip: false);
