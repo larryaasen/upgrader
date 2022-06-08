@@ -72,6 +72,21 @@ class PlayStoreResults {
           ?.text;
       return description;
     } catch (e) {
+      print(
+        'upgrader: PlayStoreResults.description exception, trying redesignedVersion: $e',
+      );
+      return redesignedDescription(response);
+    }
+  }
+
+  /// Return field description from Redesigned Play Store results.
+  static String? redesignedDescription(Document response) {
+    try {
+      final sectionElements = response.getElementsByClassName('bARER');
+      final descriptionElement = sectionElements.last;
+      final description = descriptionElement.text;
+      return description;
+    } catch (e) {
       print('upgrader: PlayStoreResults.description exception: $e');
     }
     return null;
