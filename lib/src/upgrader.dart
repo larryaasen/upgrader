@@ -295,7 +295,9 @@ class Upgrader {
           final mav = ITunesResults.minAppVersion(response);
           if (mav != null) {
             minAppVersion = mav.toString();
-            print('upgrader: ITunesResults.minAppVersion: $minAppVersion');
+            if (debugLogging) {
+              print('upgrader: ITunesResults.minAppVersion: $minAppVersion');
+            }
           }
         }
       }
@@ -317,7 +319,9 @@ class Upgrader {
       final mav = PlayStoreResults.minAppVersion(response);
       if (mav != null) {
         minAppVersion = mav.toString();
-        print('upgrader: PlayStoreResults.minAppVersion: $minAppVersion');
+        if (debugLogging) {
+          print('upgrader: PlayStoreResults.minAppVersion: $minAppVersion');
+        }
       }
     }
 
@@ -754,7 +758,7 @@ class Upgrader {
     await prefs.setString('lastTimeAlerted', _lastTimeAlerted.toString());
 
     _lastVersionAlerted = _appStoreVersion;
-    await prefs.setString('lastVersionAlerted', _lastVersionAlerted!);
+    await prefs.setString('lastVersionAlerted', _lastVersionAlerted ?? '');
 
     _hasAlerted = true;
     return true;

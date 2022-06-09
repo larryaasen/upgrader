@@ -377,6 +377,7 @@ resultsFuture.then((results) {
 There is a command line app used to display the results from Google Play Store. The code is located in
 bin/playstore_lookup.dart, and can be run from the command line like this:
 ```
+$ cd bin
 $ dart playstore_lookup.dart id=com.google.android.apps.mapslite
 ```
 Results:
