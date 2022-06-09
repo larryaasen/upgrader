@@ -1,4 +1,11 @@
-## 4.2.0
+## [4.2.1-alpha.1]
+
+* After the latest update to the Play Store, the Android app version was not being
+found on the Play Store. This has been resolved.
+
+This is a pre-release to allow for testing with a large amount of developers.
+
+## [4.2.0]
 
 * Updated Play Store release notes containing <br> to use newline ('\n') instead.
 

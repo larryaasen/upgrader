@@ -9,6 +9,12 @@ import 'package:version/version.dart';
 
 import 'mock_play_store_client.dart';
 
+/// Helper method
+String? pmav(Document response) {
+  final mav = PlayStoreResults.minAppVersion(response);
+  return mav?.toString();
+}
+
 void main() {
   test('testing version assumptions', () async {
     expect(() => Version.parse(null), throwsA(isA<FormatException>()));
@@ -64,6 +70,7 @@ void main() {
         'Minor updates and improvements.');
     expect(PlayStoreResults.version(response), '2.3.0');
     expect(PlayStoreResults.description(response)?.length, greaterThan(10));
+    expect(pmav(response), '2.0.0');
 
     expect(await playStore.lookupById('com.not.a.valid.application'), isNull);
   }, skip: false);
@@ -109,12 +116,6 @@ void main() {
     final html =
         '<div class="W4P4ne">hello<div class="PHBdkd">inside<div class="DWPxHb">$description</div></div></div>';
     return Document.html(html);
-  }
-
-  /// Helper method
-  String? pmav(Document response) {
-    final mav = PlayStoreResults.minAppVersion(response);
-    return mav?.toString();
   }
 
   test('testing minAppVersion', () async {
