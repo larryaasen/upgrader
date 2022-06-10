@@ -1,13 +1,17 @@
+## [4.2.1-alpha.2]
+
+Removed noisy exception messages that were logged during Play Store access.
+
 ## [4.2.1-alpha.1]
 
-* After the latest update to the Play Store, the Android app version was not being
+After the latest update to the Play Store, the Android app version was not being
 found on the Play Store. This has been resolved.
 
 This is a pre-release to allow for testing with a large amount of developers.
 
 ## [4.2.0]
 
-* Updated Play Store release notes containing <br> to use newline ('\n') instead.
+Updated Play Store release notes containing <br> to use newline ('\n') instead.
 
 ## 4.1.2
 

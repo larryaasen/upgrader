@@ -72,9 +72,6 @@ class PlayStoreResults {
           ?.text;
       return description;
     } catch (e) {
-      print(
-        'upgrader: PlayStoreResults.description exception, trying redesignedVersion: $e',
-      );
       return redesignedDescription(response);
     }
   }
@@ -87,7 +84,7 @@ class PlayStoreResults {
       final description = descriptionElement.text;
       return description;
     } catch (e) {
-      print('upgrader: PlayStoreResults.description exception: $e');
+      print('upgrader: PlayStoreResults.redesignedDescription exception: $e');
     }
     return null;
   }
@@ -130,8 +127,6 @@ class PlayStoreResults {
 
       return releaseNotes;
     } catch (e) {
-      print(
-          'upgrader: PlayStoreResults.releaseNotes exception, trying redesignedVersion: $e');
       return redesignedReleaseNotes(response);
     }
   }
@@ -183,9 +178,6 @@ class PlayStoreResults {
       // storeVersion might be: 'Varies with device', which is not a valid version.
       version = Version.parse(storeVersion).toString();
     } catch (e) {
-      print(
-        'upgrader: PlayStoreResults.version exception, trying redesignedVersion: $e',
-      );
       return redesignedVersion(response);
     }
 
