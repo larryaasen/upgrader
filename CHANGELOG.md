@@ -1,3 +1,9 @@
+## [4.2.1] - 2022-06-12
+
+- After the latest update to the Play Store, the Android app version was not being
+found on the Play Store. This has been resolved.
+- Changed the "upgrader: instantiated." message to be behind debugLogging.
+
 ## [4.2.1-alpha.2]
 
 Removed noisy exception messages that were logged during Play Store access.
