@@ -792,10 +792,8 @@ class Upgrader {
 
     if (await canLaunchUrl(Uri.parse(_appStoreListingURL!))) {
       try {
-        await launchUrl(
-            Uri.parse(_appStoreListingURL!),
-            mode: LaunchMode.externalNonBrowserApplication
-        );
+        await launchUrl(Uri.parse(_appStoreListingURL!),
+            mode: LaunchMode.externalNonBrowserApplication);
       } catch (e) {
         if (debugLogging) {
           print('upgrader: launch to app store failed: $e');

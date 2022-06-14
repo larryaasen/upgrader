@@ -1,3 +1,9 @@
+## [4.2.2-alpha.1] - 2022-06-14
+
+Fixed an issue on Android when the Webview was opening instead of the Play Store.
+
+This is a pre-release to allow for testing with a large amount of developers.
+
 ## [4.2.1] - 2022-06-12
 
 - After the latest update to the Play Store, the Android app version was not being
