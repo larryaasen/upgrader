@@ -46,6 +46,7 @@ void main() {
       preferences = prefs;
       return Upgrader.clearSavedSettings().then((_) {
         print('main.setUp completed');
+        return true;
       });
     });
   });
