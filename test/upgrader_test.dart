@@ -41,9 +41,13 @@ void main() {
       }
       return null;
     });
-    preferences = await SharedPreferences.getInstance();
-    await Upgrader.clearSavedSettings();
-    print('main.setUp completed');
+    return SharedPreferences.getInstance()
+        .then((SharedPreferences prefs) async {
+      preferences = prefs;
+      return Upgrader.clearSavedSettings().then((_) {
+        print('main.setUp completed');
+      });
+    });
   });
 
   tearDown(() async {
