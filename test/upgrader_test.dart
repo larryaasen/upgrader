@@ -27,6 +27,7 @@ void main() {
   const kEmptyPreferences = <String, dynamic>{};
 
   setUp(() async {
+    print('main.setUp started');
     // This idea to mock the shared preferences taken from:
     /// https://github.com/flutter/plugins/blob/master/packages/shared_preferences/test/shared_preferences_test.dart
     sharedPrefsChannel.setMockMethodCallHandler((MethodCall methodCall) async {
@@ -42,6 +43,7 @@ void main() {
     });
     preferences = await SharedPreferences.getInstance();
     await Upgrader.clearSavedSettings();
+    print('main.setUp completed');
   });
 
   tearDown(() async {
