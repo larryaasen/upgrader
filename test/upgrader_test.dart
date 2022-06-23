@@ -53,6 +53,7 @@ void main() {
 
   tearDown(() async {
     await preferences.clear();
+    return true;
   });
 
   testWidgets('test Upgrader sharedInstance', (WidgetTester tester) async {
