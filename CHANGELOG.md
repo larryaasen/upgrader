@@ -1,3 +1,7 @@
+## [Unreleased]
+
+Improved the use of shared preferences in unit test.
+
 ## [4.2.2]
 
 Fixed an issue on Android when the Webview was opening instead of the Play Store.

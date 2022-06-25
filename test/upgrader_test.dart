@@ -4,7 +4,6 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,37 +17,12 @@ import 'mock_play_store_client.dart';
 // defaultTargetPlatform is TargetPlatform.android in a unit test.
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   late SharedPreferences preferences;
 
-  const sharedPrefsChannel = MethodChannel(
-    'plugins.flutter.io/shared_preferences',
-  );
-
-  const kEmptyPreferences = <String, dynamic>{};
-
   setUp(() async {
-    print('main.setUp started');
-    // This idea to mock the shared preferences taken from:
-    /// https://github.com/flutter/plugins/blob/master/packages/shared_preferences/test/shared_preferences_test.dart
-    sharedPrefsChannel.setMockMethodCallHandler((MethodCall methodCall) async {
-      if (methodCall.method == 'getAll') {
-        return kEmptyPreferences;
-      }
-      if (methodCall.method == 'clear' ||
-          methodCall.method == 'remove' ||
-          methodCall.method == 'setString') {
-        return true;
-      }
-      return null;
-    });
-    return SharedPreferences.getInstance()
-        .then((SharedPreferences prefs) async {
-      preferences = prefs;
-      return Upgrader.clearSavedSettings().then((_) {
-        print('main.setUp completed');
-        return true;
-      });
-    });
+    SharedPreferences.setMockInitialValues({});
+    preferences = await SharedPreferences.getInstance();
   });
 
   tearDown(() async {
