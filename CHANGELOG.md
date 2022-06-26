@@ -1,6 +1,7 @@
-## [Unreleased]
+## [4.3.0]
 
-Improved the use of shared preferences in unit test.
+- Updated device_info_plus to support version ranges from >=3.2.0 to <4.1.0.
+- Improved the use of shared preferences in unit test.
 
 ## [4.2.2]
 
