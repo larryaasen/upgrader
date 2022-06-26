@@ -2,6 +2,8 @@
 
 - Updated the version package to support version ranges from >=2.0.0 <3.1.0.
 - Improved exception handling around version parsing.
+- Fixed methods ITunesResults.minAppVersion and PlayStoreResults.minAppVersion to
+handle tagName parameter properly.
 
 ## [4.3.0]
 

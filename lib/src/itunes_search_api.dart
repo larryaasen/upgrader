@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2021 Larry Aasen. All rights reserved.
+ * Copyright (c) 2018-2022 Larry Aasen. All rights reserved.
  */
 
 import 'dart:async';
@@ -177,7 +177,8 @@ class ITunesResults {
     try {
       final description = ITunesResults.description(response);
       if (description != null) {
-        const regExpSource = r'\[\:mav\:[\s]*(?<version>[^\s]+)[\s]*\]';
+        String regExpSource = r"\[\:tagName\:[\s]*(?<version>[^\s]+)[\s]*\]";
+        regExpSource = regExpSource.replaceAll(RegExp('tagName'), tagName);
         final regExp = RegExp(regExpSource, caseSensitive: false);
         final match = regExp.firstMatch(description);
         final mav = match?.namedGroup('version');
@@ -187,7 +188,7 @@ class ITunesResults {
             // Verify version string using class Version
             version = Version.parse(mav);
           } on Exception catch (e) {
-            print('upgrader: ITunesResults.minAppVersion: mav error: $e');
+            print('upgrader: ITunesResults.minAppVersion: $tagName error: $e');
           }
         }
       }

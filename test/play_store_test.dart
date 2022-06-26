@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2021 Larry Aasen. All rights reserved.
+ * Copyright (c) 2019-2022 Larry Aasen. All rights reserved.
  */
 
 import 'package:flutter_test/flutter_test.dart';
@@ -10,8 +10,8 @@ import 'package:version/version.dart';
 import 'mock_play_store_client.dart';
 
 /// Helper method
-String? pmav(Document response) {
-  final mav = PlayStoreResults.minAppVersion(response);
+String? pmav(Document response, {String tagName = 'mav'}) {
+  final mav = PlayStoreResults.minAppVersion(response, tagName: tagName);
   return mav?.toString();
 }
 
@@ -129,4 +129,9 @@ void main() {
     expect(pmav(resDesc('test [:mav:]')), isNull);
     expect(pmav(resDesc('test [:mv: 1.2.3]')), isNull);
   }, skip: false);
+
+  test('testing minAppVersion mav tag', () async {
+    expect(pmav(resDesc('test [:mav: 1.2.3]'), tagName: 'ddd'), isNull);
+    expect(pmav(resDesc('test [:ddd: 1.2.3]'), tagName: 'ddd'), '1.2.3');
+  });
 }

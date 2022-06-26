@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Larry Aasen. All rights reserved.
+ * Copyright (c) 2019-2022 Larry Aasen. All rights reserved.
  */
 
 import 'package:flutter_test/flutter_test.dart';
@@ -125,8 +125,8 @@ void main() {
   }
 
   /// Helper method
-  String? imav(Map response) {
-    final mav = ITunesResults.minAppVersion(response);
+  String? imav(Map response, {String tagName = 'mav'}) {
+    final mav = ITunesResults.minAppVersion(response, tagName: tagName);
     return mav?.toString();
   }
 
@@ -142,4 +142,9 @@ void main() {
     expect(imav(resDesc('test [:mav:]')), isNull);
     expect(imav(resDesc('test [:mv: 1.2.3]')), isNull);
   }, skip: false);
+
+  test('testing minAppVersion mav tag', () async {
+    expect(imav(resDesc('test [:mav: 1.2.3]'), tagName: 'ddd'), isNull);
+    expect(imav(resDesc('test [:ddd: 1.2.3]'), tagName: 'ddd'), '1.2.3');
+  });
 }

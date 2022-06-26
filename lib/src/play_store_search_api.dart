@@ -97,7 +97,8 @@ class PlayStoreResults {
     try {
       final description = PlayStoreResults.description(response);
       if (description != null) {
-        const regExpSource = r'\[\:mav\:[\s]*(?<version>[^\s]+)[\s]*\]';
+        String regExpSource = r"\[\:tagName\:[\s]*(?<version>[^\s]+)[\s]*\]";
+        regExpSource = regExpSource.replaceAll(RegExp('tagName'), tagName);
         final regExp = RegExp(regExpSource, caseSensitive: false);
         final match = regExp.firstMatch(description);
         final mav = match?.namedGroup('version');
@@ -107,7 +108,8 @@ class PlayStoreResults {
             // Verify version string using class Version
             version = Version.parse(mav);
           } on Exception catch (e) {
-            print('upgrader: PlayStoreResults.minAppVersion: mav error: $e');
+            print(
+                'upgrader: PlayStoreResults.minAppVersion: $tagName error: $e');
           }
         }
       }
