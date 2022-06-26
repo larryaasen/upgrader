@@ -1,6 +1,11 @@
+## [4.4.0]
+
+- Updated the version package to support version ranges from >=2.0.0 <3.1.0.
+- Improved exception handling around version parsing.
+
 ## [4.3.0]
 
-- Updated device_info_plus to support version ranges from >=3.2.0 to <4.1.0.
+- Updated the device_info_plus package to support version ranges from >=3.2.0 to <4.1.0.
 - Improved the use of shared preferences in unit test.
 
 ## [4.2.2]

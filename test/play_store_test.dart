@@ -17,7 +17,6 @@ String? pmav(Document response) {
 
 void main() {
   test('testing version assumptions', () async {
-    expect(() => Version.parse(null), throwsA(isA<FormatException>()));
     expect(() => Version.parse(''), throwsA(isA<FormatException>()));
     expect(() => Version.parse('Varies with device'),
         throwsA(isA<FormatException>()));

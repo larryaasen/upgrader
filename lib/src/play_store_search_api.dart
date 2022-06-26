@@ -101,8 +101,15 @@ class PlayStoreResults {
         final regExp = RegExp(regExpSource, caseSensitive: false);
         final match = regExp.firstMatch(description);
         final mav = match?.namedGroup('version');
-        // Verify version string using class Version
-        version = mav != null ? Version.parse(mav) : null;
+
+        if (mav != null) {
+          try {
+            // Verify version string using class Version
+            version = Version.parse(mav);
+          } on Exception catch (e) {
+            print('upgrader: PlayStoreResults.minAppVersion: mav error: $e');
+          }
+        }
       }
     } on Exception catch (e) {
       print('upgrader.PlayStoreResults.minAppVersion : $e');

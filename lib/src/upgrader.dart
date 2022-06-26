@@ -487,23 +487,24 @@ class Upgrader {
       print('upgrader: minAppVersion: $minAppVersion');
     }
     if (_appStoreVersion == null || _installedVersion == null) {
-      if (debugLogging) {
-        print('upgrader: isUpdateAvailable: false');
-      }
+      if (debugLogging) print('upgrader: isUpdateAvailable: false');
       return false;
     }
 
     if (_updateAvailable == null) {
-      final appStoreVersion = Version.parse(_appStoreVersion!);
-      final installedVersion = Version.parse(_installedVersion!);
+      try {
+        final appStoreVersion = Version.parse(_appStoreVersion!);
+        final installedVersion = Version.parse(_installedVersion!);
 
-      final available = appStoreVersion > installedVersion;
-      _updateAvailable = available ? _appStoreVersion : null;
+        final available = appStoreVersion > installedVersion;
+        _updateAvailable = available ? _appStoreVersion : null;
+      } on Exception catch (e) {
+        print('upgrader: isUpdateAvailable: $e');
+      }
     }
-    if (debugLogging) {
-      print('upgrader: isUpdateAvailable: ${_updateAvailable != null}');
-    }
-    return _updateAvailable != null;
+    final isAvailable = _updateAvailable != null;
+    if (debugLogging) print('upgrader: isUpdateAvailable: $isAvailable');
+    return isAvailable;
   }
 
   bool shouldDisplayReleaseNotes() {
