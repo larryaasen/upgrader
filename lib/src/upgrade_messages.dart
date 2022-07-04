@@ -638,6 +638,8 @@ class UpgraderMessages {
       case 'fil':
       case 'fr':
       case 'de':
+        message = 'Versionshinweise';
+        break;
       case 'ht':
       case 'hu':
       case 'id':
