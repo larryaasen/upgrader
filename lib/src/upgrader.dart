@@ -3,6 +3,7 @@
  */
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -794,7 +795,7 @@ class Upgrader {
     if (await canLaunchUrl(Uri.parse(_appStoreListingURL!))) {
       try {
         await launchUrl(Uri.parse(_appStoreListingURL!),
-            mode: LaunchMode.externalNonBrowserApplication);
+            mode: Platform.isAndroid ? LaunchMode.externalNonBrowserApplication : LaunchMode.platformDefault);
       } catch (e) {
         if (debugLogging) {
           print('upgrader: launch to app store failed: $e');
