@@ -1,6 +1,10 @@
+## [4.4.2]
+
+Corrected CHANGELOG issue with version [4.4.1].
+
 ## [4.4.1]
 
-- <FIX> fixed launch url malfunction issue with iOS. (thanks to @samcho0608)
+Fixed launch url malfunction issue with iOS. (thanks to @samcho0608)
 
 ## [4.4.0]
 
