@@ -3,7 +3,6 @@
  */
 
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -795,7 +794,7 @@ class Upgrader {
     if (await canLaunchUrl(Uri.parse(_appStoreListingURL!))) {
       try {
         await launchUrl(Uri.parse(_appStoreListingURL!),
-            mode: Platform.isAndroid
+            mode: UpgradeIO.isAndroid
                 ? LaunchMode.externalNonBrowserApplication
                 : LaunchMode.platformDefault);
       } catch (e) {
