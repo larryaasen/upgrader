@@ -1,3 +1,7 @@
+## [4.4.1]
+
+- <FIX> fixed launch url malfunction issue with iOS. (thanks to @samcho0608)
+
 ## [4.4.0]
 
 - Updated the version package to support version ranges from >=2.0.0 <3.1.0.
