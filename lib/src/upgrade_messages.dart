@@ -628,6 +628,9 @@ class UpgraderMessages {
   String get releaseNotes {
     String message;
     switch (languageCode) {
+      case 'fr':
+        message = 'Notes de version';
+        break;
       case 'es':
         message = 'Notas De Lanzamiento';
         break;
@@ -636,7 +639,6 @@ class UpgraderMessages {
       case 'el':
       case 'fa':
       case 'fil':
-      case 'fr':
       case 'de':
       case 'ht':
       case 'hu':
