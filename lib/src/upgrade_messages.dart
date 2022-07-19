@@ -549,7 +549,7 @@ class UpgraderMessages {
         message = 'Gusto mo bang i-update ito ngayon?';
         break;
       case 'fr':
-        message = 'Voulez-vous mettre à jour maintenant?';
+        message = 'Voulez-vous mettre à jour maintenant ?';
         break;
       case 'de':
         message = 'Möchtest du jetzt aktualisieren?';
@@ -691,7 +691,7 @@ class UpgraderMessages {
         message = 'I-update ang app?';
         break;
       case 'fr':
-        message = 'Mettre à jour l\'application?';
+        message = 'Mettre à jour l\'application ?';
         break;
       case 'de':
         message = 'App aktualisieren?';
