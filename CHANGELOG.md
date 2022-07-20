@@ -1,5 +1,6 @@
 ## [Unreleased]
 
+- Added German releaseNotes translation. (thanks to @LenhartStephan)
 - Fixed punctuation for French language. (thanks to @benoitkugler)
 - Added French releaseNotes translation. (thanks to @benoitkugler)
 
