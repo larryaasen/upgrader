@@ -1,3 +1,8 @@
+## [Unreleased]
+
+- Fixed punctuation for French language. (thanks to @benoitkugler)
+- Added French releaseNotes translation. (thanks to @benoitkugler)
+
 ## [4.4.2]
 
 Corrected CHANGELOG issue with version [4.4.1].
