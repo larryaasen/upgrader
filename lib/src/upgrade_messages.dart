@@ -549,7 +549,7 @@ class UpgraderMessages {
         message = 'Gusto mo bang i-update ito ngayon?';
         break;
       case 'fr':
-        message = 'Voulez-vous mettre à jour maintenant?';
+        message = 'Voulez-vous mettre à jour maintenant ?';
         break;
       case 'de':
         message = 'Möchtest du jetzt aktualisieren?';
@@ -628,6 +628,9 @@ class UpgraderMessages {
   String get releaseNotes {
     String message;
     switch (languageCode) {
+      case 'fr':
+        message = 'Notes de version';
+        break;
       case 'es':
         message = 'Notas De Lanzamiento';
         break;
@@ -636,7 +639,6 @@ class UpgraderMessages {
       case 'el':
       case 'fa':
       case 'fil':
-      case 'fr':
       case 'de':
       case 'ht':
       case 'hu':
@@ -691,7 +693,7 @@ class UpgraderMessages {
         message = 'I-update ang app?';
         break;
       case 'fr':
-        message = 'Mettre à jour l\'application?';
+        message = 'Mettre à jour l\'application ?';
         break;
       case 'de':
         message = 'App aktualisieren?';
