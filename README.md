@@ -34,23 +34,6 @@ available, otherwise the main app description is used.
 On iOS the release notes are taken from the App Store What's New section.
 For [appcast](#appcast)), the release notes are taken from the description field.
 
-### Minimum App Version
-The `upgrader` package can use a forced upgrade version (minimum app version)
-simply by adding that 
-version number to the description field in the app stores. Use this format:
-```
-[:mav: 1.2.3]
-```
-
-Using that text says that the minimum app version is 1.2.3 and that earlier
-versions of this app will be forced to update to the current version.
-
-After the app containing this text has been submitted for review, approved, and
-released on the app store, the version number will be visible to the upgrader
-package. When the minimum app version is updated in the future, all previously
-installed apps with this package (version 3.9.0+) will recognize and honor
-that value.
-
 #### Android
 Add this text to the bottom of the full description field in the Google Play
 Console under the main store listing.
@@ -144,6 +127,25 @@ The Upgrader class can be customized by setting parameters in the constructor.
 * showReleaseNotes: hide or show release notes, which defaults to ```true```
 * willDisplayUpgrade: called when ```upgrader``` determines that an upgrade may
 or may not be displayed, defaults to ```null```
+
+### Minimum App Version
+The `upgrader` package can use a forced upgrade version (minimum app version)
+simply by adding that 
+version number to the description field in the app stores. Use this format:
+```
+[:mav: 1.2.3]
+```
+
+Using that text says that the minimum app version is 1.2.3 and that earlier
+versions of this app will be forced to update to the current version.
+
+After the app containing this text has been submitted for review, approved, and
+released on the app store, the version number will be visible to the upgrader
+package. When the minimum app version is updated in the future, all previously
+installed apps with this package (version 3.9.0+) will recognize and honor
+that value.
+
+This overrides any value supplied in the `minAppVersion` parameter.
 
 ## Android Back Button
 
