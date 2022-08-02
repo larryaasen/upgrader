@@ -335,7 +335,10 @@ class UpgraderMessages {
     String message;
     switch (languageCode) {
       case 'ar':
-        message = 'لاحقاً';
+        //only minor change here, removing the character at the left top of the arabic word (لاحقاً)
+        // before: message = 'لاحقاً';
+        //now:
+        message = 'لاحقا';
         break;
       case 'bn':
         message = 'পরে';
