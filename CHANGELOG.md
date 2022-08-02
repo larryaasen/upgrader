@@ -1,9 +1,10 @@
-## [Unreleased]
+## [4.5.0]
 
 - Added German releaseNotes translation. (thanks to @LenhartStephan)
 - Fixed punctuation for French language. (thanks to @benoitkugler)
 - Added French releaseNotes translation. (thanks to @benoitkugler)
 - Added Arabic releaseNotes translation. (thanks to @AhmadAbuRjeila)
+- Fixed minor issue with the Arabic translation of the word "later". (thanks to @alhamri)
 
 ## [4.4.2]
 
