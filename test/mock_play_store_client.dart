@@ -20,12 +20,17 @@ final _filenames = {
 class MockPlayStoreSearchClient {
   static Future<http.Client> setupMockClient() async {
     final client = MockClient((http.Request request) async {
-      final url = request.url.toString();
+      var url = request.url.toString();
+      final index = url.indexOf('_cb=');
+      if (index > 0) {
+        url = url.substring(0, index - 1);
+      }
       final id = request.url.queryParameters['id'];
       if (id != null) {
         final filename = _filenames[id];
         if (filename != null && filename.isNotEmpty) {
-          if (url == PlayStoreSearchAPI().lookupURLById(id)) {
+          if (url ==
+              PlayStoreSearchAPI().lookupURLById(id, useCacheBuster: false)) {
             final testPage = await getTestPage(filename);
             final contents = testPage.readAsStringSync();
             return http.Response(contents, 200, headers: {

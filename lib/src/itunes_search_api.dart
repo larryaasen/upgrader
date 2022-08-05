@@ -29,6 +29,7 @@ class ITunesSearchAPI {
   /// ```lookupURLByBundleId('com.google.Maps', country: 'FR');```
   Future<Map?> lookupByBundleId(String bundleId,
       {String? country = 'US', bool useCacheBuster = true}) async {
+    assert(bundleId.isNotEmpty);
     if (bundleId.isEmpty) {
       return null;
     }

@@ -281,7 +281,7 @@ class Upgrader {
       // Get Android version from Google Play Store, or
       // get iOS version from iTunes Store.
       if (platform == TargetPlatform.android) {
-        await _getAndroidStoreVersion();
+        await _getAndroidStoreVersion(country: country);
       } else if (platform == TargetPlatform.iOS) {
         final iTunes = ITunesSearchAPI();
         iTunes.client = client;
@@ -307,11 +307,10 @@ class Upgrader {
   }
 
   /// Android info is fetched by parsing the html of the app store page.
-  Future<bool?> _getAndroidStoreVersion() async {
+  Future<bool?> _getAndroidStoreVersion({String? country}) async {
     final id = _packageInfo!.packageName;
-    final playStore = PlayStoreSearchAPI();
-    playStore.client = client;
-    final response = await (playStore.lookupById(id));
+    final playStore = PlayStoreSearchAPI(client: client);
+    final response = await (playStore.lookupById(id, country: country));
     if (response != null) {
       _appStoreVersion ??= PlayStoreResults.version(response);
       _appStoreListingURL ??= playStore.lookupURLById(id);

@@ -1,3 +1,7 @@
+## [Unreleased]
+
+Updated the Play Store API request to include the country code, and added cache buster to break the HTTP caching.
+
 ## [4.5.0]
 
 - Added German releaseNotes translation. (thanks to @LenhartStephan)

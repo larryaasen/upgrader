@@ -7,24 +7,25 @@ import 'package:html/parser.dart' show parse;
 import 'package:http/http.dart' as http;
 import 'package:version/version.dart';
 
-// TODO: refactor the two store API classes to use more shared code.
-
 class PlayStoreSearchAPI {
+  PlayStoreSearchAPI({http.Client? client}) : client = client ?? http.Client();
+
   /// Play Store Search Api URL
   final String playStorePrefixURL = 'play.google.com';
 
   /// Provide an HTTP Client that can be replaced for mock testing.
-  http.Client? client = http.Client();
+  final http.Client? client;
 
   bool debugEnabled = false;
 
   /// Look up by id.
-  Future<Document?> lookupById(String id) async {
-    if (id.isEmpty) {
-      return null;
-    }
+  Future<Document?> lookupById(String id,
+      {String? country = 'US', bool useCacheBuster = true}) async {
+    assert(id.isNotEmpty);
+    if (id.isEmpty) return null;
 
-    final url = lookupURLById(id)!;
+    final url =
+        lookupURLById(id, country: country, useCacheBuster: useCacheBuster)!;
 
     final response = await client!.get(Uri.parse(url));
 
@@ -42,8 +43,19 @@ class PlayStoreSearchAPI {
     return decodedResults;
   }
 
-  String? lookupURLById(String id) {
-    final url = Uri.https(playStorePrefixURL, '/store/apps/details', {'id': id})
+  String? lookupURLById(String id,
+      {String? country = 'US', bool useCacheBuster = true}) {
+    assert(id.isNotEmpty);
+    if (id.isEmpty) return null;
+
+    Map<String, dynamic> parameters = {'id': id};
+    if (country != null && country.isNotEmpty) {
+      parameters['gl'] = country;
+    }
+    if (useCacheBuster) {
+      parameters['_cb'] = DateTime.now().microsecondsSinceEpoch.toString();
+    }
+    final url = Uri.https(playStorePrefixURL, '/store/apps/details', parameters)
         .toString();
 
     return url;

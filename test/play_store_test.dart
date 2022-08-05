@@ -36,14 +36,14 @@ void main() {
 
     expect(
         playStore.lookupURLById('com.kotoko.express'),
-        equals(
-            'https://play.google.com/store/apps/details?id=com.kotoko.express'));
+        startsWith(
+            'https://play.google.com/store/apps/details?id=com.kotoko.express&gl=US&_cb='));
   }, skip: false);
 
   test('testing lookupById', () async {
     final client = await MockPlayStoreSearchClient.setupMockClient();
-    final playStore = PlayStoreSearchAPI();
-    playStore.client = client;
+    final playStore = PlayStoreSearchAPI(client: client);
+    expect(() async => await playStore.lookupById(''), throwsAssertionError);
 
     final response = await playStore.lookupById('com.kotoko.express');
     expect(response, isNotNull);
@@ -54,12 +54,51 @@ void main() {
     expect(PlayStoreResults.version(response), '1.23.0');
 
     expect(await playStore.lookupById('com.not.a.valid.application'), isNull);
+
+    final document1 = await playStore.lookupById('com.testing.test4');
+    expect(document1, isNotNull);
+    expect(document1, isInstanceOf<Document>());
+
+    final document2 =
+        await playStore.lookupById('com.testing.test4', country: 'JP');
+    expect(document2, isNull);
+    final document3 =
+        await playStore.lookupById('com.testing.test4', useCacheBuster: false);
+    expect(document3, isNotNull);
+  }, skip: false);
+
+  test('testing lookupURLById', () async {
+    final client = await MockPlayStoreSearchClient.setupMockClient();
+    final playStore = PlayStoreSearchAPI(client: client);
+    expect(() => playStore.lookupURLById(''), throwsAssertionError);
+    expect(
+        playStore.lookupURLById('com.testing.test1')!.startsWith(
+            'https://play.google.com/store/apps/details?id=com.testing.test1&gl=US&_cb=16'),
+        equals(true));
+    expect(
+        playStore.lookupURLById('com.testing.test1', country: null)!.startsWith(
+            'https://play.google.com/store/apps/details?id=com.testing.test1&_cb=16'),
+        equals(true));
+    expect(
+        playStore.lookupURLById('com.testing.test1', country: '')!.startsWith(
+            'https://play.google.com/store/apps/details?id=com.testing.test1&_cb=16'),
+        equals(true));
+    expect(
+        playStore.lookupURLById('com.testing.test1', country: 'IN')!.startsWith(
+            'https://play.google.com/store/apps/details?id=com.testing.test1&gl=IN&_cb=16'),
+        equals(true));
+    expect(
+        playStore
+            .lookupURLById('com.testing.test1',
+                country: 'IN', useCacheBuster: false)!
+            .startsWith(
+                'https://play.google.com/store/apps/details?id=com.testing.test1&gl=IN'),
+        equals(true));
   }, skip: false);
 
   test('testing lookupById with redesignedVersion', () async {
     final client = await MockPlayStoreSearchClient.setupMockClient();
-    final playStore = PlayStoreSearchAPI();
-    playStore.client = client;
+    final playStore = PlayStoreSearchAPI(client: client);
 
     final response = await playStore.lookupById('com.testing.test4');
     expect(response, isNotNull);
@@ -76,8 +115,7 @@ void main() {
 
   test('testing release notes', () async {
     final client = await MockPlayStoreSearchClient.setupMockClient();
-    final playStore = PlayStoreSearchAPI();
-    playStore.client = client;
+    final playStore = PlayStoreSearchAPI(client: client);
 
     final response = await playStore.lookupById('com.testing.test2');
     expect(response, isNotNull);
@@ -91,8 +129,7 @@ void main() {
 
   test('testing release notes <br>', () async {
     final client = await MockPlayStoreSearchClient.setupMockClient();
-    final playStore = PlayStoreSearchAPI();
-    playStore.client = client;
+    final playStore = PlayStoreSearchAPI(client: client);
 
     final response = await playStore.lookupById('com.testing.test3');
     expect(response, isNotNull);
