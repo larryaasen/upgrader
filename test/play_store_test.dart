@@ -10,7 +10,8 @@ import 'package:version/version.dart';
 import 'mock_play_store_client.dart';
 
 /// Helper method
-String? pmav(Document response, {String tagName = 'mav'}) {
+String? pmav(Document response,
+    {String tagName = 'Minimum supported app version'}) {
   final mav = PlayStoreResults.minAppVersion(response, tagName: tagName);
   return mav?.toString();
 }
@@ -155,20 +156,25 @@ void main() {
   }
 
   test('testing minAppVersion', () async {
-    expect(pmav(resDesc('test [:mav: 1.2.3]')), '1.2.3');
-    expect(pmav(resDesc('test [:mav:1.2.3]')), '1.2.3');
-    expect(pmav(resDesc('test [:mav:1.2.3 ]')), '1.2.3');
-    expect(pmav(resDesc('test [:mav: 1]')), '1.0.0');
-    expect(pmav(resDesc('[:mav: 0.9.9+4]')), '0.9.9+4');
-    expect(pmav(resDesc('[:mav: 1.0.0-5.2.pre]')), '1.0.0-5.2.pre');
+    expect(
+        pmav(resDesc('test [Minimum supported app version: 1.2.3]')), '1.2.3');
+    expect(
+        pmav(resDesc('test [Minimum supported app version:1.2.3]')), '1.2.3');
+    expect(
+        pmav(resDesc('test [Minimum supported app version:1.2.3 ]')), '1.2.3');
+    expect(pmav(resDesc('test [Minimum supported app version: 1]')), '1.0.0');
+    expect(
+        pmav(resDesc('[Minimum supported app version: 0.9.9+4]')), '0.9.9+4');
+    expect(pmav(resDesc('[Minimum supported app version: 1.0.0-5.2.pre]')),
+        '1.0.0-5.2.pre');
     expect(pmav(Document()), isNull);
     expect(pmav(resDesc('test')), isNull);
-    expect(pmav(resDesc('test [:mav:]')), isNull);
-    expect(pmav(resDesc('test [:mv: 1.2.3]')), isNull);
+    expect(pmav(resDesc('test [Minimum supported app version:]')), isNull);
+    expect(pmav(resDesc('test [mv: 1.2.3]')), isNull);
   }, skip: false);
 
   test('testing minAppVersion mav tag', () async {
-    expect(pmav(resDesc('test [:mav: 1.2.3]'), tagName: 'ddd'), isNull);
-    expect(pmav(resDesc('test [:ddd: 1.2.3]'), tagName: 'ddd'), '1.2.3');
+    expect(pmav(resDesc('test [mav: 1.2.3]'), tagName: 'ddd'), isNull);
+    expect(pmav(resDesc('test [ddd: 1.2.3]'), tagName: 'ddd'), '1.2.3');
   });
 }

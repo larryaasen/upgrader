@@ -102,14 +102,15 @@ class PlayStoreResults {
   }
 
   /// Return the minimum app version taken from the tag in the description field
-  /// from the store response. The format is: [:mav: 1.2.3].
+  /// from the store response. The format is: [Minimum supported app version: 1.2.3].
   /// Returns version, such as 1.2.3, or null.
-  static Version? minAppVersion(Document response, {String tagName = 'mav'}) {
+  static Version? minAppVersion(Document response,
+      {String tagName = 'Minimum supported app version'}) {
     Version? version;
     try {
       final description = PlayStoreResults.description(response);
       if (description != null) {
-        String regExpSource = r"\[\:tagName\:[\s]*(?<version>[^\s]+)[\s]*\]";
+        String regExpSource = r"\[tagName\:[\s]*(?<version>[^\s]+)[\s]*\]";
         regExpSource = regExpSource.replaceAll(RegExp('tagName'), tagName);
         final regExp = RegExp(regExpSource, caseSensitive: false);
         final match = regExp.firstMatch(description);
