@@ -13,6 +13,8 @@ import 'fake_appcast.dart';
 import 'mock_itunes_client.dart';
 import 'mock_play_store_client.dart';
 
+// TODO: Need an integration test that runs on Android and iOS.
+
 // Platform.operatingSystem can be "macos" or "linux" in a unit test.
 // defaultTargetPlatform is TargetPlatform.android in a unit test.
 

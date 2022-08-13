@@ -13,11 +13,11 @@
 
 ## [4.4.2]
 
-Corrected CHANGELOG issue with version [4.4.1].
+- Corrected CHANGELOG issue with version [4.4.1].
 
 ## [4.4.1]
 
-Fixed launch url malfunction issue with iOS. (thanks to @samcho0608)
+- Fixed launch url malfunction issue with iOS. (thanks to @samcho0608)
 
 ## [4.4.0]
 
@@ -33,13 +33,12 @@ handle tagName parameter properly.
 
 ## [4.2.2]
 
-Fixed an issue on Android when the Webview was opening instead of the Play Store.
+- Fixed an issue on Android when the Webview was opening instead of the Play Store.
 
 ## [4.2.2-alpha.1]
 
-Fixed an issue on Android when the Webview was opening instead of the Play Store.
-
-This is a pre-release to allow for testing with a large amount of developers.
+- Fixed an issue on Android when the Webview was opening instead of the Play Store.
+- This is a pre-release to allow for testing with a large amount of developers.
 
 ## [4.2.1]
 
@@ -49,34 +48,33 @@ found on the Play Store. This has been resolved.
 
 ## [4.2.1-alpha.2]
 
-Removed noisy exception messages that were logged during Play Store access.
+- Removed noisy exception messages that were logged during Play Store access.
 
 ## [4.2.1-alpha.1]
 
-After the latest update to the Play Store, the Android app version was not being
+- After the latest update to the Play Store, the Android app version was not being
 found on the Play Store. This has been resolved.
-
-This is a pre-release to allow for testing with a large amount of developers.
+- This is a pre-release to allow for testing with a large amount of developers.
 
 ## [4.2.0]
 
-Updated Play Store release notes containing `<br>` to use newline ('\n') instead.
+- Updated Play Store release notes containing `<br>` to use newline ('\n') instead.
 
-## 4.1.2
+## [4.1.2]
 
 * Fixed Flutter 3 warnings related to `WidgetsBinding.instance`.
 * Fixed a typo in the Persian body message.
 * Updated xml dependency to ">=5.0.2 <7.0.0".
 
-## 4.1.1
+## [4.1.1]
 
 * Fixed error from pub.dev because it used Flutter 2.10.5: "The property 'window' can't be unconditionally accessed because the receiver can be 'null'."
 
-## 4.1.0
+## [4.1.0]
 
 * Minor updates after upgrading Flutter to 3.0.0 and Dart to 2.17.0.
 
-## 4.0.0
+## [4.0.0]
 
 * [BREAKING] No more singleton. This is a huge update to remove the use of a singleton for Upgrader.
 It is now a normal class that is passed to either UpgradeAlert or UpgradeCard.
