@@ -1,6 +1,7 @@
-## [Unreleased]
+## [4.6.0]
 
-Updated the Play Store API request to include the country code, and added cache buster to break the HTTP caching.
+- Updated the Android Play Store API request to include the country code, and added cache buster to break the HTTP caching.
+- Updated the device_info_plus dependency to include version 4.1.0 and up to <4.2.0.
 
 ## [4.5.0]
 
@@ -59,7 +60,7 @@ This is a pre-release to allow for testing with a large amount of developers.
 
 ## [4.2.0]
 
-Updated Play Store release notes containing <br> to use newline ('\n') instead.
+Updated Play Store release notes containing `<br>` to use newline ('\n') instead.
 
 ## 4.1.2
 
