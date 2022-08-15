@@ -129,9 +129,15 @@ The Upgrader class can be customized by setting parameters in the constructor.
 or may not be displayed, defaults to ```null```
 
 ### Minimum App Version
-The `upgrader` package can use a forced upgrade version (minimum app version)
-simply by adding that 
-version number to the description field in the app stores. Use this format:
+The `upgrader` package can enforce a minimum app version simply by adding a
+version number to the description field in the app stores.
+
+For the Android Play Store, use this format:
+```
+[Minimum supported app version: 1.2.3]
+```
+
+For the iOS App Store, use this format:
 ```
 [:mav: 1.2.3]
 ```
@@ -140,10 +146,9 @@ Using that text says that the minimum app version is 1.2.3 and that earlier
 versions of this app will be forced to update to the current version.
 
 After the app containing this text has been submitted for review, approved, and
-released on the app store, the version number will be visible to the upgrader
+released on the app store, the version number will be visible to the `upgrader`
 package. When the minimum app version is updated in the future, all previously
-installed apps with this package (version 3.9.0+) will recognize and honor
-that value.
+installed apps with this package will recognize and honor that value.
 
 This overrides any value supplied in the `minAppVersion` parameter.
 
