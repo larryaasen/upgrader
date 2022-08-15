@@ -124,7 +124,7 @@ class PlayStoreResults {
             version = Version.parse(mav);
           } on Exception catch (e) {
             print(
-                'upgrader: PlayStoreResults.minAppVersion: tag=$tagRegExpSource, error=$e');
+                'upgrader: PlayStoreResults.minAppVersion: mav=$mav, tag=$tagRegExpSource, error=$e');
           }
         }
       }

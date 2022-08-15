@@ -174,6 +174,7 @@ void main() {
 
   test('testing minAppVersion mav tag', () async {
     expect(pmav(resDesc('test [:mav: 1.2.3]'), tagRES: 'ddd'), isNull);
+    expect(pmav(resDesc('test [:mav: a.b.c]')), isNull);
     expect(
         pmav(resDesc('test [:ddd: 1.2.3]'),
             tagRES: r'\[\:ddd\:[\s]*(?<version>[^\s]+)[\s]*\]'),
