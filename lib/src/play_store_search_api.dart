@@ -26,6 +26,9 @@ class PlayStoreSearchAPI {
 
     final url =
         lookupURLById(id, country: country, useCacheBuster: useCacheBuster)!;
+    if (debugEnabled) {
+      print('upgrader: lookupById url: $url');
+    }
 
     final response = await client!.get(Uri.parse(url));
 

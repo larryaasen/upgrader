@@ -1,3 +1,7 @@
+## [unreleased]
+
+- Improved the Android Play Store command line app by adding country as an optional parameter.
+
 ## [4.7.0-alpha.1]
 
 - Changed the Android Play Store description minimum app version tag from `[:mav: 1.2.3]`, which is not allowed by Google,
