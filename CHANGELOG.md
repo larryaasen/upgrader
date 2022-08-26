@@ -1,4 +1,4 @@
-## [Unreleased]
+## [4.6.1]
 
 - Added new language translations for Chinese ('zh'). (thanks to @nivlaoh)
 - Added new language translations for Hebrew ('he'). (thanks to @TomerPacific)
