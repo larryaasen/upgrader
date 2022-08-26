@@ -4,6 +4,8 @@
 - Added new language translations for Hindi ('hi'). (thanks to @chirag-chopra)
 - Added new language translations for Telugu ('te'). (thanks to @moulibheemaneti)
 - Added Indonesian releaseNotes translation. (thanks to @malvinpratama)
+- Added Italian releaseNotes translation. (thanks to @JustLazzah)
+- Added Japanese releaseNotes translation. (thanks to @akirakakar)
 
 ## [4.6.0]
 

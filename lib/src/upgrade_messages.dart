@@ -700,6 +700,12 @@ class UpgraderMessages {
       case 'id':
         message = 'Catatan Rilis';
         break;
+      case 'it':
+        message = 'Note di rilascio';
+        break;
+      case 'ja':
+        message = 'リリースノート';
+        break;
       case 'te':
         message = 'విడుదల గమనికలు';
         break;
@@ -710,8 +716,6 @@ class UpgraderMessages {
       case 'fil':
       case 'ht':
       case 'hu':
-      case 'it':
-      case 'ja':
       case 'kk':
       case 'km':
       case 'ko':
