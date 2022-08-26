@@ -1,6 +1,7 @@
 ## [Unreleased]
 
 - Added new language translations for Hebrew ('he'). (thanks to @TomerPacific)
+- Added new language translations for Telugu ('te'). (thanks to @moulibheemaneti)
 
 ## [4.6.0]
 

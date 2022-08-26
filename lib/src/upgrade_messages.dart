@@ -213,6 +213,10 @@ class UpgraderMessages {
         message =
             '{{appName}}-ன் புதிய பதிப்பு {{currentAppStoreVersion}} இப்போது கிடைக்கிறது! உங்களிடம் {{currentInstalledVersion}} உள்ளது.';
         break;
+      case 'te':
+        message =
+            '{{appName}} యాప్ యొక్క కొత్త వెర్షన్ అందుబాటులో ఉంది. వెర్షన్ {{currentAppStoreVersion}} అందుబాటులో ఉంది కానీ మీ దగ్గర {{currentInstalledVersion}} ఉంది.';
+        break;
       case 'tr':
         message =
             '{{appName}} uygulamanızın yeni bir versiyonu mevcut! Versiyon {{currentAppStoreVersion}} şu anda erişilebilir, mevcut sürümünüz {{currentInstalledVersion}}.';
@@ -318,6 +322,9 @@ class UpgraderMessages {
       case 'ta':
         message = 'புறக்கணி';
         break;
+      case 'te':
+        message = 'తిరస్కరించండి';
+        break;
       case 'tr':
         message = 'YOKSAY';
         break;
@@ -422,6 +429,9 @@ class UpgraderMessages {
       case 'ta':
         message = 'பிறகு';
         break;
+      case 'te':
+        message = 'తరువాత';
+        break;
       case 'tr':
         message = 'SONRA';
         break;
@@ -522,6 +532,9 @@ class UpgraderMessages {
         break;
       case 'ta':
         message = 'இப்பொழுது புதுப்பிக்கவும்';
+        break;
+      case 'te':
+        message = 'అప్‌డేట్‌ చేయండి';
         break;
       case 'tr':
         message = 'ŞİMDİ GÜNCELLE';
@@ -624,6 +637,9 @@ class UpgraderMessages {
       case 'ta':
         message = 'இப்போது புதுப்பிக்க விரும்புகிறீர்களா?';
         break;
+      case 'te':
+        message = 'మీరు దీన్ని ఇప్పుడే అప్‌డేట్ చేయాలనుకుంటున్నారా?';
+        break;
       case 'tr':
         message = 'Şimdi güncellemek ister misiniz?';
         break;
@@ -661,6 +677,9 @@ class UpgraderMessages {
         break;
       case 'he':
         message = 'חדש בגרסה';
+        break;
+      case 'te':
+        message = 'విడుదల గమనికలు';
         break;
 
       case 'bn':
@@ -778,6 +797,9 @@ class UpgraderMessages {
         break;
       case 'ta':
         message = 'செயலியை புதுப்பிக்கவா?';
+        break;
+      case 'te':
+        message = 'యాప్‌ని అప్‌డేట్‌ చేయాలా?';
         break;
       case 'tr':
         message = 'Uygulamayı Güncelle?';
