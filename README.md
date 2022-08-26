@@ -20,6 +20,17 @@ the upgrade sooner. Also, with Flutter supporting more than just Android and iOS
 future, it will become more likely that users on other app stores need to be nagged about
 upgrading.
 
+### Platform Support
+
+| Platform | Automatically Supported? | Appcast Supported? |
+| --- | --- | --- |
+| ANDROID | &#9989; Yes | &#9989; Yes |
+| IOS | &#9989; Yes | &#9989; Yes |
+| LINUX | &#10060; No | &#9989; Yes |
+| MACOS | &#10060; No | &#9989; Yes |
+| WEB | &#10060; No | &#9989; Yes |
+| WINDOWS | &#10060; No | &#9989; Yes |
+
 ### UI
 The UI comes in two flavors: alert or card. The [UpgradeAlert](#alert-example) class is used to display the
 popup alert prompt, and the [UpgradeCard](#card-example) class is used to display the inline material design card.
