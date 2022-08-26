@@ -2,6 +2,7 @@
 
 - Added new language translations for Hebrew ('he'). (thanks to @TomerPacific)
 - Added new language translations for Telugu ('te'). (thanks to @moulibheemaneti)
+- Added Indonesian releaseNotes translation. (thanks to @malvinpratama)
 
 ## [4.6.0]
 

@@ -678,6 +678,9 @@ class UpgraderMessages {
       case 'he':
         message = 'חדש בגרסה';
         break;
+      case 'id':
+        message = 'Catatan Rilis';
+        break;
       case 'te':
         message = 'విడుదల గమనికలు';
         break;
@@ -688,7 +691,6 @@ class UpgraderMessages {
       case 'fil':
       case 'ht':
       case 'hu':
-      case 'id':
       case 'it':
       case 'ja':
       case 'kk':
