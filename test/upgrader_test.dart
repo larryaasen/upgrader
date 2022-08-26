@@ -806,6 +806,7 @@ void main() {
     verifyMessages(UpgraderMessages(code: 'de'), 'de');
     verifyMessages(UpgraderMessages(code: 'el'), 'el');
     verifyMessages(UpgraderMessages(code: 'he'), 'he');
+    verifyMessages(UpgraderMessages(code: 'hi'), 'hi');
     verifyMessages(UpgraderMessages(code: 'ht'), 'ht');
     verifyMessages(UpgraderMessages(code: 'hu'), 'hu');
     verifyMessages(UpgraderMessages(code: 'id'), 'id');
@@ -832,15 +833,13 @@ void main() {
 
 void verifyMessages(UpgraderMessages messages, String code) {
   expect(messages.languageCode, code);
-  expect(messages.message(UpgraderMessage.body)!.isNotEmpty, isTrue);
-  expect(
-      messages.message(UpgraderMessage.buttonTitleIgnore)!.isNotEmpty, isTrue);
-  expect(
-      messages.message(UpgraderMessage.buttonTitleLater)!.isNotEmpty, isTrue);
-  expect(
-      messages.message(UpgraderMessage.buttonTitleUpdate)!.isNotEmpty, isTrue);
-  expect(messages.message(UpgraderMessage.prompt)!.isNotEmpty, isTrue);
-  expect(messages.message(UpgraderMessage.title)!.isNotEmpty, isTrue);
+  expect(messages.message(UpgraderMessage.body), isNotEmpty);
+  expect(messages.message(UpgraderMessage.buttonTitleIgnore), isNotEmpty);
+  expect(messages.message(UpgraderMessage.buttonTitleLater), isNotEmpty);
+  expect(messages.message(UpgraderMessage.buttonTitleUpdate), isNotEmpty);
+  expect(messages.message(UpgraderMessage.prompt), isNotEmpty);
+  expect(messages.message(UpgraderMessage.releaseNotes), isNotEmpty);
+  expect(messages.message(UpgraderMessage.title), isNotEmpty);
 }
 
 class _MyWidget extends StatelessWidget {

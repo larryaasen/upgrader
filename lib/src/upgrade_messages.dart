@@ -145,6 +145,10 @@ class UpgraderMessages {
         message =
             'גרסה חדשה של {{appName}} קיימת! גרסה {{currentAppStoreVersion}} ניתנת להורדה-יש לך גרסה {{currentInstalledVersion}.';
         break;
+      case 'hi':
+        message =
+            '{app name} का एक नया संस्करण उपलब्ध है। संस्करण {{currentAppStoreVersion}} अब उपलब्ध है-आपके पास है {{currentInstalledVersion}}.';
+        break;
       case 'ht':
         message =
             'Yon nouvo vèsyon {{appName}} disponib! Vèsyon {{currentAppStoreVersion}} disponib, epi ou gen vèsyon {{currentInstalledVersion}}.';
@@ -271,6 +275,9 @@ class UpgraderMessages {
       case 'he':
         message = 'התעלם';
         break;
+      case 'hi':
+        message = 'नज़रअंदाज़ करना';
+        break;
       case 'ht':
         message = 'IGNORE';
         break;
@@ -378,6 +385,9 @@ class UpgraderMessages {
       case 'he':
         message = 'אחר-כך';
         break;
+      case 'hi':
+        message = 'बाद में';
+        break;
       case 'ht':
         message = 'PITA';
         break;
@@ -481,6 +491,9 @@ class UpgraderMessages {
         break;
       case 'he':
         message = 'עדכן';
+        break;
+      case 'hi':
+        message = 'अभी अद्यतन करें';
         break;
       case 'ht':
         message = 'MIZAJOU KOUNYE A';
@@ -586,6 +599,9 @@ class UpgraderMessages {
       case 'he':
         message = 'האם תרצה לעדכן עכשיו?';
         break;
+      case 'hi':
+        message = 'क्या आप इसे अभी अद्यतन करना चाहेंगे?';
+        break;
       case 'ht':
         message = 'Èske ou vle mete ajou aplikasyon an kounye a?';
         break;
@@ -678,6 +694,9 @@ class UpgraderMessages {
       case 'he':
         message = 'חדש בגרסה';
         break;
+      case 'hi':
+        message = 'रिहाई टिप्पणी';
+        break;
       case 'id':
         message = 'Catatan Rilis';
         break;
@@ -748,6 +767,9 @@ class UpgraderMessages {
         break;
       case 'he':
         message = 'לעדכן יישומון?';
+        break;
+      case 'hi':
+        message = 'अद्यतन ऐप?';
         break;
       case 'ht':
         message = 'Mete ajou app a?';

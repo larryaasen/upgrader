@@ -45,6 +45,7 @@ class Demo extends StatelessWidget {
         const Locale('de', ''), // German, no country code
         const Locale('el', ''), // Greek, no country code
         const Locale('he', ''), // Hebrew, no country code
+        const Locale('hi', ''), // Hindi, no country code
         const Locale('ht', ''), // Haitian Creole, no country code
         const Locale('hu', ''), // Hungarian, no country code
         const Locale('id', ''), // Indonesian, no country code
@@ -136,6 +137,7 @@ class DemoLocalizationsDelegate
         'de',
         'el',
         'he',
+        'hi',
         'ht',
         'hu',
         'id',

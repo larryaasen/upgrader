@@ -1,6 +1,7 @@
 ## [Unreleased]
 
 - Added new language translations for Hebrew ('he'). (thanks to @TomerPacific)
+- Added new language translations for Hindi ('hi'). (thanks to @chirag-chopra)
 - Added new language translations for Telugu ('te'). (thanks to @moulibheemaneti)
 - Added Indonesian releaseNotes translation. (thanks to @malvinpratama)
 
