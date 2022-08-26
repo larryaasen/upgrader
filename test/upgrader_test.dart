@@ -828,6 +828,7 @@ void main() {
     verifyMessages(UpgraderMessages(code: 'tr'), 'tr');
     verifyMessages(UpgraderMessages(code: 'uk'), 'uk');
     verifyMessages(UpgraderMessages(code: 'vi'), 'vi');
+    verifyMessages(UpgraderMessages(code: 'zh'), 'zh');
   }, skip: false);
 }
 

@@ -67,6 +67,7 @@ class Demo extends StatelessWidget {
         const Locale('tr', ''), // Turkish, no country code
         const Locale('uk', ''), // Ukrainian, no country code
         const Locale('vi', ''), // Vietnamese, no country code
+        const Locale('zh', ''), // Chinese, no country code
       ],
     );
   }
@@ -158,7 +159,8 @@ class DemoLocalizationsDelegate
         'te',
         'tr',
         'uk',
-        'vi'
+        'vi',
+        'zh'
       ].contains(locale.languageCode);
 
   @override

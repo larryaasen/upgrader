@@ -280,13 +280,14 @@ UpgradeAlert(Upgrader(messages: MyUpgraderMessages()));
 
 ## Language localization
 
-The strings displayed in `upgrader` are already localized in 32 languages. New languages will be
+The strings displayed in `upgrader` are already localized in 33 languages. New languages will be
 supported in the future with minor updates.
 
 Languages supported:
 * English ('en')
 * Arabic ('ar')
 * Bengali ('bn')
+* Chinese ('zh')
 * Dutch ('nl')
 * Filipino ('fil')
 * French ('fr')
