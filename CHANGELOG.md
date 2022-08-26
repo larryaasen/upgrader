@@ -1,6 +1,7 @@
 ## [unreleased]
 
 - Improved the Android Play Store command line app by adding country as an optional parameter.
+- Updated README with platforms supported.
 
 ## [4.7.0-alpha.1]
 
