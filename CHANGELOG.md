@@ -1,3 +1,7 @@
+## [Unreleased]
+
+- Added new language translations for Hebrew ('he'). (thanks to @TomerPacific)
+
 ## [4.6.0]
 
 - Updated the Android Play Store API request to include the country code, and added cache buster to break the HTTP caching.

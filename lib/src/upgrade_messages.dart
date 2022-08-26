@@ -141,6 +141,10 @@ class UpgraderMessages {
         message =
             'Eine neue Version von {{appName}} ist verfügbar! Die Version {{currentAppStoreVersion}} ist verfügbar, installiert ist die Version {{currentInstalledVersion}}.';
         break;
+      case 'he':
+        message =
+            'גרסה חדשה של {{appName}} קיימת! גרסה {{currentAppStoreVersion}} ניתנת להורדה-יש לך גרסה {{currentInstalledVersion}.';
+        break;
       case 'ht':
         message =
             'Yon nouvo vèsyon {{appName}} disponib! Vèsyon {{currentAppStoreVersion}} disponib, epi ou gen vèsyon {{currentInstalledVersion}}.';
@@ -260,6 +264,9 @@ class UpgraderMessages {
       case 'de':
         message = 'IGNORIEREN';
         break;
+      case 'he':
+        message = 'התעלם';
+        break;
       case 'ht':
         message = 'IGNORE';
         break;
@@ -361,6 +368,9 @@ class UpgraderMessages {
       case 'de':
         message = 'SPÄTER';
         break;
+      case 'he':
+        message = 'אחר-כך';
+        break;
       case 'ht':
         message = 'PITA';
         break;
@@ -458,6 +468,9 @@ class UpgraderMessages {
         break;
       case 'de':
         message = 'AKTUALISIEREN';
+        break;
+      case 'he':
+        message = 'עדכן';
         break;
       case 'ht':
         message = 'MIZAJOU KOUNYE A';
@@ -557,6 +570,9 @@ class UpgraderMessages {
       case 'de':
         message = 'Möchtest du jetzt aktualisieren?';
         break;
+      case 'he':
+        message = 'האם תרצה לעדכן עכשיו?';
+        break;
       case 'ht':
         message = 'Èske ou vle mete ajou aplikasyon an kounye a?';
         break;
@@ -643,6 +659,9 @@ class UpgraderMessages {
       case 'fr':
         message = 'Notes de version';
         break;
+      case 'he':
+        message = 'חדש בגרסה';
+        break;
 
       case 'bn':
       case 'el':
@@ -705,6 +724,9 @@ class UpgraderMessages {
         break;
       case 'de':
         message = 'App aktualisieren?';
+        break;
+      case 'he':
+        message = 'לעדכן יישומון?';
         break;
       case 'ht':
         message = 'Mete ajou app a?';
