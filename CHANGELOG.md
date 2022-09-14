@@ -1,3 +1,7 @@
+## [Unreleased]
+
+Updated the Play Store API request to include the language code
+
 ## [4.6.1]
 
 - Added new language translations for Chinese ('zh'). (thanks to @nivlaoh)

@@ -120,6 +120,7 @@ The Upgrader class can be customized by setting parameters in the constructor.
 * appcastConfig: the appcast configuration, defaults to ```null```
 * canDismissDialog: can alert dialog be dismissed on tap outside of the alert dialog, which defaults to ```false``` (not used by UpgradeCard)
 * countryCode: the country code that will override the system locale, which defaults to ```null```
+* languageCode: the language code that will override the system locale, which defaults to ```null```
 * client: an HTTP Client that can be replaced for mock testing, defaults to ```null```
 * debugDisplayAlways: always force the upgrade to be available, defaults to ```false```
 * debugDisplayOnce: display the upgrade at least once once, defaults to ```false```
@@ -175,6 +176,10 @@ which country app store to use because it is not provided by iOS. It assumes
 the app is in the `US` App Store.
 
 On Android, the `upgrader` package uses the system locale to determine the country code.
+
+## Android Language Code
+
+Android description and release notes language, defaults to `en`.
 
 ## Limitations
 These widgets work on both Android and iOS. When running on Android the Google
