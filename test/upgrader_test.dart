@@ -567,7 +567,8 @@ void main() {
         platform: TargetPlatform.iOS,
         client: client,
         debugLogging: true,
-        countryCode: 'IT');
+        countryCode: 'IT',
+        languageCode: 'en');
 
     upgrader.installPackageInfo(
         packageInfo: PackageInfo(
