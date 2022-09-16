@@ -745,7 +745,7 @@ class UpgraderMessages {
       case 'sv':
       case 'ta':
       case 'tr':
-        message='Güncelleme Notları'
+        message='Güncelleme Notları';
           break;
       case 'uk':
       case 'vi':
