@@ -56,7 +56,7 @@ class PlayStoreSearchAPI {
     if (country != null && country.isNotEmpty) {
       parameters['gl'] = country;
     }
-    if (country != null && country.isNotEmpty) {
+    if (language != null && language.isNotEmpty) {
       parameters['hl'] = language;
     }
     if (useCacheBuster) {
