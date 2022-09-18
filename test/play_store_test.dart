@@ -77,11 +77,11 @@ void main() {
         equals(true));
     expect(
         playStore.lookupURLById('com.testing.test1', country: null)!.startsWith(
-            'https://play.google.com/store/apps/details?id=com.testing.test1&_cb=16'),
+            'https://play.google.com/store/apps/details?id=com.testing.test1&hl=en&_cb=16'),
         equals(true));
     expect(
         playStore.lookupURLById('com.testing.test1', country: '')!.startsWith(
-            'https://play.google.com/store/apps/details?id=com.testing.test1&_cb=16'),
+            'https://play.google.com/store/apps/details?id=com.testing.test1&hl=en&_cb=16'),
         equals(true));
     expect(
         playStore.lookupURLById('com.testing.test1', country: 'IN')!.startsWith(
