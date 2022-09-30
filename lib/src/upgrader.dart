@@ -642,7 +642,12 @@ class Upgrader {
             ],
           ));
     }
+    var actionScrollController = ScrollController();
+    actionScrollController.addListener(() {
+      actionScrollController.jumpTo(0);
+    });
     return CupertinoAlertDialog(
+      actionScrollController: actionScrollController,
       title: Text(title),
       content: Column(
         // mainAxisSize: MainAxisSize.min,
