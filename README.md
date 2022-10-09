@@ -98,6 +98,39 @@ You can also display a Cupertino style dialog by using the `dialogStyle` paramet
 
 ![image](screenshots/example-cupertino.png)
 
+## Custom Alert Example
+
+You can also display Custom dialog by using the `dialogStyle` parameter.
+
+```dart
+          body: UpgradeAlert(
+          upgrader: Upgrader(
+            debugDisplayAlways: true,
+            dialogStyle: UpgradeDialogStyle.custom,
+            customDialogBuilder: (context, message, releaseNotes, title) {
+              return AlertDialog(
+                content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('Title: $title'),
+                    SizedBox(height: 16),
+                    Text('message: $message'),
+                    SizedBox(height: 16),
+                    Text('releaseNotes: $releaseNotes'),
+                  ],
+                ),
+              );
+            },
+          ),
+          child: Center(child: Text('Checking...')),
+        )
+```
+
+## Screenshot of Custom Alert
+
+![image](screenshots/example-custom-dialog.png)
+
 ## Card Example
 
 Just return an `UpgradeCard` widget in your build method and a material design card will be displayed

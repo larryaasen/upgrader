@@ -34,7 +34,7 @@ typedef WillDisplayUpgradeCallback = void Function(
     String? appStoreVersion});
 
 /// There are two different dialog styles: Cupertino and Material
-enum UpgradeDialogStyle { cupertino, material }
+enum UpgradeDialogStyle { cupertino, material, custom }
 
 /// A class to define the configuration for the appcast. The configuration
 /// contains two parts: a URL to the appcast, and a list of supported OS
@@ -81,6 +81,14 @@ class Upgrader {
 
   /// The upgrade dialog style. Used only on UpgradeAlert. (default: material)
   UpgradeDialogStyle dialogStyle;
+
+  /// Custom Dialog Builder for dialogStyle == DialogStyle.custom
+  Widget Function(
+    BuildContext context,
+    String title,
+    String message,
+    String? releaseNotes,
+  )? customDialogBuilder;
 
   /// Duration until alerting user again
   final Duration durationUntilAlertAgain;
@@ -169,10 +177,15 @@ class Upgrader {
     this.countryCode,
     this.minAppVersion,
     this.dialogStyle = UpgradeDialogStyle.material,
+    this.customDialogBuilder,
     TargetPlatform? platform,
   })  : client = client ?? http.Client(),
         messages = messages ?? UpgraderMessages(),
         platform = platform ?? defaultTargetPlatform {
+    if (dialogStyle == UpgradeDialogStyle.custom) {
+      assert(customDialogBuilder != null,
+          'Upgrader: You have to define the customDialogBuilder to use UpgradeDialogStyle.custom');
+    }
     if (debugLogging) print("upgrader: instantiated.");
   }
 
@@ -546,11 +559,25 @@ class Upgrader {
       barrierDismissible: canDismissDialog,
       context: context,
       builder: (BuildContext context) {
+        Widget dialog;
+
+        switch (dialogStyle) {
+          case UpgradeDialogStyle.material:
+            dialog = _alertDialog(title!, message, releaseNotes, context);
+            break;
+          case UpgradeDialogStyle.cupertino:
+            dialog =
+                _cupertinoAlertDialog(title!, message, releaseNotes, context);
+            break;
+          case UpgradeDialogStyle.custom:
+            dialog =
+                customDialogBuilder!(context, title!, message, releaseNotes);
+            break;
+        }
+
         return WillPopScope(
           onWillPop: () async => _shouldPopScope(),
-          child: dialogStyle == UpgradeDialogStyle.material
-              ? _alertDialog(title!, message, releaseNotes, context)
-              : _cupertinoAlertDialog(title!, message, releaseNotes, context),
+          child: dialog,
         );
       },
     );
