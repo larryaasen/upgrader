@@ -1,9 +1,6 @@
 # Upgrader
 
-Flutter package for prompting users to upgrade when there is a newer version of the app in the store.
-
 [![Build Status](https://travis-ci.com/larryaasen/upgrader.svg?branch=master)](https://app.travis-ci.com/github/larryaasen/upgrader)
-[![Codemagic](https://api.codemagic.io/apps/5ffb7888eb8402dcd1928753/flutter-package/status_badge.svg)](https://codemagic.io/apps/5ffb7888eb8402dcd1928753/flutter-package/latest_build)
 [![codecov](https://codecov.io/gh/larryaasen/upgrader/branch/master/graph/badge.svg)](https://app.codecov.io/gh/larryaasen/upgrader)
 [![pub package](https://img.shields.io/pub/v/upgrader.svg)](https://pub.dartlang.org/packages/upgrader)
 [![GitHub Stars](https://img.shields.io/github/stars/larryaasen/upgrader.svg)](https://github.com/larryaasen/upgrader/stargazers)
@@ -11,6 +8,10 @@ Flutter package for prompting users to upgrade when there is a newer version of 
   <img alt="Buy me a coffee" src="https://img.shields.io/badge/Donate-Buy%20Me%20A%20Coffee-yellow.svg">
 </a>
 [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/upgraderpackage.svg?style=social&label=Follow%20%40upgraderpackage)](https://twitter.com/upgraderpackage)
+
+A Flutter package for prompting users to upgrade when there is a newer version of the app in the store.
+
+## Overview 
 
 When a newer app version is available in the app store, a simple alert prompt or card is
 displayed. With today's modern app stores, there is little need to persuade users to upgrade
@@ -31,27 +32,9 @@ upgrading.
 | WEB | &#10060; No | &#9989; Yes |
 | WINDOWS | &#10060; No | &#9989; Yes |
 
-### UI
-The UI comes in two flavors: alert or card. The [UpgradeAlert](#alert-example) class is used to display the
-popup alert prompt, and the [UpgradeCard](#card-example) class is used to display the inline material design card.
-
-### Localization
-The text displayed in the `upgrader` package is localized in [many languages](#language-localization), and supports customization.
-
-### Release Notes
-The release notes are displayed by default when a new version is available. On Android
-the release notes are taken from the the WHAT'S NEW section on Google Play when
-available, otherwise the main app description is used.
-On iOS the release notes are taken from the App Store What's New section.
-For [appcast](#appcast)), the release notes are taken from the description field.
-
-#### Android
-Add this text to the bottom of the full description field in the Google Play
-Console under the main store listing.
-
-#### iOS
-Add this text to the bottom of the description field in App Store Connect in the
-description field.
+## Widgets
+The widgets come in two flavors: alert or card. The [UpgradeAlert](#alert-example) widget is used to display the
+popup alert prompt, and the [UpgradeCard](#card-example) widget is used to display the inline material design card.
 
 ## Alert Example
 
@@ -112,6 +95,16 @@ return Container(
 
 ![image](screenshots/example2.png)
 
+## Localization
+The text displayed in the `upgrader` package is localized in [many languages](#language-localization), and supports customization.
+
+## Release Notes
+The release notes are displayed by default when a new version is available. On Android
+the release notes are taken from the the WHAT'S NEW section on Google Play when
+available, otherwise the main app description is used.
+On iOS the release notes are taken from the App Store What's New section.
+For [appcast](#appcast)), the release notes are taken from the description field.
+
 ## Customization
 
 The Upgrader class can be customized by setting parameters in the constructor.
@@ -139,7 +132,7 @@ The Upgrader class can be customized by setting parameters in the constructor.
 * willDisplayUpgrade: called when ```upgrader``` determines that an upgrade may
 or may not be displayed, defaults to ```null```
 
-### Minimum App Version
+## Minimum App Version
 The `upgrader` package can enforce a minimum app version simply by adding a
 version number to the description field in the app stores.
 
@@ -162,6 +155,14 @@ package. When the minimum app version is updated in the future, all previously
 installed apps with this package will recognize and honor that value.
 
 This overrides any value supplied in the `minAppVersion` parameter.
+
+### Android
+Add this text to the bottom of the full description field in the Google Play
+Console under the main store listing.
+
+### iOS
+Add this text to the bottom of the description field in App Store Connect in the
+description field.
 
 ## Android Back Button
 
@@ -264,7 +265,7 @@ final items = await appcast.parseAppcastItemsFromUri('https://raw.githubusercont
 final bestItem = appcast.bestItem();
 ```
 
-## Customizing the display
+## Customizing the strings
 
 The strings displayed in `upgrader` can be customzied by extending the `UpgraderMessages` class
 to provide custom values.
@@ -476,3 +477,11 @@ All [comments](https://github.com/larryaasen/upgrader/issues) and [pull requests
 ## Donations / Sponsor
 
 Please sponsor or donate to the creator of `upgrader` on [Flattr](https://flattr.com/@larryaasen) or [Patreon](https://www.patreon.com/larryaasen).
+
+## Builds
+
+[![Build Status](https://travis-ci.com/larryaasen/upgrader.svg?branch=master)](https://app.travis-ci.com/github/larryaasen/upgrader)
+
+[![Codemagic](https://api.codemagic.io/apps/5ffb7888eb8402dcd1928753/flutter-package/status_badge.svg)](https://codemagic.io/apps/5ffb7888eb8402dcd1928753/flutter-package/latest_build)
+
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/larryaasen/upgrader/tree/master.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/larryaasen/upgrader/tree/master)
