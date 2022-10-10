@@ -129,7 +129,7 @@ You can also display Custom dialog by using the `dialogStyle` parameter.
 
 ## Screenshot of Custom Alert
 
-![image](screenshots/example-custom-dialog.png)
+<img src="screenshots/example-custom-dialog.png" width="400px">
 
 ## Card Example
 
