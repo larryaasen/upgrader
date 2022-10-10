@@ -26,6 +26,9 @@ class PlayStoreSearchAPI {
 
     final url =
         lookupURLById(id, country: country, useCacheBuster: useCacheBuster)!;
+    if (debugEnabled) {
+      print('upgrader: lookupById url: $url');
+    }
 
     final response = await client!.get(Uri.parse(url));
 
@@ -101,17 +104,20 @@ class PlayStoreResults {
     return null;
   }
 
-  /// Return the minimum app version taken from the tag in the description field
-  /// from the store response. The format is: [:mav: 1.2.3].
-  /// Returns version, such as 1.2.3, or null.
-  static Version? minAppVersion(Document response, {String tagName = 'mav'}) {
+  /// Return the minimum app version taken from a tag in the description field from the store response.
+  /// The [tagRegExpSource] is used to represent the format of a tag using a regular expression.
+  /// The format in the description by default is like this: `[Minimum supported app version: 1.2.3]`, which
+  /// returns the version `1.2.3`. If there is no match, it returns null.
+  static Version? minAppVersion(
+    Document response, {
+    String tagRegExpSource =
+        r'\[\Minimum supported app version\:[\s]*(?<version>[^\s]+)[\s]*\]',
+  }) {
     Version? version;
     try {
       final description = PlayStoreResults.description(response);
       if (description != null) {
-        String regExpSource = r"\[\:tagName\:[\s]*(?<version>[^\s]+)[\s]*\]";
-        regExpSource = regExpSource.replaceAll(RegExp('tagName'), tagName);
-        final regExp = RegExp(regExpSource, caseSensitive: false);
+        final regExp = RegExp(tagRegExpSource, caseSensitive: false);
         final match = regExp.firstMatch(description);
         final mav = match?.namedGroup('version');
 
@@ -121,7 +127,7 @@ class PlayStoreResults {
             version = Version.parse(mav);
           } on Exception catch (e) {
             print(
-                'upgrader: PlayStoreResults.minAppVersion: $tagName error: $e');
+                'upgrader: PlayStoreResults.minAppVersion: mav=$mav, tag=$tagRegExpSource, error=$e');
           }
         }
       }
