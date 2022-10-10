@@ -1,6 +1,17 @@
 ## [Unreleased]
 
 Updated the Play Store API request to include the language code
+## [4.7.0]
+
+- Changed the Android Play Store description minimum app version tag from `[:mav: 1.2.3]`, which is not allowed by Google,
+to `[Minimum supported app version: 1.2.3]`, which should be allowed. Thanks to @joymyr for the suggestion.
+- Improved the Android Play Store command line app by adding country as an optional parameter.
+- Updated README with platforms supported.
+
+## [4.7.0-alpha.1]
+
+- Changed the Android Play Store description minimum app version tag from `[:mav: 1.2.3]`, which is not allowed by Google,
+to `[Minimum supported app version: 1.2.3]`, which should be allowed. Thanks to @joymyr for the suggestion.
 
 ## [4.6.1]
 

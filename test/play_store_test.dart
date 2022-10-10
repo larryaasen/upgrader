@@ -10,8 +10,9 @@ import 'package:version/version.dart';
 import 'mock_play_store_client.dart';
 
 /// Helper method
-String? pmav(Document response, {String tagName = 'mav'}) {
-  final mav = PlayStoreResults.minAppVersion(response, tagName: tagName);
+String? pmav(Document response,
+    {String tagRES = r'\[\:mav\:[\s]*(?<version>[^\s]+)[\s]*\]'}) {
+  final mav = PlayStoreResults.minAppVersion(response, tagRegExpSource: tagRES);
   return mav?.toString();
 }
 
@@ -112,7 +113,11 @@ void main() {
         'Minor updates and improvements.');
     expect(PlayStoreResults.version(response), '2.3.0');
     expect(PlayStoreResults.description(response)?.length, greaterThan(10));
-    expect(pmav(response), '2.0.0');
+    expect(
+        pmav(response,
+            tagRES:
+                r'\[\Minimum supported app version\:[\s]*(?<version>[^\s]+)[\s]*\]'),
+        '2.0.0');
 
     expect(await playStore.lookupById('com.not.a.valid.application'), isNull);
   }, skip: false);
@@ -172,7 +177,16 @@ void main() {
   }, skip: false);
 
   test('testing minAppVersion mav tag', () async {
-    expect(pmav(resDesc('test [:mav: 1.2.3]'), tagName: 'ddd'), isNull);
-    expect(pmav(resDesc('test [:ddd: 1.2.3]'), tagName: 'ddd'), '1.2.3');
+    expect(pmav(resDesc('test [:mav: 1.2.3]'), tagRES: 'ddd'), isNull);
+    expect(pmav(resDesc('test [:mav: a.b.c]')), isNull);
+    expect(
+        pmav(resDesc('test [:ddd: 1.2.3]'),
+            tagRES: r'\[\:ddd\:[\s]*(?<version>[^\s]+)[\s]*\]'),
+        '1.2.3');
+    expect(
+        pmav(resDesc('test [Minimum supported app version: 4.5.6+1]'),
+            tagRES:
+                r'\[\Minimum supported app version\:[\s]*(?<version>[^\s]+)[\s]*\]'),
+        '4.5.6+1');
   });
 }
