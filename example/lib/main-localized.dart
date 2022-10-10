@@ -44,6 +44,8 @@ class Demo extends StatelessWidget {
         const Locale('fr', ''), // French, no country code
         const Locale('de', ''), // German, no country code
         const Locale('el', ''), // Greek, no country code
+        const Locale('he', ''), // Hebrew, no country code
+        const Locale('hi', ''), // Hindi, no country code
         const Locale('ht', ''), // Haitian Creole, no country code
         const Locale('hu', ''), // Hungarian, no country code
         const Locale('id', ''), // Indonesian, no country code
@@ -61,9 +63,11 @@ class Demo extends StatelessWidget {
         const Locale('ru', ''), // Russian, no country code
         const Locale('sv', ''), // Swedish, no country code
         const Locale('ta', ''), // Tamil, no country code
+        const Locale('te', ''), // Telugu, no country code
         const Locale('tr', ''), // Turkish, no country code
         const Locale('uk', ''), // Ukrainian, no country code
         const Locale('vi', ''), // Vietnamese, no country code
+        const Locale('zh', ''), // Chinese, no country code
       ],
     );
   }
@@ -133,6 +137,8 @@ class DemoLocalizationsDelegate
         'fr',
         'de',
         'el',
+        'he',
+        'hi',
         'ht',
         'hu',
         'id',
@@ -150,9 +156,11 @@ class DemoLocalizationsDelegate
         'ru',
         'sv',
         'ta',
+        'te',
         'tr',
         'uk',
-        'vi'
+        'vi',
+        'zh'
       ].contains(locale.languageCode);
 
   @override

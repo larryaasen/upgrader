@@ -8,6 +8,16 @@
 - Changed the Android Play Store description minimum app version tag from `[:mav: 1.2.3]`, which is not allowed by Google,
 to `[Minimum supported app version: 1.2.3]`, which should be allowed. Thanks to @joymyr for the suggestion.
 
+## [4.6.1]
+
+- Added new language translations for Chinese ('zh'). (thanks to @nivlaoh)
+- Added new language translations for Hebrew ('he'). (thanks to @TomerPacific)
+- Added new language translations for Hindi ('hi'). (thanks to @chirag-chopra)
+- Added new language translations for Telugu ('te'). (thanks to @moulibheemaneti)
+- Added Indonesian releaseNotes translation. (thanks to @malvinpratama)
+- Added Italian releaseNotes translation. (thanks to @JustLazzah)
+- Added Japanese releaseNotes translation. (thanks to @akirakakar)
+
 ## [4.6.0]
 
 - Updated the Android Play Store API request to include the country code, and added cache buster to break the HTTP caching.
