@@ -67,8 +67,11 @@ class Upgrader {
   /// Provide an HTTP Client that can be replaced for mock testing.
   final http.Client client;
 
-  /// The country code that will override the system locale. Optional. Used only for iOS.
+  /// The country code that will override the system locale. Optional.
   final String? countryCode;
+
+  /// The country code that will override the system locale. Optional. Used only for Android.
+  final String? languageCode;
 
   /// For debugging, always force the upgrade to be available.
   bool debugDisplayAlways;
@@ -167,6 +170,7 @@ class Upgrader {
     this.showReleaseNotes = true,
     this.canDismissDialog = false,
     this.countryCode,
+    this.languageCode,
     this.minAppVersion,
     this.dialogStyle = UpgradeDialogStyle.material,
     TargetPlatform? platform,
@@ -278,10 +282,16 @@ class Upgrader {
         print('upgrader: countryCode: $country');
       }
 
+      // The  language code of the locale, defaulting to `en`.
+      final language = languageCode ?? findLanguageCode();
+      if (debugLogging) {
+        print('upgrader: languageCode: $language');
+      }
+
       // Get Android version from Google Play Store, or
       // get iOS version from iTunes Store.
       if (platform == TargetPlatform.android) {
-        await _getAndroidStoreVersion(country: country);
+        await _getAndroidStoreVersion(country: country, language: language);
       } else if (platform == TargetPlatform.iOS) {
         final iTunes = ITunesSearchAPI();
         iTunes.client = client;
@@ -307,10 +317,12 @@ class Upgrader {
   }
 
   /// Android info is fetched by parsing the html of the app store page.
-  Future<bool?> _getAndroidStoreVersion({String? country}) async {
+  Future<bool?> _getAndroidStoreVersion(
+      {String? country, String? language}) async {
     final id = _packageInfo!.packageName;
     final playStore = PlayStoreSearchAPI(client: client);
-    final response = await (playStore.lookupById(id, country: country));
+    final response =
+        await (playStore.lookupById(id, country: country, language: language));
     if (response != null) {
       _appStoreVersion ??= PlayStoreResults.version(response);
       _appStoreListingURL ??= playStore.lookupURLById(id);
@@ -524,6 +536,21 @@ class Upgrader {
     final code = locale == null || locale.countryCode == null
         ? 'US'
         : locale.countryCode;
+    return code;
+  }
+
+  /// Determine the current language code, either from the context, or
+  /// from the system-reported default locale of the device. The default
+  /// is `en`.
+  String? findLanguageCode({BuildContext? context}) {
+    Locale? locale;
+    if (context != null) {
+      locale = Localizations.maybeLocaleOf(context);
+    } else {
+      // Get the system locale
+      locale = ambiguate(WidgetsBinding.instance)!.window.locale;
+    }
+    final code = locale == null ? 'en' : locale.languageCode;
     return code;
   }
 

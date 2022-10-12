@@ -20,7 +20,9 @@ class PlayStoreSearchAPI {
 
   /// Look up by id.
   Future<Document?> lookupById(String id,
-      {String? country = 'US', bool useCacheBuster = true}) async {
+      {String? country = 'US',
+      String? language = 'en',
+      bool useCacheBuster = true}) async {
     assert(id.isNotEmpty);
     if (id.isEmpty) return null;
 
@@ -47,13 +49,18 @@ class PlayStoreSearchAPI {
   }
 
   String? lookupURLById(String id,
-      {String? country = 'US', bool useCacheBuster = true}) {
+      {String? country = 'US',
+      String? language = 'en',
+      bool useCacheBuster = true}) {
     assert(id.isNotEmpty);
     if (id.isEmpty) return null;
 
     Map<String, dynamic> parameters = {'id': id};
     if (country != null && country.isNotEmpty) {
       parameters['gl'] = country;
+    }
+    if (language != null && language.isNotEmpty) {
+      parameters['hl'] = language;
     }
     if (useCacheBuster) {
       parameters['_cb'] = DateTime.now().microsecondsSinceEpoch.toString();

@@ -40,6 +40,10 @@ void main() {
     expect(upgrader1 == upgrader2, isTrue);
   }, skip: false);
 
+  testWidgets('test Upgrader clearSavedSettings', (WidgetTester tester) async {
+    await Upgrader.clearSavedSettings();
+  }, skip: false);
+
   testWidgets('test Upgrader class', (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader(platform: TargetPlatform.iOS, client: client);
@@ -567,7 +571,8 @@ void main() {
         platform: TargetPlatform.iOS,
         client: client,
         debugLogging: true,
-        countryCode: 'IT');
+        countryCode: 'IT',
+        languageCode: 'en');
 
     upgrader.installPackageInfo(
         packageInfo: PackageInfo(

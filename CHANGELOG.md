@@ -1,3 +1,6 @@
+## [Unreleased]
+
+Updated the Play Store API request to include the language code
 ## [4.7.0]
 
 - Changed the Android Play Store description minimum app version tag from `[:mav: 1.2.3]`, which is not allowed by Google,

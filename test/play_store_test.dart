@@ -38,7 +38,7 @@ void main() {
     expect(
         playStore.lookupURLById('com.kotoko.express'),
         startsWith(
-            'https://play.google.com/store/apps/details?id=com.kotoko.express&gl=US&_cb='));
+            'https://play.google.com/store/apps/details?id=com.kotoko.express&gl=US&hl=en&_cb='));
   }, skip: false);
 
   test('testing lookupById', () async {
@@ -74,26 +74,30 @@ void main() {
     expect(() => playStore.lookupURLById(''), throwsAssertionError);
     expect(
         playStore.lookupURLById('com.testing.test1')!.startsWith(
-            'https://play.google.com/store/apps/details?id=com.testing.test1&gl=US&_cb=16'),
+            'https://play.google.com/store/apps/details?id=com.testing.test1&gl=US&hl=en&_cb=16'),
         equals(true));
     expect(
         playStore.lookupURLById('com.testing.test1', country: null)!.startsWith(
-            'https://play.google.com/store/apps/details?id=com.testing.test1&_cb=16'),
+            'https://play.google.com/store/apps/details?id=com.testing.test1&hl=en&_cb=16'),
         equals(true));
     expect(
         playStore.lookupURLById('com.testing.test1', country: '')!.startsWith(
-            'https://play.google.com/store/apps/details?id=com.testing.test1&_cb=16'),
+            'https://play.google.com/store/apps/details?id=com.testing.test1&hl=en&_cb=16'),
         equals(true));
     expect(
         playStore.lookupURLById('com.testing.test1', country: 'IN')!.startsWith(
-            'https://play.google.com/store/apps/details?id=com.testing.test1&gl=IN&_cb=16'),
+            'https://play.google.com/store/apps/details?id=com.testing.test1&gl=IN&hl=en&_cb=16'),
+        equals(true));
+    expect(
+        playStore.lookupURLById('com.testing.test1', language: 'es')!.startsWith(
+            'https://play.google.com/store/apps/details?id=com.testing.test1&gl=US&hl=es&_cb=16'),
         equals(true));
     expect(
         playStore
             .lookupURLById('com.testing.test1',
                 country: 'IN', useCacheBuster: false)!
             .startsWith(
-                'https://play.google.com/store/apps/details?id=com.testing.test1&gl=IN'),
+                'https://play.google.com/store/apps/details?id=com.testing.test1&gl=IN&hl=en'),
         equals(true));
   }, skip: false);
 
