@@ -252,10 +252,10 @@ class AppcastItem {
   bool hostSupportsItem({String? osVersion, String? currentPlatform}) {
     var supported = true;
     if (osString != null && osString!.isNotEmpty) {
-      final platformEnum = 'TargetPlatform.' + osString!;
+      final platformEnum = 'TargetPlatform.${osString!}';
       currentPlatform = currentPlatform == null
           ? defaultTargetPlatform.toString()
-          : 'TargetPlatform.' + currentPlatform;
+          : 'TargetPlatform.$currentPlatform';
       supported = platformEnum.toLowerCase() == currentPlatform.toLowerCase();
     }
 
