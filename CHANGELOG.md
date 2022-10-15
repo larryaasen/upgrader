@@ -1,6 +1,7 @@
-## [Unreleased]
+## [4.8.0]
 
-Updated the Play Store API request to include the language code
+- Release notes for the Android Play Store now display in device locale language code. Updated the Play Store API request to include the language code. Thanks to [@humanolaranja](https://github.com/humanolaranja) for this update.
+
 ## [4.7.0]
 
 - Changed the Android Play Store description minimum app version tag from `[:mav: 1.2.3]`, which is not allowed by Google,
