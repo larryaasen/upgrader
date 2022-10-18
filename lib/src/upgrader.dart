@@ -181,7 +181,7 @@ class Upgrader {
   }
 
   /// A shared instance of [Upgrader].
-  static get sharedInstance => _sharedInstance;
+  static Upgrader get sharedInstance => _sharedInstance;
 
   void installPackageInfo({PackageInfo? packageInfo}) {
     _packageInfo = packageInfo;

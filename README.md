@@ -95,6 +95,29 @@ return Container(
 
 ![image](screenshots/example2.png)
 
+## Custom Widget Example
+
+Just return an `UpgradeWidget` widget in your build method and add `builder` returning the widget you want. This widget will be displayed
+when an update is detected. The widget will have width and height of 0.0 when no update is detected.
+
+```dart
+return Container(
+  margin: EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 0.0),
+  child: UpgradeWidget(
+    builder: (BuildContext context, Upgrader upgrader) {
+      if (upgrader.shouldDisplayUpgrade()) {
+        return IconButton(
+          onPressed: () => upgrader.checkVersion(context: context),
+          icon: Icon(Icons.upload_rounded),
+        );
+      }
+
+      return SizedBox.shrink();
+    },
+  ),
+);
+```
+
 ## Localization
 The text displayed in the `upgrader` package is localized in [many languages](#language-localization), and supports customization.
 
