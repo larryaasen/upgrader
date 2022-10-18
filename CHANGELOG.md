@@ -1,6 +1,6 @@
 ## [4.8.1]
 
-- Fix locale language code in lookupURLById
+- Fixed Android locale language code in lookupURLById. Thanks to [@humanolaranja](https://github.com/humanolaranja) for this update.
 
 ## [4.8.0]
 
