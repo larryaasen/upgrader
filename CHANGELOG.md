@@ -1,3 +1,7 @@
+## [4.8.1]
+
+- Fix locale language code in lookupURLById
+
 ## [4.8.0]
 
 - Release notes for the Android Play Store now display in device locale language code. Updated the Play Store API request to include the language code. Thanks to [@humanolaranja](https://github.com/humanolaranja) for this update.
