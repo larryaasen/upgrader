@@ -26,8 +26,8 @@ class PlayStoreSearchAPI {
     assert(id.isNotEmpty);
     if (id.isEmpty) return null;
 
-    final url =
-        lookupURLById(id, country: country, useCacheBuster: useCacheBuster)!;
+    final url = lookupURLById(id,
+        country: country, language: language, useCacheBuster: useCacheBuster)!;
     if (debugEnabled) {
       print('upgrader: lookupById url: $url');
     }
