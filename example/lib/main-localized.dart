@@ -21,7 +21,7 @@ void main() async {
 }
 
 class Demo extends StatelessWidget {
-  Demo({Key key}) : super(key: key);
+  Demo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +99,7 @@ class DemoLocalizations {
   final Locale locale;
 
   static DemoLocalizations of(BuildContext context) {
-    return Localizations.of<DemoLocalizations>(context, DemoLocalizations);
+    return Localizations.of<DemoLocalizations>(context, DemoLocalizations)!;
   }
 
   static final Map<String, Map<String, String>> _localizedValues = {
@@ -114,11 +114,11 @@ class DemoLocalizations {
   };
 
   String get checking {
-    return _localizedValues[locale.languageCode]['checking'];
+    return _localizedValues[locale.languageCode]!['checking']!;
   }
 
   String get title {
-    return _localizedValues[locale.languageCode]['title'];
+    return _localizedValues[locale.languageCode]!['title']!;
   }
 }
 
@@ -179,11 +179,11 @@ class MyUpgraderMessages extends UpgraderMessages {
   @override
   String get buttonTitleIgnore => 'My Ignore 1';
 
-  MyUpgraderMessages({String code}) : super(code: code);
+  MyUpgraderMessages({String? code}) : super(code: code);
 
   /// Override the message function to provide your own language localization.
   @override
-  String message(UpgraderMessage messageKey) {
+  String? message(UpgraderMessage messageKey) {
     if (languageCode == 'es') {
       switch (messageKey) {
         case UpgraderMessage.body:
