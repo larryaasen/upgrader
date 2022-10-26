@@ -3,6 +3,7 @@
 - Updated minimum Flutter version to 2.5.0 and Dart to 2.14.0.
 - Updated package dependencies:
     - shared_preferences to ">=2.0.3 <2.1.0"
+    - device_info_plus to ">=3.2.0 <7.0.0"
 
 ## [4.9.0]
 
