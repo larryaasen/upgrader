@@ -2,8 +2,8 @@
  * Copyright (c) 2020-2022 Larry Aasen. All rights reserved.
  */
 
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show SynchronousFuture;
+import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:upgrader/upgrader.dart';
 
@@ -38,6 +38,7 @@ class Demo extends StatelessWidget {
         const Locale('en', ''), // English, no country code
         const Locale('ar', ''), // Arabic, no country code
         const Locale('bn', ''), // Bengali, no country code
+        const Locale('da', ''), // Bengali, no country code
         const Locale('es', ''), // Spanish, no country code
         const Locale('fa', ''), // Persian, no country code
         const Locale('fil', ''), // Filipino, no country code
