@@ -1,0 +1,30 @@
+name: main
+
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        flutter-version: ['2.4.0', '2.5.0', '3.3.0']
+
+    steps:
+      - uses: actions/checkout@v3
+
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ matrix.flutter-version }}
+          channel: 'stable'
+
+      - name: Get flutter packages
+        run: flutter pub get
+
+      - name: Analyze
+        run: flutter analyze
+      
+      - name: Run unit and widget tests
+        run: flutter test
