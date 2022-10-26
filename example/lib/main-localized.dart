@@ -38,7 +38,7 @@ class Demo extends StatelessWidget {
         const Locale('en', ''), // English, no country code
         const Locale('ar', ''), // Arabic, no country code
         const Locale('bn', ''), // Bengali, no country code
-        const Locale('da', ''), // Bengali, no country code
+        const Locale('da', ''), // Danish, no country code
         const Locale('es', ''), // Spanish, no country code
         const Locale('fa', ''), // Persian, no country code
         const Locale('fil', ''), // Filipino, no country code
