@@ -43,7 +43,7 @@ dev_dependencies:
     sdk: flutter
 
   # From Dart Team: Mock library for Dart inspired by Mockito.
-  mockito: ^5.0.0
+  mockito: ">=5.0.0 <5.4.0"
   flutter_lints: ^1.0.4
 
 flutter:

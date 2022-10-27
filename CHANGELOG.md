@@ -1,3 +1,8 @@
+## [Unreleased]
+
+- Updated package dependencies:
+    - mockito to ">=5.0.0 <5.4.0"
+
 ## [4.10.0]
 
 - Updated minimum Flutter version to 2.5.0 and Dart to 2.14.0.

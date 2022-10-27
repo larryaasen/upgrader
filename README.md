@@ -490,3 +490,5 @@ Please sponsor or donate to the creator of `upgrader` on [Flattr](https://flattr
 [![Codemagic](https://api.codemagic.io/apps/5ffb7888eb8402dcd1928753/flutter-package/status_badge.svg)](https://codemagic.io/apps/5ffb7888eb8402dcd1928753/flutter-package/latest_build)
 
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/larryaasen/upgrader/tree/master.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/larryaasen/upgrader/tree/master)
+
+[![GitHub main workflow](https://github.com/larryaasen/upgrader/actions/workflows/main.yml/badge.svg)](https://github.com/larryaasen/upgrader/actions/workflows/main.yml)
