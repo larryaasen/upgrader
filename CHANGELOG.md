@@ -1,4 +1,4 @@
-## [unreleased]
+## [4.10.0]
 
 - Updated minimum Flutter version to 2.5.0 and Dart to 2.14.0.
 - Updated package dependencies:
