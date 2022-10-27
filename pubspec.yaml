@@ -15,10 +15,10 @@ dependencies:
   device_info_plus: ">=3.2.0 <7.0.0"
 
   # Pure Dart library for HTML5 parsing
-  html: ^0.15.0
+  html: ">=0.15.0 <=0.15.1"
 
   # From Dart Team: A composable, Future-based library for making HTTP requests.
-  http: ">=0.13.0 <=0.13.3"
+  http: ">=0.13.0 <=0.13.5"
 
   # From dart.dev: Platform independent access to information about the current operating system.
   os_detect: ">=2.0.0 <2.1.0"
@@ -30,7 +30,7 @@ dependencies:
   shared_preferences: ">=2.0.3 <2.1.0"
 
   # From Flutter Team: A Flutter plugin for launching a URL in the mobile platform.
-  url_launcher: ^6.1.0
+  url_launcher: ">=6.1.0 <= 6.1.5"
 
   # A dart library for comparing and incrementing version numbers with Semantic Versioning.
   version: ">=2.0.0 <3.1.0"

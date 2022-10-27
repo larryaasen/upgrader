@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        flutter-version: ['2.5.0', '3.0.0', '3.3.5']
+        flutter-version: ['2.5.0', '3.0.0', '3.3.6']
 
     steps:
       - uses: actions/checkout@v3
