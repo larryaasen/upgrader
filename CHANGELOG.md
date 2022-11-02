@@ -2,6 +2,7 @@
 
 - Updated package dependencies:
     - mockito to ">=5.0.0 <5.4.0"
+- Updated README to include a screenshot of a minAppVersion example.
 
 ## [4.10.0]
 

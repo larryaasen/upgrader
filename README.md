@@ -40,11 +40,6 @@ popup alert prompt, and the [UpgradeCard](#card-example) widget is used to displ
 
 Just wrap your body widget in the `UpgradeAlert` widget, and it will handle the rest.
 ```dart
-import 'package:flutter/material.dart';
-import 'package:upgrader/upgrader.dart';
-
-void main() => runApp(MyApp());
-
 class MyApp extends StatelessWidget {
   const MyApp({Key key}) : super(key: key);
 
@@ -52,11 +47,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Upgrader Example',
-      home: Scaffold(
-          appBar: AppBar(title: Text('Upgrader Example')),
-          body: UpgradeAlert(
-            child: Center(child: Text('Checking...')),
-          )),
+      home: UpgradeAlert(
+          child: Scaffold(
+        appBar: AppBar(title: Text('Upgrader Example')),
+        body: Center(child: Text('Checking...')),
+      )),
     );
   }
 }
@@ -148,7 +143,11 @@ For the iOS App Store, use this format:
 ```
 
 Using that text says that the minimum app version is 1.2.3 and that earlier
-versions of this app will be forced to update to the current version.
+versions of this app will be forced to update to the current version. The Ignore
+and Later buttons will automatically be hidden.
+
+![image](screenshots/example-minappversion.png)
+
 
 After the app containing this text has been submitted for review, approved, and
 released on the app store, the version number will be visible to the `upgrader`

@@ -26,11 +26,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Upgrader Example',
-      home: Scaffold(
-          appBar: AppBar(title: Text('Upgrader Example')),
-          body: UpgradeAlert(
-            child: Center(child: Text('Checking...')),
-          )),
+      home: UpgradeAlert(
+          child: Scaffold(
+        appBar: AppBar(title: Text('Upgrader Example')),
+        body: Center(child: Text('Checking...')),
+      )),
     );
   }
 }
