@@ -2,11 +2,11 @@
 
 - Updated package dependencies:
     - mockito to ">=5.0.0 <5.4.0"
+- Added new language translations for Danish ('da'). (thanks to @Ruukas97)
 - Updated README to include a screenshot of a minAppVersion example.
 
 ## [4.10.0]
 
-- Added new language translations for Danish ('da'). (thanks to @Ruukas97)
 - Updated minimum Flutter version to 2.5.0 and Dart to 2.14.0.
 - Updated package dependencies:
     - device_info_plus to ">=3.2.0 <7.0.0"

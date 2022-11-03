@@ -132,6 +132,7 @@ class DemoLocalizationsDelegate
         'en',
         'ar',
         'bn',
+        'da',
         'es',
         'fa',
         'fil',

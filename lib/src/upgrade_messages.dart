@@ -378,6 +378,9 @@ class UpgraderMessages {
       case 'bn':
         message = 'পরে';
         break;
+      case 'da':
+        message = 'SENERE';
+        break;
       case 'el':
         message = 'ΑΡΓΟΤΕΡΑ';
         break;
