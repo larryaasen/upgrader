@@ -298,6 +298,7 @@ Languages supported:
 * Arabic ('ar')
 * Bengali ('bn')
 * Chinese ('zh')
+* Danish ('da')
 * Dutch ('nl')
 * Filipino ('fil')
 * French ('fr')
