@@ -714,6 +714,9 @@ class UpgraderMessages {
       case 'ar':
         message = 'تفاصيل الاصدار';
         break;
+      case 'da':
+        message = 'Udgivelsesnoter';
+        break;
       case 'de':
         message = 'Versionshinweise';
         break;
@@ -743,7 +746,6 @@ class UpgraderMessages {
         break;
 
       case 'bn':
-      case 'da':
       case 'el':
       case 'fa':
       case 'fil':
