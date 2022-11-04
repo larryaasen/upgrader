@@ -1,4 +1,4 @@
-## [Unreleased]
+## [4.11.0]
 
 - Updated package dependencies:
     - mockito to ">=5.0.0 <5.4.0"
