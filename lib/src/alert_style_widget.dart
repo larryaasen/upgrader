@@ -57,7 +57,7 @@ class AlertStyleWidget extends StatelessWidget {
             titlePadding ?? const EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 0.0),
         child: DefaultTextStyle(
           style: Theme.of(context).textTheme.headline6!,
-          child: Semantics(child: title, namesRoute: true),
+          child: Semantics(namesRoute: true, child: title),
         ),
       ));
     } else {
