@@ -623,7 +623,7 @@ class Upgrader {
           ));
     }
     return AlertDialog(
-      title: Text(title),
+      title: Text(title, key: const Key('upgrader.dialog.title')),
       content: SingleChildScrollView(
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
