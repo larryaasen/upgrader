@@ -33,4 +33,4 @@ jobs:
         run: 	xcrun simctl boot 'iPhone 13'
 
       - name: Run the driver test
-        run: 	cd example; flutter drive --target=test/driver_test/driver.dart --driver=test/driver_test/driver_tesdart
+        run: 	cd example; flutter drive --target=test/driver_test/driver.dart --driver=test/driver_test/driver_test.dart
