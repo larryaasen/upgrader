@@ -147,7 +147,7 @@ class UpgraderMessages {
         break;
       case 'he':
         message =
-            'גרסה חדשה של {{appName}} קיימת! גרסה {{currentAppStoreVersion}} ניתנת להורדה-יש לך גרסה {{currentInstalledVersion}.';
+            'גרסה חדשה של {{appName}} קיימת! גרסה {{currentAppStoreVersion}} ניתנת להורדה-יש לך גרסה {{currentInstalledVersion}}.';
         break;
       case 'hi':
         message =
