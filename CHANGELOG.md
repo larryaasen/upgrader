@@ -1,3 +1,7 @@
+## [4.11.1]
+
+- Fixed issue #236 where the 'he' body message was missing a `}` character.
+
 ## [4.11.0]
 
 - Updated package dependencies:

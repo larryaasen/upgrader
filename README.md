@@ -439,7 +439,10 @@ itunes_lookup all results:
 ## Reporting Issues
 
 Please submit issue reports [here on GitHub](https://github.com/larryaasen/upgrader/issues/new/choose).
-To better assist in analyzing issues, please include all of the `upgrader` log, which should look something like this:
+To better assist in analyzing issues, please include all of the `upgrader` log,
+which can be enabled by setting `debugLogging` to `true`.
+
+It should look something like this:
 ```
 flutter: upgrader: languageCode: en
 flutter: upgrader: build UpgradeAlert
