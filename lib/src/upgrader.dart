@@ -18,6 +18,7 @@ import 'itunes_search_api.dart';
 import 'play_store_search_api.dart';
 import 'upgrade_io.dart';
 import 'upgrade_messages.dart';
+import 'upgrade_styles.dart';
 
 /// Signature of callbacks that have no arguments and return bool.
 typedef BoolCallback = bool Function();
@@ -133,6 +134,8 @@ class Upgrader {
   /// The target operating system.
   final String operatingSystem = UpgradeIO.operatingSystem;
 
+  final UpgradeTextStyles textStyles;
+
   bool _displayed = false;
   bool _initCalled = false;
   PackageInfo? _packageInfo;
@@ -174,8 +177,10 @@ class Upgrader {
     this.minAppVersion,
     this.dialogStyle = UpgradeDialogStyle.material,
     TargetPlatform? platform,
+    UpgradeTextStyles? textStyles,
   })  : client = client ?? http.Client(),
         messages = messages ?? UpgraderMessages(),
+        textStyles = textStyles ?? UpgradeTextStyles(),
         platform = platform ?? defaultTargetPlatform {
     if (debugLogging) print("upgrader: instantiated.");
   }
@@ -613,9 +618,11 @@ class Upgrader {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(messages.message(UpgraderMessage.releaseNotes)!,
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
+                  style: textStyles.titleReleaseNotes ??
+                      const TextStyle(fontWeight: FontWeight.bold)),
               Text(
                 releaseNotes,
+                style: textStyles.bodyReleaseNotes,
                 maxLines: 15,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -623,16 +630,26 @@ class Upgrader {
           ));
     }
     return AlertDialog(
-      title: Text(title, key: const Key('upgrader.dialog.title')),
+      title: Text(
+        title,
+        key: const Key('upgrader.dialog.title'),
+        style: textStyles.title,
+      ),
       content: SingleChildScrollView(
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text(message),
+          Text(
+            message,
+            style: textStyles.message,
+          ),
           Padding(
               padding: const EdgeInsets.only(top: 15.0),
-              child: Text(messages.message(UpgraderMessage.prompt)!)),
+              child: Text(
+                messages.message(UpgraderMessage.prompt)!,
+                style: textStyles.prompt,
+              )),
           if (notes != null) notes,
         ],
       )),
@@ -660,10 +677,14 @@ class Upgrader {
           padding: const EdgeInsets.only(top: 15.0),
           child: Column(
             children: <Widget>[
-              Text(messages.message(UpgraderMessage.releaseNotes)!,
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
+              Text(
+                messages.message(UpgraderMessage.releaseNotes)!,
+                style: textStyles.titleReleaseNotes ??
+                    const TextStyle(fontWeight: FontWeight.bold),
+              ),
               Text(
                 releaseNotes,
+                style: textStyles.bodyReleaseNotes,
                 maxLines: 14,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -671,15 +692,24 @@ class Upgrader {
           ));
     }
     return CupertinoAlertDialog(
-      title: Text(title),
+      title: Text(
+        title,
+        style: textStyles.title,
+      ),
       content: Column(
         // mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Text(message),
+          Text(
+            message,
+            style: textStyles.message,
+          ),
           Padding(
               padding: const EdgeInsets.only(top: 15.0),
-              child: Text(messages.message(UpgraderMessage.prompt)!)),
+              child: Text(
+                messages.message(UpgraderMessage.prompt)!,
+                style: textStyles.prompt,
+              )),
           if (notes != null) notes,
         ],
       ),
