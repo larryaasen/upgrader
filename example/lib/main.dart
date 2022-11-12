@@ -27,10 +27,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Upgrader Example',
       home: UpgradeAlert(
+          upgrader: Upgrader(
+              textStyles: UpgradeTextStyles(
+                  bodyReleaseNotes: TextStyle(
+            fontWeight: FontWeight.w400,
+          ))),
           child: Scaffold(
-        appBar: AppBar(title: Text('Upgrader Example')),
-        body: Center(child: Text('Checking...')),
-      )),
+            appBar: AppBar(title: Text('Upgrader Example')),
+            body: Center(child: Text('Checking...')),
+          )),
     );
   }
 }
