@@ -14,3 +14,4 @@ export 'src/upgrade_card.dart';
 export 'src/upgrade_io.dart';
 export 'src/upgrade_messages.dart';
 export 'src/upgrader.dart';
+export 'src/upgrade_styles.dart';
