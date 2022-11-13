@@ -12,6 +12,7 @@ import 'package:upgrader/upgrader.dart';
 import 'fake_appcast.dart';
 import 'mock_itunes_client.dart';
 import 'mock_play_store_client.dart';
+import 'widgets.dart';
 
 // TODO: Need an integration test that runs on Android and iOS.
 
@@ -130,7 +131,7 @@ void main() {
     expect(upgrader.messages.buttonTitleUpdate, 'ccc');
     expect(upgrader.messages.releaseNotes, 'ddd');
 
-    await tester.pumpWidget(_MyWidget(upgrader: upgrader));
+    await tester.pumpWidget(MyWidgetTest(upgrader: upgrader));
 
     expect(find.text('Upgrader test'), findsOneWidget);
     expect(find.text('Upgrading'), findsOneWidget);
@@ -206,7 +207,7 @@ void main() {
     expect(upgrader.messages.buttonTitleUpdate, 'ccc');
     upgrader.dialogStyle = UpgradeDialogStyle.cupertino;
 
-    await tester.pumpWidget(_MyWidget(upgrader: upgrader));
+    await tester.pumpWidget(MyWidgetTest(upgrader: upgrader));
 
     expect(find.text('Upgrader test'), findsOneWidget);
     expect(find.text('Upgrading'), findsOneWidget);
@@ -264,7 +265,7 @@ void main() {
 
     expect(upgrader.isTooSoon(), false);
 
-    await tester.pumpWidget(_MyWidget(upgrader: upgrader));
+    await tester.pumpWidget(MyWidgetTest(upgrader: upgrader));
 
     // Pump the UI so the upgrader can display its dialog
     await tester.pumpAndSettle();
@@ -306,7 +307,7 @@ void main() {
 
     expect(upgrader.isTooSoon(), false);
 
-    await tester.pumpWidget(_MyWidget(upgrader: upgrader));
+    await tester.pumpWidget(MyWidgetTest(upgrader: upgrader));
 
     // Pump the UI so the upgrader can display its dialog
     await tester.pumpAndSettle();
@@ -339,7 +340,7 @@ void main() {
 
     expect(upgrader.isTooSoon(), false);
 
-    await tester.pumpWidget(_MyWidget(upgrader: upgrader));
+    await tester.pumpWidget(MyWidgetTest(upgrader: upgrader));
 
     // Pump the UI so the upgrader can display its dialog
     await tester.pumpAndSettle();
@@ -384,7 +385,7 @@ void main() {
 
     expect(upgrader.isTooSoon(), false);
 
-    await tester.pumpWidget(_MyWidgetCard(upgrader: upgrader));
+    await tester.pumpWidget(MyWidgetCardTest(upgrader: upgrader));
 
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle();
@@ -429,7 +430,7 @@ void main() {
 
     expect(upgrader.isTooSoon(), false);
 
-    await tester.pumpWidget(_MyWidgetCard(upgrader: upgrader));
+    await tester.pumpWidget(MyWidgetCardTest(upgrader: upgrader));
 
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle();
@@ -472,7 +473,7 @@ void main() {
 
     expect(upgrader.isTooSoon(), false);
 
-    await tester.pumpWidget(_MyWidgetCard(upgrader: upgrader));
+    await tester.pumpWidget(MyWidgetCardTest(upgrader: upgrader));
 
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle(const Duration(milliseconds: 5000));
@@ -517,7 +518,7 @@ void main() {
 
     upgrader.minAppVersion = '1.0.0';
 
-    await tester.pumpWidget(_MyWidgetCard(upgrader: upgrader));
+    await tester.pumpWidget(MyWidgetCardTest(upgrader: upgrader));
 
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle(const Duration(milliseconds: 5000));
@@ -599,7 +600,7 @@ void main() {
 
     expect(upgrader.isTooSoon(), false);
 
-    await tester.pumpWidget(_MyWidgetCard(upgrader: upgrader));
+    await tester.pumpWidget(MyWidgetCardTest(upgrader: upgrader));
 
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle();
@@ -847,48 +848,6 @@ void verifyMessages(UpgraderMessages messages, String code) {
   expect(messages.message(UpgraderMessage.prompt), isNotEmpty);
   expect(messages.message(UpgraderMessage.releaseNotes), isNotEmpty);
   expect(messages.message(UpgraderMessage.title), isNotEmpty);
-}
-
-class _MyWidget extends StatelessWidget {
-  final Upgrader upgrader;
-  const _MyWidget({Key? key, required this.upgrader}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Upgrader test',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Upgrader test'),
-        ),
-        body: UpgradeAlert(
-            upgrader: upgrader,
-            child: Column(
-              children: const <Widget>[Text('Upgrading')],
-            )),
-      ),
-    );
-  }
-}
-
-class _MyWidgetCard extends StatelessWidget {
-  final Upgrader upgrader;
-  const _MyWidgetCard({Key? key, required this.upgrader}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Upgrader test',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Upgrader test'),
-        ),
-        body: Column(
-          children: <Widget>[UpgradeCard(upgrader: upgrader)],
-        ),
-      ),
-    );
-  }
 }
 
 class MyUpgraderMessages extends UpgraderMessages {
