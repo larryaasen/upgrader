@@ -34,7 +34,7 @@ class PlayStoreSearchAPI {
 
     final response = await client!.get(Uri.parse(url));
 
-    if (response.statusCode != 200) {
+    if (response.statusCode < 200 || response.statusCode >= 300) {
       print('upgrader: Can\'t find an app in the Play Store with the id: $id');
       return null;
     }
