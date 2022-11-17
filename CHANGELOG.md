@@ -4,6 +4,10 @@
 - Updated all package dependencies to their latest version.
 - Fixed a few warnings.
 
+## [4.11.1]
+
+- Fixed issue #236 where the 'he' body message was missing a `}` character.
+
 ## [4.11.0]
 
 - Updated package dependencies:
