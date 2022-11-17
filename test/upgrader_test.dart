@@ -660,7 +660,7 @@ void main() {
 
       final upgrader2 =
           Upgrader(durationUntilAlertAgain: const Duration(days: 10));
-      final _ = UpgradeCard(upgrader: upgrader2);
+      UpgradeCard(upgrader: upgrader2);
       expect(upgrader2.durationUntilAlertAgain, const Duration(days: 10));
     }, skip: false);
 

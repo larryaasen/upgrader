@@ -1,3 +1,9 @@
+## [5.0.0-alpha.1]
+
+- Updated to Flutter 3.01 and Dart 2.17.1.
+- Updated all package dependencies to their latest version.
+- Fixed a few warnings.
+
 ## [4.11.1]
 
 - Fixed issue #236 where the 'he' body message was missing a `}` character.
