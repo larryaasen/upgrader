@@ -20,7 +20,10 @@ class UpgradeBase extends StatefulWidget {
 }
 
 class UpgradeBaseState extends State<UpgradeBase> {
-  Future<bool> get initialized => widget.upgrader.initialize();
+  Future<bool> get initialized => widget.upgrader.initialize().onError((e, s) {
+        debugPrintStack(label: "Failed to initialize: $e", stackTrace: s);
+        return true;
+      });
 
   @override
   Widget build(BuildContext context) => widget.build(context, this);
