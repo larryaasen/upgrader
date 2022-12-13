@@ -124,6 +124,10 @@ class Upgrader {
   /// Hide or show release notes (default: true)
   bool showReleaseNotes;
 
+  /// The text style for the cupertino dialog buttons. Used only for
+  /// [UpgradeDialogStyle.cupertino]. Optional.
+  TextStyle? cupertinoButtonTextStyle;
+
   /// Called when [Upgrader] determines that an upgrade may or may not be
   /// displayed. The [value] parameter will be true when it should be displayed,
   /// and false when it should not be displayed. One good use for this callback
@@ -173,6 +177,7 @@ class Upgrader {
     this.languageCode,
     this.minAppVersion,
     this.dialogStyle = UpgradeDialogStyle.material,
+    this.cupertinoButtonTextStyle,
     TargetPlatform? platform,
   })  : client = client ?? http.Client(),
         messages = messages ?? UpgraderMessages(),
@@ -686,13 +691,16 @@ class Upgrader {
       actions: <Widget>[
         if (showIgnore)
           CupertinoDialogAction(
+              textStyle: cupertinoButtonTextStyle,
               child: Text(messages.message(UpgraderMessage.buttonTitleIgnore)!),
               onPressed: () => onUserIgnored(context, true)),
         if (showLater)
           CupertinoDialogAction(
+              textStyle: cupertinoButtonTextStyle,
               child: Text(messages.message(UpgraderMessage.buttonTitleLater)!),
               onPressed: () => onUserLater(context, true)),
         CupertinoDialogAction(
+            textStyle: cupertinoButtonTextStyle,
             isDefaultAction: true,
             child: Text(messages.message(UpgraderMessage.buttonTitleUpdate)!),
             onPressed: () => onUserUpdated(context, !blocked())),
