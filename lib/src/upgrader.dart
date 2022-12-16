@@ -256,6 +256,7 @@ class Upgrader {
         var count = appcast.items == null ? 0 : appcast.items!.length;
         print('upgrader: appcast item count: $count');
       }
+      final criticalUpdateItem = appcast.criticalUpdateItem();
       final bestItem = appcast.bestItem();
       if (bestItem != null &&
           bestItem.versionString != null &&
@@ -263,12 +264,20 @@ class Upgrader {
         if (debugLogging) {
           print(
               'upgrader: appcast best item version: ${bestItem.versionString}');
+          print(
+              'upgrader: appcast critical update item version: ${criticalUpdateItem?.versionString}');
         }
-        _appStoreVersion ??= bestItem.versionString;
-        _appStoreListingURL ??= bestItem.fileURL;
-        if (bestItem.isCriticalUpdate) {
+
+        final packageInfo = await PackageInfo.fromPlatform();
+        final appVersion = packageInfo.version;
+
+        final criticalVersion = criticalUpdateItem?.versionString ?? '';
+        if (criticalVersion.isNotEmpty && Version.parse(appVersion) < Version.parse(criticalVersion)) {
           _isCriticalUpdate = true;
         }
+        
+        _appStoreVersion ??= bestItem.versionString;
+        _appStoreListingURL ??= bestItem.fileURL;
         _releaseNotes = bestItem.itemDescription;
       }
     } else {
