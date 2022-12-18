@@ -142,7 +142,7 @@ void main() {
     expect(upgrader.isTooSoon(), true);
 
     expect(find.text(upgrader.messages.title), findsOneWidget);
-    expect(find.text(upgrader.message()), findsOneWidget);
+    expect(find.text(upgrader.message() ?? ''), findsOneWidget);
     expect(find.text(upgrader.messages.releaseNotes), findsOneWidget);
     expect(find.text(upgrader.releaseNotes!), findsOneWidget);
     expect(find.text(upgrader.messages.prompt), findsOneWidget);
@@ -218,7 +218,7 @@ void main() {
     expect(upgrader.isTooSoon(), true);
 
     expect(find.text(upgrader.messages.title), findsOneWidget);
-    expect(find.text(upgrader.message()), findsOneWidget);
+    expect(find.text(upgrader.message() ?? ''), findsOneWidget);
     expect(find.text(upgrader.messages.releaseNotes), findsOneWidget);
     expect(find.text(upgrader.releaseNotes!), findsOneWidget);
     expect(find.text(upgrader.messages.prompt), findsOneWidget);

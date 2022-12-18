@@ -49,19 +49,18 @@ class UpgradeCard extends UpgradeBase {
 
               Widget? notes;
               if (shouldDisplayReleaseNotes && releaseNotes != null) {
+                final releaseNotesTitle =
+                    upgrader.messages.message(UpgraderMessage.releaseNotes);
                 notes = Padding(
                     padding: const EdgeInsets.only(top: 15.0),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                            Upgrader()
-                                    .messages
-                                    .message(UpgraderMessage.releaseNotes) ??
-                                '',
-                            style:
-                                const TextStyle(fontWeight: FontWeight.bold)),
+                        if (releaseNotesTitle != null)
+                          Text(releaseNotesTitle,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold)),
                         Text(
                           releaseNotes,
                           maxLines: 15,
@@ -70,6 +69,7 @@ class UpgradeCard extends UpgradeBase {
                       ],
                     ));
               }
+              final prompt = upgrader.messages.message(UpgraderMessage.prompt);
 
               return Card(
                   color: Colors.white,
@@ -81,12 +81,11 @@ class UpgradeCard extends UpgradeBase {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(message),
-                          Padding(
-                              padding: const EdgeInsets.only(top: 15.0),
-                              child: Text(upgrader.messages
-                                      .message(UpgraderMessage.prompt) ??
-                                  '')),
+                          if (message != null) Text(message),
+                          if (prompt != null)
+                            Padding(
+                                padding: const EdgeInsets.only(top: 15.0),
+                                child: Text(prompt)),
                           if (notes != null) notes,
                         ],
                       ),

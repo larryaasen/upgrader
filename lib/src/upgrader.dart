@@ -377,8 +377,9 @@ class Upgrader {
 
   String? get releaseNotes => _releaseNotes;
 
-  String message() {
-    var msg = messages.message(UpgraderMessage.body)!;
+  String? message() {
+    var msg = messages.message(UpgraderMessage.body);
+    if (msg == null) return null;
     msg = msg.replaceAll('{{appName}}', appName());
     msg = msg.replaceAll(
         '{{currentAppStoreVersion}}', currentAppStoreVersion() ?? '');
@@ -558,7 +559,7 @@ class Upgrader {
   void _showDialog(
       {required BuildContext context,
       required String? title,
-      required String message,
+      required String? message,
       required String? releaseNotes,
       required bool canDismissDialog}) {
     if (debugLogging) {
@@ -577,8 +578,8 @@ class Upgrader {
         return WillPopScope(
           onWillPop: () async => _shouldPopScope(),
           child: dialogStyle == UpgradeDialogStyle.material
-              ? _alertDialog(title!, message, releaseNotes, context)
-              : _cupertinoAlertDialog(title!, message, releaseNotes, context),
+              ? _alertDialog(title, message, releaseNotes, context)
+              : _cupertinoAlertDialog(title, message, releaseNotes, context),
         );
       },
     );
@@ -602,18 +603,20 @@ class Upgrader {
     return false;
   }
 
-  AlertDialog _alertDialog(String title, String message, String? releaseNotes,
+  AlertDialog _alertDialog(String? title, String? message, String? releaseNotes,
       BuildContext context) {
     Widget? notes;
     if (releaseNotes != null) {
+      final releaseNotesTitle = messages.message(UpgraderMessage.releaseNotes);
       notes = Padding(
           padding: const EdgeInsets.only(top: 15.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(messages.message(UpgraderMessage.releaseNotes)!,
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
+              if (releaseNotesTitle != null)
+                Text(releaseNotesTitle,
+                    style: const TextStyle(fontWeight: FontWeight.bold)),
               Text(
                 releaseNotes,
                 maxLines: 15,
@@ -622,17 +625,20 @@ class Upgrader {
             ],
           ));
     }
+    final prompt = messages.message(UpgraderMessage.prompt);
     return AlertDialog(
-      title: Text(title, key: const Key('upgrader.dialog.title')),
+      title: title == null
+          ? null
+          : Text(title, key: const Key('upgrader.dialog.title')),
       content: SingleChildScrollView(
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text(message),
-          Padding(
-              padding: const EdgeInsets.only(top: 15.0),
-              child: Text(messages.message(UpgraderMessage.prompt)!)),
+          if (message != null) Text(message),
+          if (prompt != null)
+            Padding(
+                padding: const EdgeInsets.only(top: 15.0), child: Text(prompt)),
           if (notes != null) notes,
         ],
       )),
@@ -652,16 +658,18 @@ class Upgrader {
     );
   }
 
-  CupertinoAlertDialog _cupertinoAlertDialog(String title, String message,
+  CupertinoAlertDialog _cupertinoAlertDialog(String? title, String? message,
       String? releaseNotes, BuildContext context) {
     Widget? notes;
     if (releaseNotes != null) {
+      final releaseNotesTitle = messages.message(UpgraderMessage.releaseNotes);
       notes = Padding(
           padding: const EdgeInsets.only(top: 15.0),
           child: Column(
             children: <Widget>[
-              Text(messages.message(UpgraderMessage.releaseNotes)!,
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
+              if (releaseNotesTitle != null)
+                Text(releaseNotesTitle,
+                    style: const TextStyle(fontWeight: FontWeight.bold)),
               Text(
                 releaseNotes,
                 maxLines: 14,
@@ -670,16 +678,17 @@ class Upgrader {
             ],
           ));
     }
+    final prompt = messages.message(UpgraderMessage.prompt);
     return CupertinoAlertDialog(
-      title: Text(title),
+      title: title == null ? null : Text(title),
       content: Column(
         // mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Text(message),
-          Padding(
-              padding: const EdgeInsets.only(top: 15.0),
-              child: Text(messages.message(UpgraderMessage.prompt)!)),
+          if (message != null) Text(message),
+          if (prompt != null)
+            Padding(
+                padding: const EdgeInsets.only(top: 15.0), child: Text(prompt)),
           if (notes != null) notes,
         ],
       ),
