@@ -5,7 +5,7 @@ homepage: https://github.com/larryaasen/upgrader
 
 environment:
   sdk: '>=2.18.4 <3.0.0'
-  flutter: ">=3.0.10"
+  flutter: ">=3.3.10"
 
 dependencies:
   flutter:
