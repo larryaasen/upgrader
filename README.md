@@ -105,7 +105,6 @@ You can also display Custom dialog by using the `dialogStyle` parameter.
 ```dart
           body: UpgradeAlert(
           upgrader: Upgrader(
-            debugDisplayAlways: true,
             dialogStyle: UpgradeDialogStyle.custom,
             customDialogBuilder: (context, message, releaseNotes, title) {
               return AlertDialog(
