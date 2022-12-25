@@ -88,6 +88,9 @@ class Upgrader {
     String title,
     String message,
     String? releaseNotes,
+    VoidCallback ignoreCallback,
+    VoidCallback laterCallback,
+    VoidCallback updateCallback,
   )? customDialogBuilder;
 
   /// Duration until alerting user again
@@ -570,8 +573,15 @@ class Upgrader {
                 _cupertinoAlertDialog(title!, message, releaseNotes, context);
             break;
           case UpgradeDialogStyle.custom:
-            dialog =
-                customDialogBuilder!(context, title!, message, releaseNotes);
+            dialog = customDialogBuilder!(
+              context,
+              title!,
+              message,
+              releaseNotes,
+              () => onUserIgnored(context, true),
+              () => onUserLater(context, true),
+              () => onUserUpdated(context, !blocked()),
+            );
             break;
         }
 
