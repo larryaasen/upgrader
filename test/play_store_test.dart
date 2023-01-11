@@ -150,6 +150,20 @@ void main() {
     expect(PlayStoreResults.description(response)?.length, greaterThan(10));
   }, skip: false);
 
+  test('testing release notes <br> 2', () async {
+    final client = await MockPlayStoreSearchClient.setupMockClient();
+    final playStore = PlayStoreSearchAPI(client: client);
+
+    final response = await playStore.lookupById('com.testing.test5');
+    expect(response, isNotNull);
+    expect(response, isInstanceOf<Document>());
+
+    expect(PlayStoreResults.releaseNotes(response!),
+        'Minor updates and improvements.\nAgain.\nAgain.');
+    expect(PlayStoreResults.version(response), '2.0.2');
+    expect(PlayStoreResults.description(response)?.length, greaterThan(10));
+  }, skip: false);
+
   test('testing PlayStoreResults', () async {
     expect(PlayStoreResults(), isNotNull);
     expect(PlayStoreResults.releaseNotes(Document()), isNull);
