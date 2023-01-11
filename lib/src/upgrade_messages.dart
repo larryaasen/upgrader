@@ -741,11 +741,11 @@ class UpgraderMessages {
       case 'ja':
         message = 'リリースノート';
         break;
-      case 'te':
-        message = 'విడుదల గమనికలు';
-        break;
       case 'pt':
         message = 'Novidades';
+        break;
+      case 'te':
+        message = 'విడుదల గమనికలు';
         break;
 
       case 'bn':

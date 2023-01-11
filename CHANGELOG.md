@@ -1,6 +1,7 @@
 ## Next
 
 - Fixed issue #239 where some Android release notes that contained <br> HTML tags were not converted into \n characters.
+- Added Portuguese release notes translation. (thanks to @RodolfoSilva)
 
 ## 5.0.0
 
