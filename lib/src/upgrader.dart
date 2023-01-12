@@ -148,6 +148,9 @@ class Upgrader {
   bool _hasAlerted = false;
   bool _isCriticalUpdate = false;
 
+  /// Track the initialization future so that [initialize] can be called multiple times.
+  Future<bool>? _futureInit;
+
   final notInitializedExceptionMessage =
       'initialize() not called. Must be called first.';
 
@@ -196,51 +199,64 @@ class Upgrader {
     _appStoreListingURL = url;
   }
 
+  /// Initialize [Upgrader] by getting saved preferences, getting platform package info, and getting
+  /// released version info.
   Future<bool> initialize() async {
-    if (_initCalled) {
-      return true;
-    }
-
-    _initCalled = true;
-
-    if (messages.languageCode.isEmpty) {
-      print('upgrader: error -> languageCode is empty');
-    } else if (debugLogging) {
-      print('upgrader: languageCode: ${messages.languageCode}');
-    }
-
-    await _getSavedPrefs();
-
     if (debugLogging) {
-      print('upgrader: default operatingSystem: '
-          '${UpgradeIO.operatingSystem} ${UpgradeIO.operatingSystemVersion}');
-      print('upgrader: operatingSystem: $operatingSystem');
-      print('upgrader: platform: $platform');
-      print('upgrader: '
-          'isAndroid: ${UpgradeIO.isAndroid}, '
-          'isIOS: ${UpgradeIO.isIOS}, '
-          'isLinux: ${UpgradeIO.isLinux}, '
-          'isMacOS: ${UpgradeIO.isMacOS}, '
-          'isWindows: ${UpgradeIO.isWindows}, '
-          'isFuchsia: ${UpgradeIO.isFuchsia}, '
-          'isWeb: ${UpgradeIO.isWeb}');
+      print('upgrader: initialize called');
     }
+    if (_futureInit != null) return _futureInit!;
 
-    if (_packageInfo == null) {
-      _packageInfo = await PackageInfo.fromPlatform();
+    _futureInit = Future(() async {
       if (debugLogging) {
-        print(
-            'upgrader: package info packageName: ${_packageInfo!.packageName}');
-        print('upgrader: package info appName: ${_packageInfo!.appName}');
-        print('upgrader: package info version: ${_packageInfo!.version}');
+        print('upgrader: initializing');
       }
-    }
+      if (_initCalled) {
+        assert(false, 'This should never happen.');
+        return true;
+      }
+      _initCalled = true;
 
-    await _updateVersionInfo();
+      if (messages.languageCode.isEmpty) {
+        print('upgrader: error -> languageCode is empty');
+      } else if (debugLogging) {
+        print('upgrader: languageCode: ${messages.languageCode}');
+      }
 
-    _installedVersion = _packageInfo!.version;
+      await _getSavedPrefs();
 
-    return true;
+      if (debugLogging) {
+        print('upgrader: default operatingSystem: '
+            '${UpgradeIO.operatingSystem} ${UpgradeIO.operatingSystemVersion}');
+        print('upgrader: operatingSystem: $operatingSystem');
+        print('upgrader: platform: $platform');
+        print('upgrader: '
+            'isAndroid: ${UpgradeIO.isAndroid}, '
+            'isIOS: ${UpgradeIO.isIOS}, '
+            'isLinux: ${UpgradeIO.isLinux}, '
+            'isMacOS: ${UpgradeIO.isMacOS}, '
+            'isWindows: ${UpgradeIO.isWindows}, '
+            'isFuchsia: ${UpgradeIO.isFuchsia}, '
+            'isWeb: ${UpgradeIO.isWeb}');
+      }
+
+      if (_packageInfo == null) {
+        _packageInfo = await PackageInfo.fromPlatform();
+        if (debugLogging) {
+          print(
+              'upgrader: package info packageName: ${_packageInfo!.packageName}');
+          print('upgrader: package info appName: ${_packageInfo!.appName}');
+          print('upgrader: package info version: ${_packageInfo!.version}');
+        }
+      }
+
+      await _updateVersionInfo();
+
+      _installedVersion = _packageInfo!.version;
+
+      return true;
+    });
+    return _futureInit!;
   }
 
   Future<bool> _updateVersionInfo() async {
@@ -294,6 +310,7 @@ class Upgrader {
         await _getAndroidStoreVersion(country: country, language: language);
       } else if (platform == TargetPlatform.iOS) {
         final iTunes = ITunesSearchAPI();
+        iTunes.debugEnabled = debugLogging;
         iTunes.client = client;
         final response = await (iTunes
             .lookupByBundleId(_packageInfo!.packageName, country: country));
@@ -321,6 +338,7 @@ class Upgrader {
       {String? country, String? language}) async {
     final id = _packageInfo!.packageName;
     final playStore = PlayStoreSearchAPI(client: client);
+    playStore.debugEnabled = debugLogging;
     final response =
         await (playStore.lookupById(id, country: country, language: language));
     if (response != null) {
