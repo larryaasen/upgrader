@@ -90,6 +90,62 @@ return Container(
 
 ![image](screenshots/example2.png)
 
+## Stylized Example
+
+To style each alert's text you can use the 'textStyles' property of the Upgrader widget. With this it is 
+possible to style title, message, prompt, titleReleaseNotes, bodyReleaseNotes.
+
+```dart
+ // all properties are TextStyle type
+  UpgradeTextStyles({
+    this.title,
+    this.message,
+    this.prompt,
+    this.titleReleaseNotes,
+    this.bodyReleaseNotes,
+  })
+```
+
+Implementation:
+
+```dart
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Upgrader Example',
+      home: UpgradeAlert(
+          upgrader: Upgrader(
+            textStyles: UpgradeTextStyles(
+                title: TextStyle(backgroundColor: Colors.amber),
+                bodyReleaseNotes: TextStyle(
+                  color: Colors.blue,
+                  fontWeight: FontWeight.w700,
+                ),
+                message: TextStyle(fontSize: 16, color: Colors.red),
+                prompt: TextStyle(
+                  backgroundColor: Colors.blueAccent,
+                  color: Colors.white,
+                ),
+                titleReleaseNotes: TextStyle(
+                  color: Colors.brown,
+                  letterSpacing: 7,
+                )),
+            dialogStyle: UpgradeDialogStyle.material,
+          ),
+          child: Scaffold(
+            appBar: AppBar(title: Text('Upgrader Example')),
+            body: Center(child: Text('Checking...')),
+          )),
+    );
+  }
+}
+```
+
+![image](screenshots/stylized-example.png)
+
 ## Localization
 The text displayed in the `upgrader` package is localized in [many languages](#language-localization), and supports customization.
 
