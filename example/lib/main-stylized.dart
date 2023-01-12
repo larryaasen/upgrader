@@ -29,13 +29,21 @@ class MyApp extends StatelessWidget {
       home: UpgradeAlert(
           upgrader: Upgrader(
             textStyles: UpgradeTextStyles(
-              title: TextStyle(backgroundColor: Colors.amber),
-              bodyReleaseNotes: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            dialogStyle: UpgradeDialogStyle.cupertino,
+                title: TextStyle(backgroundColor: Colors.amber),
+                bodyReleaseNotes: TextStyle(
+                  color: Colors.blue,
+                  fontWeight: FontWeight.w700,
+                ),
+                message: TextStyle(fontSize: 16, color: Colors.red),
+                prompt: TextStyle(
+                  backgroundColor: Colors.blueAccent,
+                  color: Colors.white,
+                ),
+                titleReleaseNotes: TextStyle(
+                  color: Colors.brown,
+                  letterSpacing: 7,
+                )),
+            dialogStyle: UpgradeDialogStyle.material,
           ),
           child: Scaffold(
             appBar: AppBar(title: Text('Upgrader Example')),
