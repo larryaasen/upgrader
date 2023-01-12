@@ -1,7 +1,12 @@
-## Next
+## 5.1.0
 
+- Updated the initialization of upgrader to use a future that will allow the initialize method to be called multiple times. This
+does not require any changes by app code.
 - Fixed issue #239 where some Android release notes that contained <br> HTML tags were not converted into \n characters.
 - Added Portuguese release notes translation. (thanks to @RodolfoSilva)
+- Added new example using upgrader inside a stateless widget.
+- Added additional try/catch logic to report App Store API errors.
+- Fixed unit tests that were broken due to the initialization changes.
 
 ## [5.1.0-alpha.1]
 
