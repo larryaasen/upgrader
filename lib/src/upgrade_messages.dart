@@ -741,6 +741,9 @@ class UpgraderMessages {
       case 'ja':
         message = 'リリースノート';
         break;
+      case 'pt':
+        message = 'Novidades';
+        break;
       case 'te':
         message = 'విడుదల గమనికలు';
         break;
@@ -758,7 +761,6 @@ class UpgraderMessages {
       case 'mn':
       case 'nb':
       case 'nl':
-      case 'pt':
       case 'pl':
       case 'ru':
       case 'sv':
