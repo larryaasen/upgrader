@@ -1,3 +1,8 @@
+## 6.0.0
+
+- Updated the minimum Flutter SDK version to 3.3.10
+- Updated the minimum Dart SDK version to 2.18.6
+
 ## 5.1.0
 
 - Updated the initialization of upgrader to use a future that will allow the initialize method to be called multiple times. This
@@ -8,7 +13,7 @@ does not require any changes by app code.
 - Added additional try/catch logic to report App Store API errors.
 - Fixed unit tests that were broken due to the initialization changes.
 
-## [5.1.0-alpha.1]
+## 5.1.0-alpha.1
 
 - Updated the initialization of upgrader to use a future that will allow the initialize method to be called multiple times. This
 does not require any changes by app code.
