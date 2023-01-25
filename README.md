@@ -111,7 +111,7 @@ The Upgrader class can be customized by setting parameters in the constructor.
 * languageCode: the language code that will override the system locale, which defaults to ```null```
 * client: an HTTP Client that can be replaced for mock testing, defaults to ```null```
 * debugDisplayAlways: always force the upgrade to be available, defaults to ```false```
-* debugDisplayOnce: display the upgrade at least once once, defaults to ```false```
+* debugDisplayOnce: display the upgrade at least once, defaults to ```false```
 * debugLogging: display logging statements, which defaults to ```false```
 * dialogStyle: the upgrade dialog style, either ```material``` or ```cupertino```, defaults to ```material```, used only by UpgradeAlert, works on Android and iOS.
 * durationUntilAlertAgain: duration until alerting user again, which defaults to ```3 days```
