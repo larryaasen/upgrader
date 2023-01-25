@@ -1,3 +1,7 @@
+## 6.0.1
+
+- Updated deprecated theme items and a few iOS config items after running with Flutter 3.7.0
+
 ## 6.0.0
 
 - Updated the minimum Flutter SDK version to 3.3.10
