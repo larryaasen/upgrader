@@ -86,8 +86,11 @@ class Upgrader {
   /// Provide an HTTP Client that can be replaced for mock testing.
   final http.Client client;
 
-  /// The country code that will override the system locale. Optional. Used only for iOS.
+  /// The country code that will override the system locale. Optional.
   final String? countryCode;
+
+  /// The country code that will override the system locale. Optional. Used only for Android.
+  final String? languageCode;
 
   /// For debugging, always force the upgrade to be available.
   bool debugDisplayAlways;
@@ -170,6 +173,9 @@ class Upgrader {
   bool _hasAlerted = false;
   bool _isCriticalUpdate = false;
 
+  /// Track the initialization future so that [initialize] can be called multiple times.
+  Future<bool>? _futureInit;
+
   final notInitializedExceptionMessage =
       'initialize() not called. Must be called first.';
 
@@ -192,6 +198,7 @@ class Upgrader {
     this.showReleaseNotes = true,
     this.canDismissDialog = false,
     this.countryCode,
+    this.languageCode,
     this.minAppVersion,
     this.dialogStyle = UpgradeDialogStyle.material,
     this.customDialogBuilder,
@@ -207,7 +214,7 @@ class Upgrader {
   }
 
   /// A shared instance of [Upgrader].
-  static get sharedInstance => _sharedInstance;
+  static Upgrader get sharedInstance => _sharedInstance;
 
   void installPackageInfo({PackageInfo? packageInfo}) {
     _packageInfo = packageInfo;
@@ -222,51 +229,64 @@ class Upgrader {
     _appStoreListingURL = url;
   }
 
+  /// Initialize [Upgrader] by getting saved preferences, getting platform package info, and getting
+  /// released version info.
   Future<bool> initialize() async {
-    if (_initCalled) {
-      return true;
-    }
-
-    _initCalled = true;
-
-    if (messages.languageCode.isEmpty) {
-      print('upgrader: error -> languageCode is empty');
-    } else if (debugLogging) {
-      print('upgrader: languageCode: ${messages.languageCode}');
-    }
-
-    await _getSavedPrefs();
-
     if (debugLogging) {
-      print('upgrader: default operatingSystem: '
-          '${UpgradeIO.operatingSystem} ${UpgradeIO.operatingSystemVersion}');
-      print('upgrader: operatingSystem: $operatingSystem');
-      print('upgrader: platform: $platform');
-      print('upgrader: '
-          'isAndroid: ${UpgradeIO.isAndroid}, '
-          'isIOS: ${UpgradeIO.isIOS}, '
-          'isLinux: ${UpgradeIO.isLinux}, '
-          'isMacOS: ${UpgradeIO.isMacOS}, '
-          'isWindows: ${UpgradeIO.isWindows}, '
-          'isFuchsia: ${UpgradeIO.isFuchsia}, '
-          'isWeb: ${UpgradeIO.isWeb}');
+      print('upgrader: initialize called');
     }
+    if (_futureInit != null) return _futureInit!;
 
-    if (_packageInfo == null) {
-      _packageInfo = await PackageInfo.fromPlatform();
+    _futureInit = Future(() async {
       if (debugLogging) {
-        print(
-            'upgrader: package info packageName: ${_packageInfo!.packageName}');
-        print('upgrader: package info appName: ${_packageInfo!.appName}');
-        print('upgrader: package info version: ${_packageInfo!.version}');
+        print('upgrader: initializing');
       }
-    }
+      if (_initCalled) {
+        assert(false, 'This should never happen.');
+        return true;
+      }
+      _initCalled = true;
 
-    await _updateVersionInfo();
+      if (messages.languageCode.isEmpty) {
+        print('upgrader: error -> languageCode is empty');
+      } else if (debugLogging) {
+        print('upgrader: languageCode: ${messages.languageCode}');
+      }
 
-    _installedVersion = _packageInfo!.version;
+      await _getSavedPrefs();
 
-    return true;
+      if (debugLogging) {
+        print('upgrader: default operatingSystem: '
+            '${UpgradeIO.operatingSystem} ${UpgradeIO.operatingSystemVersion}');
+        print('upgrader: operatingSystem: $operatingSystem');
+        print('upgrader: platform: $platform');
+        print('upgrader: '
+            'isAndroid: ${UpgradeIO.isAndroid}, '
+            'isIOS: ${UpgradeIO.isIOS}, '
+            'isLinux: ${UpgradeIO.isLinux}, '
+            'isMacOS: ${UpgradeIO.isMacOS}, '
+            'isWindows: ${UpgradeIO.isWindows}, '
+            'isFuchsia: ${UpgradeIO.isFuchsia}, '
+            'isWeb: ${UpgradeIO.isWeb}');
+      }
+
+      if (_packageInfo == null) {
+        _packageInfo = await PackageInfo.fromPlatform();
+        if (debugLogging) {
+          print(
+              'upgrader: package info packageName: ${_packageInfo!.packageName}');
+          print('upgrader: package info appName: ${_packageInfo!.appName}');
+          print('upgrader: package info version: ${_packageInfo!.version}');
+        }
+      }
+
+      await _updateVersionInfo();
+
+      _installedVersion = _packageInfo!.version;
+
+      return true;
+    });
+    return _futureInit!;
   }
 
   Future<bool> _updateVersionInfo() async {
@@ -308,12 +328,19 @@ class Upgrader {
         print('upgrader: countryCode: $country');
       }
 
+      // The  language code of the locale, defaulting to `en`.
+      final language = languageCode ?? findLanguageCode();
+      if (debugLogging) {
+        print('upgrader: languageCode: $language');
+      }
+
       // Get Android version from Google Play Store, or
       // get iOS version from iTunes Store.
       if (platform == TargetPlatform.android) {
-        await _getAndroidStoreVersion(country: country);
+        await _getAndroidStoreVersion(country: country, language: language);
       } else if (platform == TargetPlatform.iOS) {
         final iTunes = ITunesSearchAPI();
+        iTunes.debugEnabled = debugLogging;
         iTunes.client = client;
         final response = await (iTunes
             .lookupByBundleId(_packageInfo!.packageName, country: country));
@@ -337,13 +364,17 @@ class Upgrader {
   }
 
   /// Android info is fetched by parsing the html of the app store page.
-  Future<bool?> _getAndroidStoreVersion({String? country}) async {
+  Future<bool?> _getAndroidStoreVersion(
+      {String? country, String? language}) async {
     final id = _packageInfo!.packageName;
     final playStore = PlayStoreSearchAPI(client: client);
-    final response = await (playStore.lookupById(id, country: country));
+    playStore.debugEnabled = debugLogging;
+    final response =
+        await (playStore.lookupById(id, country: country, language: language));
     if (response != null) {
       _appStoreVersion ??= PlayStoreResults.version(response);
-      _appStoreListingURL ??= playStore.lookupURLById(id);
+      _appStoreListingURL ??=
+          playStore.lookupURLById(id, language: language, country: country);
       _releaseNotes ??= PlayStoreResults.releaseNotes(response);
       final mav = PlayStoreResults.minAppVersion(response);
       if (mav != null) {
@@ -557,6 +588,21 @@ class Upgrader {
     return code;
   }
 
+  /// Determine the current language code, either from the context, or
+  /// from the system-reported default locale of the device. The default
+  /// is `en`.
+  String? findLanguageCode({BuildContext? context}) {
+    Locale? locale;
+    if (context != null) {
+      locale = Localizations.maybeLocaleOf(context);
+    } else {
+      // Get the system locale
+      locale = ambiguate(WidgetsBinding.instance)!.window.locale;
+    }
+    final code = locale == null ? 'en' : locale.languageCode;
+    return code;
+  }
+
   void _showDialog(
       {required BuildContext context,
       required String? title,
@@ -648,7 +694,7 @@ class Upgrader {
           ));
     }
     return AlertDialog(
-      title: Text(title),
+      title: Text(title, key: const Key('upgrader.dialog.title')),
       content: SingleChildScrollView(
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

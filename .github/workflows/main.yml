@@ -1,0 +1,36 @@
+name: main
+
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  build-and-test:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        flutter-version: ['3.3.10', '3.7.0']
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '${{ matrix.flutter-version }}'
+          channel: 'stable'
+
+      - name: Get flutter packages
+        run: flutter pub get
+
+      - name: Analyze
+        run: flutter analyze
+      
+      - name: Run unit and widget tests
+        run: flutter test
+
+      - name: Boot the simulator
+        run: 	xcrun simctl boot 'iPhone 13'
+
+      - name: Run the driver test
+        run: 	cd example; flutter drive --target=test/driver_test/driver.dart --driver=test/driver_test/driver_test.dart

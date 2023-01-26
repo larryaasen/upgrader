@@ -20,37 +20,52 @@ class PlayStoreSearchAPI {
 
   /// Look up by id.
   Future<Document?> lookupById(String id,
-      {String? country = 'US', bool useCacheBuster = true}) async {
+      {String? country = 'US',
+      String? language = 'en',
+      bool useCacheBuster = true}) async {
     assert(id.isNotEmpty);
     if (id.isEmpty) return null;
 
-    final url =
-        lookupURLById(id, country: country, useCacheBuster: useCacheBuster)!;
-
-    final response = await client!.get(Uri.parse(url));
-
-    if (response.statusCode != 200) {
-      print('upgrader: Can\'t find an app in the Play Store with the id: $id');
-      return null;
+    final url = lookupURLById(id,
+        country: country, language: language, useCacheBuster: useCacheBuster)!;
+    if (debugEnabled) {
+      print('upgrader: lookupById url: $url');
     }
 
-    // Uncomment for creating unit test input files.
-    // final file = io.File('file.txt');
-    // await file.writeAsBytes(response.bodyBytes);
+    try {
+      final response = await client!.get(Uri.parse(url));
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        print(
+            'upgrader: Can\'t find an app in the Play Store with the id: $id');
+        return null;
+      }
 
-    final decodedResults = _decodeResults(response.body);
+      // Uncomment for creating unit test input files.
+      // final file = io.File('file.txt');
+      // await file.writeAsBytes(response.bodyBytes);
 
-    return decodedResults;
+      final decodedResults = _decodeResults(response.body);
+
+      return decodedResults;
+    } on Exception catch (e) {
+      print('upgrader: lookupById exception: $e');
+      return null;
+    }
   }
 
   String? lookupURLById(String id,
-      {String? country = 'US', bool useCacheBuster = true}) {
+      {String? country = 'US',
+      String? language = 'en',
+      bool useCacheBuster = true}) {
     assert(id.isNotEmpty);
     if (id.isEmpty) return null;
 
     Map<String, dynamic> parameters = {'id': id};
     if (country != null && country.isNotEmpty) {
       parameters['gl'] = country;
+    }
+    if (language != null && language.isNotEmpty) {
+      parameters['hl'] = language;
     }
     if (useCacheBuster) {
       parameters['_cb'] = DateTime.now().microsecondsSinceEpoch.toString();
@@ -101,17 +116,20 @@ class PlayStoreResults {
     return null;
   }
 
-  /// Return the minimum app version taken from the tag in the description field
-  /// from the store response. The format is: [:mav: 1.2.3].
-  /// Returns version, such as 1.2.3, or null.
-  static Version? minAppVersion(Document response, {String tagName = 'mav'}) {
+  /// Return the minimum app version taken from a tag in the description field from the store response.
+  /// The [tagRegExpSource] is used to represent the format of a tag using a regular expression.
+  /// The format in the description by default is like this: `[Minimum supported app version: 1.2.3]`, which
+  /// returns the version `1.2.3`. If there is no match, it returns null.
+  static Version? minAppVersion(
+    Document response, {
+    String tagRegExpSource =
+        r'\[\Minimum supported app version\:[\s]*(?<version>[^\s]+)[\s]*\]',
+  }) {
     Version? version;
     try {
       final description = PlayStoreResults.description(response);
       if (description != null) {
-        String regExpSource = r"\[\:tagName\:[\s]*(?<version>[^\s]+)[\s]*\]";
-        regExpSource = regExpSource.replaceAll(RegExp('tagName'), tagName);
-        final regExp = RegExp(regExpSource, caseSensitive: false);
+        final regExp = RegExp(tagRegExpSource, caseSensitive: false);
         final match = regExp.firstMatch(description);
         final mav = match?.namedGroup('version');
 
@@ -121,7 +139,7 @@ class PlayStoreResults {
             version = Version.parse(mav);
           } on Exception catch (e) {
             print(
-                'upgrader: PlayStoreResults.minAppVersion: $tagName error: $e');
+                'upgrader: PlayStoreResults.minAppVersion: mav=$mav, tag=$tagRegExpSource, error=$e');
           }
         }
       }
@@ -140,11 +158,12 @@ class PlayStoreResults {
           (elm) => elm.querySelector('.wSaTQd')!.text == 'What\'s New',
           orElse: () => sectionElements[0]);
 
-      Element? rawReleaseNotes = releaseNotesElement
+      final rawReleaseNotes = releaseNotesElement
           .querySelector('.PHBdkd')
           ?.querySelector('.DWPxHb');
-      String? innerHtml = rawReleaseNotes!.innerHtml.toString();
-      String? releaseNotes = multilineReleaseNotes(innerHtml, rawReleaseNotes);
+      final releaseNotes = rawReleaseNotes == null
+          ? null
+          : multilineReleaseNotes(rawReleaseNotes);
 
       return releaseNotes;
     } catch (e) {
@@ -159,10 +178,8 @@ class PlayStoreResults {
       final sectionElements =
           response.querySelectorAll('[itemprop="description"]');
 
-      Element? rawReleaseNotes = sectionElements.last;
-      String? innerHtml = rawReleaseNotes.innerHtml.toString();
-      String? releaseNotes = multilineReleaseNotes(innerHtml, rawReleaseNotes);
-
+      final rawReleaseNotes = sectionElements.last;
+      final releaseNotes = multilineReleaseNotes(rawReleaseNotes);
       return releaseNotes;
     } catch (e) {
       print('upgrader: PlayStoreResults.redesignedReleaseNotes exception: $e');
@@ -170,19 +187,15 @@ class PlayStoreResults {
     return null;
   }
 
-  static String? multilineReleaseNotes(
-      String innerHtml, Element rawReleaseNotes) {
-    String? releaseNotes;
+  static String? multilineReleaseNotes(Element rawReleaseNotes) {
+    final innerHtml = rawReleaseNotes.innerHtml;
+    String? releaseNotes = innerHtml;
 
     if (releaseNotesSpan.hasMatch(innerHtml)) {
-      releaseNotes =
-          releaseNotesSpan.firstMatch(innerHtml.toString())!.group(1);
-      // Detect default multiline replacement
-      releaseNotes = releaseNotes!.replaceAll('<br>', '\n');
-    } else {
-      /// Fallback to normal method
-      releaseNotes = rawReleaseNotes.text;
+      releaseNotes = releaseNotesSpan.firstMatch(innerHtml)!.group(1);
     }
+    // Detect default multiline replacement
+    releaseNotes = releaseNotes!.replaceAll('<br>', '\n');
 
     return releaseNotes;
   }
