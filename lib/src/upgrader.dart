@@ -36,6 +36,25 @@ typedef WillDisplayUpgradeCallback = void Function(
 /// There are two different dialog styles: Cupertino and Material
 enum UpgradeDialogStyle { cupertino, material, custom }
 
+/// A class to enclose the parameters of [UpgradeDialogStyle.custom].
+class CustomDialogParameters {
+  final String title;
+  final String message;
+  final VoidCallback ignoreCallback;
+  final VoidCallback laterCallback;
+  final VoidCallback updateCallback;
+  final String? releaseNotes;
+
+  CustomDialogParameters({
+    required this.title,
+    required this.message,
+    required this.ignoreCallback,
+    required this.laterCallback,
+    required this.updateCallback,
+    this.releaseNotes,
+  });
+}
+
 /// A class to define the configuration for the appcast. The configuration
 /// contains two parts: a URL to the appcast, and a list of supported OS
 /// names, such as "android", "ios".
@@ -50,7 +69,7 @@ class AppcastConfiguration {
 }
 
 /// Creates a shared instance of [Upgrader].
-late Upgrader _sharedInstance = Upgrader();
+Upgrader _sharedInstance = Upgrader();
 
 /// A class to configure the upgrade dialog.
 class Upgrader {
@@ -82,15 +101,10 @@ class Upgrader {
   /// The upgrade dialog style. Used only on UpgradeAlert. (default: material)
   UpgradeDialogStyle dialogStyle;
 
-  /// Custom Dialog Builder for dialogStyle == DialogStyle.custom
+  /// Custom Dialog Builder for [UpgradeDialogStyle.custom]
   Widget Function(
     BuildContext context,
-    String title,
-    String message,
-    String? releaseNotes,
-    VoidCallback ignoreCallback,
-    VoidCallback laterCallback,
-    VoidCallback updateCallback,
+    CustomDialogParameters dialogParameters,
   )? customDialogBuilder;
 
   /// Duration until alerting user again
@@ -575,12 +589,14 @@ class Upgrader {
           case UpgradeDialogStyle.custom:
             dialog = customDialogBuilder!(
               context,
-              title!,
-              message,
-              releaseNotes,
-              () => onUserIgnored(context, true),
-              () => onUserLater(context, true),
-              () => onUserUpdated(context, !blocked()),
+              CustomDialogParameters(
+                title: title!,
+                message: message,
+                releaseNotes: releaseNotes,
+                ignoreCallback: () => onUserIgnored(context, true),
+                laterCallback: () => onUserLater(context, true),
+                updateCallback: () => onUserUpdated(context, !blocked()),
+              ),
             );
             break;
         }
