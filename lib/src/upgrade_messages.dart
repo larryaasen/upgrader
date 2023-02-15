@@ -747,6 +747,9 @@ class UpgraderMessages {
       case 'te':
         message = 'విడుదల గమనికలు';
         break;
+      case 'tr':
+        message = 'Sürüm Notları';
+        break;
 
       case 'bn':
       case 'el':
@@ -765,7 +768,6 @@ class UpgraderMessages {
       case 'ru':
       case 'sv':
       case 'ta':
-      case 'tr':
       case 'uk':
       case 'vi':
       case 'zh':
