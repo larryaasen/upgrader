@@ -750,6 +750,9 @@ class UpgraderMessages {
       case 'tr':
         message = 'Sürüm Notları';
         break;
+      case 'ru':
+        message = 'Примечания к выпуску';
+        break;
 
       case 'bn':
       case 'el':
@@ -765,7 +768,6 @@ class UpgraderMessages {
       case 'nb':
       case 'nl':
       case 'pl':
-      case 'ru':
       case 'sv':
       case 'ta':
       case 'uk':
