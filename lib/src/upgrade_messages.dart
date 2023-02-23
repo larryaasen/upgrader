@@ -744,14 +744,14 @@ class UpgraderMessages {
       case 'pt':
         message = 'Novidades';
         break;
+      case 'ru':
+        message = 'Примечания к выпуску';
+        break;
       case 'te':
         message = 'విడుదల గమనికలు';
         break;
       case 'tr':
         message = 'Sürüm Notları';
-        break;
-      case 'ru':
-        message = 'Примечания к выпуску';
         break;
 
       case 'bn':
