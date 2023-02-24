@@ -833,7 +833,7 @@ class UpgraderMessages {
         message = 'Aggiornare l\'applicazione?';
         break;
       case 'ja':
-        message = 'アプリのアップデート?';
+        message = 'アプリのアップデート';
         break;
       case 'kk':
         message = 'Жаңарту керек пе?';
