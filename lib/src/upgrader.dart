@@ -632,28 +632,26 @@ class Upgrader {
             children: <Widget>[
               Text(messages.message(UpgraderMessage.releaseNotes)!,
                   style: const TextStyle(fontWeight: FontWeight.bold)),
-              Text(
-                releaseNotes,
-                maxLines: 15,
-                overflow: TextOverflow.ellipsis,
-              ),
+              Text(releaseNotes),
             ],
           ));
     }
     return AlertDialog(
       title: Text(title, key: const Key('upgrader.dialog.title')),
-      content: SingleChildScrollView(
-          child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Text(message),
-          Padding(
-              padding: const EdgeInsets.only(top: 15.0),
-              child: Text(messages.message(UpgraderMessage.prompt)!)),
-          if (notes != null) notes,
-        ],
-      )),
+      content: Container(
+          constraints: const BoxConstraints(maxHeight: 400),
+          child: SingleChildScrollView(
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(message),
+              Padding(
+                  padding: const EdgeInsets.only(top: 15.0),
+                  child: Text(messages.message(UpgraderMessage.prompt)!)),
+              if (notes != null) notes,
+            ],
+          ))),
       actions: <Widget>[
         if (showIgnore)
           TextButton(

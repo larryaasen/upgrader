@@ -1,3 +1,9 @@
+## Next
+
+- Fixed issue #262 where the alert dialog content did not scroll up and down with a large amount of release notes.
+- Removed unnatural ? character in the Japanese dialog title. (thanks to @K9i-0)
+- Fixed typo in README. (thanks to @ishworpanta10)
+
 ## 6.0.1
 
 - Updated deprecated theme items and a few iOS config items after running with Flutter 3.7.0
