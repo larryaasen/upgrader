@@ -630,44 +630,62 @@ class Upgrader {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(messages.message(UpgraderMessage.releaseNotes)!,
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
-              Text(releaseNotes),
+              Center(
+                child: Text(messages.message(UpgraderMessage.releaseNotes)!,
+                    style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
+              ),
+              Center(
+                child: Text(
+                  releaseNotes,
+                  maxLines: 15,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(color: Colors.white),textAlign: TextAlign.center,
+                ),
+              ),
             ],
           ));
     }
     return AlertDialog(
-      title: Text(title, key: const Key('upgrader.dialog.title')),
-      content: Container(
-          constraints: const BoxConstraints(maxHeight: 400),
-          child: SingleChildScrollView(
-              child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(message),
-              Padding(
-                  padding: const EdgeInsets.only(top: 15.0),
-                  child: Text(messages.message(UpgraderMessage.prompt)!)),
-              if (notes != null) notes,
-            ],
-          ))),
+      backgroundColor: const Color(0xff033566),
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(32.0))),
+      title: Text(title, key: const Key('upgrader.dialog.title'),textAlign: TextAlign.center,style: const TextStyle(color: Colors.white)),
+      content: SingleChildScrollView(
+          child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Text(message,style: const TextStyle(color: Colors.white),textAlign: TextAlign.center),
+          Padding(
+              padding: const EdgeInsets.only(top: 15.0),
+              child: Center(child: Text(messages.message(UpgraderMessage.prompt)!,style: const TextStyle(color: Colors.white)))),
+          if (notes != null) notes,
+        ],
+      )),
       actions: <Widget>[
-        if (showIgnore)
-          TextButton(
-              child: Text(messages.message(UpgraderMessage.buttonTitleIgnore)!),
-              onPressed: () => onUserIgnored(context, true)),
-        if (showLater)
-          TextButton(
-              child: Text(messages.message(UpgraderMessage.buttonTitleLater)!),
-              onPressed: () => onUserLater(context, true)),
-        TextButton(
-            child: Text(messages.message(UpgraderMessage.buttonTitleUpdate)!),
-            onPressed: () => onUserUpdated(context, !blocked())),
+     Column(
+         children: <Widget>[
+           Container(
+             margin: const EdgeInsets.only(left: 16,right: 16),
+             alignment: Alignment.center,
+             decoration: BoxDecoration(border: Border.all(style: BorderStyle.solid),borderRadius: BorderRadius.circular(16),color:const Color(0xff37B0B5) ),
+             child: TextButton(
+                 child: Text(messages.message(UpgraderMessage.buttonTitleUpdate)!,style: const TextStyle(color: Colors.white)),
+                 onPressed: () => onUserUpdated(context, !blocked())),
+           ),
+           if (showLater)
+             TextButton(
+                 child: Text(messages.message(UpgraderMessage.buttonTitleLater)!,style: const TextStyle(color: Color(0x99ffffff))),
+                 onPressed: () => onUserLater(context, true)),
+           if (showIgnore)
+             TextButton(
+                 child: Text(messages.message(UpgraderMessage.buttonTitleIgnore)!,style: const TextStyle(color: Color(0x99ffffff))),
+                 onPressed: () => onUserIgnored(context, true)),
+         ],
+        )
       ],
     );
   }
-
   CupertinoAlertDialog _cupertinoAlertDialog(String title, String message,
       String? releaseNotes, BuildContext context) {
     Widget? notes;
