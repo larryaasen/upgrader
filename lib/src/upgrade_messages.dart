@@ -875,7 +875,7 @@ class UpgraderMessages {
         message = 'యాప్‌ని అప్‌డేట్‌ చేయాలా?';
         break;
       case 'tr':
-        message = 'Uygulamayı Güncelle?';
+        message = 'Uygulamayı Güncelle';
         break;
       case 'uk':
         message = 'Оновити?';
