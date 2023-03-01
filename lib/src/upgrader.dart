@@ -681,6 +681,8 @@ class Upgrader {
              TextButton(
                  child: Text(messages.message(UpgraderMessage.buttonTitleIgnore)!,style: const TextStyle(color: Color(0x99ffffff))),
                  onPressed: () => onUserIgnored(context, true)),
+           if(!showIgnore&&!showLater)
+             const Padding(padding: EdgeInsets.only(bottom: 15.0)),
          ],
         )
       ],
