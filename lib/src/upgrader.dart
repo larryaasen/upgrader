@@ -652,7 +652,7 @@ class Upgrader {
               Center(
                 child: Text(
                   releaseNotes,
-                  maxLines: 15,
+                  maxLines: 10,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(color: textColor),textAlign: TextAlign.center,
                 ),
@@ -680,21 +680,34 @@ class Upgrader {
       actions: <Widget>[
      Column(
          children: <Widget>[
-           Container(
-             margin: const EdgeInsets.only(left: 16,right: 16),
-             alignment: Alignment.center,
-             decoration: BoxDecoration(borderRadius: BorderRadius.circular(updateButtonBorderRadius!),color: buttonBackgroundColor),
-             child: TextButton(
-                 child: Text(messages.message(UpgraderMessage.buttonTitleUpdate)!,style:  TextStyle(color: updateButtonTextColor)),
-                 onPressed: () => onUserUpdated(context, !blocked())),
+           TextButton(
+             child: Container(
+                 padding: const EdgeInsets.only(top: 9,bottom: 9),
+                 margin: const EdgeInsets.only(left: 16,right: 16),
+                 alignment: Alignment.center,
+                 decoration: BoxDecoration(borderRadius:
+                    BorderRadius.circular(updateButtonBorderRadius!),color: buttonBackgroundColor),
+                 child: Text(messages.message(UpgraderMessage.buttonTitleUpdate)!,
+                     style:  TextStyle(color: updateButtonTextColor))),
+                 onPressed: () => onUserUpdated(context, !blocked()),
            ),
            if (showLater)
              TextButton(
-                 child: Text(messages.message(UpgraderMessage.buttonTitleLater)!,style: TextStyle(color: laterButtonColor)),
+                 child: Container(
+                     margin: const EdgeInsets.only(left: 16,right: 16),
+                     alignment: Alignment.center,
+                     decoration: BoxDecoration(color: backgroundColor),
+                     child: Text(messages.message(UpgraderMessage.buttonTitleLater)!,
+                         style: TextStyle(color: laterButtonColor))),
                  onPressed: () => onUserLater(context, true)),
            if (showIgnore)
              TextButton(
-                 child: Text(messages.message(UpgraderMessage.buttonTitleIgnore)!,style:  TextStyle(color: laterButtonColor)),
+                 child: Container(
+                     margin: const EdgeInsets.only(left: 16,right: 16),
+                     alignment: Alignment.center,
+                     decoration: BoxDecoration(color: backgroundColor),
+                     child: Text(messages.message(UpgraderMessage.buttonTitleLater)!,
+                         style: TextStyle(color: laterButtonColor))),
                  onPressed: () => onUserIgnored(context, true)),
            if(!showIgnore&&!showLater)
              const Padding(padding: EdgeInsets.only(bottom: 15.0)),
