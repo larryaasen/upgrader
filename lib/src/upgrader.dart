@@ -146,7 +146,15 @@ class Upgrader {
   String? _lastVersionAlerted;
   String? _userIgnoredVersion;
   bool _hasAlerted = false;
-  bool _isCriticalUpdate = false;
+  bool _isCriticalUpdate = false;  
+    
+  Color? backgroundColor;
+  Color? titleColor;
+  Color? textColor;
+  Color? buttonBackgroundColor;
+  Color? updateButtonTextColor;
+  Color? laterButtonColor;
+  double? updateButtonBorderRadius;
 
   /// Track the initialization future so that [initialize] can be called multiple times.
   Future<bool>? _futureInit;
@@ -176,6 +184,13 @@ class Upgrader {
     this.languageCode,
     this.minAppVersion,
     this.dialogStyle = UpgradeDialogStyle.material,
+    this.backgroundColor = Colors.white,
+    this.titleColor = Colors.black,
+    this.textColor = Colors.black54,
+    this.buttonBackgroundColor = Colors.black54,
+    this.laterButtonColor = Colors.black54,
+    this.updateButtonTextColor = Colors.white,
+    this.updateButtonBorderRadius = 4.0,
     TargetPlatform? platform,
   })  : client = client ?? http.Client(),
         messages = messages ?? UpgraderMessages(),
@@ -632,33 +647,33 @@ class Upgrader {
             children: <Widget>[
               Center(
                 child: Text(messages.message(UpgraderMessage.releaseNotes)!,
-                    style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.white)),
+                    style: TextStyle(fontWeight: FontWeight.bold,color: titleColor)),
               ),
               Center(
                 child: Text(
                   releaseNotes,
                   maxLines: 15,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(color: Colors.white),textAlign: TextAlign.center,
+                  style: TextStyle(color: textColor),textAlign: TextAlign.center,
                 ),
               ),
             ],
           ));
     }
     return AlertDialog(
-      backgroundColor: const Color(0xff033566),
+      backgroundColor: backgroundColor,
       shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(32.0))),
-      title: Text(title, key: const Key('upgrader.dialog.title'),textAlign: TextAlign.center,style: const TextStyle(color: Colors.white)),
+          borderRadius: BorderRadius.all(Radius.circular(12.0))),
+      title: Text(title, key: const Key('upgrader.dialog.title'),textAlign: TextAlign.center,style: TextStyle(color: titleColor)),
       content: SingleChildScrollView(
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Text(message,style: const TextStyle(color: Colors.white),textAlign: TextAlign.center),
+          Text(message,style: TextStyle(color: textColor),textAlign: TextAlign.center),
           Padding(
               padding: const EdgeInsets.only(top: 15.0),
-              child: Center(child: Text(messages.message(UpgraderMessage.prompt)!,style: const TextStyle(color: Colors.white)))),
+              child: Center(child: Text(messages.message(UpgraderMessage.prompt)!,style: TextStyle(color: textColor)))),
           if (notes != null) notes,
         ],
       )),
@@ -668,26 +683,28 @@ class Upgrader {
            Container(
              margin: const EdgeInsets.only(left: 16,right: 16),
              alignment: Alignment.center,
-             decoration: BoxDecoration(border: Border.all(style: BorderStyle.solid),borderRadius: BorderRadius.circular(16),color:const Color(0xff37B0B5) ),
+             decoration: BoxDecoration(borderRadius: BorderRadius.circular(updateButtonBorderRadius!),color: buttonBackgroundColor),
              child: TextButton(
-                 child: Text(messages.message(UpgraderMessage.buttonTitleUpdate)!,style: const TextStyle(color: Colors.white)),
+                 child: Text(messages.message(UpgraderMessage.buttonTitleUpdate)!,style:  TextStyle(color: updateButtonTextColor)),
                  onPressed: () => onUserUpdated(context, !blocked())),
            ),
            if (showLater)
              TextButton(
-                 child: Text(messages.message(UpgraderMessage.buttonTitleLater)!,style: const TextStyle(color: Color(0x99ffffff))),
+                 child: Text(messages.message(UpgraderMessage.buttonTitleLater)!,style: TextStyle(color: laterButtonColor)),
                  onPressed: () => onUserLater(context, true)),
            if (showIgnore)
              TextButton(
-                 child: Text(messages.message(UpgraderMessage.buttonTitleIgnore)!,style: const TextStyle(color: Color(0x99ffffff))),
+                 child: Text(messages.message(UpgraderMessage.buttonTitleIgnore)!,style:  TextStyle(color: laterButtonColor)),
                  onPressed: () => onUserIgnored(context, true)),
            if(!showIgnore&&!showLater)
              const Padding(padding: EdgeInsets.only(bottom: 15.0)),
+
          ],
         )
       ],
     );
   }
+    
   CupertinoAlertDialog _cupertinoAlertDialog(String title, String message,
       String? releaseNotes, BuildContext context) {
     Widget? notes;
