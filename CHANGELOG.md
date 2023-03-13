@@ -1,4 +1,4 @@
-## Next
+## 6.1.0
 
 - Fixed issue #262 where the alert dialog content did not scroll up and down with a large amount of release notes.
 - Removed unnatural ? character in the Japanese dialog title. (thanks to @K9i-0)
