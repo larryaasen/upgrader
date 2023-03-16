@@ -108,6 +108,7 @@ The Upgrader class can be customized by setting parameters in the constructor.
 * appcastConfig: the appcast configuration, defaults to ```null```
 * canDismissDialog: can alert dialog be dismissed on tap outside of the alert dialog, which defaults to ```false``` (not used by UpgradeCard)
 * countryCode: the country code that will override the system locale, which defaults to ```null```
+* cupertinoButtonTextStyle: the text style for the cupertino dialog buttons, which defaults to ```null```
 * languageCode: the language code that will override the system locale, which defaults to ```null```
 * client: an HTTP Client that can be replaced for mock testing, defaults to ```null```
 * debugDisplayAlways: always force the upgrade to be available, defaults to ```false```
