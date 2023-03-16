@@ -1,3 +1,7 @@
+## 6.2.0
+
+- Added a parameter for the Cupertino button text style. Thanks to [@daniel-possienke](https://github.com/daniel-possienke) for this update.
+
 ## 6.1.0
 
 - Fixed issue #262 where the alert dialog content did not scroll up and down with a large amount of release notes.
