@@ -70,6 +70,9 @@ class Upgrader {
   /// The country code that will override the system locale. Optional.
   final String? countryCode;
 
+  // An optional override for the Bundle ID to look for in the iTunes store.
+  final String? bundleId;
+
   /// The country code that will override the system locale. Optional. Used only for Android.
   final String? languageCode;
 
@@ -177,6 +180,7 @@ class Upgrader {
     this.showReleaseNotes = true,
     this.canDismissDialog = false,
     this.countryCode,
+    this.bundleId,
     this.languageCode,
     this.minAppVersion,
     this.dialogStyle = UpgradeDialogStyle.material,
@@ -317,8 +321,9 @@ class Upgrader {
         final iTunes = ITunesSearchAPI();
         iTunes.debugEnabled = debugLogging;
         iTunes.client = client;
-        final response = await (iTunes
-            .lookupByBundleId(_packageInfo!.packageName, country: country));
+        final response = await (iTunes.lookupByBundleId(
+            bundleId ?? _packageInfo!.packageName,
+            country: country));
 
         if (response != null) {
           _appStoreVersion ??= ITunesResults.version(response);
