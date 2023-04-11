@@ -124,6 +124,10 @@ class Upgrader {
   /// Hide or show release notes (default: true)
   bool showReleaseNotes;
 
+  /// The text style for the cupertino dialog buttons. Used only for
+  /// [UpgradeDialogStyle.cupertino]. Optional.
+  TextStyle? cupertinoButtonTextStyle;
+
   /// Called when [Upgrader] determines that an upgrade may or may not be
   /// displayed. The [value] parameter will be true when it should be displayed,
   /// and false when it should not be displayed. One good use for this callback
@@ -147,6 +151,9 @@ class Upgrader {
   String? _userIgnoredVersion;
   bool _hasAlerted = false;
   bool _isCriticalUpdate = false;
+
+  /// Track the initialization future so that [initialize] can be called multiple times.
+  Future<bool>? _futureInit;
 
   final notInitializedExceptionMessage =
       'initialize() not called. Must be called first.';
@@ -173,6 +180,7 @@ class Upgrader {
     this.languageCode,
     this.minAppVersion,
     this.dialogStyle = UpgradeDialogStyle.material,
+    this.cupertinoButtonTextStyle,
     TargetPlatform? platform,
   })  : client = client ?? http.Client(),
         messages = messages ?? UpgraderMessages(),
@@ -196,50 +204,66 @@ class Upgrader {
     _appStoreListingURL = url;
   }
 
+  /// Initialize [Upgrader] by getting saved preferences, getting platform package info, and getting
+  /// released version info.
   Future<bool> initialize() async {
-    if (_initCalled) {
-      return true;
-    }
-
-    _initCalled = true;
-
-    if (messages.languageCode.isEmpty) {
-      print('upgrader: error -> languageCode is empty');
-    } else if (debugLogging) {
-      print('upgrader: languageCode: ${messages.languageCode}');
-    }
-
-    await _getSavedPrefs();
-
     if (debugLogging) {
-      print('upgrader: default operatingSystem: '
-          '${UpgradeIO.operatingSystem} ${UpgradeIO.operatingSystemVersion}');
-      print('upgrader: operatingSystem: $operatingSystem');
-      print('upgrader: platform: $platform');
-      print('upgrader: '
-          'isAndroid: ${UpgradeIO.isAndroid}, '
-          'isIOS: ${UpgradeIO.isIOS}, '
-          'isLinux: ${UpgradeIO.isLinux}, '
-          'isMacOS: ${UpgradeIO.isMacOS}, '
-          'isWindows: ${UpgradeIO.isWindows}, '
-          'isFuchsia: ${UpgradeIO.isFuchsia}, '
-          'isWeb: ${UpgradeIO.isWeb}');
+      print('upgrader: initialize called');
     }
+    if (_futureInit != null) return _futureInit!;
 
-    if (_packageInfo == null) {
-      _packageInfo = await PackageInfo.fromPlatform();
+    _futureInit = Future(() async {
       if (debugLogging) {
-        print(
-            'upgrader: package info packageName: ${_packageInfo!.packageName}');
-        print('upgrader: package info appName: ${_packageInfo!.appName}');
-        print('upgrader: package info version: ${_packageInfo!.version}');
+        print('upgrader: initializing');
       }
-    }
-    _installedVersion = _packageInfo!.version;
+      if (_initCalled) {
+        assert(false, 'This should never happen.');
+        return true;
+      }
+      _initCalled = true;
 
-    await _updateVersionInfo();
+      if (messages.languageCode.isEmpty) {
+        print('upgrader: error -> languageCode is empty');
+      } else if (debugLogging) {
+        print('upgrader: languageCode: ${messages.languageCode}');
+      }
 
-    return true;
+      await _getSavedPrefs();
+
+      if (debugLogging) {
+        print('upgrader: default operatingSystem: '
+            '${UpgradeIO.operatingSystem} ${UpgradeIO.operatingSystemVersion}');
+        print('upgrader: operatingSystem: $operatingSystem');
+        print('upgrader: platform: $platform');
+        print('upgrader: '
+            'isAndroid: ${UpgradeIO.isAndroid}, '
+            'isIOS: ${UpgradeIO.isIOS}, '
+            'isLinux: ${UpgradeIO.isLinux}, '
+            'isMacOS: ${UpgradeIO.isMacOS}, '
+            'isWindows: ${UpgradeIO.isWindows}, '
+            'isFuchsia: ${UpgradeIO.isFuchsia}, '
+            'isWeb: ${UpgradeIO.isWeb}');
+      }
+
+      if (_packageInfo == null) {
+        _packageInfo = await PackageInfo.fromPlatform();
+        if (debugLogging) {
+          print(
+              'upgrader: package info packageName: ${_packageInfo!.packageName}');
+          print('upgrader: package info appName: ${_packageInfo!.appName}');
+          print('upgrader: package info version: ${_packageInfo!.version}');
+        }
+      }
+
+      _installedVersion = _packageInfo!.version;
+
+      await _updateVersionInfo();
+
+
+
+      return true;
+    });
+    return _futureInit!;
   }
 
   Future<bool> _updateVersionInfo() async {
@@ -303,6 +327,7 @@ class Upgrader {
         await _getAndroidStoreVersion(country: country, language: language);
       } else if (platform == TargetPlatform.iOS) {
         final iTunes = ITunesSearchAPI();
+        iTunes.debugEnabled = debugLogging;
         iTunes.client = client;
         final response = await (iTunes
             .lookupByBundleId(_packageInfo!.packageName, country: country));
@@ -330,6 +355,7 @@ class Upgrader {
       {String? country, String? language}) async {
     final id = _packageInfo!.packageName;
     final playStore = PlayStoreSearchAPI(client: client);
+    playStore.debugEnabled = debugLogging;
     final response =
         await (playStore.lookupById(id, country: country, language: language));
     if (response != null) {
@@ -623,28 +649,26 @@ class Upgrader {
             children: <Widget>[
               Text(messages.message(UpgraderMessage.releaseNotes)!,
                   style: const TextStyle(fontWeight: FontWeight.bold)),
-              Text(
-                releaseNotes,
-                maxLines: 15,
-                overflow: TextOverflow.ellipsis,
-              ),
+              Text(releaseNotes),
             ],
           ));
     }
     return AlertDialog(
       title: Text(title, key: const Key('upgrader.dialog.title')),
-      content: SingleChildScrollView(
-          child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Text(message),
-          Padding(
-              padding: const EdgeInsets.only(top: 15.0),
-              child: Text(messages.message(UpgraderMessage.prompt)!)),
-          if (notes != null) notes,
-        ],
-      )),
+      content: Container(
+          constraints: const BoxConstraints(maxHeight: 400),
+          child: SingleChildScrollView(
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(message),
+              Padding(
+                  padding: const EdgeInsets.only(top: 15.0),
+                  child: Text(messages.message(UpgraderMessage.prompt)!)),
+              if (notes != null) notes,
+            ],
+          ))),
       actions: <Widget>[
         if (showIgnore)
           TextButton(
@@ -695,13 +719,16 @@ class Upgrader {
       actions: <Widget>[
         if (showIgnore)
           CupertinoDialogAction(
+              textStyle: cupertinoButtonTextStyle,
               child: Text(messages.message(UpgraderMessage.buttonTitleIgnore)!),
               onPressed: () => onUserIgnored(context, true)),
         if (showLater)
           CupertinoDialogAction(
+              textStyle: cupertinoButtonTextStyle,
               child: Text(messages.message(UpgraderMessage.buttonTitleLater)!),
               onPressed: () => onUserLater(context, true)),
         CupertinoDialogAction(
+            textStyle: cupertinoButtonTextStyle,
             isDefaultAction: true,
             child: Text(messages.message(UpgraderMessage.buttonTitleUpdate)!),
             onPressed: () => onUserUpdated(context, !blocked())),

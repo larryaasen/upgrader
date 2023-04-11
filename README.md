@@ -108,15 +108,16 @@ The Upgrader class can be customized by setting parameters in the constructor.
 * appcastConfig: the appcast configuration, defaults to ```null```
 * canDismissDialog: can alert dialog be dismissed on tap outside of the alert dialog, which defaults to ```false``` (not used by UpgradeCard)
 * countryCode: the country code that will override the system locale, which defaults to ```null```
+* cupertinoButtonTextStyle: the text style for the cupertino dialog buttons, which defaults to ```null```
 * languageCode: the language code that will override the system locale, which defaults to ```null```
 * client: an HTTP Client that can be replaced for mock testing, defaults to ```null```
 * debugDisplayAlways: always force the upgrade to be available, defaults to ```false```
-* debugDisplayOnce: display the upgrade at least once once, defaults to ```false```
+* debugDisplayOnce: display the upgrade at least once, defaults to ```false```
 * debugLogging: display logging statements, which defaults to ```false```
 * dialogStyle: the upgrade dialog style, either ```material``` or ```cupertino```, defaults to ```material```, used only by UpgradeAlert, works on Android and iOS.
 * durationUntilAlertAgain: duration until alerting user again, which defaults to ```3 days```
 * messages: optional localized messages used for display in `upgrader`
-* minAppVersion: the minimum app version supported by this app. Earlier versions of this app will be forced to update to the current version. Defaults to ```null```.
+* minAppVersion: the minimum app version supported by this app. Earlier versions of this app will be forced to update to the current version. It should be a valid version string like this: ```2.0.13```. Defaults to ```null```.
 * onIgnore: called when the ignore button is tapped, defaults to ```null```
 * onLater: called when the later button is tapped, defaults to ```null```
 * onUpdate: called when the update button is tapped, defaults to ```null```

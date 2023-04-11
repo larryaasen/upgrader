@@ -8,5 +8,5 @@ workflows:
         scripts:
             - flutter doctor
             - flutter packages pub get
-            - flutter format -n --set-exit-if-changed ./lib ./test ./example
+            - dart format --set-exit-if-changed ./lib ./test ./example
             - flutter test

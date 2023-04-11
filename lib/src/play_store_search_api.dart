@@ -32,20 +32,25 @@ class PlayStoreSearchAPI {
       print('upgrader: lookupById url: $url');
     }
 
-    final response = await client!.get(Uri.parse(url));
+    try {
+      final response = await client!.get(Uri.parse(url));
+      if (response.statusCode < 200 || response.statusCode >= 300) {
+        print(
+            'upgrader: Can\'t find an app in the Play Store with the id: $id');
+        return null;
+      }
 
-    if (response.statusCode < 200 || response.statusCode >= 300) {
-      print('upgrader: Can\'t find an app in the Play Store with the id: $id');
+      // Uncomment for creating unit test input files.
+      // final file = io.File('file.txt');
+      // await file.writeAsBytes(response.bodyBytes);
+
+      final decodedResults = _decodeResults(response.body);
+
+      return decodedResults;
+    } on Exception catch (e) {
+      print('upgrader: lookupById exception: $e');
       return null;
     }
-
-    // Uncomment for creating unit test input files.
-    // final file = io.File('file.txt');
-    // await file.writeAsBytes(response.bodyBytes);
-
-    final decodedResults = _decodeResults(response.body);
-
-    return decodedResults;
   }
 
   String? lookupURLById(String id,
@@ -153,11 +158,12 @@ class PlayStoreResults {
           (elm) => elm.querySelector('.wSaTQd')!.text == 'What\'s New',
           orElse: () => sectionElements[0]);
 
-      Element? rawReleaseNotes = releaseNotesElement
+      final rawReleaseNotes = releaseNotesElement
           .querySelector('.PHBdkd')
           ?.querySelector('.DWPxHb');
-      String? innerHtml = rawReleaseNotes!.innerHtml.toString();
-      String? releaseNotes = multilineReleaseNotes(innerHtml, rawReleaseNotes);
+      final releaseNotes = rawReleaseNotes == null
+          ? null
+          : multilineReleaseNotes(rawReleaseNotes);
 
       return releaseNotes;
     } catch (e) {
@@ -172,10 +178,8 @@ class PlayStoreResults {
       final sectionElements =
           response.querySelectorAll('[itemprop="description"]');
 
-      Element? rawReleaseNotes = sectionElements.last;
-      String? innerHtml = rawReleaseNotes.innerHtml.toString();
-      String? releaseNotes = multilineReleaseNotes(innerHtml, rawReleaseNotes);
-
+      final rawReleaseNotes = sectionElements.last;
+      final releaseNotes = multilineReleaseNotes(rawReleaseNotes);
       return releaseNotes;
     } catch (e) {
       print('upgrader: PlayStoreResults.redesignedReleaseNotes exception: $e');
@@ -183,19 +187,15 @@ class PlayStoreResults {
     return null;
   }
 
-  static String? multilineReleaseNotes(
-      String innerHtml, Element rawReleaseNotes) {
-    String? releaseNotes;
+  static String? multilineReleaseNotes(Element rawReleaseNotes) {
+    final innerHtml = rawReleaseNotes.innerHtml;
+    String? releaseNotes = innerHtml;
 
     if (releaseNotesSpan.hasMatch(innerHtml)) {
-      releaseNotes =
-          releaseNotesSpan.firstMatch(innerHtml.toString())!.group(1);
-      // Detect default multiline replacement
-      releaseNotes = releaseNotes!.replaceAll('<br>', '\n');
-    } else {
-      /// Fallback to normal method
-      releaseNotes = rawReleaseNotes.text;
+      releaseNotes = releaseNotesSpan.firstMatch(innerHtml)!.group(1);
     }
+    // Detect default multiline replacement
+    releaseNotes = releaseNotes!.replaceAll('<br>', '\n');
 
     return releaseNotes;
   }

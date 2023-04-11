@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2023 Larry Aasen. All rights reserved.
+ * Copyright (c) 2023 Larry Aasen. All rights reserved.
  */
 
 import 'package:flutter/material.dart';
@@ -19,22 +19,32 @@ void main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration()).then((value) {
+      setState(() {});
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    print('_MyAppState.build called');
     return MaterialApp(
-      title: 'Upgrader Example',
-      home: Scaffold(
-        appBar: AppBar(title: Text('Upgrader Example')),
-        body: Center(
-          child: Container(
-            margin: EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 0.0),
-            child: UpgradeCard(),
-          ),
-        ),
-      ),
+      title: 'Upgrader StatefulWidget Example',
+      home: UpgradeAlert(
+          child: Scaffold(
+        appBar: AppBar(title: Text('Upgrader StatefulWidget Example')),
+        body: Center(child: Text('Checking...')),
+      )),
     );
   }
 }

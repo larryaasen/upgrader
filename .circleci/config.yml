@@ -7,6 +7,6 @@ jobs:
       - checkout
       - run: flutter channel
       - run: flutter doctor -v
-      - run: flutter format -n --set-exit-if-changed ./lib ./test ./example
+      - run: dart format --set-exit-if-changed ./lib ./test ./example
       - run: flutter test --coverage --coverage-path=lcov.info
       - run: bash <(curl -s https://codecov.io/bash)

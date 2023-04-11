@@ -69,10 +69,14 @@ class ITunesSearchAPI {
     if (debugEnabled) {
       print('upgrader: download: $url');
     }
-    final response = await client!.get(Uri.parse(url));
-
-    final decodedResults = _decodeResults(response.body);
-    return decodedResults;
+    try {
+      final response = await client!.get(Uri.parse(url));
+      final decodedResults = _decodeResults(response.body);
+      return decodedResults;
+    } catch (e) {
+      print('upgrader: lookupById exception: $e');
+      return null;
+    }
   }
 
   /// Look up URL by bundle id.
