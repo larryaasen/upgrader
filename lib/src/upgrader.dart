@@ -259,8 +259,6 @@ class Upgrader {
 
       await _updateVersionInfo();
 
-
-
       return true;
     });
     return _futureInit!;
