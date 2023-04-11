@@ -44,7 +44,8 @@ class Appcast {
 
     AppcastItem? bestItem;
     items!.forEach((AppcastItem item) {
-      if (item.hostSupportsItem(osVersion: osVersionString) && item.isCriticalUpdate) {
+      if (item.hostSupportsItem(osVersion: osVersionString) &&
+          item.isCriticalUpdate) {
         if (bestItem == null) {
           bestItem = item;
         } else {
