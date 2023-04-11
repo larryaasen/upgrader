@@ -235,10 +235,9 @@ class Upgrader {
         print('upgrader: package info version: ${_packageInfo!.version}');
       }
     }
+    _installedVersion = _packageInfo!.version;
 
     await _updateVersionInfo();
-
-    _installedVersion = _packageInfo!.version;
 
     return true;
   }
@@ -268,14 +267,15 @@ class Upgrader {
               'upgrader: appcast critical update item version: ${criticalUpdateItem?.versionString}');
         }
 
-        final packageInfo = await PackageInfo.fromPlatform();
-        final appVersion = packageInfo.version;
+        _installedVersion ??= (await PackageInfo.fromPlatform()).version;
 
         final criticalVersion = criticalUpdateItem?.versionString ?? '';
-        if (criticalVersion.isNotEmpty && Version.parse(appVersion) < Version.parse(criticalVersion)) {
+        if (criticalVersion.isNotEmpty &&
+            Version.parse(_installedVersion!) <
+                Version.parse(criticalVersion)) {
           _isCriticalUpdate = true;
         }
-        
+
         _appStoreVersion ??= bestItem.versionString;
         _appStoreListingURL ??= bestItem.fileURL;
         _releaseNotes = bestItem.itemDescription;
