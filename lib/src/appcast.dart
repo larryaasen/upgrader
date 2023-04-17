@@ -36,8 +36,8 @@ class Appcast {
   late IosDeviceInfo _iosInfo;
   String? osVersionString;
 
-  /// Returns the latest item in the Appcast, including only critical updates.
-  AppcastItem? criticalUpdateItem() {
+  /// Returns the latest critical item in the Appcast.
+  AppcastItem? bestCriticalItem() {
     if (items == null) {
       return null;
     }

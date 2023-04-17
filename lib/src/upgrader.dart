@@ -277,7 +277,7 @@ class Upgrader {
         var count = appcast.items == null ? 0 : appcast.items!.length;
         print('upgrader: appcast item count: $count');
       }
-      final criticalUpdateItem = appcast.criticalUpdateItem();
+      final criticalUpdateItem = appcast.bestCriticalItem();
       final criticalVersion = criticalUpdateItem?.versionString ?? '';
 
       final bestItem = appcast.bestItem();

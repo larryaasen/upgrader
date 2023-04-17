@@ -24,7 +24,7 @@ class FakeAppcast extends Fake implements TestAppcast {
   }
 
   @override
-  AppcastItem? criticalUpdateItem() {
+  AppcastItem? bestCriticalItem() {
     callCount++;
 
     return AppcastItem(
