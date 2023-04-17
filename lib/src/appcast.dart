@@ -57,7 +57,7 @@ class Appcast {
               bestItem = item;
             }
           } on Exception catch (e) {
-            print('appcast.bestItem: invalid version: $e');
+            print('upgrader: criticalUpdateItem invalid version: $e');
           }
         }
       }
@@ -85,7 +85,7 @@ class Appcast {
               bestItem = item;
             }
           } on Exception catch (e) {
-            print('appcast.bestItem: invalid version: $e');
+            print('upgrader: bestItem invalid version: $e');
           }
         }
       }
@@ -314,7 +314,7 @@ class AppcastItem {
       try {
         osVersionValue = Version.parse(osVersion);
       } catch (e) {
-        print('appcast.hostSupportsItem: invalid osVersion: $e');
+        print('upgrader: hostSupportsItem invalid osVersion: $e');
         return false;
       }
       if (maximumSystemVersion != null) {
@@ -324,7 +324,7 @@ class AppcastItem {
             supported = false;
           }
         } on Exception catch (e) {
-          print('appcast.hostSupportsItem: invalid maximumSystemVersion: $e');
+          print('upgrader: hostSupportsItem invalid maximumSystemVersion: $e');
         }
       }
       if (supported && minimumSystemVersion != null) {
@@ -334,7 +334,7 @@ class AppcastItem {
             supported = false;
           }
         } on Exception catch (e) {
-          print('appcast.hostSupportsItem: invalid minimumSystemVersion: $e');
+          print('upgrader: hostSupportsItem invalid minimumSystemVersion: $e');
         }
       }
     }
