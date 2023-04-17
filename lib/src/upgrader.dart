@@ -278,6 +278,8 @@ class Upgrader {
         print('upgrader: appcast item count: $count');
       }
       final criticalUpdateItem = appcast.criticalUpdateItem();
+      final criticalVersion = criticalUpdateItem?.versionString ?? '';
+
       final bestItem = appcast.bestItem();
       if (bestItem != null &&
           bestItem.versionString != null &&
@@ -289,11 +291,15 @@ class Upgrader {
               'upgrader: appcast critical update item version: ${criticalUpdateItem?.versionString}');
         }
 
-        final criticalVersion = criticalUpdateItem?.versionString ?? '';
-        if (criticalVersion.isNotEmpty &&
-            Version.parse(_installedVersion!) <
-                Version.parse(criticalVersion)) {
-          _isCriticalUpdate = true;
+        try {
+          if (criticalVersion.isNotEmpty &&
+              Version.parse(_installedVersion!) <
+                  Version.parse(criticalVersion)) {
+            _isCriticalUpdate = true;
+          }
+        } catch (e) {
+          print('Upgrader: updateVersionInfo could not parse version info $e');
+          _isCriticalUpdate = false;
         }
 
         _appStoreVersion ??= bestItem.versionString;
