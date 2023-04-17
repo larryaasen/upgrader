@@ -289,8 +289,6 @@ class Upgrader {
               'upgrader: appcast critical update item version: ${criticalUpdateItem?.versionString}');
         }
 
-        _installedVersion ??= (await PackageInfo.fromPlatform()).version;
-
         final criticalVersion = criticalUpdateItem?.versionString ?? '';
         if (criticalVersion.isNotEmpty &&
             Version.parse(_installedVersion!) <
