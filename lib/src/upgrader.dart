@@ -151,6 +151,7 @@ class Upgrader {
   String? _userIgnoredVersion;
   bool _hasAlerted = false;
   bool _isCriticalUpdate = false;
+  String? _criticalVersion;
 
   /// Track the initialization future so that [initialize] can be called multiple times.
   Future<bool>? _futureInit;
@@ -278,7 +279,8 @@ class Upgrader {
         print('upgrader: appcast item count: $count');
       }
       final criticalUpdateItem = appcast.bestCriticalItem();
-      final criticalVersion = criticalUpdateItem?.versionString ?? '';
+      final String criticalVersionString =
+          criticalUpdateItem?.versionString ?? '';
 
       final bestItem = appcast.bestItem();
       if (bestItem != null &&
@@ -292,10 +294,11 @@ class Upgrader {
         }
 
         try {
-          if (criticalVersion.isNotEmpty &&
+          if (criticalVersionString.isNotEmpty &&
               Version.parse(_installedVersion!) <
-                  Version.parse(criticalVersion)) {
+                  Version.parse(criticalVersionString)) {
             _isCriticalUpdate = true;
+            _criticalVersion = criticalVersionString;
           }
         } catch (e) {
           print('Upgrader: updateVersionInfo could not parse version info $e');
@@ -408,7 +411,12 @@ class Upgrader {
 
   String? currentAppStoreListingURL() => _appStoreListingURL;
 
-  String? currentAppStoreVersion() => _appStoreVersion;
+  String? currentAppStoreOrLastCriticalVersion() {
+    if (_isCriticalUpdate && _criticalVersion != null) {
+      return _criticalVersion;
+    }
+    return _appStoreVersion;
+  }
 
   String? currentInstalledVersion() => _installedVersion;
 
@@ -417,8 +425,8 @@ class Upgrader {
   String message() {
     var msg = messages.message(UpgraderMessage.body)!;
     msg = msg.replaceAll('{{appName}}', appName());
-    msg = msg.replaceAll(
-        '{{currentAppStoreVersion}}', currentAppStoreVersion() ?? '');
+    msg = msg.replaceAll('{{currentAppStoreVersion}}',
+        currentAppStoreOrLastCriticalVersion() ?? '');
     msg = msg.replaceAll(
         '{{currentInstalledVersion}}', currentInstalledVersion() ?? '');
     return msg;

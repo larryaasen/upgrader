@@ -72,12 +72,12 @@ void main() {
       await upgrader.initialize();
 
       expect(upgrader.appName(), 'Upgrader');
-      expect(upgrader.currentAppStoreVersion(), '5.6');
+      expect(upgrader.currentAppStoreOrLastCriticalVersion(), '5.6');
       expect(upgrader.currentInstalledVersion(), '1.9.9');
       expect(upgrader.isUpdateAvailable(), true);
 
       upgrader.installAppStoreVersion('1.2.3');
-      expect(upgrader.currentAppStoreVersion(), '1.2.3');
+      expect(upgrader.currentAppStoreOrLastCriticalVersion(), '1.2.3');
     });
   }, skip: false);
 
