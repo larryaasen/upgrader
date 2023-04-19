@@ -298,7 +298,7 @@ class Upgrader {
             _isCriticalUpdate = true;
           }
         } catch (e) {
-          print('Upgrader: updateVersionInfo could not parse version info $e');
+          print('upgrader: updateVersionInfo could not parse version info $e');
           _isCriticalUpdate = false;
         }
 
