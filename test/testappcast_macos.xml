@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- https://sparkle-project.org/documentation/publishing/ -->
 <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
   <channel>
     <title>For unit test only</title>
@@ -6,7 +7,7 @@
         <title>Version 2.0</title>
         <description>This is an update.</description>
         <pubDate>Sat, 26 Jul 2014 15:20:11 +0000</pubDate>
-        <enclosure url="http://localhost:1337/Sparkle_Test_App.zip" sparkle:version="2.0" />
+        <enclosure url="http://localhost:1337/Sparkle_Test_App.zip" sparkle:version="2.0" sparkle:os="macos" />
         <sparkle:tags> <sparkle:criticalUpdate /> </sparkle:tags> 
     </item>
     <item>
@@ -20,17 +21,10 @@
         <enclosure url="http://localhost:1337/Sparkle_Test_App.zip" sparkle:version="4.0" />
         <sparkle:minimumSystemVersion>17.0.0</sparkle:minimumSystemVersion>
     </item>
-    <item>
-        <title>Version 5.0</title>
-        <description>Bug fixes and performance improvements.</description>
-        <pubDate>Sat, 26 Jul 2014 15:20:13 +0000</pubDate>
-        <enclosure url="http://localhost:1337/Sparkle_Test_App.zip" sparkle:version="5.0" sparkle:os="macos" />
-        <sparkle:minimumSystemVersion>17.0.0</sparkle:minimumSystemVersion>
-    </item>
     <!-- A release testing maximumSystemVersion -->
     <item>
-        <title>Version 6.0</title>
-        <sparkle:version>6.0</sparkle:version>
+        <title>Version 5.0</title>
+        <sparkle:version>5.0</sparkle:version>
         <sparkle:maximumSystemVersion>2.0.0</sparkle:maximumSystemVersion>
     </item>
   </channel>
