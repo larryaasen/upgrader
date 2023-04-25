@@ -5,10 +5,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:http/src/client.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upgrader/upgrader.dart';
 
+import 'appcast_test.dart';
 import 'fake_appcast.dart';
 import 'mock_itunes_client.dart';
 import 'mock_play_store_client.dart';
@@ -672,6 +674,50 @@ void main() {
       expect(fakeAppcast.callCount, greaterThan(0));
     }, skip: false);
 
+    test('will use critical version if exists', () async {
+      final Client mockClient =
+          await setupMockClient(filePath: 'test/testappcast_critical.xml');
+      final appcast = Appcast(client: mockClient);
+
+      final upgrader = Upgrader(
+        platform: TargetPlatform.iOS,
+        debugLogging: true,
+        appcastConfig: AppcastConfiguration(
+          supportedOS: ["macos"],
+          url: 'https://sparkle-project.org/test/testappcast.xml',
+        ),
+        appcast: appcast,
+      )..installPackageInfo(
+          packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '1.9.6',
+            buildNumber: '42',
+          ),
+        );
+
+      await upgrader.initialize();
+
+      var notCalled = true;
+      upgrader.willDisplayUpgrade = (
+          {required bool display,
+          String? minAppVersion,
+          String? installedVersion,
+          String? appStoreVersion}) {
+        expect(display, true);
+        expect(installedVersion, '1.9.6');
+
+        /// Appcast Test critical version.
+        expect(appStoreVersion, '3.0.0');
+        notCalled = false;
+      };
+
+      final shouldDisplayUpgrade = upgrader.shouldDisplayUpgrade();
+
+      expect(shouldDisplayUpgrade, isTrue);
+      expect(notCalled, false);
+    }, skip: false);
+
     test('durationUntilAlertAgain defaults to 3 days', () async {
       final upgrader = Upgrader();
       expect(upgrader.durationUntilAlertAgain, const Duration(days: 3));
@@ -888,6 +934,7 @@ void verifyMessages(UpgraderMessages messages, String code) {
 
 class _MyWidget extends StatelessWidget {
   final Upgrader upgrader;
+
   const _MyWidget({Key? key, required this.upgrader}) : super(key: key);
 
   @override
@@ -910,6 +957,7 @@ class _MyWidget extends StatelessWidget {
 
 class _MyWidgetCard extends StatelessWidget {
   final Upgrader upgrader;
+
   const _MyWidgetCard({Key? key, required this.upgrader}) : super(key: key);
 
   @override
@@ -931,10 +979,13 @@ class _MyWidgetCard extends StatelessWidget {
 class MyUpgraderMessages extends UpgraderMessages {
   @override
   String get buttonTitleIgnore => 'aaa';
+
   @override
   String get buttonTitleLater => 'bbb';
+
   @override
   String get buttonTitleUpdate => 'ccc';
+
   @override
   String get releaseNotes => 'ddd';
 }
