@@ -683,7 +683,6 @@ void main() {
         platform: TargetPlatform.iOS,
         debugLogging: true,
         appcastConfig: AppcastConfiguration(
-          supportedOS: ["macos"],
           url: 'https://sparkle-project.org/test/testappcast.xml',
         ),
         appcast: appcast,
