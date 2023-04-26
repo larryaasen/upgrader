@@ -70,7 +70,7 @@ class Appcast {
     try {
       response = await client!.get(Uri.parse(appCastURL));
     } catch (e) {
-      print(e);
+      print('upgrader: parseAppcastItemsFromUri exception: $e');
       return null;
     }
     final contents = utf8.decode(response.bodyBytes);
@@ -183,7 +183,7 @@ class Appcast {
 
       items = localItems;
     } catch (e) {
-      print(e);
+      print('upgrader: parseItemsFromXMLString exception: $e');
     }
 
     return items;
@@ -197,6 +197,18 @@ class Appcast {
     } else if (UpgradeIO.isIOS) {
       _iosInfo = await deviceInfo.iosInfo;
       osVersionString = _iosInfo.systemVersion;
+    } else if (UpgradeIO.isMacOS) {
+      final info = await deviceInfo.macOsInfo;
+      final release = info.osRelease;
+
+      // For macOS the release string looks like: Version 13.2.1 (Build 22D68)
+      // We need to parse out the actual OS version number.
+
+      String regExpSource = r"[\w]*[\s]*(?<version>[^\s]+)";
+      final regExp = RegExp(regExpSource, caseSensitive: false);
+      final match = regExp.firstMatch(release);
+      final version = match?.namedGroup('version');
+      osVersionString = version;
     } else if (UpgradeIO.isWeb) {
       osVersionString = '0.0.0';
     }

@@ -1,3 +1,8 @@
+## Next
+
+- Improved support for Appcast on macOS.
+- Added macOS example using Appcast.
+
 ## 6.2.0
 
 - Added a parameter for the Cupertino button text style. Thanks to [@daniel-possienke](https://github.com/daniel-possienke) for this update.

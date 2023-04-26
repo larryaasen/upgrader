@@ -6,12 +6,17 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:upgrader/upgrader.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  setMockDeviceInfo();
+
   setUp(() async {});
 
   tearDown(() async {});
@@ -164,4 +169,38 @@ class TestAppcast extends Appcast {
     final contents = await file.readAsString();
     return parseAppcastItems(contents);
   }
+}
+
+void setMockDeviceInfo() {
+  const channel = MethodChannel('dev.fluttercommunity.plus/device_info');
+
+  handler(MethodCall methodCall) async {
+    // if (methodCall.method == 'yourMethod') {
+    //   return 42;
+    // }
+    // return null;
+
+    switch (methodCall.method) {
+      case 'getDeviceInfo':
+        return <String, dynamic>{
+          'computerName': '',
+          'hostName': '',
+          'arch': '',
+          'model': '',
+          'kernelVersion': '',
+          'osRelease': 'Version 13.2.1 (Build 22D68)',
+          'activeCPUs': 0,
+          'memorySize': 0,
+          'cpuFrequency': 0,
+          'systemGUID': '',
+        };
+
+      default:
+        assert(false);
+        return null;
+    }
+  }
+
+  TestDefaultBinaryMessengerBinding.instance!.defaultBinaryMessenger
+      .setMockMethodCallHandler(channel, handler);
 }
