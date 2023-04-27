@@ -36,6 +36,34 @@ class Appcast {
   late IosDeviceInfo _iosInfo;
   String? osVersionString;
 
+  /// Returns the latest critical item in the Appcast.
+  AppcastItem? bestCriticalItem() {
+    if (items == null) {
+      return null;
+    }
+
+    AppcastItem? bestItem;
+    items!.forEach((AppcastItem item) {
+      if (item.hostSupportsItem(osVersion: osVersionString) &&
+          item.isCriticalUpdate) {
+        if (bestItem == null) {
+          bestItem = item;
+        } else {
+          try {
+            final itemVersion = Version.parse(item.versionString!);
+            final bestItemVersion = Version.parse(bestItem!.versionString!);
+            if (itemVersion > bestItemVersion) {
+              bestItem = item;
+            }
+          } on Exception catch (e) {
+            print('upgrader: criticalUpdateItem invalid version: $e');
+          }
+        }
+      }
+    });
+    return bestItem;
+  }
+
   /// Returns the latest item in the Appcast based on OS, OS version, and app
   /// version.
   AppcastItem? bestItem() {
@@ -56,7 +84,7 @@ class Appcast {
               bestItem = item;
             }
           } on Exception catch (e) {
-            print('appcast.bestItem: invalid version: $e');
+            print('upgrader: bestItem invalid version: $e');
           }
         }
       }
@@ -276,7 +304,7 @@ class AppcastItem {
       try {
         osVersionValue = Version.parse(osVersion);
       } catch (e) {
-        print('appcast.hostSupportsItem: invalid osVersion: $e');
+        print('upgrader: hostSupportsItem invalid osVersion: $e');
         return false;
       }
       if (maximumSystemVersion != null) {
@@ -286,7 +314,7 @@ class AppcastItem {
             supported = false;
           }
         } on Exception catch (e) {
-          print('appcast.hostSupportsItem: invalid maximumSystemVersion: $e');
+          print('upgrader: hostSupportsItem invalid maximumSystemVersion: $e');
         }
       }
       if (supported && minimumSystemVersion != null) {
@@ -296,7 +324,7 @@ class AppcastItem {
             supported = false;
           }
         } on Exception catch (e) {
-          print('appcast.hostSupportsItem: invalid minimumSystemVersion: $e');
+          print('upgrader: hostSupportsItem invalid minimumSystemVersion: $e');
         }
       }
     }

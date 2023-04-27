@@ -255,9 +255,9 @@ class Upgrader {
         }
       }
 
-      await _updateVersionInfo();
-
       _installedVersion = _packageInfo!.version;
+
+      await _updateVersionInfo();
 
       return true;
     });
@@ -277,6 +277,9 @@ class Upgrader {
         var count = appcast.items == null ? 0 : appcast.items!.length;
         print('upgrader: appcast item count: $count');
       }
+      final criticalUpdateItem = appcast.bestCriticalItem();
+      final criticalVersion = criticalUpdateItem?.versionString ?? '';
+
       final bestItem = appcast.bestItem();
       if (bestItem != null &&
           bestItem.versionString != null &&
@@ -284,12 +287,23 @@ class Upgrader {
         if (debugLogging) {
           print(
               'upgrader: appcast best item version: ${bestItem.versionString}');
+          print(
+              'upgrader: appcast critical update item version: ${criticalUpdateItem?.versionString}');
         }
+
+        try {
+          if (criticalVersion.isNotEmpty &&
+              Version.parse(_installedVersion!) <
+                  Version.parse(criticalVersion)) {
+            _isCriticalUpdate = true;
+          }
+        } catch (e) {
+          print('upgrader: updateVersionInfo could not parse version info $e');
+          _isCriticalUpdate = false;
+        }
+
         _appStoreVersion ??= bestItem.versionString;
         _appStoreListingURL ??= bestItem.fileURL;
-        if (bestItem.isCriticalUpdate) {
-          _isCriticalUpdate = true;
-        }
         _releaseNotes = bestItem.itemDescription;
       }
     } else {
