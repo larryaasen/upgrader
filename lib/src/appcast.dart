@@ -113,7 +113,7 @@ class Appcast {
   }
 
   bool _isCorrectPlatform(XmlAttribute attribute) {
-    final String platformValue = attribute.value; // ios or android
+    final String platformValue = attribute.value;
     final String currentPlatform = Platform.operatingSystem;
 
     return platformValue == currentPlatform;
