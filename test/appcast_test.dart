@@ -51,6 +51,27 @@ void main() {
     validateItems(items!, appcast);
   }, skip: false);
 
+  test(
+      'testing Appcast will prioritize critical version even with lover version. ',
+      () async {
+    final appcast = TestAppcast();
+
+    final testFile =
+        await getTestFile(filePath: 'test/testappcast_critical.xml');
+
+    await appcast.parseAppcastItemsFromFile(testFile);
+
+    final bestCriticalItem = appcast.bestCriticalItem();
+
+    expect(
+      bestCriticalItem?.versionString == "3.0.0",
+      equals(true),
+    );
+
+    expect(bestCriticalItem?.tags?.contains("sparkle:criticalUpdate"),
+        equals(true));
+  }, skip: false);
+
   test('testing Appcast host', () async {
     final item = AppcastItem();
 
@@ -132,8 +153,8 @@ void validateItems(List<AppcastItem> items, Appcast appcast) {
   expect(bestItem.osString, isNull);
 }
 
-Future<File> getTestFile() async {
-  var testFile = File('test/testappcast.xml');
+Future<File> getTestFile({String filePath = 'test/testappcast.xml'}) async {
+  var testFile = File(filePath);
   final exists = await testFile.exists();
   if (!exists) {
     testFile = File('testappcast.xml');
@@ -141,14 +162,15 @@ Future<File> getTestFile() async {
   return testFile;
 }
 
-Future<http.Client> setupMockClient() async {
+Future<http.Client> setupMockClient(
+    {String filePath = 'test/testappcast.xml'}) async {
   // Use a mock to return a successful response when it calls the
   // provided http.Client.
 
   final client = MockClient((http.Request request) async {
     if (request.url.toString() ==
         'https://sparkle-project.org/test/testappcast.xml') {
-      final testFile = await getTestFile();
+      final testFile = await getTestFile(filePath: filePath);
       final contents = await testFile.readAsString();
       return http.Response.bytes(utf8.encode(contents), 200);
     }

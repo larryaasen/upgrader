@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
+    <channel>
+        <title>For unit test only</title>
+        <item>
+            <title>Version 4.0.0</title>
+            <enclosure url="http://localhost:1337/Sparkle_Test_App.zip"
+                       sparkle:version="4.0" sparkle:os="iOS"/>
+            <sparkle:version>4.0.0</sparkle:version>
+            <sparkle:shortVersionString>4.0.0</sparkle:shortVersionString>
+        </item>
+        <item>
+            <title>Version 3.0.0</title>
+            <enclosure url="http://localhost:1337/Sparkle_Test_App.zip"
+                       sparkle:version="3.0" sparkle:os="android"/>
+            <sparkle:version>3.0.0</sparkle:version>
+            <sparkle:shortVersionString>3.0.0</sparkle:shortVersionString>
+            <sparkle:tags>
+                <sparkle:criticalUpdate/>
+            </sparkle:tags>
+        </item>
+
+    </channel>
+</rss>
