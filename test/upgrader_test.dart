@@ -675,6 +675,7 @@ void main() {
     }, skip: false);
 
     test('will use critical version if exists', () async {
+      setMockDeviceInfo();
       final Client mockClient =
           await setupMockClient(filePath: 'test/testappcast_critical.xml');
       final appcast = Appcast(client: mockClient);
