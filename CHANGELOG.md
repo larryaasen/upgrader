@@ -2,6 +2,7 @@
 
 - Improved support for Appcast on macOS.
 - Added macOS example using Appcast.
+- Downgraded the device_info_plus minimum version to 7.0.0 (from 8.0.0).
 
 ## 6.2.0
 
