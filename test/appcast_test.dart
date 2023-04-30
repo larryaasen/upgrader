@@ -200,6 +200,7 @@ void setMockDeviceInfo() {
     print('setMockDeviceInfo.methodCall: ${methodCall.method}');
 
     switch (methodCall.method) {
+      case 'getMacosDeviceInfo':
       case 'getDeviceInfo':
         return <String, dynamic>{
           'computerName': '',

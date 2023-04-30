@@ -1,6 +1,6 @@
-## Next
+## 6.3.0
 
-- Improved support for Appcast on macOS.
+- Improved support for Appcast on macOS. Thanks to [@ahmet-fennel](https://github.com/ahmet-fennel) for this update.
 - Added macOS example using Appcast.
 - Downgraded the device_info_plus minimum version to 7.0.0 (from 8.0.0).
 
