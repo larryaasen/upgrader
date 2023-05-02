@@ -107,7 +107,10 @@ class Upgrader {
   /// Return false when the default behavior should not execute.
   BoolCallback? onUpdate;
 
-  /// The target platform.
+  /// The [TargetPlatform] that identifies the platform on which the package is
+  /// currently executing. Defaults to [defaultTargetPlatform]. Note that
+  /// [TargetPlatform] does not include web, but includes mobile and desktop.
+  /// This parameter is normally used to change the target platform during testing.
   final TargetPlatform platform;
 
   /// Called when the user taps outside of the dialog and [canDismissDialog]
@@ -135,7 +138,7 @@ class Upgrader {
   WillDisplayUpgradeCallback? willDisplayUpgrade;
 
   /// The target operating system.
-  final String operatingSystem = UpgradeIO.operatingSystem;
+  final String _operatingSystem = UpgradeIO.operatingSystem;
 
   bool _displayed = false;
   bool _initCalled = false;
@@ -233,8 +236,9 @@ class Upgrader {
       if (debugLogging) {
         print('upgrader: default operatingSystem: '
             '${UpgradeIO.operatingSystem} ${UpgradeIO.operatingSystemVersion}');
-        print('upgrader: operatingSystem: $operatingSystem');
+        print('upgrader: operatingSystem: $_operatingSystem');
         print('upgrader: platform: $platform');
+        print('upgrader: defaultTargetPlatform: $defaultTargetPlatform');
         print('upgrader: '
             'isAndroid: ${UpgradeIO.isAndroid}, '
             'isIOS: ${UpgradeIO.isIOS}, '
@@ -389,7 +393,7 @@ class Upgrader {
     // When there are no supported OSes listed, they are all supported.
     var supported = true;
     if (appcastConfig!.supportedOS != null) {
-      supported = appcastConfig!.supportedOS!.contains(operatingSystem);
+      supported = appcastConfig!.supportedOS!.contains(_operatingSystem);
     }
     return supported;
   }

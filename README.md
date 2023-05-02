@@ -122,7 +122,7 @@ The Upgrader class can be customized by setting parameters in the constructor.
 * onIgnore: called when the ignore button is tapped, defaults to ```null```
 * onLater: called when the later button is tapped, defaults to ```null```
 * onUpdate: called when the update button is tapped, defaults to ```null```
-* platform: The target platform, defaults to ```defaultTargetPlatform```
+* platform: The [TargetPlatform] that identifies the platform on which the package is currently executing. Defaults to [defaultTargetPlatform]. Note that [TargetPlatform] does not include web, but includes mobile and desktop. This parameter is normally used to change the target platform during testing.
 * shouldPopScope: called when the back button is tapped, defaults to ```null```
 * showIgnore: hide or show Ignore button, which defaults to ```true```
 * showLater: hide or show Later button, which defaults to ```true```
