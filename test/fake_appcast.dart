@@ -24,6 +24,17 @@ class FakeAppcast extends Fake implements TestAppcast {
   }
 
   @override
+  AppcastItem? bestCriticalItem() {
+    callCount++;
+
+    return AppcastItem(
+      versionString: '1.0.0',
+      fileURL: 'http://some.fakewebsite.com',
+      tags: [],
+    );
+  }
+
+  @override
   Future<List<AppcastItem>> parseAppcastItemsFromFile(File file) async {
     callCount++;
 

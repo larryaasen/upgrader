@@ -36,6 +36,34 @@ class Appcast {
   late IosDeviceInfo _iosInfo;
   String? osVersionString;
 
+  /// Returns the latest critical item in the Appcast.
+  AppcastItem? bestCriticalItem() {
+    if (items == null) {
+      return null;
+    }
+
+    AppcastItem? bestItem;
+    items!.forEach((AppcastItem item) {
+      if (item.hostSupportsItem(osVersion: osVersionString) &&
+          item.isCriticalUpdate) {
+        if (bestItem == null) {
+          bestItem = item;
+        } else {
+          try {
+            final itemVersion = Version.parse(item.versionString!);
+            final bestItemVersion = Version.parse(bestItem!.versionString!);
+            if (itemVersion > bestItemVersion) {
+              bestItem = item;
+            }
+          } on Exception catch (e) {
+            print('upgrader: criticalUpdateItem invalid version: $e');
+          }
+        }
+      }
+    });
+    return bestItem;
+  }
+
   /// Returns the latest item in the Appcast based on OS, OS version, and app
   /// version.
   AppcastItem? bestItem() {
@@ -56,7 +84,7 @@ class Appcast {
               bestItem = item;
             }
           } on Exception catch (e) {
-            print('appcast.bestItem: invalid version: $e');
+            print('upgrader: bestItem invalid version: $e');
           }
         }
       }
@@ -70,7 +98,7 @@ class Appcast {
     try {
       response = await client!.get(Uri.parse(appCastURL));
     } catch (e) {
-      print(e);
+      print('upgrader: parseAppcastItemsFromUri exception: $e');
       return null;
     }
     final contents = utf8.decode(response.bodyBytes);
@@ -183,7 +211,7 @@ class Appcast {
 
       items = localItems;
     } catch (e) {
-      print(e);
+      print('upgrader: parseItemsFromXMLString exception: $e');
     }
 
     return items;
@@ -197,6 +225,18 @@ class Appcast {
     } else if (UpgradeIO.isIOS) {
       _iosInfo = await deviceInfo.iosInfo;
       osVersionString = _iosInfo.systemVersion;
+    } else if (UpgradeIO.isMacOS) {
+      final info = await deviceInfo.macOsInfo;
+      final release = info.osRelease;
+
+      // For macOS the release string looks like: Version 13.2.1 (Build 22D68)
+      // We need to parse out the actual OS version number.
+
+      String regExpSource = r"[\w]*[\s]*(?<version>[^\s]+)";
+      final regExp = RegExp(regExpSource, caseSensitive: false);
+      final match = regExp.firstMatch(release);
+      final version = match?.namedGroup('version');
+      osVersionString = version;
     } else if (UpgradeIO.isWeb) {
       osVersionString = '0.0.0';
     }
@@ -264,7 +304,7 @@ class AppcastItem {
       try {
         osVersionValue = Version.parse(osVersion);
       } catch (e) {
-        print('appcast.hostSupportsItem: invalid osVersion: $e');
+        print('upgrader: hostSupportsItem invalid osVersion: $e');
         return false;
       }
       if (maximumSystemVersion != null) {
@@ -274,7 +314,7 @@ class AppcastItem {
             supported = false;
           }
         } on Exception catch (e) {
-          print('appcast.hostSupportsItem: invalid maximumSystemVersion: $e');
+          print('upgrader: hostSupportsItem invalid maximumSystemVersion: $e');
         }
       }
       if (supported && minimumSystemVersion != null) {
@@ -284,7 +324,7 @@ class AppcastItem {
             supported = false;
           }
         } on Exception catch (e) {
-          print('appcast.hostSupportsItem: invalid minimumSystemVersion: $e');
+          print('upgrader: hostSupportsItem invalid minimumSystemVersion: $e');
         }
       }
     }
