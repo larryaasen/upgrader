@@ -4,14 +4,13 @@ name: platforms
 
 defaults:
   run:
-    shell: bash
     working-directory: example
 
 on:
   workflow_dispatch:
 
 jobs:
-  test-platform:
+  platforms:
     strategy:
       matrix:
         runs-on-name: ['windows-latest']
@@ -31,7 +30,7 @@ jobs:
         run: flutter pub get
 
       - name: Run the driver test
-        run: 	cd example; flutter drive --target=test/driver_test/driver.dart --driver=test/driver_test/driver_test.dart
+        run: 	flutter drive --target=test/driver_test/driver.dart --driver=test/driver_test/driver_test.dart
 
       - name: Upload Screenshots to Artifacts
         if: ${{ always() }}
