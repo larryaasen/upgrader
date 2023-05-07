@@ -26,6 +26,7 @@ void main() {
     setUpAll(() async {
       final currentPath = path_d.dirname(Platform.script.path);
       final screenshotsPath = path_d.join(currentPath, '/screenshots');
+      print('pwd: ${Directory.current.path}');
       print('screenshots path: $screenshotsPath');
       driver = await FlutterDriver.connect();
       final health = await driver.checkHealth();
