@@ -24,11 +24,10 @@ void main() {
 
     // Connect to the Flutter driver before running any tests
     setUpAll(() async {
+      print('pwd: ${Directory.current.path}');
       final currentPath = path_d.dirname(Platform.script.path);
       print('currentPath: $currentPath');
-      final screenshotsPath =
-          path_d.join(currentPath, 'test', 'driver_test', 'screenshots');
-      print('pwd: ${Directory.current.path}');
+      final screenshotsPath = path_d.join(currentPath, 'screenshots');
       print('screenshots path: $screenshotsPath');
       driver = await FlutterDriver.connect();
       final health = await driver.checkHealth();
@@ -59,7 +58,7 @@ void main() {
 
 Future<void> takeScreenshot(FlutterDriver driver, String path) async {
   final currentPath = path_d.dirname(Platform.script.path);
-  final uri = '$currentPath/screenshots/$path';
+  final uri = path_d.join(currentPath, 'screenshots', path);
 
   await driver.waitUntilNoTransientCallbacks();
   sleep(const Duration(seconds: 1));
