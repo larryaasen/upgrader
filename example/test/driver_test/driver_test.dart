@@ -25,8 +25,8 @@ void main() {
     // Connect to the Flutter driver before running any tests
     setUpAll(() async {
       final currentPath = path_d.dirname(Platform.script.path);
-      await Directory('$currentPath/screenshots').create();
-
+      final screenshotsPath = path_d.join(currentPath, '/screenshots');
+      print('screenshots path: $screenshotsPath');
       driver = await FlutterDriver.connect();
       final health = await driver.checkHealth();
       print(health.status);
