@@ -30,7 +30,7 @@ jobs:
         run: flutter pub get
 
       - name: Run the driver test
-        run: 	flutter drive --target=test/driver_test/driver.dart --driver=test/driver_test/driver_test.dart
+        run: 	flutter drive --target=test/driver_test/driver.dart --driver=test/driver_test/driver_test.dart -d windows
 
       - name: Upload Screenshots to Artifacts
         if: ${{ always() }}
