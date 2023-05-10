@@ -1,3 +1,7 @@
+## 6.4.0
+
+- Updated device_info_plus version to '>=7.0.0 <10.0.0'.
+
 ## 6.3.0
 
 - Improved support for Appcast on macOS. Thanks to [@ahmet-fennel](https://github.com/ahmet-fennel) for this update.
