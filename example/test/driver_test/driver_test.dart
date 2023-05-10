@@ -43,7 +43,7 @@ void main() {
     });
 
     test('verify app started', () async {
-      await takeScreenshot(driver, 'app_startup.png');
+      // await takeScreenshot(driver, 'app_startup.png');
 
       await driver.waitFor(find.text('Upgrader Example'));
       await driver.waitFor(find.text('Update App?'));
