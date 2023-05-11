@@ -1,4 +1,4 @@
-## Next
+## 6.5.0
 
 - Fixed a few null String objects causing exceptions. #284
 - Updated package_info_plus version to '>=3.0.1 <5.0.0'.
