@@ -4,7 +4,7 @@ version: 6.4.0
 homepage: https://github.com/larryaasen/upgrader
 
 environment:
-  sdk: '>=2.18.6 <4.0.0'
+  sdk: '>=2.18.6 <3.0.0'
   flutter: ">=3.3.10"
 
 dependencies:
@@ -24,7 +24,7 @@ dependencies:
   os_detect: ^2.0.1
 
   # From Flutter Community: Provides an API for querying information about an application package.
-  package_info_plus: '>=3.0.1 <5.0.0'
+  package_info_plus: ^3.0.1
 
   # From Flutter Team: Wraps NSUserDefaults (on iOS) and SharedPreferences (on Android).
   shared_preferences: ^2.0.15

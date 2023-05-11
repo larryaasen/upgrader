@@ -224,6 +224,6 @@ void setMockDeviceInfo() {
     }
   }
 
-  TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+  TestDefaultBinaryMessengerBinding.instance!.defaultBinaryMessenger
       .setMockMethodCallHandler(channel, handler);
 }

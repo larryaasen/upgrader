@@ -947,8 +947,8 @@ class _MyWidget extends StatelessWidget {
         ),
         body: UpgradeAlert(
             upgrader: upgrader,
-            child: const Column(
-              children: <Widget>[Text('Upgrading')],
+            child: Column(
+              children: const <Widget>[Text('Upgrading')],
             )),
       ),
     );

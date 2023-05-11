@@ -1,9 +1,6 @@
 ## Next
 
-- Added support for Dart 3.0.0 and Flutter 3.10.0.
-- Updated code to avoid deprecated warnings.
 - Fixed a few null String objects causing exceptions. #284
-- Updated package_info_plus version to '>=3.0.1 <5.0.0'.
 
 ## 6.4.0
 

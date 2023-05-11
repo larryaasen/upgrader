@@ -146,9 +146,9 @@ class Appcast {
           if (childNode is XmlElement) {
             final name = childNode.name.toString();
             if (name == AppcastConstants.ElementTitle) {
-              title = childNode.innerText;
+              title = childNode.text;
             } else if (name == AppcastConstants.ElementDescription) {
-              itemDescription = childNode.innerText;
+              itemDescription = childNode.text;
             } else if (name == AppcastConstants.ElementEnclosure) {
               childNode.attributes.forEach((XmlAttribute attribute) {
                 if (attribute.name.toString() ==
@@ -163,13 +163,13 @@ class Appcast {
                 }
               });
             } else if (name == AppcastConstants.ElementMaximumSystemVersion) {
-              maximumSystemVersion = childNode.innerText;
+              maximumSystemVersion = childNode.text;
             } else if (name == AppcastConstants.ElementMinimumSystemVersion) {
-              minimumSystemVersion = childNode.innerText;
+              minimumSystemVersion = childNode.text;
             } else if (name == AppcastConstants.ElementPubDate) {
-              dateString = childNode.innerText;
+              dateString = childNode.text;
             } else if (name == AppcastConstants.ElementReleaseNotesLink) {
-              releaseNotesLink = childNode.innerText;
+              releaseNotesLink = childNode.text;
             } else if (name == AppcastConstants.ElementTags) {
               childNode.children.forEach((XmlNode tagChildNode) {
                 if (tagChildNode is XmlElement) {
@@ -178,7 +178,7 @@ class Appcast {
                 }
               });
             } else if (name == AppcastConstants.AttributeVersion) {
-              itemVersion = childNode.innerText;
+              itemVersion = childNode.text;
             }
           }
         });
