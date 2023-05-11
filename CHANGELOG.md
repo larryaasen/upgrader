@@ -1,3 +1,11 @@
+## 7.0.0
+
+### BREAKING CHANGES
+
+- New minimum requirements: Dart 3.0.0 and Flutter 3.10.0.
+- Updated code to avoid deprecated warnings.
+- Updated many of the package dependencies.
+
 ## 6.5.0
 
 - Fixed a few null String objects causing exceptions. #284
