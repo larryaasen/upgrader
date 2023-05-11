@@ -6,6 +6,8 @@ on:
   push:
     branches:
       - '*'
+    paths-ignore:
+      - '.github/workflows/platforms.yml'
 
 jobs:
   build-and-test:
