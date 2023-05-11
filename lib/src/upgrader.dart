@@ -618,8 +618,9 @@ class Upgrader {
         return WillPopScope(
           onWillPop: () async => _shouldPopScope(),
           child: dialogStyle == UpgradeDialogStyle.material
-              ? _alertDialog(title!, message, releaseNotes, context)
-              : _cupertinoAlertDialog(title!, message, releaseNotes, context),
+              ? _alertDialog(title ?? '', message, releaseNotes, context)
+              : _cupertinoAlertDialog(
+                  title ?? '', message, releaseNotes, context),
         );
       },
     );
@@ -653,7 +654,7 @@ class Upgrader {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(messages.message(UpgraderMessage.releaseNotes)!,
+              Text(messages.message(UpgraderMessage.releaseNotes) ?? '',
                   style: const TextStyle(fontWeight: FontWeight.bold)),
               Text(releaseNotes),
             ],
@@ -671,21 +672,24 @@ class Upgrader {
               Text(message),
               Padding(
                   padding: const EdgeInsets.only(top: 15.0),
-                  child: Text(messages.message(UpgraderMessage.prompt)!)),
+                  child: Text(messages.message(UpgraderMessage.prompt) ?? '')),
               if (notes != null) notes,
             ],
           ))),
       actions: <Widget>[
         if (showIgnore)
           TextButton(
-              child: Text(messages.message(UpgraderMessage.buttonTitleIgnore)!),
+              child: Text(
+                  messages.message(UpgraderMessage.buttonTitleIgnore) ?? ''),
               onPressed: () => onUserIgnored(context, true)),
         if (showLater)
           TextButton(
-              child: Text(messages.message(UpgraderMessage.buttonTitleLater)!),
+              child: Text(
+                  messages.message(UpgraderMessage.buttonTitleLater) ?? ''),
               onPressed: () => onUserLater(context, true)),
         TextButton(
-            child: Text(messages.message(UpgraderMessage.buttonTitleUpdate)!),
+            child:
+                Text(messages.message(UpgraderMessage.buttonTitleUpdate) ?? ''),
             onPressed: () => onUserUpdated(context, !blocked())),
       ],
     );
@@ -699,7 +703,7 @@ class Upgrader {
           padding: const EdgeInsets.only(top: 15.0),
           child: Column(
             children: <Widget>[
-              Text(messages.message(UpgraderMessage.releaseNotes)!,
+              Text(messages.message(UpgraderMessage.releaseNotes) ?? '',
                   style: const TextStyle(fontWeight: FontWeight.bold)),
               Text(
                 releaseNotes,
@@ -718,7 +722,7 @@ class Upgrader {
           Text(message),
           Padding(
               padding: const EdgeInsets.only(top: 15.0),
-              child: Text(messages.message(UpgraderMessage.prompt)!)),
+              child: Text(messages.message(UpgraderMessage.prompt) ?? '')),
           if (notes != null) notes,
         ],
       ),
@@ -726,17 +730,20 @@ class Upgrader {
         if (showIgnore)
           CupertinoDialogAction(
               textStyle: cupertinoButtonTextStyle,
-              child: Text(messages.message(UpgraderMessage.buttonTitleIgnore)!),
+              child: Text(
+                  messages.message(UpgraderMessage.buttonTitleIgnore) ?? ''),
               onPressed: () => onUserIgnored(context, true)),
         if (showLater)
           CupertinoDialogAction(
               textStyle: cupertinoButtonTextStyle,
-              child: Text(messages.message(UpgraderMessage.buttonTitleLater)!),
+              child: Text(
+                  messages.message(UpgraderMessage.buttonTitleLater) ?? ''),
               onPressed: () => onUserLater(context, true)),
         CupertinoDialogAction(
             textStyle: cupertinoButtonTextStyle,
             isDefaultAction: true,
-            child: Text(messages.message(UpgraderMessage.buttonTitleUpdate)!),
+            child:
+                Text(messages.message(UpgraderMessage.buttonTitleUpdate) ?? ''),
             onPressed: () => onUserUpdated(context, !blocked())),
       ],
     );
@@ -818,7 +825,7 @@ class Upgrader {
     var prefs = await SharedPreferences.getInstance();
 
     _userIgnoredVersion = _appStoreVersion;
-    await prefs.setString('userIgnoredVersion', _userIgnoredVersion!);
+    await prefs.setString('userIgnoredVersion', _userIgnoredVersion ?? '');
     return true;
   }
 

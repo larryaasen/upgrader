@@ -1,3 +1,7 @@
+## Next
+
+- Fixed a few null String objects causing exceptions. #284
+
 ## 6.4.0
 
 - Updated device_info_plus version to '>=7.0.0 <10.0.0'.
