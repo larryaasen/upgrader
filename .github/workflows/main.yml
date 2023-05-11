@@ -12,7 +12,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        flutter-version: ['3.3.10', '3.7.0']
+        flutter-version: ['3.3.10', '3.7.0', '3.10.0']
 
     steps:
       - uses: actions/checkout@v3
