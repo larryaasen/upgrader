@@ -14,7 +14,7 @@ class MockDeviceInfo {
     const channel = MethodChannel('dev.fluttercommunity.plus/device_info');
 
     handler(MethodCall methodCall) async {
-      print('setMockDeviceInfo.methodCall: ${methodCall.method}');
+      print('MockDeviceInfo.setup.methodCall: ${methodCall.method}');
 
       String method = methodCall.method;
       if (methodCall.method == 'getDeviceInfo') {

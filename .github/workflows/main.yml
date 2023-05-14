@@ -9,14 +9,14 @@ on:
   paths:
       - '.github/workflows/main.yml'
   paths-ignore:
-      - '.github/**'
+      - '.github/workflows/platforms.yml'
 
 jobs:
   build-and-test:
     runs-on: macos-latest
     strategy:
       matrix:
-        flutter-version: ['3.3.12', '3.7.0']
+        flutter-version: ['3.10.0']
 
     steps:
       - uses: actions/checkout@v3

@@ -15,3 +15,4 @@ flutter_export_environment.sh
 coverage
 .last_build_id
 .flutter-plugins
+example/test/driver_test/screenshots
