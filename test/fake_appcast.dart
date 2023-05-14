@@ -10,6 +10,8 @@ import 'package:upgrader/src/upgrader.dart';
 import 'appcast_test.dart';
 
 class FakeAppcast extends Fake implements TestAppcast {
+  // FakeAppcast({super.client, super.upgraderOS});
+
   int callCount = 0;
 
   @override
@@ -63,6 +65,7 @@ class FakeAppcast extends Fake implements TestAppcast {
     'android',
     'ios',
     'fuchsia',
+    'web',
   ]);
 
   @override

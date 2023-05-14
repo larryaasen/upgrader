@@ -12,17 +12,18 @@ import 'package:upgrader/upgrader.dart';
 
 import 'appcast_test.dart';
 import 'fake_appcast.dart';
+import 'mock_device_info.dart';
 import 'mock_itunes_client.dart';
 import 'mock_play_store_client.dart';
 
-// TODO: Need an integration test that runs on Android and iOS.
-
-// Platform.operatingSystem can be "macos" or "linux" in a unit test.
-// defaultTargetPlatform is TargetPlatform.android in a unit test.
+// FYI: Platform.operatingSystem can be "macos" or "linux" in a unit test.
+// FYI: defaultTargetPlatform is TargetPlatform.android in a unit test.
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   late SharedPreferences preferences;
+
+  final mockDeviceInfo = MockDeviceInfo()..setup();
 
   setUp(() async {
     SharedPreferences.setMockInitialValues({});
@@ -51,7 +52,9 @@ void main() {
       // test code here
       final client = MockITunesSearchClient.setupMockClient();
       final upgrader = Upgrader(
-          platform: TargetPlatform.iOS, client: client, debugLogging: true);
+          upgraderOS: MockUpgraderOS(ios: true),
+          client: client,
+          debugLogging: true);
 
       expect(tester.takeException(), null);
       await tester.pumpAndSettle();
@@ -95,7 +98,9 @@ void main() {
   testWidgets('test UpgradeWidget', (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader(
-        platform: TargetPlatform.iOS, client: client, debugLogging: true);
+        upgraderOS: MockUpgraderOS(ios: true),
+        client: client,
+        debugLogging: true);
 
     upgrader.installPackageInfo(
         packageInfo: PackageInfo(
@@ -182,7 +187,7 @@ void main() {
       color: Colors.green,
     );
     final upgrader = Upgrader(
-      platform: TargetPlatform.iOS,
+      upgraderOS: MockUpgraderOS(ios: true),
       client: client,
       debugLogging: true,
       cupertinoButtonTextStyle: cupertinoButtonTextStyle,
@@ -266,7 +271,8 @@ void main() {
 
   testWidgets('test UpgradeWidget ignore', (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
-    final upgrader = Upgrader(platform: TargetPlatform.iOS, client: client);
+    final upgrader =
+        Upgrader(upgraderOS: MockUpgraderOS(ios: true), client: client);
 
     upgrader.installPackageInfo(
         packageInfo: PackageInfo(
@@ -309,7 +315,8 @@ void main() {
 
   testWidgets('test UpgradeWidget later', (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
-    final upgrader = Upgrader(platform: TargetPlatform.iOS, client: client);
+    final upgrader =
+        Upgrader(upgraderOS: MockUpgraderOS(ios: true), client: client);
 
     upgrader.installPackageInfo(
         packageInfo: PackageInfo(
@@ -352,7 +359,8 @@ void main() {
 
   testWidgets('test UpgradeWidget pop scope', (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
-    final upgrader = Upgrader(platform: TargetPlatform.iOS, client: client);
+    final upgrader =
+        Upgrader(upgraderOS: MockUpgraderOS(ios: true), client: client);
 
     upgrader.installPackageInfo(
         packageInfo: PackageInfo(
@@ -387,7 +395,9 @@ void main() {
   testWidgets('test UpgradeWidget Card upgrade', (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader(
-        platform: TargetPlatform.iOS, client: client, debugLogging: true);
+        upgraderOS: MockUpgraderOS(ios: true),
+        client: client,
+        debugLogging: true);
 
     upgrader.installPackageInfo(
         packageInfo: PackageInfo(
@@ -435,7 +445,9 @@ void main() {
   testWidgets('test UpgradeWidget Card ignore', (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader(
-        platform: TargetPlatform.iOS, client: client, debugLogging: true);
+        upgraderOS: MockUpgraderOS(ios: true),
+        client: client,
+        debugLogging: true);
 
     upgrader.installPackageInfo(
         packageInfo: PackageInfo(
@@ -479,7 +491,9 @@ void main() {
   testWidgets('test UpgradeWidget Card later', (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader(
-        platform: TargetPlatform.iOS, client: client, debugLogging: true);
+        upgraderOS: MockUpgraderOS(ios: true),
+        client: client,
+        debugLogging: true);
 
     upgrader.installPackageInfo(
         packageInfo: PackageInfo(
@@ -523,7 +537,9 @@ void main() {
   testWidgets('test upgrader minAppVersion', (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader(
-        platform: TargetPlatform.iOS, client: client, debugLogging: true);
+        upgraderOS: MockUpgraderOS(ios: true),
+        client: client,
+        debugLogging: true);
     upgrader.minAppVersion = '1.0.0';
 
     upgrader.installPackageInfo(
@@ -567,7 +583,9 @@ void main() {
       (WidgetTester tester) async {
     final client = await MockPlayStoreSearchClient.setupMockClient();
     final upgrader = Upgrader(
-        platform: TargetPlatform.android, client: client, debugLogging: true);
+        upgraderOS: MockUpgraderOS(android: true),
+        client: client,
+        debugLogging: true);
 
     upgrader.installPackageInfo(
         packageInfo: PackageInfo(
@@ -588,7 +606,9 @@ void main() {
       description: 'Use this app. [:mav: 4.5.6]',
     );
     final upgrader = Upgrader(
-        platform: TargetPlatform.iOS, client: client, debugLogging: true);
+        upgraderOS: MockUpgraderOS(ios: true),
+        client: client,
+        debugLogging: true);
 
     upgrader.installPackageInfo(
         packageInfo: PackageInfo(
@@ -606,7 +626,7 @@ void main() {
   testWidgets('test UpgradeWidget unknown app', (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader(
-        platform: TargetPlatform.iOS,
+        upgraderOS: MockUpgraderOS(ios: true),
         client: client,
         debugLogging: true,
         countryCode: 'IT',
@@ -655,7 +675,7 @@ void main() {
       final fakeAppcast = FakeAppcast();
       final client = MockITunesSearchClient.setupMockClient();
       final upgrader = Upgrader(
-          platform: TargetPlatform.iOS,
+          upgraderOS: MockUpgraderOS(os: 'ios', ios: true),
           client: client,
           debugLogging: true,
           appcastConfig: fakeAppcast.config,
@@ -674,14 +694,15 @@ void main() {
       expect(fakeAppcast.callCount, greaterThan(0));
     }, skip: false);
 
-    test('will use critical version if exists', () async {
-      setMockDeviceInfo();
+    test('will use appcast critical version if exists', () async {
+      final upgraderOS = MockUpgraderOS(android: true);
+      mockDeviceInfo.upgraderOS = upgraderOS;
       final Client mockClient =
-          await setupMockClient(filePath: 'test/testappcast_critical.xml');
-      final appcast = Appcast(client: mockClient);
+          setupMockClient(filePath: 'test/testappcast_critical.xml');
+      final appcast = Appcast(client: mockClient, upgraderOS: upgraderOS);
 
       final upgrader = Upgrader(
-        platform: TargetPlatform.iOS,
+        upgraderOS: upgraderOS,
         debugLogging: true,
         appcastConfig: AppcastConfiguration(
           url: 'https://sparkle-project.org/test/testappcast.xml',
@@ -709,6 +730,50 @@ void main() {
 
         /// Appcast Test critical version.
         expect(appStoreVersion, '3.0.0');
+        notCalled = false;
+      };
+
+      final shouldDisplayUpgrade = upgrader.shouldDisplayUpgrade();
+
+      expect(shouldDisplayUpgrade, isTrue);
+      expect(notCalled, false);
+    }, skip: false);
+
+    test('will use appcast last item', () async {
+      final upgraderOS = MockUpgraderOS(ios: true);
+      mockDeviceInfo.upgraderOS = upgraderOS;
+
+      final Client mockClient =
+          setupMockClient(filePath: 'test/testappcastmulti.xml');
+      final appcast = Appcast(client: mockClient, upgraderOS: upgraderOS);
+
+      final upgrader = Upgrader(
+        upgraderOS: upgraderOS,
+        debugLogging: true,
+        appcastConfig: AppcastConfiguration(
+          url: 'https://sparkle-project.org/test/testappcast.xml',
+        ),
+        appcast: appcast,
+      )..installPackageInfo(
+          packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '1.9.6',
+            buildNumber: '42',
+          ),
+        );
+
+      await upgrader.initialize();
+
+      var notCalled = true;
+      upgrader.willDisplayUpgrade = (
+          {required bool display,
+          String? minAppVersion,
+          String? installedVersion,
+          String? appStoreVersion}) {
+        expect(display, true);
+        expect(installedVersion, '1.9.6');
+        expect(appStoreVersion, '2.4.5');
         notCalled = false;
       };
 
@@ -764,7 +829,9 @@ void main() {
     test('should respect debugDisplayAlways property', () {
       final client = MockITunesSearchClient.setupMockClient();
       final upgrader = Upgrader(
-          platform: TargetPlatform.iOS, client: client, debugLogging: true);
+          upgraderOS: MockUpgraderOS(ios: true),
+          client: client,
+          debugLogging: true);
 
       expect(upgrader.shouldDisplayUpgrade(), false);
       upgrader.debugDisplayAlways = true;
@@ -808,7 +875,7 @@ void main() {
     test('should return true when version is below minAppVersion', () async {
       final upgrader = Upgrader(
           debugLogging: true,
-          platform: TargetPlatform.iOS,
+          upgraderOS: MockUpgraderOS(ios: true),
           client: MockITunesSearchClient.setupMockClient())
         ..minAppVersion = '2.0.0'
         ..installPackageInfo(
@@ -844,7 +911,7 @@ void main() {
     test('should return true when bestItem has critical update', () async {
       final upgrader = Upgrader(
           debugLogging: true,
-          platform: TargetPlatform.iOS,
+          upgraderOS: MockUpgraderOS(ios: true),
           client: MockITunesSearchClient.setupMockClient())
         ..installPackageInfo(
           packageInfo: PackageInfo(
@@ -865,7 +932,7 @@ void main() {
     test('packageInfo is empty', () async {
       final upgrader = Upgrader(
           client: MockITunesSearchClient.setupMockClient(),
-          platform: TargetPlatform.iOS,
+          upgraderOS: MockUpgraderOS(ios: true),
           debugLogging: true)
         ..installPackageInfo(
           packageInfo: PackageInfo(

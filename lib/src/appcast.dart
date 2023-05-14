@@ -1,18 +1,17 @@
 // ignore_for_file: constant_identifier_names
 
 /*
- * Copyright (c) 2018-2022 Larry Aasen. All rights reserved.
+ * Copyright (c) 2018-2023 Larry Aasen. All rights reserved.
  */
 
 import 'dart:convert' show utf8;
 
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:version/version.dart';
 import 'package:xml/xml.dart';
 
-import 'upgrade_io.dart';
+import 'upgrade_os.dart';
 
 /// The [Appcast] class is used to download an Appcast, based on the Sparkle
 /// framework by Andy Matuschak.
@@ -21,19 +20,20 @@ import 'upgrade_io.dart';
 /// that each describe one app version.
 class Appcast {
   /// Provide an HTTP Client that can be replaced for mock testing.
-  http.Client? client;
+  final http.Client client;
+
+  /// Provide [UpgraderOS] that can be replaced for mock testing.
+  final UpgraderOS upgraderOS;
 
   Appcast({
-    this.client,
-  }) {
-    client ??= http.Client();
-  }
+    http.Client? client,
+    UpgraderOS? upgraderOS,
+  })  : client = client ?? http.Client(),
+        upgraderOS = upgraderOS ?? UpgraderOS();
 
   /// The items in the Appcast.
   List<AppcastItem>? items;
 
-  late AndroidDeviceInfo _androidInfo;
-  late IosDeviceInfo _iosInfo;
   String? osVersionString;
 
   /// Returns the latest critical item in the Appcast.
@@ -44,7 +44,9 @@ class Appcast {
 
     AppcastItem? bestItem;
     items!.forEach((AppcastItem item) {
-      if (item.hostSupportsItem(osVersion: osVersionString) &&
+      if (item.hostSupportsItem(
+              osVersion: osVersionString,
+              currentPlatform: upgraderOS.current) &&
           item.isCriticalUpdate) {
         if (bestItem == null) {
           bestItem = item;
@@ -73,7 +75,8 @@ class Appcast {
 
     AppcastItem? bestItem;
     items!.forEach((AppcastItem item) {
-      if (item.hostSupportsItem(osVersion: osVersionString)) {
+      if (item.hostSupportsItem(
+          osVersion: osVersionString, currentPlatform: upgraderOS.current)) {
         if (bestItem == null) {
           bestItem = item;
         } else {
@@ -96,7 +99,7 @@ class Appcast {
   Future<List<AppcastItem>?> parseAppcastItemsFromUri(String appCastURL) async {
     http.Response response;
     try {
-      response = await client!.get(Uri.parse(appCastURL));
+      response = await client.get(Uri.parse(appCastURL));
     } catch (e) {
       print('upgrader: parseAppcastItemsFromUri exception: $e');
       return null;
@@ -219,13 +222,18 @@ class Appcast {
 
   Future<bool> _getDeviceInfo() async {
     final deviceInfo = DeviceInfoPlugin();
-    if (UpgradeIO.isAndroid) {
-      _androidInfo = await deviceInfo.androidInfo;
-      osVersionString = _androidInfo.version.baseOS;
-    } else if (UpgradeIO.isIOS) {
-      _iosInfo = await deviceInfo.iosInfo;
-      osVersionString = _iosInfo.systemVersion;
-    } else if (UpgradeIO.isMacOS) {
+    if (upgraderOS.isAndroid) {
+      final androidInfo = await deviceInfo.androidInfo;
+      osVersionString = androidInfo.version.baseOS;
+    } else if (upgraderOS.isIOS) {
+      final iosInfo = await deviceInfo.iosInfo;
+      osVersionString = iosInfo.systemVersion;
+    } else if (upgraderOS.isFuchsia) {
+      osVersionString = '';
+    } else if (upgraderOS.isLinux) {
+      final info = await deviceInfo.linuxInfo;
+      osVersionString = info.version;
+    } else if (upgraderOS.isMacOS) {
       final info = await deviceInfo.macOsInfo;
       final release = info.osRelease;
 
@@ -237,8 +245,11 @@ class Appcast {
       final match = regExp.firstMatch(release);
       final version = match?.namedGroup('version');
       osVersionString = version;
-    } else if (UpgradeIO.isWeb) {
+    } else if (upgraderOS.isWeb) {
       osVersionString = '0.0.0';
+    } else if (upgraderOS.isWindows) {
+      final info = await deviceInfo.windowsInfo;
+      osVersionString = info.displayVersion;
     }
 
     // If the OS version string is not valid, don't use it.
@@ -289,13 +300,13 @@ class AppcastItem {
       ? false
       : tags!.contains(AppcastConstants.ElementCriticalUpdate);
 
-  bool hostSupportsItem({String? osVersion, String? currentPlatform}) {
-    var supported = true;
+  /// Does the host support this item? If so is [osVersion] supported?
+  bool hostSupportsItem({String? osVersion, required String currentPlatform}) {
+    assert(currentPlatform.isNotEmpty);
+    bool supported = true;
     if (osString != null && osString!.isNotEmpty) {
       final platformEnum = 'TargetPlatform.${osString!}';
-      currentPlatform = currentPlatform == null
-          ? defaultTargetPlatform.toString()
-          : 'TargetPlatform.$currentPlatform';
+      currentPlatform = 'TargetPlatform.$currentPlatform';
       supported = platformEnum.toLowerCase() == currentPlatform.toLowerCase();
     }
 

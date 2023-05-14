@@ -6,6 +6,10 @@ on:
   push:
     branches:
       - '*'
+  paths:
+      - '.github/workflows/main.yml'
+  paths-ignore:
+      - '.github/**'
 
 jobs:
   build-and-test:
