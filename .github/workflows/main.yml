@@ -3,10 +3,13 @@ name: main
 on:
   pull_request:
     types: [review_requested, opened, synchronize]
+    paths-ignore:
+      - '.github/workflows/platforms.yml'
+
   push:
     branches:
       - '*'
-  paths-ignore:
+    paths-ignore:
       - '.github/workflows/platforms.yml'
 
 jobs:
