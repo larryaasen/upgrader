@@ -127,6 +127,7 @@ The Upgrader class can be customized by setting parameters in the constructor.
 * showIgnore: hide or show Ignore button, which defaults to ```true```
 * showLater: hide or show Later button, which defaults to ```true```
 * showReleaseNotes: hide or show release notes, which defaults to ```true```
+* upgraderOS: Provides information on which OS this code is running on, defaults to ```null```
 * willDisplayUpgrade: called when ```upgrader``` determines that an upgrade may
 or may not be displayed, defaults to ```null```
 

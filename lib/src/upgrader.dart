@@ -131,10 +131,8 @@ class Upgrader {
   /// is logging metrics for your app.
   WillDisplayUpgradeCallback? willDisplayUpgrade;
 
+  /// Provides information on which OS this code is running on.
   final UpgraderOS upgraderOS;
-
-  /// The target operating system.
-  String get _operatingSystem => upgraderOS.operatingSystem;
 
   bool _displayed = false;
   bool _initCalled = false;
@@ -232,7 +230,7 @@ class Upgrader {
       if (debugLogging) {
         print('upgrader: default operatingSystem: '
             '${upgraderOS.operatingSystem} ${upgraderOS.operatingSystemVersion}');
-        print('upgrader: operatingSystem: $_operatingSystem');
+        print('upgrader: operatingSystem: ${upgraderOS.operatingSystem}');
         print('upgrader: '
             'isAndroid: ${upgraderOS.isAndroid}, '
             'isIOS: ${upgraderOS.isIOS}, '
@@ -387,7 +385,8 @@ class Upgrader {
     // When there are no supported OSes listed, they are all supported.
     var supported = true;
     if (appcastConfig!.supportedOS != null) {
-      supported = appcastConfig!.supportedOS!.contains(_operatingSystem);
+      supported =
+          appcastConfig!.supportedOS!.contains(upgraderOS.operatingSystem);
     }
     return supported;
   }
