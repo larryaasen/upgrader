@@ -8,23 +8,18 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
+import 'package:upgrader/src/upgrader_device.dart';
 import 'package:upgrader/upgrader.dart';
-
-import 'mock_device_info.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  final mockDeviceInfo = MockDeviceInfo()..setup();
-
-  setUp(() async {});
-
-  tearDown(() async {});
-
   /// These tests inspired by:
   ///   https://github.com/sparkle-project/Sparkle/blob/master/Tests/SUAppcastTest.swift
   test('testing Appcast defaults', () async {
-    final appcast = Appcast();
+    final appcast = Appcast(
+        upgraderOS: MockUpgraderOS(android: true),
+        upgraderDevice: MockUpgraderDevice());
     expect(appcast.bestItem(), isNull);
     expect(appcast.osVersionString, isNull);
     expect(appcast.items, isNull);
@@ -34,7 +29,9 @@ void main() {
   });
 
   test('testing Appcast file', () async {
-    final appcast = TestAppcast();
+    final appcast = TestAppcast(
+        upgraderOS: MockUpgraderOS(android: true),
+        upgraderDevice: MockUpgraderDevice());
     var testFile = await getTestFile();
     final items = await appcast.parseAppcastItemsFromFile(testFile);
     validateItems(items!, appcast);
@@ -42,7 +39,10 @@ void main() {
 
   test('testing Appcast client', () async {
     final client = setupMockClient();
-    final appcast = Appcast(client: client);
+    final appcast = Appcast(
+        client: client,
+        upgraderOS: MockUpgraderOS(android: true),
+        upgraderDevice: MockUpgraderDevice());
     final items = await appcast.parseAppcastItemsFromUri(
         'https://sparkle-project.org/test/testappcast.xml');
     validateItems(items!, appcast);
@@ -50,7 +50,9 @@ void main() {
 
   test('Appcast will prioritize critical version even with lower version',
       () async {
-    final appcast = TestAppcast(upgraderOS: MockUpgraderOS(android: true));
+    final appcast = TestAppcast(
+        upgraderOS: MockUpgraderOS(android: true),
+        upgraderDevice: MockUpgraderDevice());
 
     final testFile =
         await getTestFile(filePath: 'test/testappcast_critical.xml');
@@ -94,9 +96,9 @@ void main() {
   });
 
   test('Appcast multi Android', () async {
-    final upgraderOS = MockUpgraderOS(android: true);
-    mockDeviceInfo.upgraderOS = upgraderOS;
-    final appcast = TestAppcast(upgraderOS: upgraderOS);
+    final appcast = TestAppcast(
+        upgraderOS: MockUpgraderOS(android: true),
+        upgraderDevice: MockUpgraderDevice());
     var testFile = await getTestFile(filePath: 'test/testappcastmulti.xml');
     await appcast.parseAppcastItemsFromFile(testFile);
 
@@ -105,8 +107,10 @@ void main() {
     expect(bestItem.versionString, equals('2.1.2'));
   });
 
-  test('Appcast multi iOS', () async {
-    final appcast = TestAppcast(upgraderOS: MockUpgraderOS(ios: true));
+  test('Appcast multi Fuchsia', () async {
+    final appcast = TestAppcast(
+        upgraderOS: MockUpgraderOS(fuchsia: true),
+        upgraderDevice: MockUpgraderDevice());
     var testFile = await getTestFile(filePath: 'test/testappcastmulti.xml');
     await appcast.parseAppcastItemsFromFile(testFile);
 
@@ -115,8 +119,10 @@ void main() {
     expect(bestItem.versionString, equals('2.2.2'));
   });
 
-  test('Appcast multi Windows', () async {
-    final appcast = TestAppcast(upgraderOS: MockUpgraderOS(windows: true));
+  test('Appcast multi iOS', () async {
+    final appcast = TestAppcast(
+        upgraderOS: MockUpgraderOS(ios: true),
+        upgraderDevice: MockUpgraderDevice());
     var testFile = await getTestFile(filePath: 'test/testappcastmulti.xml');
     await appcast.parseAppcastItemsFromFile(testFile);
 
@@ -125,14 +131,54 @@ void main() {
     expect(bestItem.versionString, equals('2.3.2'));
   });
 
-  test('Appcast multi Web', () async {
-    final appcast = TestAppcast(upgraderOS: MockUpgraderOS(web: true));
+  test('Appcast multi Linux', () async {
+    final appcast = TestAppcast(
+        upgraderOS: MockUpgraderOS(linux: true),
+        upgraderDevice: MockUpgraderDevice());
     var testFile = await getTestFile(filePath: 'test/testappcastmulti.xml');
     await appcast.parseAppcastItemsFromFile(testFile);
 
     final bestItem = appcast.bestItem()!;
     expect(bestItem, isNotNull);
-    expect(bestItem.versionString, equals('2.3.2'));
+    expect(bestItem.versionString, equals('2.4.2'));
+  });
+
+  test('Appcast multi macOS', () async {
+    final appcast = TestAppcast(
+        upgraderOS: MockUpgraderOS(macos: true),
+        upgraderDevice: MockUpgraderDevice());
+    var testFile = await getTestFile(filePath: 'test/testappcastmulti.xml');
+    await appcast.parseAppcastItemsFromFile(testFile);
+
+    final bestItem = appcast.bestItem()!;
+    expect(bestItem, isNotNull);
+    expect(bestItem.versionString, equals('2.5.2'));
+  });
+
+  /// The [MockDeviceInfo] does not work properly for windows [WindowsDeviceInfo], so for now this
+  /// test is skipped.
+  test('Appcast multi Windows', () async {
+    final appcast = TestAppcast(
+        upgraderOS: MockUpgraderOS(windows: true),
+        upgraderDevice: MockUpgraderDevice());
+    var testFile = await getTestFile(filePath: 'test/testappcastmulti.xml');
+    await appcast.parseAppcastItemsFromFile(testFile);
+
+    final bestItem = appcast.bestItem()!;
+    expect(bestItem, isNotNull);
+    expect(bestItem.versionString, equals('2.6.2'));
+  }, skip: true);
+
+  test('Appcast multi Web', () async {
+    final appcast = TestAppcast(
+        upgraderOS: MockUpgraderOS(web: true),
+        upgraderDevice: MockUpgraderDevice());
+    var testFile = await getTestFile(filePath: 'test/testappcastmulti.xml');
+    await appcast.parseAppcastItemsFromFile(testFile);
+
+    final bestItem = appcast.bestItem()!;
+    expect(bestItem, isNotNull);
+    expect(bestItem.versionString, equals('2.7.2'));
   });
 }
 
@@ -237,7 +283,7 @@ http.Client setupMockClient({String filePath = 'test/testappcast.xml'}) {
 }
 
 class TestAppcast extends Appcast {
-  TestAppcast({super.client, super.upgraderOS});
+  TestAppcast({super.client, super.upgraderOS, super.upgraderDevice});
 
   /// Load the Appcast from [file].
   Future<List<AppcastItem>?> parseAppcastItemsFromFile(File file) async {

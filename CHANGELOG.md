@@ -1,3 +1,8 @@
+## Next
+
+- Created class UpgraderDevice (and mock) to abstract the device_info details which is used for the OS version.
+- Improved testing of Appcast for different platforms.
+
 ## 7.0.0
 
 ### BREAKING CHANGES

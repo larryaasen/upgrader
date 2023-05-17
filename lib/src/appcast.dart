@@ -6,12 +6,12 @@
 
 import 'dart:convert' show utf8;
 
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:http/http.dart' as http;
 import 'package:version/version.dart';
 import 'package:xml/xml.dart';
 
 import 'upgrade_os.dart';
+import 'upgrader_device.dart';
 
 /// The [Appcast] class is used to download an Appcast, based on the Sparkle
 /// framework by Andy Matuschak.
@@ -19,17 +19,22 @@ import 'upgrade_os.dart';
 /// An Appcast is an RSS feed with one channel that has a collection of items
 /// that each describe one app version.
 class Appcast {
-  /// Provide an HTTP Client that can be replaced for mock testing.
+  /// Provide an HTTP Client that can be replaced during testing.
   final http.Client client;
 
-  /// Provide [UpgraderOS] that can be replaced for mock testing.
+  /// Provide [UpgraderOS] that can be replaced during testing.
   final UpgraderOS upgraderOS;
+
+  /// Provide [UpgraderDevice] that ca be replaced during testing.
+  final UpgraderDevice upgraderDevice;
 
   Appcast({
     http.Client? client,
     UpgraderOS? upgraderOS,
+    UpgraderDevice? upgraderDevice,
   })  : client = client ?? http.Client(),
-        upgraderOS = upgraderOS ?? UpgraderOS();
+        upgraderOS = upgraderOS ?? UpgraderOS(),
+        upgraderDevice = upgraderDevice ?? UpgraderDevice();
 
   /// The items in the Appcast.
   List<AppcastItem>? items;
@@ -110,7 +115,7 @@ class Appcast {
 
   /// Parse the Appcast from XML string.
   Future<List<AppcastItem>?> parseAppcastItems(String contents) async {
-    await _getDeviceInfo();
+    osVersionString = await upgraderDevice.getOsVersionString(upgraderOS);
     return parseItemsFromXMLString(contents);
   }
 
@@ -218,48 +223,6 @@ class Appcast {
     }
 
     return items;
-  }
-
-  Future<bool> _getDeviceInfo() async {
-    final deviceInfo = DeviceInfoPlugin();
-    if (upgraderOS.isAndroid) {
-      final androidInfo = await deviceInfo.androidInfo;
-      osVersionString = androidInfo.version.baseOS;
-    } else if (upgraderOS.isIOS) {
-      final iosInfo = await deviceInfo.iosInfo;
-      osVersionString = iosInfo.systemVersion;
-    } else if (upgraderOS.isFuchsia) {
-      osVersionString = '';
-    } else if (upgraderOS.isLinux) {
-      final info = await deviceInfo.linuxInfo;
-      osVersionString = info.version;
-    } else if (upgraderOS.isMacOS) {
-      final info = await deviceInfo.macOsInfo;
-      final release = info.osRelease;
-
-      // For macOS the release string looks like: Version 13.2.1 (Build 22D68)
-      // We need to parse out the actual OS version number.
-
-      String regExpSource = r"[\w]*[\s]*(?<version>[^\s]+)";
-      final regExp = RegExp(regExpSource, caseSensitive: false);
-      final match = regExp.firstMatch(release);
-      final version = match?.namedGroup('version');
-      osVersionString = version;
-    } else if (upgraderOS.isWeb) {
-      osVersionString = '0.0.0';
-    } else if (upgraderOS.isWindows) {
-      final info = await deviceInfo.windowsInfo;
-      osVersionString = info.displayVersion;
-    }
-
-    // If the OS version string is not valid, don't use it.
-    try {
-      Version.parse(osVersionString!);
-    } catch (e) {
-      osVersionString = null;
-    }
-
-    return true;
   }
 }
 

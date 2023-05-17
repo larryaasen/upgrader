@@ -11,7 +11,7 @@ class UpgraderOS {
 
   String get current {
     if (_current != null) return _current!;
-    return isAndroid
+    _current = isAndroid
         ? 'android'
         : isFuchsia
             ? 'fuchsia'
@@ -26,6 +26,7 @@ class UpgraderOS {
                             : isWindows
                                 ? 'windows'
                                 : '';
+    return _current ?? '';
   }
 
   /// The target operating system.

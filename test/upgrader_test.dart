@@ -8,11 +8,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/src/client.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:upgrader/src/upgrader_device.dart';
 import 'package:upgrader/upgrader.dart';
 
 import 'appcast_test.dart';
 import 'fake_appcast.dart';
-import 'mock_device_info.dart';
 import 'mock_itunes_client.dart';
 import 'mock_play_store_client.dart';
 
@@ -22,8 +22,6 @@ import 'mock_play_store_client.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   late SharedPreferences preferences;
-
-  final mockDeviceInfo = MockDeviceInfo()..setup();
 
   setUp(() async {
     SharedPreferences.setMockInitialValues({});
@@ -696,10 +694,12 @@ void main() {
 
     test('will use appcast critical version if exists', () async {
       final upgraderOS = MockUpgraderOS(android: true);
-      mockDeviceInfo.upgraderOS = upgraderOS;
       final Client mockClient =
           setupMockClient(filePath: 'test/testappcast_critical.xml');
-      final appcast = Appcast(client: mockClient, upgraderOS: upgraderOS);
+      final appcast = Appcast(
+          client: mockClient,
+          upgraderOS: upgraderOS,
+          upgraderDevice: MockUpgraderDevice());
 
       final upgrader = Upgrader(
         upgraderOS: upgraderOS,
@@ -741,11 +741,13 @@ void main() {
 
     test('will use appcast last item', () async {
       final upgraderOS = MockUpgraderOS(ios: true);
-      mockDeviceInfo.upgraderOS = upgraderOS;
 
       final Client mockClient =
           setupMockClient(filePath: 'test/testappcastmulti.xml');
-      final appcast = Appcast(client: mockClient, upgraderOS: upgraderOS);
+      final appcast = Appcast(
+          client: mockClient,
+          upgraderOS: upgraderOS,
+          upgraderDevice: MockUpgraderDevice());
 
       final upgrader = Upgrader(
         upgraderOS: upgraderOS,
@@ -773,7 +775,7 @@ void main() {
           String? appStoreVersion}) {
         expect(display, true);
         expect(installedVersion, '1.9.6');
-        expect(appStoreVersion, '2.4.5');
+        expect(appStoreVersion, '2.3.2');
         notCalled = false;
       };
 

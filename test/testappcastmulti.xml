@@ -12,11 +12,11 @@
       <enclosure sparkle:version="2.1.2" sparkle:os="android"/>
     </item>
     <item>
-      <title>iOS Release</title>
+      <title>Fuchsia Release</title>
       <enclosure sparkle:version="2.2.1" sparkle:os="fuchsia"/>
     </item>
     <item>
-      <title>iOS Release</title>
+      <title>Fuchsia Release</title>
       <enclosure sparkle:version="2.2.2" sparkle:os="fuchsia"/>
     </item>
     <item>
@@ -28,35 +28,35 @@
       <enclosure sparkle:version="2.3.2" sparkle:os="ios"/>
     </item>
     <item>
-      <title>iOS Release</title>
+      <title>Linux Release</title>
       <enclosure sparkle:version="2.4.1" sparkle:os="linux"/>
     </item>
     <item>
-      <title>iOS Release</title>
+      <title>Linux Release</title>
       <enclosure sparkle:version="2.4.2" sparkle:os="linux"/>
     </item>
     <item>
-      <title>iOS Release</title>
+      <title>macOS Release</title>
       <enclosure sparkle:version="2.5.1" sparkle:os="macos"/>
     </item>
     <item>
-      <title>iOS Release</title>
+      <title>macOS Release</title>
       <enclosure sparkle:version="2.5.2" sparkle:os="macos"/>
     </item>
     <item>
-      <title>iOS Release</title>
+      <title>Windows Release</title>
       <enclosure sparkle:version="2.6.1" sparkle:os="windows"/>
     </item>
     <item>
-      <title>iOS Release</title>
+      <title>Windows Release</title>
       <enclosure sparkle:version="2.6.2" sparkle:os="windows"/>
     </item>
     <item>
-      <title>iOS Release</title>
+      <title>Web Release</title>
       <enclosure sparkle:version="2.7.1" sparkle:os="web"/>
     </item>
     <item>
-      <title>iOS Release</title>
+      <title>Web Release</title>
       <enclosure sparkle:version="2.7.2" sparkle:os="web"/>
     </item>
   </channel>
