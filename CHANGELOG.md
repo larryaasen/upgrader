@@ -1,7 +1,7 @@
-## Next
+## 7.1.0-alpha.1
 
+- Improved platform support and testing of Appcast for different platforms.
 - Created class UpgraderDevice (and mock) to abstract the device_info details which is used for the OS version.
-- Improved testing of Appcast for different platforms.
 
 ## 7.0.0
 
