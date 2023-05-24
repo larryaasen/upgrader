@@ -180,6 +180,17 @@ void main() {
     expect(bestItem, isNotNull);
     expect(bestItem.versionString, equals('2.7.2'));
   });
+  test('Appcast multi multi enclosure', () async {
+    final appcast = TestAppcast(
+        upgraderOS: MockUpgraderOS(android: true),
+        upgraderDevice: MockUpgraderDevice());
+    var testFile =
+        await getTestFile(filePath: 'test/testappcast-enclosure.xml');
+    await appcast.parseAppcastItemsFromFile(testFile);
+
+    final bestItem = appcast.bestItem();
+    expect(bestItem, isNull);
+  });
 }
 
 void validateItems(List<AppcastItem> items, Appcast appcast) {
