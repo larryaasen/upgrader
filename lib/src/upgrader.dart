@@ -616,12 +616,9 @@ class Upgrader {
       context: context,
       builder: (BuildContext context) {
         return WillPopScope(
-          onWillPop: () async => _shouldPopScope(),
-          child: dialogStyle == UpgradeDialogStyle.material
-              ? _alertDialog(title ?? '', message, releaseNotes, context)
-              : _cupertinoAlertDialog(
-                  title ?? '', message, releaseNotes, context),
-        );
+            onWillPop: () async => _shouldPopScope(),
+            child: _alertDialog(title ?? '', message, releaseNotes, context,
+                dialogStyle == UpgradeDialogStyle.cupertino));
       },
     );
   }
@@ -644,8 +641,8 @@ class Upgrader {
     return false;
   }
 
-  AlertDialog _alertDialog(String title, String message, String? releaseNotes,
-      BuildContext context) {
+  Widget _alertDialog(String title, String message, String? releaseNotes,
+      BuildContext context, bool cupertino) {
     Widget? notes;
     if (releaseNotes != null) {
       notes = Padding(
@@ -660,93 +657,46 @@ class Upgrader {
             ],
           ));
     }
-    return AlertDialog(
-      title: Text(title, key: const Key('upgrader.dialog.title')),
-      content: Container(
-          constraints: const BoxConstraints(maxHeight: 400),
-          child: SingleChildScrollView(
-              child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text(message),
-              Padding(
-                  padding: const EdgeInsets.only(top: 15.0),
-                  child: Text(messages.message(UpgraderMessage.prompt) ?? '')),
-              if (notes != null) notes,
-            ],
-          ))),
-      actions: <Widget>[
-        if (showIgnore)
-          TextButton(
-              child: Text(
-                  messages.message(UpgraderMessage.buttonTitleIgnore) ?? ''),
-              onPressed: () => onUserIgnored(context, true)),
-        if (showLater)
-          TextButton(
-              child: Text(
-                  messages.message(UpgraderMessage.buttonTitleLater) ?? ''),
-              onPressed: () => onUserLater(context, true)),
-        TextButton(
-            child:
-                Text(messages.message(UpgraderMessage.buttonTitleUpdate) ?? ''),
-            onPressed: () => onUserUpdated(context, !blocked())),
-      ],
-    );
+    final textTitle = Text(title, key: const Key('upgrader.dialog.title'));
+    final content = Container(
+        constraints: const BoxConstraints(maxHeight: 400),
+        child: SingleChildScrollView(
+            child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(message),
+            Padding(
+                padding: const EdgeInsets.only(top: 15.0),
+                child: Text(messages.message(UpgraderMessage.prompt) ?? '')),
+            if (notes != null) notes,
+          ],
+        )));
+    final actions = <Widget>[
+      if (showIgnore)
+        _button(cupertino, messages.message(UpgraderMessage.buttonTitleIgnore),
+            context, () => onUserIgnored(context, true)),
+      if (showLater)
+        _button(cupertino, messages.message(UpgraderMessage.buttonTitleLater),
+            context, () => onUserLater(context, true)),
+      _button(cupertino, messages.message(UpgraderMessage.buttonTitleUpdate),
+          context, () => onUserUpdated(context, !blocked())),
+    ];
+
+    return cupertino
+        ? CupertinoAlertDialog(
+            title: textTitle, content: content, actions: actions)
+        : AlertDialog(title: textTitle, content: content, actions: actions);
   }
 
-  CupertinoAlertDialog _cupertinoAlertDialog(String title, String message,
-      String? releaseNotes, BuildContext context) {
-    Widget? notes;
-    if (releaseNotes != null) {
-      notes = Padding(
-          padding: const EdgeInsets.only(top: 15.0),
-          child: Column(
-            children: <Widget>[
-              Text(messages.message(UpgraderMessage.releaseNotes) ?? '',
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
-              Text(
-                releaseNotes,
-                maxLines: 14,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ],
-          ));
-    }
-    return CupertinoAlertDialog(
-      title: Text(title),
-      content: Column(
-        // mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Text(message),
-          Padding(
-              padding: const EdgeInsets.only(top: 15.0),
-              child: Text(messages.message(UpgraderMessage.prompt) ?? '')),
-          if (notes != null) notes,
-        ],
-      ),
-      actions: <Widget>[
-        if (showIgnore)
-          CupertinoDialogAction(
-              textStyle: cupertinoButtonTextStyle,
-              child: Text(
-                  messages.message(UpgraderMessage.buttonTitleIgnore) ?? ''),
-              onPressed: () => onUserIgnored(context, true)),
-        if (showLater)
-          CupertinoDialogAction(
-              textStyle: cupertinoButtonTextStyle,
-              child: Text(
-                  messages.message(UpgraderMessage.buttonTitleLater) ?? ''),
-              onPressed: () => onUserLater(context, true)),
-        CupertinoDialogAction(
+  Widget _button(bool cupertino, String? text, BuildContext context,
+      VoidCallback? onPressed) {
+    return cupertino
+        ? CupertinoDialogAction(
             textStyle: cupertinoButtonTextStyle,
-            isDefaultAction: true,
-            child:
-                Text(messages.message(UpgraderMessage.buttonTitleUpdate) ?? ''),
-            onPressed: () => onUserUpdated(context, !blocked())),
-      ],
-    );
+            onPressed: onPressed,
+            child: Text(text ?? ''))
+        : TextButton(onPressed: onPressed, child: Text(text ?? ''));
   }
 
   void onUserIgnored(BuildContext context, bool shouldPop) {

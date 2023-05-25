@@ -1,3 +1,7 @@
+## Next
+
+- Fixed release notes scrolling for Cupertino style dialogs. (#287)
+
 ## 7.0.0
 
 ### BREAKING CHANGES
