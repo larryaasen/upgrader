@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'package:upgrader_example/main.dart' as app;
+import 'package:upgrader_example/main-driver.dart' as app;
 import 'package:flutter_driver/driver_extension.dart';
 
 void main() {
