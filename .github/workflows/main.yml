@@ -31,7 +31,10 @@ jobs:
         run: flutter analyze
       
       - name: Run unit and widget tests
-        run: flutter test
+        run: flutter test --coverage --coverage-path=lcov.info
+
+      - name: Upload test coverage to codecov.io
+      - run: bash <(curl -s https://codecov.io/bash)
 
       - name: Boot the simulator
         run: 	xcrun simctl boot 'iPhone 13'
