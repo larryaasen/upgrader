@@ -1,8 +1,8 @@
 version: 2.1
 jobs:
-  build:
+  test:
     docker:
-      - image: circleci/flutter
+      - image: circleci/flutter:2.10.0
     steps:
       - checkout
       - run: flutter doctor -v
