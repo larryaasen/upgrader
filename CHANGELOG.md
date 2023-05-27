@@ -1,3 +1,7 @@
+## Next
+
+- Added Turkish release notes translation.
+
 ## 7.0.1
 
 - Updated dependencies device_info_plus to ^9.0.1 and package_info_plus to ^4.0.1.
