@@ -1,6 +1,7 @@
-## Next
+## 7.0.1
 
-- Fixed release notes scrolling for Cupertino style dialogs. (#287)
+- Updated dependencies device_info_plus to ^9.0.1 and package_info_plus to ^4.0.1.
+- Fixed release notes scrolling issue for Cupertino style dialogs. (#287)
 
 ## 7.0.0
 
