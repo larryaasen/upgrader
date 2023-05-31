@@ -18,7 +18,7 @@ dependencies:
   html: ^0.15.3
 
   # From Dart Team: A composable, Future-based library for making HTTP requests.
-  http: ^1.0.0
+  http: '>=0.13.6 <2.0.0'
 
   # From dart.dev: Platform independent access to information about the current operating system.
   os_detect: ^2.0.1
