@@ -38,7 +38,6 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: lcov.info
-          verbose: true # optional (default = false)
 
       - name: Boot the simulator
         run: 	xcrun simctl boot 'iPhone 13'

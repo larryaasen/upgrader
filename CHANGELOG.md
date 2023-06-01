@@ -1,5 +1,6 @@
-## Next
+## 7.0.2
 
+- Updated dependency for http to '>=0.13.6 <2.0.0'.
 - Added Turkish release notes translation.
 
 ## 7.0.1
