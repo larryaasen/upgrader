@@ -166,6 +166,29 @@ Console under the main store listing.
 Add this text to the bottom of the description field in App Store Connect in the
 description field.
 
+## Go Router
+
+When using GoRouter (pacakge go_router) with upgrader, you may need to provide
+a navigatorKey to the ```UpgradeAlert``` widget so that the correct route 
+context is used. Below is part of the code you will need for this. Also,
+checkout the [example/lib/main-gorouter.dart](example/lib/main-gorouter.dart) example for a more complete example.
+
+```
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
+      title: 'Upgrader GoRouter Example',
+      routerConfig: routerConfig,
+      builder: (context, child) {
+        return UpgradeAlert(
+          navigatorKey: routerConfig.routerDelegate.navigatorKey,
+          child: child ?? Text('child'),
+        );
+      },
+    );
+  }
+```
+
 ## Android Back Button
 
 When using the ```UpgradeAlert``` widget, the Android back button will not

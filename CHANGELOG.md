@@ -1,3 +1,7 @@
+## Next
+
+- Added support for GoRouter. See the README for more details.
+
 ## 7.0.2
 
 - Updated dependency for http to '>=0.13.6 <2.0.0'.
