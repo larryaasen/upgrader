@@ -43,15 +43,31 @@ void main() {
     });
 
     test('verify app started', () async {
-      // await takeScreenshot(driver, 'app_startup.png');
+      await driver.waitFor(find.text('Upgrader Driver App'));
+      await driver.waitFor(find.text('Dialog Alert'));
+      await driver.waitFor(find.text('Dialog Alert - Cupertino'));
+    });
 
-      await driver.waitFor(find.text('Upgrader Example'));
+    test('verify alert', () async {
+      await driver.tap(find.text('Dialog Alert'));
       await driver.waitFor(find.text('Update App?'));
       await driver.waitFor(find.text('Would you like to update it now?'));
       await driver.waitFor(find.text('Release Notes'));
       await driver.waitFor(find.text('IGNORE'));
       await driver.waitFor(find.text('LATER'));
       await driver.waitFor(find.text('UPDATE NOW'));
+      await driver.tap(find.text('IGNORE'));
+    });
+
+    test('verify alert - cupertino', () async {
+      await driver.tap(find.text('Dialog Alert - Cupertino'));
+      await driver.waitFor(find.text('Update App?'));
+      await driver.waitFor(find.text('Would you like to update it now?'));
+      await driver.waitFor(find.text('Release Notes'));
+      await driver.waitFor(find.text('IGNORE'));
+      await driver.waitFor(find.text('LATER'));
+      await driver.waitFor(find.text('UPDATE NOW'));
+      await driver.tap(find.text('IGNORE'));
     });
   });
 }

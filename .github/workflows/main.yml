@@ -34,7 +34,13 @@ jobs:
         run: flutter analyze
       
       - name: Run unit and widget tests
-        run: flutter test
+        run: flutter test --coverage --coverage-path=lcov.info
+
+      - name: Upload test coverage to codecov.io
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: lcov.info
 
       - name: Boot the simulator
         run: 	xcrun simctl boot 'iPhone 13'

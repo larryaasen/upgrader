@@ -1,7 +1,21 @@
+## Next
+
+- Added support for GoRouter. See the README for more details.
+
 ## 7.1.0-alpha.1
 
 - Improved platform support and testing of Appcast for different platforms.
 - Created class UpgraderDevice (and mock) to abstract the device_info details which is used for the OS version.
+
+## 7.0.2
+
+- Updated dependency for http to '>=0.13.6 <2.0.0'.
+- Added Turkish release notes translation.
+
+## 7.0.1
+
+- Updated dependencies device_info_plus to ^9.0.1 and package_info_plus to ^4.0.1.
+- Fixed release notes scrolling issue for Cupertino style dialogs. (#287)
 
 ## 7.0.0
 

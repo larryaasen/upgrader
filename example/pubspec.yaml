@@ -15,6 +15,10 @@ dependencies:
   upgrader:
     path: ../
 
+  go_router: ^7.1.1
+
+  http: ^1.0.0
+
 dev_dependencies:
   flutter_driver:
     sdk: flutter
