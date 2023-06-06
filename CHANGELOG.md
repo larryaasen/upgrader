@@ -1,4 +1,4 @@
-## Next
+## 7.1.0-alpha.2
 
 - Added support for GoRouter. See the README for more details.
 
@@ -304,7 +304,7 @@ be displayed. One good use for this callback is logging metrics for your app.
 ## 3.12.1
 
 * Removed the use of dart:io from the package to allow for compatibility on web.
-Added use of pacakge os_detect instead. Testing still uses dart:io.
+Added use of package os_detect instead. Testing still uses dart:io.
 
 ## 3.12.0
 
