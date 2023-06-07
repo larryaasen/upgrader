@@ -2,7 +2,6 @@
  * Copyright (c) 2021 Larry Aasen. All rights reserved.
  */
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class AlertStyleWidget extends StatelessWidget {
@@ -61,10 +60,7 @@ class AlertStyleWidget extends StatelessWidget {
         ),
       ));
     } else {
-      if (defaultTargetPlatform == TargetPlatform.android ||
-          defaultTargetPlatform == TargetPlatform.fuchsia) {
-        label = MaterialLocalizations.of(context).alertDialogLabel;
-      }
+      label = 'Alert';
     }
 
     children.add(Flexible(

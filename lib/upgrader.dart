@@ -11,6 +11,6 @@ export 'src/play_store_search_api.dart';
 export 'src/upgrade_alert.dart';
 export 'src/upgrade_base.dart';
 export 'src/upgrade_card.dart';
-export 'src/upgrade_io.dart';
+export 'src/upgrade_os.dart';
 export 'src/upgrade_messages.dart';
 export 'src/upgrader.dart';

@@ -127,6 +127,7 @@ The Upgrader class can be customized by setting parameters in the constructor.
 * showIgnore: hide or show Ignore button, which defaults to ```true```
 * showLater: hide or show Later button, which defaults to ```true```
 * showReleaseNotes: hide or show release notes, which defaults to ```true```
+* upgraderOS: Provides information on which OS this code is running on, defaults to ```null```
 * willDisplayUpgrade: called when ```upgrader``` determines that an upgrade may
 or may not be displayed, defaults to ```null```
 
@@ -168,7 +169,7 @@ description field.
 
 ## Go Router
 
-When using GoRouter (pacakge go_router) with upgrader, you may need to provide
+When using GoRouter (package go_router) with upgrader, you may need to provide
 a navigatorKey to the ```UpgradeAlert``` widget so that the correct route 
 context is used. Below is part of the code you will need for this. Also,
 checkout the [example/lib/main-gorouter.dart](example/lib/main-gorouter.dart) example for a more complete example.

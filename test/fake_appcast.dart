@@ -57,12 +57,13 @@ class FakeAppcast extends Fake implements TestAppcast {
 
   AppcastConfiguration config =
       AppcastConfiguration(url: 'http://some.fakewebsite.com', supportedOS: [
+    'android',
+    'fuchsia',
+    'ios',
     'linux',
     'macos',
+    'web',
     'windows',
-    'android',
-    'ios',
-    'fuchsia',
   ]);
 
   @override

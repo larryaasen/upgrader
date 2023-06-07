@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0"
+  xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
+  <channel>
+    <title>Releases</title>
+    <item>
+      <title>Android Release</title>
+      <enclosure sparkle:version="2.1.1" sparkle:os="android"/>
+    </item>
+    <item>
+      <title>Android Release</title>
+      <enclosure sparkle:version="2.1.2" sparkle:os="android"/>
+    </item>
+    <item>
+      <title>Fuchsia Release</title>
+      <enclosure sparkle:version="2.2.1" sparkle:os="fuchsia"/>
+    </item>
+    <item>
+      <title>Fuchsia Release</title>
+      <enclosure sparkle:version="2.2.2" sparkle:os="fuchsia"/>
+    </item>
+    <item>
+      <title>iOS Release</title>
+      <enclosure sparkle:version="2.3.1" sparkle:os="ios"/>
+    </item>
+    <item>
+      <title>iOS Release</title>
+      <enclosure sparkle:version="2.3.2" sparkle:os="ios"/>
+    </item>
+    <item>
+      <title>Linux Release</title>
+      <enclosure sparkle:version="2.4.1" sparkle:os="linux"/>
+    </item>
+    <item>
+      <title>Linux Release</title>
+      <enclosure sparkle:version="2.4.2" sparkle:os="linux"/>
+    </item>
+    <item>
+      <title>macOS Release</title>
+      <enclosure sparkle:version="2.5.1" sparkle:os="macos"/>
+    </item>
+    <item>
+      <title>macOS Release</title>
+      <enclosure sparkle:version="2.5.2" sparkle:os="macos"/>
+    </item>
+    <item>
+      <title>Windows Release</title>
+      <enclosure sparkle:version="2.6.1" sparkle:os="windows"/>
+    </item>
+    <item>
+      <title>Windows Release</title>
+      <enclosure sparkle:version="2.6.2" sparkle:os="windows"/>
+    </item>
+    <item>
+      <title>Web Release</title>
+      <enclosure sparkle:version="2.7.1" sparkle:os="web"/>
+    </item>
+    <item>
+      <title>Web Release</title>
+      <enclosure sparkle:version="2.7.2" sparkle:os="web"/>
+    </item>
+  </channel>
+</rss>
