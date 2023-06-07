@@ -1,3 +1,9 @@
+## 7.1.0
+
+- Added support for GoRouter. See the README for more details.
+- Improved platform support and testing of Appcast for different platforms.
+- Created class UpgraderDevice (and mock) to abstract the device_info details which is used for the OS version.
+
 ## 7.1.0-alpha.2
 
 - Added support for GoRouter. See the README for more details.
