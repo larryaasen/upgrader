@@ -33,6 +33,11 @@ typedef WillDisplayUpgradeCallback = void Function(
     String? installedVersion,
     String? appStoreVersion});
 
+/// Signature of callback for shouldBeBlocking. Includes
+///  installedVersion, and storeVersion.
+typedef ShouldDialogBeBlockingCallback = bool Function(
+    String? installedVersion, String? storeVersion);
+
 /// There are two different dialog styles: Cupertino and Material
 enum UpgradeDialogStyle { cupertino, material }
 
@@ -131,6 +136,10 @@ class Upgrader {
   /// is logging metrics for your app.
   WillDisplayUpgradeCallback? willDisplayUpgrade;
 
+  /// Called when [Upgrader] trying to determine whether the upgrade dialog should
+  /// be blocking or not.
+  final ShouldDialogBeBlockingCallback? shouldBeBlocking;
+
   /// Provides information on which OS this code is running on.
   final UpgraderOS upgraderOS;
 
@@ -179,6 +188,7 @@ class Upgrader {
     this.dialogStyle = UpgradeDialogStyle.material,
     this.cupertinoButtonTextStyle,
     UpgraderOS? upgraderOS,
+    this.shouldBeBlocking,
   })  : client = client ?? http.Client(),
         messages = messages ?? UpgraderMessages(),
         upgraderOS = upgraderOS ?? UpgraderOS() {
@@ -444,7 +454,9 @@ class Upgrader {
   }
 
   bool blocked() {
-    return belowMinAppVersion() || _isCriticalUpdate;
+    return belowMinAppVersion() ||
+        _isCriticalUpdate ||
+        (shouldBeBlocking?.call(_installedVersion, _appStoreVersion) ?? false);
   }
 
   bool shouldDisplayUpgrade() {
