@@ -988,6 +988,155 @@ void main() {
     verifyMessages(UpgraderMessages(code: 'vi'), 'vi');
     verifyMessages(UpgraderMessages(code: 'zh'), 'zh');
   }, skip: false);
+
+  group('test shouldBeBlocking', () {
+    test('should call shouldBeBlocking if provided', () async {
+      String? expectedInstalledVersion;
+      String? expectedstoreVersion;
+
+      final upgrader = Upgrader(
+          shouldBeBlocking: (installedVersion, storeVersion) {
+            expectedInstalledVersion = installedVersion;
+            expectedstoreVersion = storeVersion;
+            return false;
+          },
+          debugLogging: true,
+          upgraderOS: MockUpgraderOS(ios: true),
+          client: MockITunesSearchClient.setupMockClient())
+        ..installPackageInfo(
+          packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '1.9.6',
+            buildNumber: '42',
+          ),
+        );
+
+      await upgrader.initialize();
+
+      upgrader.blocked();
+
+      expect(expectedInstalledVersion, isNotNull);
+      expect(expectedstoreVersion, isNotNull);
+    }, skip: false);
+  });
+
+  testWidgets('card respect shouldBeBlocking when decision is true',
+      (WidgetTester tester) async {
+    final client = MockITunesSearchClient.setupMockClient();
+    final upgrader = Upgrader(
+        shouldBeBlocking: (installedVersion, storeVersion) {
+          return true;
+        },
+        upgraderOS: MockUpgraderOS(ios: true),
+        client: client,
+        debugLogging: true);
+
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '0.9.9',
+            buildNumber: '400'));
+    upgrader.initialize();
+
+    await tester.pumpWidget(_MyWidgetCard(upgrader: upgrader));
+
+    // Pump the UI so the upgrade card is displayed
+    await tester.pumpAndSettle(const Duration(milliseconds: 5000));
+
+    expect(find.text(upgrader.messages.buttonTitleIgnore), findsNothing);
+    expect(find.text(upgrader.messages.buttonTitleLater), findsNothing);
+    expect(find.text(upgrader.messages.buttonTitleUpdate), findsOneWidget);
+  }, skip: false);
+
+  testWidgets('alert respect shouldBeBlocking when decision is true',
+      (WidgetTester tester) async {
+    final client = MockITunesSearchClient.setupMockClient();
+    final upgrader = Upgrader(
+        shouldBeBlocking: (installedVersion, storeVersion) {
+          return true;
+        },
+        upgraderOS: MockUpgraderOS(ios: true),
+        client: client,
+        debugLogging: true);
+
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '0.9.9',
+            buildNumber: '400'));
+    upgrader.initialize();
+
+    await tester.pumpWidget(_MyWidget(upgrader: upgrader));
+
+    // Pump the UI so the upgrade dialog is displayed
+    await tester.pumpAndSettle();
+    await tester.pumpAndSettle();
+
+    expect(find.text(upgrader.messages.buttonTitleIgnore), findsNothing);
+    expect(find.text(upgrader.messages.buttonTitleLater), findsNothing);
+    expect(find.text(upgrader.messages.buttonTitleUpdate), findsOneWidget);
+  }, skip: false);
+  testWidgets('card respect shouldBeBlocking when decision is false',
+      (WidgetTester tester) async {
+    final client = MockITunesSearchClient.setupMockClient();
+    final upgrader = Upgrader(
+        shouldBeBlocking: (installedVersion, storeVersion) {
+          return false;
+        },
+        upgraderOS: MockUpgraderOS(ios: true),
+        client: client,
+        debugLogging: true);
+
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '0.9.9',
+            buildNumber: '400'));
+    upgrader.initialize();
+
+    await tester.pumpWidget(_MyWidgetCard(upgrader: upgrader));
+
+    // Pump the UI so the upgrade card is displayed
+    await tester.pumpAndSettle(const Duration(milliseconds: 5000));
+
+    expect(find.text(upgrader.messages.buttonTitleIgnore), findsOneWidget);
+    expect(find.text(upgrader.messages.buttonTitleLater), findsOneWidget);
+    expect(find.text(upgrader.messages.buttonTitleUpdate), findsOneWidget);
+  }, skip: false);
+
+  testWidgets('alert respect shouldBeBlocking when decision is false',
+      (WidgetTester tester) async {
+    final client = MockITunesSearchClient.setupMockClient();
+    final upgrader = Upgrader(
+        shouldBeBlocking: (installedVersion, storeVersion) {
+          return false;
+        },
+        upgraderOS: MockUpgraderOS(ios: true),
+        client: client,
+        debugLogging: true);
+
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '0.9.9',
+            buildNumber: '400'));
+    upgrader.initialize();
+
+    await tester.pumpWidget(_MyWidget(upgrader: upgrader));
+
+    // Pump the UI so the upgrade dialog is displayed
+    await tester.pumpAndSettle();
+    await tester.pumpAndSettle();
+
+    expect(find.text(upgrader.messages.buttonTitleIgnore), findsOneWidget);
+    expect(find.text(upgrader.messages.buttonTitleLater), findsOneWidget);
+    expect(find.text(upgrader.messages.buttonTitleUpdate), findsOneWidget);
+  }, skip: false);
 }
 
 void verifyMessages(UpgraderMessages messages, String code) {
