@@ -1,3 +1,7 @@
+## 7.1.1
+
+- Added support for implementing custom logic to enforce update. See the README for more details.
+
 ## 7.1.0
 
 - Added support for GoRouter. See the README for more details.
