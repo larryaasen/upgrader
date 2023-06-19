@@ -33,13 +33,48 @@ void main() {
     return true;
   });
 
-  testWidgets('test Upgrader sharedInstance', (WidgetTester tester) async {
+  testWidgets('test Upgrader sharedInstance always returns same instance',
+      (WidgetTester tester) async {
     final upgrader1 = Upgrader.sharedInstance;
     expect(upgrader1, isNotNull);
     final upgrader2 = Upgrader.sharedInstance;
     expect(upgrader2, isNotNull);
     expect(upgrader1 == upgrader2, isTrue);
   }, skip: false);
+
+  testWidgets('test Upgrader multiple instances', (WidgetTester tester) async {
+    await tester.runAsync(() async {
+      final packageInfo = PackageInfo(
+          appName: 'Upgrader',
+          packageName: 'com.larryaasen.upgrader',
+          version: '1.9.9',
+          buildNumber: '400');
+
+      final client = MockITunesSearchClient.setupMockClient();
+      final upgrader = Upgrader(
+          upgraderOS: MockUpgraderOS(ios: true),
+          client: client,
+          debugLogging: true);
+
+      expect(tester.takeException(), null);
+      await tester.pumpAndSettle();
+      try {
+        expect(upgrader.appName(), 'Upgrader');
+      } catch (e) {
+        expect(e, upgrader.notInitializedExceptionMessage);
+      }
+
+      upgrader.installPackageInfo(packageInfo: packageInfo);
+      expect(await upgrader.initialize(), isTrue);
+
+      final upgrader1 = Upgrader(
+          upgraderOS: MockUpgraderOS(ios: true),
+          client: client,
+          debugLogging: true);
+      upgrader1.installPackageInfo(packageInfo: packageInfo);
+      expect(await upgrader1.initialize(), isTrue);
+    });
+  });
 
   testWidgets('test Upgrader clearSavedSettings', (WidgetTester tester) async {
     await Upgrader.clearSavedSettings();
@@ -69,10 +104,10 @@ void main() {
               version: '1.9.9',
               buildNumber: '400'));
 
-      await upgrader.initialize();
+      expect(await upgrader.initialize(), isTrue);
 
       // Calling initialize() a second time should do nothing
-      await upgrader.initialize();
+      expect(await upgrader.initialize(), isTrue);
 
       expect(upgrader.appName(), 'Upgrader');
       expect(upgrader.currentAppStoreVersion(), '5.6');
