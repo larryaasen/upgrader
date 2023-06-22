@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2022 Larry Aasen. All rights reserved.
+ * Copyright (c) 2018-2023 Larry Aasen. All rights reserved.
  */
 
 import 'package:flutter/material.dart';
@@ -20,12 +20,16 @@ class UpgradeBase extends StatefulWidget {
 }
 
 class UpgradeBaseState extends State<UpgradeBase> {
-  Future<bool> get initialized => widget.upgrader.initialize();
+  @override
+  void initState() {
+    super.initState();
+    initialize();
+  }
 
   @override
   Widget build(BuildContext context) => widget.build(context, this);
 
-  void forceUpdateState() {
-    setState(() {});
-  }
+  Future<bool> initialize() => widget.upgrader.initialize();
+
+  void forceUpdateState() => setState(() {});
 }

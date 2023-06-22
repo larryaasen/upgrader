@@ -33,6 +33,9 @@ typedef WillDisplayUpgradeCallback = void Function(
     String? installedVersion,
     String? appStoreVersion});
 
+/// The type of data in the stream.
+typedef UpgraderEvaluateNeed = bool;
+
 /// There are two different dialog styles: Cupertino and Material
 enum UpgradeDialogStyle { cupertino, material }
 
@@ -53,7 +56,7 @@ class AppcastConfiguration {
 Upgrader _sharedInstance = Upgrader();
 
 /// A class to configure the upgrade dialog.
-class Upgrader {
+class Upgrader with WidgetsBindingObserver {
   /// Provide an Appcast that can be replaced for mock testing.
   final Appcast? appcast;
 
@@ -151,6 +154,11 @@ class Upgrader {
 
   /// Track the initialization future so that [initialize] can be called multiple times.
   Future<bool>? _futureInit;
+
+  /// A stream that provides a series of values each time an evaluation should be performed.
+  /// The values will always be null or true.
+  final _streamController = StreamController<UpgraderEvaluateNeed>();
+  Stream<UpgraderEvaluateNeed> get evaluationStream => _streamController.stream;
 
   final notInitializedExceptionMessage =
       'initialize() not called. Must be called first.';
@@ -255,9 +263,37 @@ class Upgrader {
 
       await _updateVersionInfo();
 
+      // Add an observer of application events.
+      WidgetsBinding.instance.addObserver(this);
+
+      /// Trigger the stream to indicate an evaluation should be performed.
+      /// The value will always be true.
+      _streamController.add(true);
+
       return true;
     });
     return _futureInit!;
+  }
+
+  /// Remove any resources allocated.
+  void dispose() {
+    // Remove the observer of application events.
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  /// Handle application events.
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    super.didChangeAppLifecycleState(state);
+
+    // When app has resumed from background.
+    if (state == AppLifecycleState.resumed) {
+      await _updateVersionInfo();
+
+      /// Trigger the stream to indicate another evaluation should be performed.
+      /// The value will always be true.
+      _streamController.add(true);
+    }
   }
 
   Future<bool> _updateVersionInfo() async {

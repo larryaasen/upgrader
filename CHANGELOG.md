@@ -1,5 +1,8 @@
-## Next
+## 8.0.0-alpha.1
 
+- Added support for checking for updates every time the app resumes from the background. (#272)
+- Changed the way Upgrader is initialized to support a stream of evaluation requests. The
+stream is updated each time the app resumes from the background.
 - Added Russian release notes translation. (thanks to @filipp2911)
 
 ## 7.1.0
