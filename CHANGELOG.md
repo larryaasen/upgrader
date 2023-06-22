@@ -1,3 +1,7 @@
+## Next
+
+- Added Russian release notes translation. (thanks to @filipp2911)
+
 ## 7.1.0
 
 - Added support for GoRouter. See the README for more details.
