@@ -283,7 +283,7 @@ class Upgrader with WidgetsBindingObserver {
 
   /// Handle application events.
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) async {
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
 
     // When app has resumed from background.
@@ -334,8 +334,8 @@ class Upgrader with WidgetsBindingObserver {
           _isCriticalUpdate = false;
         }
 
-        _appStoreVersion ??= bestItem.versionString;
-        _appStoreListingURL ??= bestItem.fileURL;
+        _appStoreVersion = bestItem.versionString;
+        _appStoreListingURL = bestItem.fileURL;
         _releaseNotes = bestItem.itemDescription;
       }
     } else {
@@ -367,8 +367,8 @@ class Upgrader with WidgetsBindingObserver {
             .lookupByBundleId(_packageInfo!.packageName, country: country));
 
         if (response != null) {
-          _appStoreVersion ??= ITunesResults.version(response);
-          _appStoreListingURL ??= ITunesResults.trackViewUrl(response);
+          _appStoreVersion = ITunesResults.version(response);
+          _appStoreListingURL = ITunesResults.trackViewUrl(response);
           _releaseNotes ??= ITunesResults.releaseNotes(response);
           final mav = ITunesResults.minAppVersion(response);
           if (mav != null) {
@@ -573,16 +573,14 @@ class Upgrader with WidgetsBindingObserver {
       return false;
     }
 
-    if (_updateAvailable == null) {
-      try {
-        final appStoreVersion = Version.parse(_appStoreVersion!);
-        final installedVersion = Version.parse(_installedVersion!);
+    try {
+      final appStoreVersion = Version.parse(_appStoreVersion!);
+      final installedVersion = Version.parse(_installedVersion!);
 
-        final available = appStoreVersion > installedVersion;
-        _updateAvailable = available ? _appStoreVersion : null;
-      } on Exception catch (e) {
-        print('upgrader: isUpdateAvailable: $e');
-      }
+      final available = appStoreVersion > installedVersion;
+      _updateAvailable = available ? _appStoreVersion : null;
+    } on Exception catch (e) {
+      print('upgrader: isUpdateAvailable: $e');
     }
     final isAvailable = _updateAvailable != null;
     if (debugLogging) print('upgrader: isUpdateAvailable: $isAvailable');

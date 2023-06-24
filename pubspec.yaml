@@ -1,6 +1,6 @@
 name: upgrader
 description: Flutter package for prompting users to upgrade when there is a newer version of the app in the store.
-version: 8.0.0-alpha.1
+version: 8.0.0-alpha.2
 homepage: https://github.com/larryaasen/upgrader
 
 environment:

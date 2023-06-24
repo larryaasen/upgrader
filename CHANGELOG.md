@@ -1,3 +1,7 @@
+## 8.0.0-alpha.2
+
+- Fixed an issue with checking for updates after resuming from background.
+
 ## 8.0.0-alpha.1
 
 - Added support for checking for updates every time the app resumes from the background. (#272)
