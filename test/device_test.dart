@@ -8,7 +8,7 @@ import 'package:upgrader/upgrader.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  late Map _useAndroidInfo;
+  late Map useAndroidInfo;
 
   // Makes getApplicationDocumentsDirectory work.
   const MethodChannel channelDeviceInfo =
@@ -16,19 +16,19 @@ void main() {
   // ignore: deprecated_member_use
   channelDeviceInfo.setMockMethodCallHandler((MethodCall methodCall) async {
     if (methodCall.method == 'getDeviceInfo') {
-      return _useAndroidInfo;
+      return useAndroidInfo;
     }
     return 'unknown';
   });
 
   test('testing UpgraderDevice', () async {
-    _useAndroidInfo = _androidInfo(baseOS: '1.2.3');
+    useAndroidInfo = _androidInfo(baseOS: '1.2.3');
     final device = UpgraderDevice();
     expect(await device.getOsVersionString(MockUpgraderOS(android: true)),
         '1.2.3');
 
     // Verify invalid OS version
-    _useAndroidInfo = _androidInfo(baseOS: '.');
+    useAndroidInfo = _androidInfo(baseOS: '.');
     expect(
         await device.getOsVersionString(MockUpgraderOS(android: true)), isNull);
   });
