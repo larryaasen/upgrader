@@ -5,6 +5,7 @@
  */
 
 import 'dart:convert' show utf8;
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:version/version.dart';
@@ -119,6 +120,13 @@ class Appcast {
     return parseItemsFromXMLString(contents);
   }
 
+  bool _isCorrectPlatform(XmlAttribute attribute) {
+    final String platformValue = attribute.value;
+    final String currentPlatform = Platform.operatingSystem;
+
+    return platformValue == currentPlatform;
+  }
+
   List<AppcastItem>? parseItemsFromXMLString(String xmlString) {
     items = null;
 
@@ -158,18 +166,32 @@ class Appcast {
             } else if (name == AppcastConstants.ElementDescription) {
               itemDescription = childNode.innerText;
             } else if (name == AppcastConstants.ElementEnclosure) {
-              childNode.attributes.forEach((XmlAttribute attribute) {
-                if (attribute.name.toString() ==
-                    AppcastConstants.AttributeVersion) {
-                  enclosureVersion = attribute.value;
-                } else if (attribute.name.toString() ==
-                    AppcastConstants.AttributeOsType) {
-                  osString = attribute.value;
-                } else if (attribute.name.toString() ==
-                    AppcastConstants.AttributeURL) {
-                  fileURL = attribute.value;
-                }
-              });
+              late bool correctPlatform;
+              try {
+                final XmlAttribute platform = childNode.attributes.firstWhere(
+                  (attribute) =>
+                      attribute.name.toString() ==
+                      AppcastConstants.AttributeOsType,
+                );
+                correctPlatform = _isCorrectPlatform(platform);
+              } catch (_) {
+                correctPlatform = true;
+              }
+
+              if (correctPlatform) {
+                childNode.attributes.forEach((XmlAttribute attribute) {
+                  if (attribute.name.toString() ==
+                      AppcastConstants.AttributeVersion) {
+                    enclosureVersion = attribute.value;
+                  } else if (attribute.name.toString() ==
+                      AppcastConstants.AttributeOsType) {
+                    osString = attribute.value;
+                  } else if (attribute.name.toString() ==
+                      AppcastConstants.AttributeURL) {
+                    fileURL = attribute.value;
+                  }
+                });
+              }
             } else if (name == AppcastConstants.ElementMaximumSystemVersion) {
               maximumSystemVersion = childNode.innerText;
             } else if (name == AppcastConstants.ElementMinimumSystemVersion) {
