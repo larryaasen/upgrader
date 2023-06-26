@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Upgrader Example',
       home: Scaffold(
-          appBar: AppBar(title: Text('Upgrader Example')),
+          appBar: AppBar(title: Text('Upgrader Cupertino Example')),
           body: UpgradeAlert(
             upgrader: Upgrader(
               appcastConfig: cfg,
