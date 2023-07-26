@@ -155,10 +155,14 @@ class Upgrader with WidgetsBindingObserver {
   /// Track the initialization future so that [initialize] can be called multiple times.
   Future<bool>? _futureInit;
 
-  /// A stream that provides a series of values each time an evaluation should be performed.
+  /// A stream that provides a new value each time an evaluation should be performed.
   /// The values will always be null or true.
-  final _streamController = StreamController<UpgraderEvaluateNeed>();
   Stream<UpgraderEvaluateNeed> get evaluationStream => _streamController.stream;
+  final _streamController = StreamController<UpgraderEvaluateNeed>.broadcast();
+
+  /// An evaluation should be performed.
+  bool get evaluationReady => _evaluationReady;
+  bool _evaluationReady = false;
 
   final notInitializedExceptionMessage =
       'initialize() not called. Must be called first.';
@@ -265,6 +269,8 @@ class Upgrader with WidgetsBindingObserver {
 
       // Add an observer of application events.
       WidgetsBinding.instance.addObserver(this);
+
+      _evaluationReady = true;
 
       /// Trigger the stream to indicate an evaluation should be performed.
       /// The value will always be true.
@@ -457,7 +463,8 @@ class Upgrader with WidgetsBindingObserver {
     return msg;
   }
 
-  /// Only called by [UpgradeAlert].
+  /// Will show the alert dialog when it should be dispalyed.
+  /// Only called by [UpgradeAlert] and not used by [UpgradeCard].
   void checkVersion({required BuildContext context}) {
     if (!_displayed) {
       final shouldDisplay = shouldDisplayUpgrade();

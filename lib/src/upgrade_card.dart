@@ -26,6 +26,7 @@ class UpgradeCard extends UpgradeBase {
     }
 
     return StreamBuilder(
+        initialData: state.widget.upgrader.evaluationReady,
         stream: state.widget.upgrader.evaluationStream,
         builder: (BuildContext context,
             AsyncSnapshot<UpgraderEvaluateNeed> snapshot) {

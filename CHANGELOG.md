@@ -1,3 +1,7 @@
+## 8.1.0-alpha.1
+
+- Fixed issue #312 when multiple instances of UpgradeAlert or UpgradeCard were used and the stream had already been listened to.
+
 ## 8.0.0
 
 - Added support for checking for updates every time the app resumes from the background. (#272)
