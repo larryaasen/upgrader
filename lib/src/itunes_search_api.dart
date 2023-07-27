@@ -144,13 +144,17 @@ class ITunesSearchAPI {
 }
 
 class ITunesResults {
+  static bool debugEnabled = false;
+
   /// Return field bundleId from iTunes results.
   static String? bundleId(Map response) {
     String? value;
     try {
       value = response['results'][0]['bundleId'];
     } catch (e) {
-      print('upgrader.ITunesResults.bundleId: $e');
+      if (debugEnabled) {
+        print('upgrader.ITunesResults.bundleId: $e');
+      }
     }
     return value;
   }
@@ -161,7 +165,9 @@ class ITunesResults {
     try {
       value = response['results'][0]['currency'];
     } catch (e) {
-      print('upgrader.ITunesResults.currency: $e');
+      if (debugEnabled) {
+        print('upgrader.ITunesResults.currency: $e');
+      }
     }
     return value;
   }
@@ -172,7 +178,9 @@ class ITunesResults {
     try {
       value = response['results'][0]['description'];
     } catch (e) {
-      print('upgrader.ITunesResults.description: $e');
+      if (debugEnabled) {
+        print('upgrader.ITunesResults.description: $e');
+      }
     }
     return value;
   }
@@ -201,7 +209,9 @@ class ITunesResults {
         }
       }
     } on Exception catch (e) {
-      print('upgrader.ITunesResults.minAppVersion : $e');
+      if (debugEnabled) {
+        print('upgrader.ITunesResults.minAppVersion : $e');
+      }
     }
     return version;
   }
@@ -212,7 +222,9 @@ class ITunesResults {
     try {
       value = response['results'][0]['releaseNotes'];
     } catch (e) {
-      print('upgrader.ITunesResults.releaseNotes: $e');
+      if (debugEnabled) {
+        print('upgrader.ITunesResults.releaseNotes: $e');
+      }
     }
     return value;
   }
@@ -223,7 +235,9 @@ class ITunesResults {
     try {
       value = response['results'][0]['trackViewUrl'];
     } catch (e) {
-      print('upgrader.ITunesResults.trackViewUrl: $e');
+      if (debugEnabled) {
+        print('upgrader.ITunesResults.trackViewUrl: $e');
+      }
     }
     return value;
   }
@@ -234,7 +248,9 @@ class ITunesResults {
     try {
       value = response['results'][0]['version'];
     } catch (e) {
-      print('upgrader.ITunesResults.version: $e');
+      if (debugEnabled) {
+        print('upgrader.ITunesResults.version: $e');
+      }
     }
     return value;
   }
