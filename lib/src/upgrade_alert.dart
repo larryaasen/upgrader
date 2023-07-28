@@ -34,7 +34,8 @@ class UpgradeAlert extends UpgradeBase {
                 ? navigatorKey!.currentContext!
                 : context;
         if (snapshot.connectionState == ConnectionState.active &&
-            snapshot.data != null) {
+            snapshot.data != null &&
+            snapshot.data!) {
           if (upgrader.debugLogging) {
             print("upgrader: need to evaluate version");
           }

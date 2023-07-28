@@ -1,3 +1,9 @@
+## 8.1.0-alpha.2
+
+- Fixed an issue related to the stream updates from the previous release of 8.1.0-alpha.1.
+
+- From 8.1.0-alpha.1: Fixed issue #312 when multiple instances of UpgradeAlert or UpgradeCard were used and the stream had already been listened to.
+
 ## 8.1.0-alpha.1
 
 - Fixed issue #312 when multiple instances of UpgradeAlert or UpgradeCard were used and the stream had already been listened to.
