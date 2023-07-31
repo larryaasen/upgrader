@@ -367,16 +367,16 @@ class Upgrader with WidgetsBindingObserver {
         await _getAndroidStoreVersion(country: country, language: language);
       } else if (upgraderOS.isIOS) {
         final iTunes = ITunesSearchAPI();
-        iTunes.debugEnabled = debugLogging;
+        iTunes.debugLogging = debugLogging;
         iTunes.client = client;
         final response = await (iTunes
             .lookupByBundleId(_packageInfo!.packageName, country: country));
 
         if (response != null) {
-          _appStoreVersion = ITunesResults.version(response);
-          _appStoreListingURL = ITunesResults.trackViewUrl(response);
-          _releaseNotes ??= ITunesResults.releaseNotes(response);
-          final mav = ITunesResults.minAppVersion(response);
+          _appStoreVersion = iTunes.version(response);
+          _appStoreListingURL = iTunes.trackViewUrl(response);
+          _releaseNotes ??= iTunes.releaseNotes(response);
+          final mav = iTunes.minAppVersion(response);
           if (mav != null) {
             minAppVersion = mav.toString();
             if (debugLogging) {
@@ -395,15 +395,15 @@ class Upgrader with WidgetsBindingObserver {
       {String? country, String? language}) async {
     final id = _packageInfo!.packageName;
     final playStore = PlayStoreSearchAPI(client: client);
-    playStore.debugEnabled = debugLogging;
+    playStore.debugLogging = debugLogging;
     final response =
         await (playStore.lookupById(id, country: country, language: language));
     if (response != null) {
-      _appStoreVersion ??= PlayStoreResults.version(response);
+      _appStoreVersion ??= playStore.version(response);
       _appStoreListingURL ??=
           playStore.lookupURLById(id, language: language, country: country);
-      _releaseNotes ??= PlayStoreResults.releaseNotes(response);
-      final mav = PlayStoreResults.minAppVersion(response);
+      _releaseNotes ??= playStore.releaseNotes(response);
+      final mav = playStore.minAppVersion(response);
       if (mav != null) {
         minAppVersion = mav.toString();
         if (debugLogging) {
@@ -541,7 +541,9 @@ class Upgrader with WidgetsBindingObserver {
         final installedVersion = Version.parse(_installedVersion!);
         rv = installedVersion < minVersion;
       } catch (e) {
-        print(e);
+        if (debugLogging) {
+          print(e);
+        }
       }
     }
     return rv;
@@ -587,7 +589,9 @@ class Upgrader with WidgetsBindingObserver {
       final available = appStoreVersion > installedVersion;
       _updateAvailable = available ? _appStoreVersion : null;
     } on Exception catch (e) {
-      print('upgrader: isUpdateAvailable: $e');
+      if (debugLogging) {
+        print('upgrader: isUpdateAvailable: $e');
+      }
     }
     final isAvailable = _updateAvailable != null;
     if (debugLogging) print('upgrader: isUpdateAvailable: $isAvailable');

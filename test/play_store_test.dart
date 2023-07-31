@@ -12,7 +12,8 @@ import 'mock_play_store_client.dart';
 /// Helper method
 String? pmav(Document response,
     {String tagRES = r'\[\:mav\:[\s]*(?<version>[^\s]+)[\s]*\]'}) {
-  final mav = PlayStoreResults.minAppVersion(response, tagRegExpSource: tagRES);
+  final mav =
+      PlayStoreSearchAPI().minAppVersion(response, tagRegExpSource: tagRES);
   return mav?.toString();
 }
 
@@ -30,9 +31,9 @@ void main() {
 
   test('testing PlayStoreSearchAPI properties', () async {
     final playStore = PlayStoreSearchAPI();
-    expect(playStore.debugEnabled, equals(false));
-    playStore.debugEnabled = true;
-    expect(playStore.debugEnabled, equals(true));
+    expect(playStore.debugLogging, equals(false));
+    playStore.debugLogging = true;
+    expect(playStore.debugLogging, equals(true));
     expect(playStore.playStorePrefixURL.length, greaterThan(0));
 
     expect(
@@ -50,9 +51,9 @@ void main() {
     expect(response, isNotNull);
     expect(response, isInstanceOf<Document>());
 
-    expect(PlayStoreResults.releaseNotes(response!),
-        'Minor updates and improvements.');
-    expect(PlayStoreResults.version(response), '1.23.0');
+    expect(
+        playStore.releaseNotes(response!), 'Minor updates and improvements.');
+    expect(playStore.version(response), '1.23.0');
 
     expect(await playStore.lookupById('com.not.a.valid.application'), isNull);
 
@@ -109,10 +110,10 @@ void main() {
     expect(response, isNotNull);
     expect(response, isInstanceOf<Document>());
 
-    expect(PlayStoreResults.releaseNotes(response!),
-        'Minor updates and improvements.');
-    expect(PlayStoreResults.version(response), '2.3.0');
-    expect(PlayStoreResults.description(response)?.length, greaterThan(10));
+    expect(
+        playStore.releaseNotes(response!), 'Minor updates and improvements.');
+    expect(playStore.version(response), '2.3.0');
+    expect(playStore.description(response)?.length, greaterThan(10));
     expect(
         pmav(response,
             tagRES:
@@ -130,10 +131,10 @@ void main() {
     expect(response, isNotNull);
     expect(response, isInstanceOf<Document>());
 
-    expect(PlayStoreResults.releaseNotes(response!),
-        'Minor updates and improvements.');
-    expect(PlayStoreResults.version(response), '2.0.2');
-    expect(PlayStoreResults.description(response)?.length, greaterThan(10));
+    expect(
+        playStore.releaseNotes(response!), 'Minor updates and improvements.');
+    expect(playStore.version(response), '2.0.2');
+    expect(playStore.description(response)?.length, greaterThan(10));
   }, skip: false);
 
   test('testing release notes <br>', () async {
@@ -144,10 +145,10 @@ void main() {
     expect(response, isNotNull);
     expect(response, isInstanceOf<Document>());
 
-    expect(PlayStoreResults.releaseNotes(response!),
+    expect(playStore.releaseNotes(response!),
         'Minor updates and improvements.\nAgain.\nAgain.');
-    expect(PlayStoreResults.version(response), '2.0.2');
-    expect(PlayStoreResults.description(response)?.length, greaterThan(10));
+    expect(playStore.version(response), '2.0.2');
+    expect(playStore.description(response)?.length, greaterThan(10));
   }, skip: false);
 
   test('testing release notes <br> 2', () async {
@@ -158,16 +159,10 @@ void main() {
     expect(response, isNotNull);
     expect(response, isInstanceOf<Document>());
 
-    expect(PlayStoreResults.releaseNotes(response!),
+    expect(playStore.releaseNotes(response!),
         'Minor updates and improvements.\nAgain.\nAgain.');
-    expect(PlayStoreResults.version(response), '2.0.2');
-    expect(PlayStoreResults.description(response)?.length, greaterThan(10));
-  }, skip: false);
-
-  test('testing PlayStoreResults', () async {
-    expect(PlayStoreResults(), isNotNull);
-    expect(PlayStoreResults.releaseNotes(Document()), isNull);
-    expect(PlayStoreResults.version(Document()), isNull);
+    expect(playStore.version(response), '2.0.2');
+    expect(playStore.description(response)?.length, greaterThan(10));
   }, skip: false);
 
   /// Helper method

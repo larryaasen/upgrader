@@ -1,3 +1,7 @@
+## Next
+
+- All print statements for errors and exceptions have been placed behind a debug flag.
+
 ## 8.1.0-alpha.2
 
 - Fixed an issue related to the stream updates from the previous release of 8.1.0-alpha.1.
