@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Larry Aasen. All rights reserved.
+ * Copyright (c) 2021-2023 Larry Aasen. All rights reserved.
  */
 
 import 'package:flutter/material.dart';
@@ -24,19 +24,23 @@ class UpgradeAlert extends UpgradeBase {
       print('upgrader: build UpgradeAlert');
     }
 
-    return FutureBuilder(
-        future: state.initialized,
-        builder: (BuildContext context, AsyncSnapshot<bool> processed) {
-          final checkContext =
-              navigatorKey != null && navigatorKey!.currentContext != null
-                  ? navigatorKey!.currentContext!
-                  : context;
-          if (processed.connectionState == ConnectionState.done &&
-              processed.data != null &&
-              processed.data!) {
-            upgrader.checkVersion(context: checkContext);
+    return StreamBuilder(
+      stream: state.widget.upgrader.evaluationStream,
+      builder:
+          (BuildContext context, AsyncSnapshot<UpgraderEvaluateNeed> snapshot) {
+        final checkContext =
+            navigatorKey != null && navigatorKey!.currentContext != null
+                ? navigatorKey!.currentContext!
+                : context;
+        if (snapshot.connectionState == ConnectionState.active &&
+            snapshot.data != null) {
+          if (upgrader.debugLogging) {
+            print("upgrader: need to evaluate version");
           }
-          return child ?? Container();
-        });
+          upgrader.checkVersion(context: checkContext);
+        }
+        return child ?? const SizedBox.shrink();
+      },
+    );
   }
 }
