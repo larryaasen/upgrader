@@ -223,6 +223,10 @@ void main() {
     // Pump the UI so the upgrader can display its dialog
     await tester.pumpAndSettle();
     await tester.pumpAndSettle();
+    await tester.pumpAndSettle();
+    await tester.pumpAndSettle();
+    await tester.pumpAndSettle();
+    await tester.pumpAndSettle();
 
     expect(upgrader.isTooSoon(), true);
 

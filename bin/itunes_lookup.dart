@@ -31,7 +31,7 @@ void main(List<String> arguments) async {
   }
 
   final iTunes = ITunesSearchAPI();
-  iTunes.debugEnabled = true;
+  iTunes.debugLogging = true;
   const countryCode = 'US';
 
   Map? results;
@@ -52,12 +52,12 @@ void main(List<String> arguments) async {
     return;
   }
 
-  final bundleId = ITunesResults.bundleId(results);
-  final description = ITunesResults.description(results);
-  final minAppVersion = ITunesResults.minAppVersion(results);
-  final releaseNotes = ITunesResults.releaseNotes(results);
-  final trackViewUrl = ITunesResults.trackViewUrl(results);
-  final version = ITunesResults.version(results);
+  final bundleId = iTunes.bundleId(results);
+  final description = iTunes.description(results);
+  final minAppVersion = iTunes.minAppVersion(results);
+  final releaseNotes = iTunes.releaseNotes(results);
+  final trackViewUrl = iTunes.trackViewUrl(results);
+  final version = iTunes.version(results);
 
   print('itunes_lookup bundleId: $bundleId');
   print('itunes_lookup description: $description');

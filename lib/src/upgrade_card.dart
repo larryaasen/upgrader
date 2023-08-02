@@ -26,11 +26,14 @@ class UpgradeCard extends UpgradeBase {
     }
 
     return StreamBuilder(
+        initialData: state.widget.upgrader.evaluationReady,
         stream: state.widget.upgrader.evaluationStream,
         builder: (BuildContext context,
             AsyncSnapshot<UpgraderEvaluateNeed> snapshot) {
-          if (snapshot.connectionState == ConnectionState.active &&
-              snapshot.data != null) {
+          if ((snapshot.connectionState == ConnectionState.waiting ||
+                  snapshot.connectionState == ConnectionState.active) &&
+              snapshot.data != null &&
+              snapshot.data!) {
             if (upgrader.shouldDisplayUpgrade()) {
               return buildUpgradeCard(context, state);
             } else {

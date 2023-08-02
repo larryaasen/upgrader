@@ -25,18 +25,22 @@ class UpgradeAlert extends UpgradeBase {
     }
 
     return StreamBuilder(
+      initialData: state.widget.upgrader.evaluationReady,
       stream: state.widget.upgrader.evaluationStream,
       builder:
           (BuildContext context, AsyncSnapshot<UpgraderEvaluateNeed> snapshot) {
-        final checkContext =
-            navigatorKey != null && navigatorKey!.currentContext != null
-                ? navigatorKey!.currentContext!
-                : context;
-        if (snapshot.connectionState == ConnectionState.active &&
-            snapshot.data != null) {
+        if ((snapshot.connectionState == ConnectionState.waiting ||
+                snapshot.connectionState == ConnectionState.active) &&
+            snapshot.data != null &&
+            snapshot.data!) {
           if (upgrader.debugLogging) {
             print("upgrader: need to evaluate version");
           }
+
+          final checkContext =
+              navigatorKey != null && navigatorKey!.currentContext != null
+                  ? navigatorKey!.currentContext!
+                  : context;
           upgrader.checkVersion(context: checkContext);
         }
         return child ?? const SizedBox.shrink();
