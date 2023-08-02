@@ -1,5 +1,6 @@
-## Next
+## 8.1.0
 
+- Fixed issue #312 when multiple instances of UpgradeAlert or UpgradeCard were used and the stream had already been listened to.
 - All print statements for errors and exceptions have been placed behind a debug flag.
 
 ## 8.1.0-alpha.2
