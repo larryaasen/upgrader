@@ -21,7 +21,8 @@ class ITunesSearchAPI {
   /// Provide an HTTP Client that can be replaced for mock testing.
   http.Client? client = http.Client();
 
-  bool debugEnabled = false;
+  /// Enable print statements for debugging.
+  bool debugLogging = false;
 
   /// Look up by bundle id.
   /// Example: look up Google Maps iOS App:
@@ -36,20 +37,22 @@ class ITunesSearchAPI {
 
     final url = lookupURLByBundleId(bundleId,
         country: country ??= '', useCacheBuster: useCacheBuster)!;
-    if (debugEnabled) {
+    if (debugLogging) {
       print('upgrader: download: $url');
     }
 
     try {
       final response = await client!.get(Uri.parse(url));
-      if (debugEnabled) {
+      if (debugLogging) {
         print('upgrader: response statusCode: ${response.statusCode}');
       }
 
       final decodedResults = _decodeResults(response.body);
       return decodedResults;
     } catch (e) {
-      print('upgrader: lookupByBundleId exception: $e');
+      if (debugLogging) {
+        print('upgrader: lookupByBundleId exception: $e');
+      }
       return null;
     }
   }
@@ -66,7 +69,7 @@ class ITunesSearchAPI {
 
     final url =
         lookupURLById(id, country: country, useCacheBuster: useCacheBuster)!;
-    if (debugEnabled) {
+    if (debugLogging) {
       print('upgrader: download: $url');
     }
     try {
@@ -74,7 +77,9 @@ class ITunesSearchAPI {
       final decodedResults = _decodeResults(response.body);
       return decodedResults;
     } catch (e) {
-      print('upgrader: lookupById exception: $e');
+      if (debugLogging) {
+        print('upgrader: lookupById exception: $e');
+      }
       return null;
     }
   }
@@ -131,7 +136,7 @@ class ITunesSearchAPI {
       if (decodedResults is Map) {
         final resultCount = decodedResults['resultCount'];
         if (resultCount == 0) {
-          if (debugEnabled) {
+          if (debugLogging) {
             print(
                 'upgrader.ITunesSearchAPI: results are empty: $decodedResults');
           }
@@ -143,36 +148,42 @@ class ITunesSearchAPI {
   }
 }
 
-class ITunesResults {
+extension ITunesResults on ITunesSearchAPI {
   /// Return field bundleId from iTunes results.
-  static String? bundleId(Map response) {
+  String? bundleId(Map response) {
     String? value;
     try {
       value = response['results'][0]['bundleId'];
     } catch (e) {
-      print('upgrader.ITunesResults.bundleId: $e');
+      if (debugLogging) {
+        print('upgrader.ITunesResults.bundleId: $e');
+      }
     }
     return value;
   }
 
   /// Return field currency from iTunes results.
-  static String? currency(Map response) {
+  String? currency(Map response) {
     String? value;
     try {
       value = response['results'][0]['currency'];
     } catch (e) {
-      print('upgrader.ITunesResults.currency: $e');
+      if (debugLogging) {
+        print('upgrader.ITunesResults.currency: $e');
+      }
     }
     return value;
   }
 
   /// Return field description from iTunes results.
-  static String? description(Map response) {
+  String? description(Map response) {
     String? value;
     try {
       value = response['results'][0]['description'];
     } catch (e) {
-      print('upgrader.ITunesResults.description: $e');
+      if (debugLogging) {
+        print('upgrader.ITunesResults.description: $e');
+      }
     }
     return value;
   }
@@ -180,15 +191,15 @@ class ITunesResults {
   /// Return the minimum app version taken from the tag in the description field
   /// from the store response. The format is: [:mav: 1.2.3].
   /// Returns version, such as 1.2.3, or null.
-  static Version? minAppVersion(Map response, {String tagName = 'mav'}) {
+  Version? minAppVersion(Map response, {String tagName = 'mav'}) {
     Version? version;
     try {
-      final description = ITunesResults.description(response);
-      if (description != null) {
+      final desc = description(response);
+      if (desc != null) {
         String regExpSource = r"\[\:tagName\:[\s]*(?<version>[^\s]+)[\s]*\]";
         regExpSource = regExpSource.replaceAll(RegExp('tagName'), tagName);
         final regExp = RegExp(regExpSource, caseSensitive: false);
-        final match = regExp.firstMatch(description);
+        final match = regExp.firstMatch(desc);
         final mav = match?.namedGroup('version');
 
         if (mav != null) {
@@ -196,45 +207,56 @@ class ITunesResults {
             // Verify version string using class Version
             version = Version.parse(mav);
           } on Exception catch (e) {
-            print('upgrader: ITunesResults.minAppVersion: $tagName error: $e');
+            if (debugLogging) {
+              print(
+                  'upgrader: ITunesResults.minAppVersion: $tagName error: $e');
+            }
           }
         }
       }
     } on Exception catch (e) {
-      print('upgrader.ITunesResults.minAppVersion : $e');
+      if (debugLogging) {
+        print('upgrader.ITunesResults.minAppVersion : $e');
+      }
     }
     return version;
   }
 
   /// Return field releaseNotes from iTunes results.
-  static String? releaseNotes(Map response) {
+  String? releaseNotes(Map response) {
     String? value;
     try {
       value = response['results'][0]['releaseNotes'];
     } catch (e) {
-      print('upgrader.ITunesResults.releaseNotes: $e');
+      if (debugLogging) {
+        print('upgrader.ITunesResults.releaseNotes: $e');
+      }
     }
     return value;
   }
 
   /// Return field trackViewUrl from iTunes results.
-  static String? trackViewUrl(Map response) {
+  String? trackViewUrl(Map response) {
     String? value;
     try {
       value = response['results'][0]['trackViewUrl'];
     } catch (e) {
-      print('upgrader.ITunesResults.trackViewUrl: $e');
+      if (debugLogging) {
+        print('upgrader.ITunesResults.trackViewUrl: $e');
+      }
     }
     return value;
   }
 
   /// Return field version from iTunes results.
-  static String? version(Map response) {
+  String? version(Map response) {
     String? value;
     try {
       value = response['results'][0]['version'];
     } catch (e) {
-      print('upgrader.ITunesResults.version: $e');
+      if (debugLogging) {
+        print('upgrader.ITunesResults.version: $e');
+      }
     }
     return value;
   }

@@ -116,8 +116,44 @@ void main() {
 
       upgrader.installAppStoreVersion('1.2.3');
       expect(upgrader.currentAppStoreVersion(), '1.2.3');
+      expect(upgrader.isUpdateAvailable(), false);
+
+      upgrader.installAppStoreVersion('6.2.3');
+      expect(upgrader.currentAppStoreVersion(), '6.2.3');
+      expect(upgrader.isUpdateAvailable(), true);
+
+      upgrader.installAppStoreVersion('1.1.1');
+      expect(upgrader.currentAppStoreVersion(), '1.1.1');
+      expect(upgrader.isUpdateAvailable(), false);
+
+      await upgrader.didChangeAppLifecycleState(AppLifecycleState.resumed);
+      expect(upgrader.isUpdateAvailable(), true);
+
+      upgrader.installAppStoreVersion('1.1.1');
+      expect(upgrader.currentAppStoreVersion(), '1.1.1');
+      expect(upgrader.isUpdateAvailable(), false);
+
+      upgrader.installPackageInfo(
+          packageInfo: PackageInfo(
+              appName: 'Upgrader',
+              packageName: 'com.larryaasen.upgrader.2',
+              version: '1.9.9',
+              buildNumber: '400'));
+
+      await upgrader.didChangeAppLifecycleState(AppLifecycleState.resumed);
+      expect(upgrader.isUpdateAvailable(), true);
+
+      upgrader.installPackageInfo(
+          packageInfo: PackageInfo(
+              appName: 'Upgrader',
+              packageName: 'com.larryaasen.upgrader.3',
+              version: '1.9.9',
+              buildNumber: '400'));
+
+      await upgrader.didChangeAppLifecycleState(AppLifecycleState.resumed);
+      expect(upgrader.isUpdateAvailable(), false);
     });
-  }, skip: false);
+  });
 
   testWidgets('test installAppStoreListingURL', (WidgetTester tester) async {
     final upgrader = Upgrader();
@@ -185,6 +221,10 @@ void main() {
     expect(find.text('Upgrading'), findsOneWidget);
 
     // Pump the UI so the upgrader can display its dialog
+    await tester.pumpAndSettle();
+    await tester.pumpAndSettle();
+    await tester.pumpAndSettle();
+    await tester.pumpAndSettle();
     await tester.pumpAndSettle();
     await tester.pumpAndSettle();
 

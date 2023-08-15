@@ -33,10 +33,15 @@ typedef WillDisplayUpgradeCallback = void Function(
     String? installedVersion,
     String? appStoreVersion});
 
+
 /// Signature of callback for shouldBeBlocking. Includes
 ///  installedVersion, and storeVersion.
 typedef ShouldDialogBeBlockingCallback = bool Function(
     String? installedVersion, String? storeVersion);
+
+/// The type of data in the stream.
+typedef UpgraderEvaluateNeed = bool;
+
 
 /// There are two different dialog styles: Cupertino and Material
 enum UpgradeDialogStyle { cupertino, material }
@@ -58,7 +63,7 @@ class AppcastConfiguration {
 Upgrader _sharedInstance = Upgrader();
 
 /// A class to configure the upgrade dialog.
-class Upgrader {
+class Upgrader with WidgetsBindingObserver {
   /// Provide an Appcast that can be replaced for mock testing.
   final Appcast? appcast;
 
@@ -160,6 +165,15 @@ class Upgrader {
 
   /// Track the initialization future so that [initialize] can be called multiple times.
   Future<bool>? _futureInit;
+
+  /// A stream that provides a new value each time an evaluation should be performed.
+  /// The values will always be null or true.
+  Stream<UpgraderEvaluateNeed> get evaluationStream => _streamController.stream;
+  final _streamController = StreamController<UpgraderEvaluateNeed>.broadcast();
+
+  /// An evaluation should be performed.
+  bool get evaluationReady => _evaluationReady;
+  bool _evaluationReady = false;
 
   final notInitializedExceptionMessage =
       'initialize() not called. Must be called first.';
@@ -265,9 +279,39 @@ class Upgrader {
 
       await _updateVersionInfo();
 
+      // Add an observer of application events.
+      WidgetsBinding.instance.addObserver(this);
+
+      _evaluationReady = true;
+
+      /// Trigger the stream to indicate an evaluation should be performed.
+      /// The value will always be true.
+      _streamController.add(true);
+
       return true;
     });
     return _futureInit!;
+  }
+
+  /// Remove any resources allocated.
+  void dispose() {
+    // Remove the observer of application events.
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  /// Handle application events.
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    super.didChangeAppLifecycleState(state);
+
+    // When app has resumed from background.
+    if (state == AppLifecycleState.resumed) {
+      await _updateVersionInfo();
+
+      /// Trigger the stream to indicate another evaluation should be performed.
+      /// The value will always be true.
+      _streamController.add(true);
+    }
   }
 
   Future<bool> _updateVersionInfo() async {
@@ -308,8 +352,8 @@ class Upgrader {
           _isCriticalUpdate = false;
         }
 
-        _appStoreVersion ??= bestItem.versionString;
-        _appStoreListingURL ??= bestItem.fileURL;
+        _appStoreVersion = bestItem.versionString;
+        _appStoreListingURL = bestItem.fileURL;
         _releaseNotes = bestItem.itemDescription;
       }
     } else {
@@ -335,16 +379,16 @@ class Upgrader {
         await _getAndroidStoreVersion(country: country, language: language);
       } else if (upgraderOS.isIOS) {
         final iTunes = ITunesSearchAPI();
-        iTunes.debugEnabled = debugLogging;
+        iTunes.debugLogging = debugLogging;
         iTunes.client = client;
         final response = await (iTunes
             .lookupByBundleId(_packageInfo!.packageName, country: country));
 
         if (response != null) {
-          _appStoreVersion ??= ITunesResults.version(response);
-          _appStoreListingURL ??= ITunesResults.trackViewUrl(response);
-          _releaseNotes ??= ITunesResults.releaseNotes(response);
-          final mav = ITunesResults.minAppVersion(response);
+          _appStoreVersion = iTunes.version(response);
+          _appStoreListingURL = iTunes.trackViewUrl(response);
+          _releaseNotes ??= iTunes.releaseNotes(response);
+          final mav = iTunes.minAppVersion(response);
           if (mav != null) {
             minAppVersion = mav.toString();
             if (debugLogging) {
@@ -363,15 +407,15 @@ class Upgrader {
       {String? country, String? language}) async {
     final id = _packageInfo!.packageName;
     final playStore = PlayStoreSearchAPI(client: client);
-    playStore.debugEnabled = debugLogging;
+    playStore.debugLogging = debugLogging;
     final response =
         await (playStore.lookupById(id, country: country, language: language));
     if (response != null) {
-      _appStoreVersion ??= PlayStoreResults.version(response);
+      _appStoreVersion ??= playStore.version(response);
       _appStoreListingURL ??=
           playStore.lookupURLById(id, language: language, country: country);
-      _releaseNotes ??= PlayStoreResults.releaseNotes(response);
-      final mav = PlayStoreResults.minAppVersion(response);
+      _releaseNotes ??= playStore.releaseNotes(response);
+      final mav = playStore.minAppVersion(response);
       if (mav != null) {
         minAppVersion = mav.toString();
         if (debugLogging) {
@@ -431,7 +475,8 @@ class Upgrader {
     return msg;
   }
 
-  /// Only called by [UpgradeAlert].
+  /// Will show the alert dialog when it should be dispalyed.
+  /// Only called by [UpgradeAlert] and not used by [UpgradeCard].
   void checkVersion({required BuildContext context}) {
     if (!_displayed) {
       final shouldDisplay = shouldDisplayUpgrade();
@@ -510,7 +555,9 @@ class Upgrader {
         final installedVersion = Version.parse(_installedVersion!);
         rv = installedVersion < minVersion;
       } catch (e) {
-        print(e);
+        if (debugLogging) {
+          print(e);
+        }
       }
     }
     return rv;
@@ -549,14 +596,14 @@ class Upgrader {
       return false;
     }
 
-    if (_updateAvailable == null) {
-      try {
-        final appStoreVersion = Version.parse(_appStoreVersion!);
-        final installedVersion = Version.parse(_installedVersion!);
+    try {
+      final appStoreVersion = Version.parse(_appStoreVersion!);
+      final installedVersion = Version.parse(_installedVersion!);
 
-        final available = appStoreVersion > installedVersion;
-        _updateAvailable = available ? _appStoreVersion : null;
-      } on Exception catch (e) {
+      final available = appStoreVersion > installedVersion;
+      _updateAvailable = available ? _appStoreVersion : null;
+    } on Exception catch (e) {
+      if (debugLogging) {
         print('upgrader: isUpdateAvailable: $e');
       }
     }
