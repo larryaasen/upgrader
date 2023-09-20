@@ -189,6 +189,7 @@ class Upgrader with WidgetsBindingObserver {
     this.onUpdate,
     this.shouldPopScope,
     this.willDisplayUpgrade,
+    this.onDisplayUpgrade,
     http.Client? client,
     this.showIgnore = true,
     this.showLater = true,
