@@ -128,6 +128,9 @@ class Upgrader with WidgetsBindingObserver {
   /// [UpgradeDialogStyle.cupertino]. Optional.
   TextStyle? cupertinoButtonTextStyle;
 
+  /// The button style for the text dialog buttons. Optional.
+  ButtonStyle? buttonStyle;
+
   /// Called when [Upgrader] determines that an upgrade may or may not be
   /// displayed. The [value] parameter will be true when it should be displayed,
   /// and false when it should not be displayed. One good use for this callback
@@ -190,6 +193,7 @@ class Upgrader with WidgetsBindingObserver {
     this.minAppVersion,
     this.dialogStyle = UpgradeDialogStyle.material,
     this.cupertinoButtonTextStyle,
+    this.buttonStyle,
     UpgraderOS? upgraderOS,
   })  : client = client ?? http.Client(),
         messages = messages ?? UpgraderMessages(),
@@ -704,37 +708,32 @@ class Upgrader with WidgetsBindingObserver {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text(message),
-            Padding(
-                padding: const EdgeInsets.only(top: 15.0),
-                child: Text(messages.message(UpgraderMessage.prompt) ?? '')),
+            Padding(padding: const EdgeInsets.only(top: 15.0), child: Text(messages.message(UpgraderMessage.prompt) ?? '')),
             if (notes != null) notes,
           ],
         )));
     final actions = <Widget>[
-      if (showIgnore)
-        _button(cupertino, messages.message(UpgraderMessage.buttonTitleIgnore),
-            context, () => onUserIgnored(context, true)),
-      if (showLater)
-        _button(cupertino, messages.message(UpgraderMessage.buttonTitleLater),
-            context, () => onUserLater(context, true)),
-      _button(cupertino, messages.message(UpgraderMessage.buttonTitleUpdate),
-          context, () => onUserUpdated(context, !blocked())),
+      if (showIgnore) _button(cupertino, messages.message(UpgraderMessage.buttonTitleIgnore), context, () => onUserIgnored(context, true)),
+      if (showLater) _button(cupertino, messages.message(UpgraderMessage.buttonTitleLater), context, () => onUserLater(context, true)),
+      _button(cupertino, messages.message(UpgraderMessage.buttonTitleUpdate), context, () => onUserUpdated(context, !blocked())),
     ];
 
     return cupertino
-        ? CupertinoAlertDialog(
-            title: textTitle, content: content, actions: actions)
-        : AlertDialog(title: textTitle, content: content, actions: actions);
+        ? CupertinoAlertDialog(title: textTitle, content: content, actions: actions)
+        : AlertDialog(
+            title: textTitle,
+            content: content,
+            actions: actions,
+            // actionsAlignment: MainAxisAlignment.spaceEvenly,
+          );
   }
 
-  Widget _button(bool cupertino, String? text, BuildContext context,
-      VoidCallback? onPressed) {
-    return cupertino
-        ? CupertinoDialogAction(
-            textStyle: cupertinoButtonTextStyle,
-            onPressed: onPressed,
-            child: Text(text ?? ''))
-        : TextButton(onPressed: onPressed, child: Text(text ?? ''));
+  Widget _button(bool cupertino, String? text, BuildContext context, VoidCallback? onPressed) {
+    if (cupertino) {
+      return CupertinoDialogAction(textStyle: cupertinoButtonTextStyle, onPressed: onPressed, child: Text(text ?? ''));
+    }
+
+    return TextButton(onPressed: onPressed, child: Text(text ?? ''), style: buttonStyle);
   }
 
   void onUserIgnored(BuildContext context, bool shouldPop) {
