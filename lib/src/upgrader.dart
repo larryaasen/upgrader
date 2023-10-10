@@ -128,6 +128,9 @@ class Upgrader with WidgetsBindingObserver {
   /// [UpgradeDialogStyle.cupertino]. Optional.
   TextStyle? cupertinoButtonTextStyle;
 
+  /// The alignment for the action buttons. Optional.
+  MainAxisAlignment? buttonsAlignment;
+
   /// Called when [Upgrader] determines that an upgrade may or may not be
   /// displayed. The [value] parameter will be true when it should be displayed,
   /// and false when it should not be displayed. One good use for this callback
@@ -190,6 +193,7 @@ class Upgrader with WidgetsBindingObserver {
     this.minAppVersion,
     this.dialogStyle = UpgradeDialogStyle.material,
     this.cupertinoButtonTextStyle,
+    this.buttonsAlignment,
     UpgraderOS? upgraderOS,
   })  : client = client ?? http.Client(),
         messages = messages ?? UpgraderMessages(),
@@ -721,10 +725,15 @@ class Upgrader with WidgetsBindingObserver {
           context, () => onUserUpdated(context, !blocked())),
     ];
 
-    return cupertino
-        ? CupertinoAlertDialog(
-            title: textTitle, content: content, actions: actions)
-        : AlertDialog(title: textTitle, content: content, actions: actions);
+    if (cupertino) {
+      return CupertinoAlertDialog(title: textTitle, content: content, actions: actions);
+    }
+
+    return AlertDialog(
+      title: textTitle,
+      content: content,
+      actions: actions,
+      actionsAlignment: buttonsAlignment);
   }
 
   Widget _button(bool cupertino, String? text, BuildContext context,
