@@ -1,3 +1,7 @@
+## 8.2.0
+
+- [336] Changed the device_info_plus dependency version from ^9.0.1 to any which now allows for older versions.
+
 ## 8.1.0
 
 - Fixed issue #312 when multiple instances of UpgradeAlert or UpgradeCard were used and the stream had already been listened to.
