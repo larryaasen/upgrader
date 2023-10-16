@@ -10,9 +10,17 @@ class UpgradeAlert extends UpgradeBase {
   /// The [child] contained by the widget.
   final Widget? child;
 
+  //A widget for showing the dialog's content (should include the Title and the Message)
+  final Content? content;
+
   /// Creates a new [UpgradeAlert].
-  UpgradeAlert({Key? key, Upgrader? upgrader, this.child, this.navigatorKey})
-      : super(upgrader ?? Upgrader.sharedInstance, key: key);
+  UpgradeAlert({
+    Key? key,
+    Upgrader? upgrader,
+    this.child,
+    this.navigatorKey,
+    this.content,
+  }) : super(upgrader ?? Upgrader.sharedInstance, key: key);
 
   /// For use by the Router architecture as part of the RouterDelegate.
   final GlobalKey<NavigatorState>? navigatorKey;
@@ -41,7 +49,7 @@ class UpgradeAlert extends UpgradeBase {
               navigatorKey != null && navigatorKey!.currentContext != null
                   ? navigatorKey!.currentContext!
                   : context;
-          upgrader.checkVersion(context: checkContext);
+          upgrader.checkVersion(context: checkContext, content: content);
         }
         return child ?? const SizedBox.shrink();
       },

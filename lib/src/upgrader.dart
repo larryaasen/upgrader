@@ -22,6 +22,9 @@ import 'upgrade_messages.dart';
 /// Signature of callbacks that have no arguments and return bool.
 typedef BoolCallback = bool Function();
 
+typedef Content = Widget Function(
+    String appName, String appStoreVersion, String appInstalledVersion);
+
 /// Signature of callbacks that have a bool argument and no return.
 typedef VoidBoolCallback = void Function(bool value);
 
@@ -465,22 +468,25 @@ class Upgrader with WidgetsBindingObserver {
 
   /// Will show the alert dialog when it should be dispalyed.
   /// Only called by [UpgradeAlert] and not used by [UpgradeCard].
-  void checkVersion({required BuildContext context}) {
+  void checkVersion({required BuildContext context, Content? content}) {
     if (!_displayed) {
       final shouldDisplay = shouldDisplayUpgrade();
       if (debugLogging) {
         print(
             'upgrader: shouldDisplayReleaseNotes: ${shouldDisplayReleaseNotes()}');
+        print('upgrader: A content was passed: ${content != null}');
       }
       if (shouldDisplay) {
         _displayed = true;
         Future.delayed(const Duration(milliseconds: 0), () {
           _showDialog(
-              context: context,
-              title: messages.message(UpgraderMessage.title),
-              message: message(),
-              releaseNotes: shouldDisplayReleaseNotes() ? _releaseNotes : null,
-              canDismissDialog: canDismissDialog);
+            context: context,
+            title: messages.message(UpgraderMessage.title),
+            message: message(),
+            releaseNotes: shouldDisplayReleaseNotes() ? _releaseNotes : null,
+            canDismissDialog: canDismissDialog,
+            content: content,
+          );
         });
       }
     }
@@ -634,12 +640,14 @@ class Upgrader with WidgetsBindingObserver {
     return code;
   }
 
-  void _showDialog(
-      {required BuildContext context,
-      required String? title,
-      required String message,
-      required String? releaseNotes,
-      required bool canDismissDialog}) {
+  void _showDialog({
+    required BuildContext context,
+    required String? title,
+    required String message,
+    required String? releaseNotes,
+    required bool canDismissDialog,
+    Content? content,
+  }) {
     if (debugLogging) {
       print('upgrader: showDialog title: $title');
       print('upgrader: showDialog message: $message');
@@ -649,14 +657,25 @@ class Upgrader with WidgetsBindingObserver {
     // Save the date/time as the last time alerted.
     saveLastAlerted();
 
+    Widget? dialogContent;
+
+    if (content != null) {
+      dialogContent = content(
+        appName(),
+        _appStoreVersion!,
+        _installedVersion!,
+      );
+    }
+
     showDialog(
       barrierDismissible: canDismissDialog,
       context: context,
       builder: (BuildContext context) {
         return WillPopScope(
             onWillPop: () async => _shouldPopScope(),
-            child: _alertDialog(title ?? '', message, releaseNotes, context,
-                dialogStyle == UpgradeDialogStyle.cupertino));
+            child: dialogContent ??
+                _alertDialog(title ?? '', message, releaseNotes, context,
+                    dialogStyle == UpgradeDialogStyle.cupertino));
       },
     );
   }

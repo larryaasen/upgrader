@@ -26,11 +26,51 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Upgrader Example',
-      home: UpgradeAlert(
-          child: Scaffold(
-        appBar: AppBar(title: Text('Upgrader Example')),
-        body: Center(child: Text('Checking...')),
-      )),
+      home: Builder(
+        builder: (context) {
+          return UpgradeAlert(
+            upgrader: Upgrader(
+              canDismissDialog: false,
+              durationUntilAlertAgain: Duration(seconds: 30),
+              debugDisplayAlways: true,
+            ),
+            content: (
+              String appName,
+              String appStoreVersion,
+              String appInstalledVersion,
+            ) {
+              return Container(
+                color: Colors.green,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Text(appName),
+                      SizedBox(height: 12),
+                      Text(appStoreVersion),
+                      SizedBox(height: 12),
+                      Text(appInstalledVersion),
+                    ],
+                  ),
+                ),
+              );
+            },
+            child: Scaffold(
+              appBar: AppBar(title: Text('Upgrader Example')),
+              body: Center(child: Text('Checking...')),
+            ),
+          );
+        },
+      ),
     );
+  }
+}
+
+class DialogContent extends StatelessWidget {
+  const DialogContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }
