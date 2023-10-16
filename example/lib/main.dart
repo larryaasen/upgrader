@@ -42,8 +42,13 @@ class MyApp extends StatelessWidget {
               );
             },
             child: Scaffold(
-              appBar: AppBar(title: Text('Upgrader Example')),
-              body: Center(child: Text('Checking...')),
+              backgroundColor: Colors.white,
+              appBar: AppBar(
+                title: Text('Upgrader Example'),
+              ),
+              body: Center(
+                child: Text('Checking...'),
+              ),
             ),
           );
         },
@@ -66,20 +71,37 @@ class DialogContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('built');
     return Material(
-      child: Container(
-        color: Colors.red,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(appName),
-              SizedBox(height: 12),
-              Text(appStoreVersion),
-              SizedBox(height: 12),
-              Text(appInstalledVersion),
-            ],
+      color: Colors.white,
+      child: Center(
+        heightFactor: 1,
+        widthFactor: 1,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: 120,
+            minWidth: 120,
+          ),
+          child: Card(
+            color: Colors.red,
+            elevation: 4,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(appName),
+                  SizedBox(height: 12),
+                  Text(appStoreVersion),
+                  SizedBox(height: 12),
+                  Text(appInstalledVersion),
+                  TextButton(
+                    onPressed: Navigator.of(context).pop,
+                    child: Text('Close'),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),
