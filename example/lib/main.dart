@@ -103,7 +103,7 @@ class ExampleDialogContent extends StatelessWidget {
           minWidth: 120,
         ),
         child: Card(
-          color: Colors.red,
+          color: Colors.green,
           // elevation: 4,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
