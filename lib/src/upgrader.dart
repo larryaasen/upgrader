@@ -23,7 +23,11 @@ import 'upgrade_messages.dart';
 typedef BoolCallback = bool Function();
 
 typedef Content = Widget Function(
-    String appName, String appStoreVersion, String appInstalledVersion);
+  String appName,
+  String appStoreVersion,
+  String appInstalledVersion,
+  VoidCallback onUpdate,
+);
 
 /// Signature of callbacks that have a bool argument and no return.
 typedef VoidBoolCallback = void Function(bool value);
@@ -678,6 +682,9 @@ class Upgrader with WidgetsBindingObserver {
         appName(),
         _appStoreVersion!,
         _installedVersion!,
+        () {
+          onUserUpdated(context, !blocked());
+        },
       );
     }
 

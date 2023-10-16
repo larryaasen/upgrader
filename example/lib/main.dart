@@ -52,11 +52,17 @@ class _PageWithAlertState extends State<PageWithAlert> {
     return UpgradeAlert(
       barrierColor: Colors.black26,
       upgrader: upgrader,
-      content: (appName, appStoreVersion, appInstalledVersion) {
+      content: (
+        appName,
+        appStoreVersion,
+        appInstalledVersion,
+        VoidCallback onUpdate,
+      ) {
         return ExampleDialogContent(
           appName: appName,
           appStoreVersion: appStoreVersion,
           appInstalledVersion: appInstalledVersion,
+          onUpdate: onUpdate,
         );
       },
       child: Scaffold(
@@ -78,11 +84,13 @@ class ExampleDialogContent extends StatelessWidget {
     required this.appName,
     required this.appStoreVersion,
     required this.appInstalledVersion,
+    required this.onUpdate,
   });
 
   final String appName;
   final String appStoreVersion;
   final String appInstalledVersion;
+  final VoidCallback onUpdate;
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +103,7 @@ class ExampleDialogContent extends StatelessWidget {
           minWidth: 120,
         ),
         child: Card(
-          color: Colors.red,
+          color: Colors.green,
           // elevation: 4,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -107,10 +115,7 @@ class ExampleDialogContent extends StatelessWidget {
                 Text(appStoreVersion),
                 SizedBox(height: 12),
                 Text(appInstalledVersion),
-                TextButton(
-                  onPressed: Navigator.of(context).pop,
-                  child: Text('Close'),
-                ),
+                TextButton(onPressed: onUpdate, child: Text('Update')),
               ],
             ),
           ),
