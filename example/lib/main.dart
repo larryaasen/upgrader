@@ -73,7 +73,7 @@ class DialogContent extends StatelessWidget {
   Widget build(BuildContext context) {
     print('built');
     return Material(
-      color: Colors.white,
+      color: Colors.transparent,
       child: Center(
         heightFactor: 1,
         widthFactor: 1,

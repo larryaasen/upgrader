@@ -13,6 +13,9 @@ class UpgradeAlert extends UpgradeBase {
   //A widget for showing the dialog's content (should include the Title and the Message)
   final Content? content;
 
+  /// The color of the modal barrier that darkens everything below the dialog.
+  final Color? barrierColor;
+
   /// Creates a new [UpgradeAlert].
   UpgradeAlert({
     Key? key,
@@ -49,7 +52,11 @@ class UpgradeAlert extends UpgradeBase {
               navigatorKey != null && navigatorKey!.currentContext != null
                   ? navigatorKey!.currentContext!
                   : context;
-          upgrader.checkVersion(context: checkContext, content: content);
+          upgrader.checkVersion(
+            context: checkContext,
+            content: content,
+            barrierColor: barrierColor,
+          );
         }
         return child ?? const SizedBox.shrink();
       },

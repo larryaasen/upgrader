@@ -468,7 +468,11 @@ class Upgrader with WidgetsBindingObserver {
 
   /// Will show the alert dialog when it should be dispalyed.
   /// Only called by [UpgradeAlert] and not used by [UpgradeCard].
-  void checkVersion({required BuildContext context, Content? content}) async {
+  void checkVersion({
+    required BuildContext context,
+    Content? content,
+    Color? barrierColor,
+  }) async {
     if (!_displayed) {
       final shouldDisplay = shouldDisplayUpgrade();
       if (debugLogging) {
@@ -489,6 +493,7 @@ class Upgrader with WidgetsBindingObserver {
         Future.delayed(const Duration(milliseconds: 0), () {
           _showDialog(
             context: context,
+            barrierColor: barrierColor,
             title: messages.message(UpgraderMessage.title),
             message: message(),
             releaseNotes: shouldDisplayReleaseNotes() ? _releaseNotes : null,
@@ -654,6 +659,7 @@ class Upgrader with WidgetsBindingObserver {
     required String message,
     required String? releaseNotes,
     required bool canDismissDialog,
+    Color? barrierColor,
     Content? content,
   }) {
     if (debugLogging) {
@@ -678,6 +684,7 @@ class Upgrader with WidgetsBindingObserver {
     showDialog(
       barrierDismissible: canDismissDialog,
       context: context,
+      barrierColor: barrierColor,
       builder: (BuildContext context) {
         return WillPopScope(
             onWillPop: () async => _shouldPopScope(),
