@@ -34,25 +34,11 @@ class MyApp extends StatelessWidget {
               durationUntilAlertAgain: Duration(seconds: 30),
               debugDisplayAlways: true,
             ),
-            content: (
-              String appName,
-              String appStoreVersion,
-              String appInstalledVersion,
-            ) {
-              return Container(
-                color: Colors.green,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Text(appName),
-                      SizedBox(height: 12),
-                      Text(appStoreVersion),
-                      SizedBox(height: 12),
-                      Text(appInstalledVersion),
-                    ],
-                  ),
-                ),
+            content: (appName, appStoreVersion, appInstalledVersion) {
+              return DialogContent(
+                appName: appName,
+                appStoreVersion: appStoreVersion,
+                appInstalledVersion: appInstalledVersion,
               );
             },
             child: Scaffold(
@@ -67,10 +53,36 @@ class MyApp extends StatelessWidget {
 }
 
 class DialogContent extends StatelessWidget {
-  const DialogContent({super.key});
+  const DialogContent({
+    super.key,
+    required this.appName,
+    required this.appStoreVersion,
+    required this.appInstalledVersion,
+  });
+
+  final String appName;
+  final String appStoreVersion;
+  final String appInstalledVersion;
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Material(
+      child: Container(
+        color: Colors.red,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(appName),
+              SizedBox(height: 12),
+              Text(appStoreVersion),
+              SizedBox(height: 12),
+              Text(appInstalledVersion),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

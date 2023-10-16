@@ -468,7 +468,7 @@ class Upgrader with WidgetsBindingObserver {
 
   /// Will show the alert dialog when it should be dispalyed.
   /// Only called by [UpgradeAlert] and not used by [UpgradeCard].
-  void checkVersion({required BuildContext context, Content? content}) {
+  void checkVersion({required BuildContext context, Content? content}) async {
     if (!_displayed) {
       final shouldDisplay = shouldDisplayUpgrade();
       if (debugLogging) {
@@ -478,6 +478,14 @@ class Upgrader with WidgetsBindingObserver {
       }
       if (shouldDisplay) {
         _displayed = true;
+        if (!_initCalled) {
+          final success = await initialize();
+          if (!success) {
+            _displayed = false;
+            print('upgrader: initialize failed');
+            return;
+          }
+        }
         Future.delayed(const Duration(milliseconds: 0), () {
           _showDialog(
             context: context,
