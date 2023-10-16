@@ -1,3 +1,7 @@
+## 8.3.0
+
+- Added an optional parameter for showing a custom content widget.
+
 ## 8.2.0
 
 - [336] Changed the device_info_plus dependency version from ^9.0.1 to any which now allows for older versions.
