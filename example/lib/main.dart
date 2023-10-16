@@ -16,7 +16,7 @@ void main() async {
   // On iOS, the default behavior will be to use the App Store version of
   // the app, so update the Bundle Identifier in example/ios/Runner with a
   // valid identifier already in the App Store.
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -26,39 +26,54 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Upgrader Example',
-      home: Builder(
-        builder: (context) {
-          return UpgradeAlert(
-            upgrader: Upgrader(
-              canDismissDialog: false,
-              durationUntilAlertAgain: Duration(seconds: 30),
-              debugDisplayAlways: true,
-            ),
-            content: (appName, appStoreVersion, appInstalledVersion) {
-              return DialogContent(
-                appName: appName,
-                appStoreVersion: appStoreVersion,
-                appInstalledVersion: appInstalledVersion,
-              );
-            },
-            child: Scaffold(
-              backgroundColor: Colors.white,
-              appBar: AppBar(
-                title: Text('Upgrader Example'),
-              ),
-              body: Center(
-                child: Text('Checking...'),
-              ),
-            ),
-          );
-        },
+      home: const PageWithAlert(),
+    );
+  }
+}
+
+class PageWithAlert extends StatefulWidget {
+  const PageWithAlert({
+    super.key,
+  });
+
+  @override
+  State<PageWithAlert> createState() => _PageWithAlertState();
+}
+
+class _PageWithAlertState extends State<PageWithAlert> {
+  final upgrader = Upgrader(
+    canDismissDialog: false,
+    durationUntilAlertAgain: Duration(seconds: 30),
+    debugDisplayAlways: true,
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return UpgradeAlert(
+      barrierColor: Colors.black26,
+      upgrader: upgrader,
+      content: (appName, appStoreVersion, appInstalledVersion) {
+        return ExampleDialogContent(
+          appName: appName,
+          appStoreVersion: appStoreVersion,
+          appInstalledVersion: appInstalledVersion,
+        );
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          title: Text('Upgrader Example'),
+        ),
+        body: Center(
+          child: Text('Checking...'),
+        ),
       ),
     );
   }
 }
 
-class DialogContent extends StatelessWidget {
-  const DialogContent({
+class ExampleDialogContent extends StatelessWidget {
+  const ExampleDialogContent({
     super.key,
     required this.appName,
     required this.appStoreVersion,
@@ -71,36 +86,32 @@ class DialogContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('built');
-    return Material(
-      color: Colors.transparent,
-      child: Center(
-        heightFactor: 1,
-        widthFactor: 1,
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            minHeight: 120,
-            minWidth: 120,
-          ),
-          child: Card(
-            color: Colors.red,
-            elevation: 4,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(appName),
-                  SizedBox(height: 12),
-                  Text(appStoreVersion),
-                  SizedBox(height: 12),
-                  Text(appInstalledVersion),
-                  TextButton(
-                    onPressed: Navigator.of(context).pop,
-                    child: Text('Close'),
-                  ),
-                ],
-              ),
+    return Center(
+      heightFactor: 1,
+      widthFactor: 1,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minHeight: 120,
+          minWidth: 120,
+        ),
+        child: Card(
+          color: Colors.red,
+          // elevation: 4,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(appName),
+                SizedBox(height: 12),
+                Text(appStoreVersion),
+                SizedBox(height: 12),
+                Text(appInstalledVersion),
+                TextButton(
+                  onPressed: Navigator.of(context).pop,
+                  child: Text('Close'),
+                ),
+              ],
             ),
           ),
         ),

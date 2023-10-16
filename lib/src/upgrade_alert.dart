@@ -23,6 +23,7 @@ class UpgradeAlert extends UpgradeBase {
     this.child,
     this.navigatorKey,
     this.content,
+    this.barrierColor,
   }) : super(upgrader ?? Upgrader.sharedInstance, key: key);
 
   /// For use by the Router architecture as part of the RouterDelegate.
