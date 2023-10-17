@@ -1,6 +1,10 @@
+## 8.4.0
+
+- [3] Force the requests to the stores URLs
+
 ## 8.3.0
 
-- Added an optional parameter for showing a custom content widget.
+- [2] Added an optional parameter for showing a custom content widget.
 
 ## 8.2.0
 
