@@ -1,3 +1,7 @@
+## 8.5.0
+
+- [4] Force the requests to the stores URLs
+
 ## 8.4.0
 
 - [3] Force the requests to the stores URLs

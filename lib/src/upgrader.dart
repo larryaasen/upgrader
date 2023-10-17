@@ -476,6 +476,7 @@ class Upgrader with WidgetsBindingObserver {
     required BuildContext context,
     Content? content,
     Color? barrierColor,
+    bool useSafeArea = true,
   }) async {
     if (!_displayed) {
       final shouldDisplay = shouldDisplayUpgrade();
@@ -503,6 +504,7 @@ class Upgrader with WidgetsBindingObserver {
             releaseNotes: shouldDisplayReleaseNotes() ? _releaseNotes : null,
             canDismissDialog: canDismissDialog,
             content: content,
+            useSafeArea: useSafeArea,
           );
         });
       }
@@ -664,6 +666,7 @@ class Upgrader with WidgetsBindingObserver {
     required String? releaseNotes,
     required bool canDismissDialog,
     Color? barrierColor,
+    bool useSafeArea = true,
     Content? content,
   }) {
     if (debugLogging) {
@@ -692,6 +695,7 @@ class Upgrader with WidgetsBindingObserver {
       barrierDismissible: canDismissDialog,
       context: context,
       barrierColor: barrierColor,
+      useSafeArea: useSafeArea,
       builder: (BuildContext context) {
         return WillPopScope(
             onWillPop: () async => _shouldPopScope(),

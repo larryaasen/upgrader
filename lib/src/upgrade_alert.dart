@@ -16,6 +16,9 @@ class UpgradeAlert extends UpgradeBase {
   /// The color of the modal barrier that darkens everything below the dialog.
   final Color? barrierColor;
 
+  /// Whether to use the safe area of the device.
+  final bool useSafeArea;
+
   /// Creates a new [UpgradeAlert].
   UpgradeAlert({
     Key? key,
@@ -24,6 +27,7 @@ class UpgradeAlert extends UpgradeBase {
     this.navigatorKey,
     this.content,
     this.barrierColor,
+    this.useSafeArea = true,
   }) : super(upgrader ?? Upgrader.sharedInstance, key: key);
 
   /// For use by the Router architecture as part of the RouterDelegate.
@@ -57,6 +61,7 @@ class UpgradeAlert extends UpgradeBase {
             context: checkContext,
             content: content,
             barrierColor: barrierColor,
+            useSafeArea: useSafeArea,
           );
         }
         return child ?? const SizedBox.shrink();

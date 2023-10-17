@@ -50,21 +50,22 @@ class _PageWithAlertState extends State<PageWithAlert> {
   @override
   Widget build(BuildContext context) {
     return UpgradeAlert(
-      barrierColor: Colors.black26,
+      barrierColor: Colors.green,
       upgrader: upgrader,
-      content: (
-        appName,
-        appStoreVersion,
-        appInstalledVersion,
-        VoidCallback onUpdate,
-      ) {
-        return ExampleDialogContent(
-          appName: appName,
-          appStoreVersion: appStoreVersion,
-          appInstalledVersion: appInstalledVersion,
-          onUpdate: onUpdate,
-        );
-      },
+      useSafeArea: false,
+      // content: (
+      //   appName,
+      //   appStoreVersion,
+      //   appInstalledVersion,
+      //   VoidCallback onUpdate,
+      // ) {
+      //   return ExampleDialogContent(
+      //     appName: appName,
+      //     appStoreVersion: appStoreVersion,
+      //     appInstalledVersion: appInstalledVersion,
+      //     onUpdate: onUpdate,
+      //   );
+      // },
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
