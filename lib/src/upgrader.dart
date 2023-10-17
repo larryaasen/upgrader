@@ -896,17 +896,17 @@ class Upgrader with WidgetsBindingObserver {
       print('upgrader: launching: $_appStoreListingURL');
     }
 
-    if (await canLaunchUrl(Uri.parse(_appStoreListingURL!))) {
-      try {
-        await launchUrl(Uri.parse(_appStoreListingURL!),
-            mode: upgraderOS.isAndroid
-                ? LaunchMode.externalNonBrowserApplication
-                : LaunchMode.platformDefault);
-      } catch (e) {
-        if (debugLogging) {
-          print('upgrader: launch to app store failed: $e');
-        }
+    try {
+      await launchUrl(
+        Uri.parse(_appStoreListingURL!),
+        mode: upgraderOS.isAndroid
+            ? LaunchMode.externalNonBrowserApplication
+            : LaunchMode.platformDefault,
+      );
+    } catch (e) {
+      if (debugLogging) {
+        print('upgrader: launch to app store failed: $e');
       }
-    } else {}
+    }
   }
 }
