@@ -1,3 +1,7 @@
+## 8.8.0
+
+- [8] Fixes the bug when closing externally the dialog
+
 ## 8.7.0
 
 - [7] Exposes a function to close the dialog
