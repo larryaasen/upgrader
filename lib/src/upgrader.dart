@@ -866,6 +866,7 @@ class Upgrader with WidgetsBindingObserver {
         Navigator.of(_context!).removeRoute(_route!);
         _route = null;
         _context = null;
+        _displayed = false;
       }
       return;
     }
