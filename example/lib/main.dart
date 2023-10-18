@@ -75,9 +75,19 @@ class _PageWithAlertState extends State<PageWithAlert> {
                 children: [
                   Text('HAHA'),
                   ElevatedButton(
-                    onPressed: () => Navigator.of(context).removeRoute(
-                      _dialogRoute!,
+                    onPressed: Navigator.of(context).pop,
+                    child: Text(
+                      'Close this dialog',
                     ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (_dialogRoute != null) {
+                        Navigator.of(context).removeRoute(
+                          _dialogRoute!,
+                        );
+                      }
+                    },
                     child: Text(
                       'Close Upgrade dialog',
                     ),
