@@ -61,7 +61,7 @@ void main() {
       try {
         expect(upgrader.appName(), 'Upgrader');
       } catch (e) {
-        expect(e, upgrader.notInitializedExceptionMessage);
+        expect(e, Upgrader.notInitializedExceptionMessage);
       }
 
       upgrader.installPackageInfo(packageInfo: packageInfo);
@@ -94,7 +94,7 @@ void main() {
       try {
         expect(upgrader.appName(), 'Upgrader');
       } catch (e) {
-        expect(e, upgrader.notInitializedExceptionMessage);
+        expect(e, Upgrader.notInitializedExceptionMessage);
       }
 
       upgrader.installPackageInfo(

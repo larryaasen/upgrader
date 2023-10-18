@@ -144,8 +144,12 @@ class Upgrader with WidgetsBindingObserver {
   /// Provides information on which OS this code is running on.
   final UpgraderOS upgraderOS;
 
+  Route<dynamic>? _route;
+  BuildContext? _context;
+
   bool _displayed = false;
   bool _initCalled = false;
+
   PackageInfo? _packageInfo;
 
   String? _installedVersion;
@@ -171,7 +175,7 @@ class Upgrader with WidgetsBindingObserver {
   bool get evaluationReady => _evaluationReady;
   bool _evaluationReady = false;
 
-  final notInitializedExceptionMessage =
+  static const notInitializedExceptionMessage =
       'initialize() not called. Must be called first.';
 
   Upgrader({
@@ -477,7 +481,6 @@ class Upgrader with WidgetsBindingObserver {
     Content? content,
     Color? barrierColor,
     bool useSafeArea = true,
-    void Function(Route<dynamic>)? onGenerateRoute,
   }) async {
     if (!_displayed) {
       final shouldDisplay = shouldDisplayUpgrade();
@@ -506,7 +509,6 @@ class Upgrader with WidgetsBindingObserver {
             canDismissDialog: canDismissDialog,
             content: content,
             useSafeArea: useSafeArea,
-            onGenerateRoute: onGenerateRoute,
           );
         });
       }
@@ -670,7 +672,6 @@ class Upgrader with WidgetsBindingObserver {
     Color? barrierColor,
     bool useSafeArea = true,
     Content? content,
-    final void Function(Route<dynamic>)? onGenerateRoute,
   }) {
     if (debugLogging) {
       print('upgrader: showDialog title: $title');
@@ -711,7 +712,8 @@ class Upgrader with WidgetsBindingObserver {
 
     Navigator.of(context).push(route);
 
-    onGenerateRoute?.call(route);
+    _route = route;
+    _context = context;
   }
 
   /// Called when the user taps outside of the dialog and [canDismissDialog]
@@ -806,7 +808,7 @@ class Upgrader with WidgetsBindingObserver {
     }
 
     if (shouldPop) {
-      popNavigator(context);
+      popNavigator(context: context);
     }
   }
 
@@ -824,7 +826,7 @@ class Upgrader with WidgetsBindingObserver {
     if (doProcess) {}
 
     if (shouldPop) {
-      popNavigator(context);
+      popNavigator(context: context);
     }
   }
 
@@ -844,7 +846,7 @@ class Upgrader with WidgetsBindingObserver {
     }
 
     if (shouldPop) {
-      popNavigator(context);
+      popNavigator(context: context);
     }
   }
 
@@ -857,7 +859,16 @@ class Upgrader with WidgetsBindingObserver {
     return;
   }
 
-  void popNavigator(BuildContext context) {
+  /// If the context is not passed, then the saved route and context values are used to removed the dialog from the pages stack.
+  void popNavigator({BuildContext? context}) {
+    if (context == null) {
+      if (_route != null && _context != null) {
+        Navigator.of(_context!).removeRoute(_route!);
+        _route = null;
+        _context = null;
+      }
+      return;
+    }
     Navigator.of(context).pop();
     _displayed = false;
   }

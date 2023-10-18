@@ -42,8 +42,8 @@ class MyUpgrader extends Upgrader {
 
   /// This method overrides super class method.
   @override
-  void popNavigator(BuildContext context) {
+  void popNavigator({BuildContext? context}) {
     print('this method overrides popNavigator');
-    super.popNavigator(context);
+    super.popNavigator(context: context);
   }
 }

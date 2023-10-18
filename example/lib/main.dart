@@ -49,56 +49,48 @@ class _PageWithAlertState extends State<PageWithAlert> {
     durationUntilAlertAgain: Duration(minutes: 1),
   );
 
-  Route<dynamic>? _dialogRoute;
-
   @override
   void initState() {
     showsDialog();
     super.initState();
   }
 
-  void showsDialog() async {
-    await Future.delayed(Duration(seconds: 2));
-
-    await showDialog(
-      context: context,
-      builder: (_) => Center(
-        heightFactor: 1,
-        widthFactor: 1,
-        child: Material(
-          child: Container(
-            color: Colors.amber,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text('HAHA'),
-                  ElevatedButton(
-                    onPressed: Navigator.of(context).pop,
-                    child: Text(
-                      'Close this dialog',
+  void showsDialog() {
+    Future.delayed(Duration(seconds: 3)).then((_) async {
+      await showDialog(
+        context: context,
+        builder: (_) => Center(
+          heightFactor: 1,
+          widthFactor: 1,
+          child: Material(
+            child: Container(
+              color: Colors.amber,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('HAHA'),
+                    ElevatedButton(
+                      onPressed: Navigator.of(context).pop,
+                      child: Text(
+                        'Close this dialog',
+                      ),
                     ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (_dialogRoute != null) {
-                        Navigator.of(context).removeRoute(
-                          _dialogRoute!,
-                        );
-                      }
-                    },
-                    child: Text(
-                      'Close Upgrade dialog',
+                    ElevatedButton(
+                      onPressed: upgrader.popNavigator,
+                      child: Text(
+                        'Close Upgrade dialog',
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   void closeDialogByName(String routeName) {
@@ -112,10 +104,6 @@ class _PageWithAlertState extends State<PageWithAlert> {
     return UpgradeAlert(
       upgrader: upgrader,
       useSafeArea: false,
-      onGenerateRoute: (p0) {
-        print('New route generated');
-        _dialogRoute = p0;
-      },
       // content: (
       //   appName,
       //   appStoreVersion,
