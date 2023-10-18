@@ -477,6 +477,7 @@ class Upgrader with WidgetsBindingObserver {
     Content? content,
     Color? barrierColor,
     bool useSafeArea = true,
+    void Function(BuildContext)? onShowDialog,
   }) async {
     if (!_displayed) {
       final shouldDisplay = shouldDisplayUpgrade();
@@ -505,6 +506,7 @@ class Upgrader with WidgetsBindingObserver {
             canDismissDialog: canDismissDialog,
             content: content,
             useSafeArea: useSafeArea,
+            onShowDialog: onShowDialog,
           );
         });
       }
@@ -668,6 +670,7 @@ class Upgrader with WidgetsBindingObserver {
     Color? barrierColor,
     bool useSafeArea = true,
     Content? content,
+    final void Function(BuildContext)? onShowDialog,
   }) {
     if (debugLogging) {
       print('upgrader: showDialog title: $title');
@@ -704,6 +707,8 @@ class Upgrader with WidgetsBindingObserver {
                     dialogStyle == UpgradeDialogStyle.cupertino));
       },
     );
+
+    onShowDialog?.call(context);
   }
 
   /// Called when the user taps outside of the dialog and [canDismissDialog]
