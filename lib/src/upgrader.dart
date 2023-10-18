@@ -699,6 +699,7 @@ class Upgrader with WidgetsBindingObserver {
       context: context,
       barrierColor: barrierColor,
       useSafeArea: useSafeArea,
+      routeSettings: RouteSettings(name: 'upgrader_dialog'),
       builder: (BuildContext context) {
         return WillPopScope(
             onWillPop: () async => _shouldPopScope(),
