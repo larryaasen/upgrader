@@ -1,3 +1,7 @@
+## 8.7.0
+
+- [7] Exposes a function to close the dialog
+
 ## 8.6.0
 
 - [6] Exposes the route used on the Dialog
