@@ -22,9 +22,12 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  static final navigatorKey = GlobalKey<NavigatorState>();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       title: 'Upgrader Example',
       home: const PageWithAlert(),
     );
@@ -41,18 +44,68 @@ class PageWithAlert extends StatefulWidget {
 }
 
 class _PageWithAlertState extends State<PageWithAlert> {
-  final upgrader = Upgrader(
-    canDismissDialog: false,
-    durationUntilAlertAgain: Duration(seconds: 30),
-    debugDisplayAlways: true,
+  var upgrader = Upgrader(
+    canDismissDialog: true,
+    durationUntilAlertAgain: Duration(minutes: 1),
   );
+
+  Route<dynamic>? _dialogRoute;
+
+  @override
+  void initState() {
+    showsDialog();
+    super.initState();
+  }
+
+  void showsDialog() async {
+    await Future.delayed(Duration(seconds: 2));
+
+    await showDialog(
+      context: context,
+      builder: (_) => Center(
+        heightFactor: 1,
+        widthFactor: 1,
+        child: Material(
+          child: Container(
+            color: Colors.amber,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('HAHA'),
+                  ElevatedButton(
+                    onPressed: () => Navigator.of(context).removeRoute(
+                      _dialogRoute!,
+                    ),
+                    child: Text(
+                      'Close Upgrade dialog',
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void closeDialogByName(String routeName) {
+    final state = MyApp.navigatorKey.currentState;
+
+    if (state == null) return;
+  }
 
   @override
   Widget build(BuildContext context) {
     return UpgradeAlert(
-      barrierColor: Colors.green,
       upgrader: upgrader,
       useSafeArea: false,
+      onGenerateRoute: (p0) {
+        print('New route generated');
+        _dialogRoute = p0;
+      },
       // content: (
       //   appName,
       //   appStoreVersion,
@@ -67,12 +120,16 @@ class _PageWithAlertState extends State<PageWithAlert> {
       //   );
       // },
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         appBar: AppBar(
           title: Text('Upgrader Example'),
         ),
-        body: Center(
-          child: Text('Checking...'),
+        body: Column(
+          children: [
+            Center(
+              child: Text('Checking...'),
+            ),
+          ],
         ),
       ),
     );
