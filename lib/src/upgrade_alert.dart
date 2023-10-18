@@ -28,10 +28,13 @@ class UpgradeAlert extends UpgradeBase {
     this.content,
     this.barrierColor,
     this.useSafeArea = true,
+    this.onGenerateRoute,
   }) : super(upgrader ?? Upgrader.sharedInstance, key: key);
 
   /// For use by the Router architecture as part of the RouterDelegate.
   final GlobalKey<NavigatorState>? navigatorKey;
+
+  final void Function(Route<dynamic>)? onGenerateRoute;
 
   /// Describes the part of the user interface represented by this widget.
   @override
@@ -62,6 +65,7 @@ class UpgradeAlert extends UpgradeBase {
             content: content,
             barrierColor: barrierColor,
             useSafeArea: useSafeArea,
+            onGenerateRoute: onGenerateRoute,
           );
         }
         return child ?? const SizedBox.shrink();

@@ -1,3 +1,7 @@
+## 8.6.0
+
+- [6] Exposes the route used on the Dialog
+
 ## 8.5.0
 
 - [4] Force the requests to the stores URLs

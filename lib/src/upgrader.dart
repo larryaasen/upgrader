@@ -477,6 +477,7 @@ class Upgrader with WidgetsBindingObserver {
     Content? content,
     Color? barrierColor,
     bool useSafeArea = true,
+    void Function(Route<dynamic>)? onGenerateRoute,
   }) async {
     if (!_displayed) {
       final shouldDisplay = shouldDisplayUpgrade();
@@ -505,6 +506,7 @@ class Upgrader with WidgetsBindingObserver {
             canDismissDialog: canDismissDialog,
             content: content,
             useSafeArea: useSafeArea,
+            onGenerateRoute: onGenerateRoute,
           );
         });
       }
@@ -668,6 +670,7 @@ class Upgrader with WidgetsBindingObserver {
     Color? barrierColor,
     bool useSafeArea = true,
     Content? content,
+    final void Function(Route<dynamic>)? onGenerateRoute,
   }) {
     if (debugLogging) {
       print('upgrader: showDialog title: $title');
@@ -691,11 +694,12 @@ class Upgrader with WidgetsBindingObserver {
       );
     }
 
-    showDialog(
+    final route = DialogRoute(
       barrierDismissible: canDismissDialog,
       context: context,
       barrierColor: barrierColor,
       useSafeArea: useSafeArea,
+      settings: const RouteSettings(name: 'upgrader_dialog'),
       builder: (BuildContext context) {
         return WillPopScope(
             onWillPop: () async => _shouldPopScope(),
@@ -704,6 +708,10 @@ class Upgrader with WidgetsBindingObserver {
                     dialogStyle == UpgradeDialogStyle.cupertino));
       },
     );
+
+    Navigator.of(context).push(route);
+
+    onGenerateRoute?.call(route);
   }
 
   /// Called when the user taps outside of the dialog and [canDismissDialog]
