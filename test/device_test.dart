@@ -26,11 +26,16 @@ void main() {
     final device = UpgraderDevice();
     expect(await device.getOsVersionString(MockUpgraderOS(android: true)),
         '1.2.3');
+    expect(await device.getPreferredAbi(MockUpgraderOS(android: true)),
+        'arm64-v8a');
 
     // Verify invalid OS version
     deviceInfo = _androidInfo(baseOS: '.');
     expect(
         await device.getOsVersionString(MockUpgraderOS(android: true)), isNull);
+    // only Android supports ABI
+    expect(
+        await device.getPreferredAbi(MockUpgraderOS(android: false)), isNull);
   });
 
   test('testing UpgraderDevice macOS', () async {
@@ -78,7 +83,7 @@ Map _androidInfo({required String baseOS}) {
     'product': 'a',
     'supported32BitAbis': ['a'],
     'supported64BitAbis': ['a'],
-    'supportedAbis': ['a'],
+    'supportedAbis': ['arm64-v8a'], // also used in test
     'tags': 'a',
     'type': 'a',
     'isPhysicalDevice': false,

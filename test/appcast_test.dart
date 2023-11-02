@@ -191,6 +191,33 @@ void main() {
     final bestItem = appcast.bestItem();
     expect(bestItem, isNull);
   });
+  test('Appcast ABI', () async {
+    var testFile = await getTestFile(filePath: 'test/testappcast-abi.xml');
+    // no ABI
+    var appcast = TestAppcast(
+        client: setupMockClient(),
+        upgraderOS: MockUpgraderOS(android: true),
+        upgraderDevice: MockUpgraderDevice());
+    await appcast.parseAppcastItemsFromFile(testFile);
+    var bestItem = appcast.bestItem();
+    expect(bestItem, isNotNull); // nothing specified so anything goes
+    // wrong ABI
+    appcast = TestAppcast(
+        client: setupMockClient(),
+        upgraderOS: MockUpgraderOS(android: true),
+        upgraderDevice: MockUpgraderDevice(deviceAbi: 'bogus-abi'));
+    await appcast.parseAppcastItemsFromFile(testFile);
+    bestItem = appcast.bestItem();
+    expect(bestItem, isNull);
+    // right ABI
+    appcast = TestAppcast(
+        client: setupMockClient(),
+        upgraderOS: MockUpgraderOS(android: true),
+        upgraderDevice: MockUpgraderDevice(deviceAbi: 'arm64-v8a'));
+    await appcast.parseAppcastItemsFromFile(testFile);
+    bestItem = appcast.bestItem();
+    expect(bestItem!.abi, 'arm64-v8a');
+  });
 }
 
 void validateItems(List<AppcastItem> items, Appcast appcast) {

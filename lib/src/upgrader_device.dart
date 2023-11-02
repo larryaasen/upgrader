@@ -48,14 +48,30 @@ class UpgraderDevice {
 
     return osVersionString;
   }
+
+  /// Returns preferred ABI supported by the OS, if any. Currently, Android only.
+  Future<String?> getPreferredAbi(UpgraderOS upgraderOS) async {
+    final deviceInfo = DeviceInfoPlugin();
+    if (upgraderOS.isAndroid) {
+      final androidInfo = await deviceInfo.androidInfo;
+      final abiList = androidInfo.supportedAbis;
+      return abiList.isNotEmpty ? abiList.first : null;
+    } else {
+      return null;
+    }
+  }
 }
 
 class MockUpgraderDevice extends UpgraderDevice {
-  MockUpgraderDevice({this.osVersionString = ''});
+  MockUpgraderDevice({this.osVersionString = '', this.deviceAbi});
 
   final String osVersionString;
+  final String? deviceAbi;
 
   @override
   Future<String?> getOsVersionString(UpgraderOS upgraderOS) async =>
       osVersionString;
+
+  @override
+  Future<String?> getPreferredAbi(UpgraderOS upgraderOS) async => deviceAbi;
 }

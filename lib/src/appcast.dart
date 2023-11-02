@@ -40,6 +40,7 @@ class Appcast {
   List<AppcastItem>? items;
 
   String? osVersionString;
+  String? deviceAbi;
 
   /// Returns the latest critical item in the Appcast.
   AppcastItem? bestCriticalItem() {
@@ -51,7 +52,8 @@ class Appcast {
     items!.forEach((AppcastItem item) {
       if (item.hostSupportsItem(
               osVersion: osVersionString,
-              currentPlatform: upgraderOS.current) &&
+              currentPlatform: upgraderOS.current,
+              deviceAbi: deviceAbi) &&
           item.isCriticalUpdate) {
         if (bestItem == null) {
           bestItem = item;
@@ -81,7 +83,9 @@ class Appcast {
     AppcastItem? bestItem;
     items!.forEach((AppcastItem item) {
       if (item.hostSupportsItem(
-          osVersion: osVersionString, currentPlatform: upgraderOS.current)) {
+          osVersion: osVersionString,
+          currentPlatform: upgraderOS.current,
+          deviceAbi: deviceAbi)) {
         if (bestItem == null) {
           bestItem = item;
         } else {
@@ -116,6 +120,7 @@ class Appcast {
   /// Parse the Appcast from XML string.
   Future<List<AppcastItem>?> parseAppcastItems(String contents) async {
     osVersionString = await upgraderDevice.getOsVersionString(upgraderOS);
+    deviceAbi = await upgraderDevice.getPreferredAbi(upgraderOS);
     return parseItemsFromXMLString(contents);
   }
 
@@ -144,6 +149,7 @@ class Appcast {
         String? maximumSystemVersion;
         String? minimumSystemVersion;
         String? osString;
+        String? abi;
         String? releaseNotesLink;
         final tags = <String>[];
         String? newVersion;
@@ -168,6 +174,9 @@ class Appcast {
                 } else if (attribute.name.toString() ==
                     AppcastConstants.AttributeURL) {
                   fileURL = attribute.value;
+                } else if (attribute.name.toString() ==
+                    AppcastConstants.AttributeAbi) {
+                  abi = attribute.value;
                 }
               });
             } else if (name == AppcastConstants.ElementMaximumSystemVersion) {
@@ -209,6 +218,7 @@ class Appcast {
           maximumSystemVersion: maximumSystemVersion,
           minimumSystemVersion: minimumSystemVersion,
           osString: osString,
+          abi: abi,
           releaseNotesURL: releaseNotesLink,
           tags: tags,
           fileURL: fileURL,
@@ -237,6 +247,7 @@ class AppcastItem {
   final int? contentLength;
   final String? versionString;
   final String? osString;
+  final String? abi;
   final String? displayVersionString;
   final String? infoURL;
   final List<String>? tags;
@@ -252,6 +263,7 @@ class AppcastItem {
     this.contentLength,
     this.versionString,
     this.osString,
+    this.abi,
     this.displayVersionString,
     this.infoURL,
     this.tags,
@@ -264,13 +276,19 @@ class AppcastItem {
       : tags!.contains(AppcastConstants.ElementCriticalUpdate);
 
   /// Does the host support this item? If so is [osVersion] supported?
-  bool hostSupportsItem({String? osVersion, required String currentPlatform}) {
+  bool hostSupportsItem(
+      {String? osVersion, required String currentPlatform, String? deviceAbi}) {
     assert(currentPlatform.isNotEmpty);
     bool supported = true;
     if (osString != null && osString!.isNotEmpty) {
       final platformEnum = 'TargetPlatform.${osString!}';
       currentPlatform = 'TargetPlatform.$currentPlatform';
       supported = platformEnum.toLowerCase() == currentPlatform.toLowerCase();
+    }
+
+    // check ABI if present
+    if (supported && deviceAbi != null) {
+      supported = (abi == null || deviceAbi == abi);
     }
 
     if (supported && osVersion != null && osVersion.isNotEmpty) {
@@ -316,6 +334,7 @@ class AppcastConstants {
       'sparkle:shortVersionString';
   static const String AttributeVersion = 'sparkle:version';
   static const String AttributeOsType = 'sparkle:os';
+  static const String AttributeAbi = 'abi';
 
   static const String ElementCriticalUpdate = 'sparkle:criticalUpdate';
   static const String ElementDeltas = 'sparkle:deltas';
