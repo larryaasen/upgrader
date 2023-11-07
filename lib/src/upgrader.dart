@@ -370,7 +370,8 @@ class Upgrader with WidgetsBindingObserver {
         iTunes.debugLogging = debugLogging;
         iTunes.client = client;
         final response = await (iTunes
-            .lookupByBundleId(_packageInfo!.packageName, country: country));
+            .lookupByBundleId(_packageInfo!.packageName, language: language,
+            country:country));
 
         if (response != null) {
           _appStoreVersion = iTunes.version(response);
