@@ -13,10 +13,20 @@ class UpgradeCard extends UpgradeBase {
   /// `EdgeInsets.all(4.0)`.
   final EdgeInsetsGeometry margin;
 
+  /// An optional maximum number of lines for the text to span, wrapping if necessary.
+  final int? maxLines;
+
+  /// How visual overflow should be handled.
+  final TextOverflow? overflow;
+
   /// Creates a new [UpgradeCard].
-  UpgradeCard(
-      {Key? key, Upgrader? upgrader, this.margin = const EdgeInsets.all(4.0)})
-      : super(upgrader ?? Upgrader.sharedInstance, key: key);
+  UpgradeCard({
+    super.key,
+    Upgrader? upgrader,
+    this.margin = const EdgeInsets.all(4.0),
+    this.maxLines = 15,
+    this.overflow = TextOverflow.ellipsis,
+  }) : super(upgrader ?? Upgrader.sharedInstance);
 
   /// Describes the part of the user interface represented by this widget.
   @override
@@ -71,13 +81,12 @@ class UpgradeCard extends UpgradeBase {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                  Upgrader().messages.message(UpgraderMessage.releaseNotes) ??
-                      '',
+                  upgrader.messages.message(UpgraderMessage.releaseNotes) ?? '',
                   style: const TextStyle(fontWeight: FontWeight.bold)),
               Text(
                 releaseNotes,
-                maxLines: 15,
-                overflow: TextOverflow.ellipsis,
+                maxLines: maxLines,
+                overflow: overflow,
               ),
             ],
           ));

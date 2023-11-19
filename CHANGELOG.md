@@ -1,3 +1,7 @@
+## Next
+
+- [299] Updated UpgradeCard to allow scrolling of release notes.
+
 ## 8.3.0
 
 - [311] Changed the shared_preferences dependency version to '>=2.1.1 <3.0.0' to allow more compatibility.

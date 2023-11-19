@@ -25,16 +25,32 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Upgrader Example',
+      title: 'Upgrader Card Example',
       home: Scaffold(
-        appBar: AppBar(title: Text('Upgrader Example')),
-        body: Center(
-          child: Container(
-            margin: EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 0.0),
-            child: UpgradeCard(),
+        appBar: AppBar(title: Text('Upgrader Card Example')),
+        body: Container(
+          margin: EdgeInsets.only(left: 12.0, right: 12.0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                _simpleCard,
+                _simpleCard,
+                UpgradeCard(),
+                _simpleCard,
+                _simpleCard,
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+
+  Widget get _simpleCard => Card(
+        child: SizedBox(
+          width: 200,
+          height: 50,
+          child: Center(child: Text('Card')),
+        ),
+      );
 }

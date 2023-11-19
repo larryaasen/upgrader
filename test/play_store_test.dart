@@ -75,23 +75,23 @@ void main() {
     expect(() => playStore.lookupURLById(''), throwsAssertionError);
     expect(
         playStore.lookupURLById('com.testing.test1')!.startsWith(
-            'https://play.google.com/store/apps/details?id=com.testing.test1&gl=US&hl=en&_cb=16'),
+            'https://play.google.com/store/apps/details?id=com.testing.test1&gl=US&hl=en&_cb=17'),
         equals(true));
     expect(
         playStore.lookupURLById('com.testing.test1', country: null)!.startsWith(
-            'https://play.google.com/store/apps/details?id=com.testing.test1&hl=en&_cb=16'),
+            'https://play.google.com/store/apps/details?id=com.testing.test1&hl=en&_cb=17'),
         equals(true));
     expect(
         playStore.lookupURLById('com.testing.test1', country: '')!.startsWith(
-            'https://play.google.com/store/apps/details?id=com.testing.test1&hl=en&_cb=16'),
+            'https://play.google.com/store/apps/details?id=com.testing.test1&hl=en&_cb=17'),
         equals(true));
     expect(
         playStore.lookupURLById('com.testing.test1', country: 'IN')!.startsWith(
-            'https://play.google.com/store/apps/details?id=com.testing.test1&gl=IN&hl=en&_cb=16'),
+            'https://play.google.com/store/apps/details?id=com.testing.test1&gl=IN&hl=en&_cb=17'),
         equals(true));
     expect(
         playStore.lookupURLById('com.testing.test1', language: 'es')!.startsWith(
-            'https://play.google.com/store/apps/details?id=com.testing.test1&gl=US&hl=es&_cb=16'),
+            'https://play.google.com/store/apps/details?id=com.testing.test1&gl=US&hl=es&_cb=17'),
         equals(true));
     expect(
         playStore
