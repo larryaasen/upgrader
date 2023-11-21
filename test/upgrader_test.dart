@@ -198,19 +198,21 @@ void main() {
     expect(upgrader.isUpdateAvailable(), true);
     expect(upgrader.isTooSoon(), false);
 
+    expect(upgrader.messages, isNull);
+    upgrader.messages = UpgraderMessages();
     expect(upgrader.messages, isNotNull);
 
-    expect(upgrader.messages.buttonTitleIgnore, 'IGNORE');
-    expect(upgrader.messages.buttonTitleLater, 'LATER');
-    expect(upgrader.messages.buttonTitleUpdate, 'UPDATE NOW');
-    expect(upgrader.messages.releaseNotes, 'Release Notes');
+    expect(upgrader.messages?.buttonTitleIgnore, 'IGNORE');
+    expect(upgrader.messages?.buttonTitleLater, 'LATER');
+    expect(upgrader.messages?.buttonTitleUpdate, 'UPDATE NOW');
+    expect(upgrader.messages?.releaseNotes, 'Release Notes');
 
     upgrader.messages = MyUpgraderMessages();
 
-    expect(upgrader.messages.buttonTitleIgnore, 'aaa');
-    expect(upgrader.messages.buttonTitleLater, 'bbb');
-    expect(upgrader.messages.buttonTitleUpdate, 'ccc');
-    expect(upgrader.messages.releaseNotes, 'ddd');
+    expect(upgrader.messages!.buttonTitleIgnore, 'aaa');
+    expect(upgrader.messages!.buttonTitleLater, 'bbb');
+    expect(upgrader.messages!.buttonTitleUpdate, 'ccc');
+    expect(upgrader.messages!.releaseNotes, 'ddd');
 
     // await tester.runAsync(() async {
     final GlobalKey globalKey = GlobalKey();
@@ -230,23 +232,23 @@ void main() {
 
     expect(upgrader.isTooSoon(), true);
 
-    expect(find.text(upgrader.messages.title), findsOneWidget);
-    expect(find.text(upgrader.message()), findsOneWidget);
-    expect(find.text(upgrader.messages.releaseNotes), findsOneWidget);
+    expect(find.text(upgrader.messages!.title), findsOneWidget);
+    expect(find.text(upgrader.body(upgrader.messages!)), findsOneWidget);
+    expect(find.text(upgrader.messages!.releaseNotes), findsOneWidget);
     expect(find.text(upgrader.releaseNotes!), findsOneWidget);
-    expect(find.text(upgrader.messages.prompt), findsOneWidget);
+    expect(find.text(upgrader.messages!.prompt), findsOneWidget);
     expect(find.byType(TextButton), findsNWidgets(3));
-    expect(find.text(upgrader.messages.buttonTitleIgnore), findsOneWidget);
-    expect(find.text(upgrader.messages.buttonTitleLater), findsOneWidget);
-    expect(find.text(upgrader.messages.buttonTitleUpdate), findsOneWidget);
-    expect(find.text(upgrader.messages.releaseNotes), findsOneWidget);
+    expect(find.text(upgrader.messages!.buttonTitleIgnore), findsOneWidget);
+    expect(find.text(upgrader.messages!.buttonTitleLater), findsOneWidget);
+    expect(find.text(upgrader.messages!.buttonTitleUpdate), findsOneWidget);
+    expect(find.text(upgrader.messages!.releaseNotes), findsOneWidget);
 
-    await tester.tap(find.text(upgrader.messages.buttonTitleUpdate));
+    await tester.tap(find.text(upgrader.messages!.buttonTitleUpdate));
     await tester.pumpAndSettle();
-    expect(find.text(upgrader.messages.buttonTitleIgnore), findsNothing);
-    expect(find.text(upgrader.messages.buttonTitleLater), findsNothing);
-    expect(find.text(upgrader.messages.buttonTitleUpdate), findsNothing);
-    expect(find.text(upgrader.messages.releaseNotes), findsNothing);
+    expect(find.text(upgrader.messages!.buttonTitleIgnore), findsNothing);
+    expect(find.text(upgrader.messages!.buttonTitleLater), findsNothing);
+    expect(find.text(upgrader.messages!.buttonTitleUpdate), findsNothing);
+    expect(find.text(upgrader.messages!.releaseNotes), findsNothing);
     expect(called, true);
     expect(notCalled, true);
     // });
@@ -293,17 +295,19 @@ void main() {
     expect(upgrader.isUpdateAvailable(), true);
     expect(upgrader.isTooSoon(), false);
 
+    expect(upgrader.messages, isNull);
+    upgrader.messages = UpgraderMessages();
     expect(upgrader.messages, isNotNull);
 
-    expect(upgrader.messages.buttonTitleIgnore, 'IGNORE');
-    expect(upgrader.messages.buttonTitleLater, 'LATER');
-    expect(upgrader.messages.buttonTitleUpdate, 'UPDATE NOW');
+    expect(upgrader.messages!.buttonTitleIgnore, 'IGNORE');
+    expect(upgrader.messages!.buttonTitleLater, 'LATER');
+    expect(upgrader.messages!.buttonTitleUpdate, 'UPDATE NOW');
 
     upgrader.messages = MyUpgraderMessages();
 
-    expect(upgrader.messages.buttonTitleIgnore, 'aaa');
-    expect(upgrader.messages.buttonTitleLater, 'bbb');
-    expect(upgrader.messages.buttonTitleUpdate, 'ccc');
+    expect(upgrader.messages!.buttonTitleIgnore, 'aaa');
+    expect(upgrader.messages!.buttonTitleLater, 'bbb');
+    expect(upgrader.messages!.buttonTitleUpdate, 'ccc');
     upgrader.dialogStyle = UpgradeDialogStyle.cupertino;
 
     await tester.pumpWidget(_MyWidget(upgrader: upgrader));
@@ -317,11 +321,11 @@ void main() {
 
     expect(upgrader.isTooSoon(), true);
 
-    expect(find.text(upgrader.messages.title), findsOneWidget);
-    expect(find.text(upgrader.message()), findsOneWidget);
-    expect(find.text(upgrader.messages.releaseNotes), findsOneWidget);
+    expect(find.text(upgrader.messages!.title), findsOneWidget);
+    expect(find.text(upgrader.body(upgrader.messages!)), findsOneWidget);
+    expect(find.text(upgrader.messages!.releaseNotes), findsOneWidget);
     expect(find.text(upgrader.releaseNotes!), findsOneWidget);
-    expect(find.text(upgrader.messages.prompt), findsOneWidget);
+    expect(find.text(upgrader.messages!.prompt), findsOneWidget);
     expect(find.byType(CupertinoDialogAction), findsNWidgets(3));
     expect(
       find.byWidgetPredicate((widget) =>
@@ -329,15 +333,15 @@ void main() {
           widget.textStyle == cupertinoButtonTextStyle),
       findsNWidgets(3),
     );
-    expect(find.text(upgrader.messages.buttonTitleIgnore), findsOneWidget);
-    expect(find.text(upgrader.messages.buttonTitleLater), findsOneWidget);
-    expect(find.text(upgrader.messages.buttonTitleUpdate), findsOneWidget);
+    expect(find.text(upgrader.messages!.buttonTitleIgnore), findsOneWidget);
+    expect(find.text(upgrader.messages!.buttonTitleLater), findsOneWidget);
+    expect(find.text(upgrader.messages!.buttonTitleUpdate), findsOneWidget);
 
-    await tester.tap(find.text(upgrader.messages.buttonTitleUpdate));
+    await tester.tap(find.text(upgrader.messages!.buttonTitleUpdate));
     await tester.pumpAndSettle();
-    expect(find.text(upgrader.messages.buttonTitleIgnore), findsNothing);
-    expect(find.text(upgrader.messages.buttonTitleLater), findsNothing);
-    expect(find.text(upgrader.messages.buttonTitleUpdate), findsNothing);
+    expect(find.text(upgrader.messages!.buttonTitleIgnore), findsNothing);
+    expect(find.text(upgrader.messages!.buttonTitleLater), findsNothing);
+    expect(find.text(upgrader.messages!.buttonTitleUpdate), findsNothing);
     expect(called, true);
     expect(notCalled, true);
   }, skip: false);
@@ -373,15 +377,19 @@ void main() {
 
     expect(upgrader.isTooSoon(), false);
 
+    expect(upgrader.messages, isNull);
+    upgrader.messages = UpgraderMessages();
+    expect(upgrader.messages, isNotNull);
+
     await tester.pumpWidget(_MyWidget(upgrader: upgrader));
 
     // Pump the UI so the upgrader can display its dialog
     await tester.pumpAndSettle();
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text(upgrader.messages.buttonTitleIgnore));
+    await tester.tap(find.text(upgrader.messages!.buttonTitleIgnore));
     await tester.pumpAndSettle();
-    expect(find.text(upgrader.messages.buttonTitleIgnore), findsNothing);
+    expect(find.text(upgrader.messages!.buttonTitleIgnore), findsNothing);
     expect(called, true);
     expect(notCalled, true);
   }, skip: false);
@@ -417,15 +425,19 @@ void main() {
 
     expect(upgrader.isTooSoon(), false);
 
+    expect(upgrader.messages, isNull);
+    upgrader.messages = UpgraderMessages();
+    expect(upgrader.messages, isNotNull);
+
     await tester.pumpWidget(_MyWidget(upgrader: upgrader));
 
     // Pump the UI so the upgrader can display its dialog
     await tester.pumpAndSettle();
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text(upgrader.messages.buttonTitleLater));
+    await tester.tap(find.text(upgrader.messages!.buttonTitleLater));
     await tester.pumpAndSettle();
-    expect(find.text(upgrader.messages.buttonTitleLater), findsNothing);
+    expect(find.text(upgrader.messages!.buttonTitleLater), findsNothing);
     expect(called, true);
     expect(notCalled, true);
   }, skip: false);
@@ -451,6 +463,10 @@ void main() {
     };
 
     expect(upgrader.isTooSoon(), false);
+
+    expect(upgrader.messages, isNull);
+    upgrader.messages = UpgraderMessages();
+    expect(upgrader.messages, isNotNull);
 
     await tester.pumpWidget(_MyWidget(upgrader: upgrader));
 
@@ -481,8 +497,6 @@ void main() {
     upgrader.initialize().then((value) {});
     await tester.pumpAndSettle();
 
-    expect(upgrader.messages, isNotNull);
-
     var called = false;
     var notCalled = true;
     upgrader.onUpdate = () {
@@ -505,14 +519,18 @@ void main() {
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle();
 
-    expect(find.text(upgrader.messages.releaseNotes), findsOneWidget);
+    expect(upgrader.messages, isNull);
+    upgrader.messages = UpgraderMessages();
+    expect(upgrader.messages, isNotNull);
+
+    expect(find.text(upgrader.messages!.releaseNotes), findsOneWidget);
     expect(find.text(upgrader.releaseNotes!), findsOneWidget);
-    await tester.tap(find.text(upgrader.messages.buttonTitleUpdate));
+    await tester.tap(find.text(upgrader.messages!.buttonTitleUpdate));
     await tester.pumpAndSettle();
 
     expect(called, true);
     expect(notCalled, true);
-    expect(find.text(upgrader.messages.buttonTitleUpdate), findsNothing);
+    expect(find.text(upgrader.messages!.buttonTitleUpdate), findsNothing);
   }, skip: false);
 
   testWidgets('test UpgradeWidget Card ignore', (WidgetTester tester) async {
@@ -553,12 +571,16 @@ void main() {
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text(upgrader.messages.buttonTitleIgnore));
+    expect(upgrader.messages, isNull);
+    upgrader.messages = UpgraderMessages();
+    expect(upgrader.messages, isNotNull);
+
+    await tester.tap(find.text(upgrader.messages!.buttonTitleIgnore));
     await tester.pumpAndSettle();
 
     expect(called, true);
     expect(notCalled, true);
-    expect(find.text(upgrader.messages.buttonTitleIgnore), findsNothing);
+    expect(find.text(upgrader.messages!.buttonTitleIgnore), findsNothing);
   }, skip: false);
 
   testWidgets('test UpgradeWidget Card later', (WidgetTester tester) async {
@@ -599,12 +621,16 @@ void main() {
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle(const Duration(milliseconds: 5000));
 
-    await tester.tap(find.text(upgrader.messages.buttonTitleLater));
+    expect(upgrader.messages, isNull);
+    upgrader.messages = UpgraderMessages();
+    expect(upgrader.messages, isNotNull);
+
+    await tester.tap(find.text(upgrader.messages!.buttonTitleLater));
     await tester.pumpAndSettle();
 
     expect(called, true);
     expect(notCalled, true);
-    expect(find.text(upgrader.messages.buttonTitleLater), findsNothing);
+    expect(find.text(upgrader.messages!.buttonTitleLater), findsNothing);
   }, skip: false);
 
   testWidgets('test upgrader minAppVersion', (WidgetTester tester) async {
@@ -647,9 +673,13 @@ void main() {
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle(const Duration(milliseconds: 5000));
 
-    expect(find.text(upgrader.messages.buttonTitleIgnore), findsNothing);
-    expect(find.text(upgrader.messages.buttonTitleLater), findsNothing);
-    expect(find.text(upgrader.messages.buttonTitleUpdate), findsOneWidget);
+    expect(upgrader.messages, isNull);
+    upgrader.messages = UpgraderMessages();
+    expect(upgrader.messages, isNotNull);
+
+    expect(find.text(upgrader.messages!.buttonTitleIgnore), findsNothing);
+    expect(find.text(upgrader.messages!.buttonTitleLater), findsNothing);
+    expect(find.text(upgrader.messages!.buttonTitleUpdate), findsOneWidget);
   }, skip: false);
 
   testWidgets('test upgrader minAppVersion description android',
@@ -736,7 +766,11 @@ void main() {
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle();
 
-    final laterButton = find.text(upgrader.messages.buttonTitleLater);
+    expect(upgrader.messages, isNull);
+    upgrader.messages = UpgraderMessages();
+    expect(upgrader.messages, isNotNull);
+
+    final laterButton = find.text(upgrader.messages!.buttonTitleLater);
     expect(laterButton, findsNothing);
 
     expect(called, false);

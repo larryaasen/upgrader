@@ -58,8 +58,9 @@ class UpgradeCard extends UpgradeBase {
 
   /// Build the UpgradeCard Widget.
   Widget buildUpgradeCard(BuildContext context, UpgradeBaseState state) {
-    final title = upgrader.messages.message(UpgraderMessage.title);
-    final message = upgrader.message();
+    final appMessages = upgrader.determineMessages(context);
+    final title = appMessages.message(UpgraderMessage.title);
+    final message = upgrader.body(appMessages);
     final releaseNotes = upgrader.releaseNotes;
     final shouldDisplayReleaseNotes = upgrader.shouldDisplayReleaseNotes();
     if (upgrader.debugLogging) {
@@ -80,8 +81,7 @@ class UpgradeCard extends UpgradeBase {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                  upgrader.messages.message(UpgraderMessage.releaseNotes) ?? '',
+              Text(appMessages.message(UpgraderMessage.releaseNotes) ?? '',
                   style: const TextStyle(fontWeight: FontWeight.bold)),
               Text(
                 releaseNotes,
@@ -106,15 +106,14 @@ class UpgradeCard extends UpgradeBase {
                 Padding(
                     padding: const EdgeInsets.only(top: 15.0),
                     child: Text(
-                        upgrader.messages.message(UpgraderMessage.prompt) ??
-                            '')),
+                        appMessages.message(UpgraderMessage.prompt) ?? '')),
                 if (notes != null) notes,
               ],
             ),
             actions: <Widget>[
               if (upgrader.showIgnore)
                 TextButton(
-                    child: Text(upgrader.messages
+                    child: Text(appMessages
                             .message(UpgraderMessage.buttonTitleIgnore) ??
                         ''),
                     onPressed: () {
@@ -126,9 +125,9 @@ class UpgradeCard extends UpgradeBase {
                     }),
               if (upgrader.showLater)
                 TextButton(
-                    child: Text(upgrader.messages
-                            .message(UpgraderMessage.buttonTitleLater) ??
-                        ''),
+                    child: Text(
+                        appMessages.message(UpgraderMessage.buttonTitleLater) ??
+                            ''),
                     onPressed: () {
                       // Save the date/time as the last time alerted.
                       upgrader.saveLastAlerted();
@@ -137,9 +136,9 @@ class UpgradeCard extends UpgradeBase {
                       state.forceUpdateState();
                     }),
               TextButton(
-                  child: Text(upgrader.messages
-                          .message(UpgraderMessage.buttonTitleUpdate) ??
-                      ''),
+                  child: Text(
+                      appMessages.message(UpgraderMessage.buttonTitleUpdate) ??
+                          ''),
                   onPressed: () {
                     // Save the date/time as the last time alerted.
                     upgrader.saveLastAlerted();

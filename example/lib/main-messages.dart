@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020-2022 Larry Aasen. All rights reserved.
+ * Copyright (c) 2020-2023 Larry Aasen. All rights reserved.
  */
 
 import 'package:flutter/foundation.dart' show SynchronousFuture;
@@ -17,11 +17,11 @@ void main() async {
   // On iOS, the default behavior will be to use the App Store version of
   // the app, so update the Bundle Identifier in example/ios/Runner with a
   // valid identifier already in the App Store.
-  runApp(Demo());
+  runApp(MyApp());
 }
 
-class Demo extends StatelessWidget {
-  Demo({Key? key}) : super(key: key);
+class MyApp extends StatelessWidget {
+  MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +33,7 @@ class Demo extends StatelessWidget {
         const DemoLocalizationsDelegate(),
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: [
         const Locale('en', ''), // English, no country code

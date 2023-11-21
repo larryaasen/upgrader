@@ -1,6 +1,7 @@
-## Next
+## 8.4.0
 
 - [299] Updated UpgradeCard to allow scrolling of release notes.
+- Improved language code support so that it is updated with the app.
 
 ## 8.3.0
 
