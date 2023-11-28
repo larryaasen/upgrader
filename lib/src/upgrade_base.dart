@@ -32,4 +32,12 @@ class UpgradeBaseState extends State<UpgradeBase> {
   Future<bool> initialize() => widget.upgrader.initialize();
 
   void forceUpdateState() => setState(() {});
+
+  @override
+  void dispose() {
+    if (widget.upgrader.debugLogging) {
+      print('upgrader: dispose');
+    }
+    super.dispose();
+  }
 }

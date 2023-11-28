@@ -27,6 +27,10 @@ void main() {
     expect(Version.parse('1.2.3+1').toString(), '1.2.3+1');
     expect(Version.parse('0.0.0').toString(), '0.0.0');
     expect(Version.parse('0.0.0+1').toString(), '0.0.0+1');
+
+    final version1 = Version.parse('1.2.3+1');
+    final version2 = Version.parse('1.2.3+2');
+    expect(version1 == version2, isTrue);
   }, skip: false);
 
   test('testing PlayStoreSearchAPI properties', () async {

@@ -1,6 +1,7 @@
-## Next
+## 8.4.0
 
 - [356] Fixed centering issue with Cupertino style UpgradeAlert dialog.
+- [357] [359] Updated the package_info_plus dependency to '>=4.0.1 <6.0.0'. Thanks to [@Zazo032](https://github.com/Zazo032) for this update.
 
 ## 8.3.0
 
