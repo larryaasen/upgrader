@@ -24,7 +24,7 @@ dependencies:
   os_detect: ^2.0.1
 
   # From Flutter Community: Provides an API for querying information about an application package.
-  package_info_plus: ^5.0.1
+  package_info_plus: '>=4.0.1 <6.0.0'
 
   # From Flutter Team: Wraps NSUserDefaults (on iOS) and SharedPreferences (on Android).
   shared_preferences: '>=2.1.1 <3.0.0'
