@@ -20,7 +20,12 @@ void main() {
     expect(
         iTunes.lookupURLByBundleId('com.google.Maps', useCacheBuster: false),
         equals(
-            'https://itunes.apple.com/lookup?bundleId=com.google.Maps&country=US'));
+            'https://itunes.apple.com/lookup?bundleId=com.google.Maps&country=US&lang=en'));
+    expect(
+        iTunes.lookupURLByBundleId('com.google.Maps',
+            useCacheBuster: false, language: 'ar'),
+        equals(
+            'https://itunes.apple.com/lookup?bundleId=com.google.Maps&country=US&lang=ar'));
     expect(iTunes.lookupURLById('585027354', useCacheBuster: false),
         equals('https://itunes.apple.com/lookup?id=585027354&country=US'));
     expect(
@@ -30,7 +35,7 @@ void main() {
 
     // Test the URL using the cache buster and remove it from the URL
     const testUrl =
-        'https://itunes.apple.com/lookup?bundleId=com.google.Maps&country=US&_cb=';
+        'https://itunes.apple.com/lookup?bundleId=com.google.Maps&country=US&lang=en&_cb=';
     final url = iTunes
         .lookupURLByBundleId('com.google.Maps', useCacheBuster: true)!
         .substring(0, testUrl.length);
