@@ -16,7 +16,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,42 +25,91 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
           appBar: AppBar(title: Text('Upgrader Example')),
           body: UpgradeAlert(
-            upgrader: CustomUpgrader(),
+            upgrader: CustomBottomSheetUpgrader(),
             child: Center(child: Text('Checking...')),
           )),
     );
   }
 }
 
-class CustomUpgrader extends Upgrader {
-  CustomUpgrader() : super(dialogStyle: UpgradeDialogStyle.custom);
+class CustomAlertUpgrader extends Upgrader {
+  CustomAlertUpgrader() : super(dialogStyle: UpgradeDialogStyle.customAlert);
 
   @override
-  Dialog customAlertDialog(
-      String title, String message, String releaseNotes, BuildContext context) {
+  Widget customAlertDialog(String title, String message, String? releaseNotes,
+      BuildContext context, UpgraderMessages messages) {
     return Dialog(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(title),
+            SizedBox(height: 16),
+            Text(message),
+            SizedBox(height: 16),
+            if (releaseNotes != null) Text(releaseNotes),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                if (showIgnore)
+                  TextButton(
+                      child: Text(
+                          messages.message(UpgraderMessage.buttonTitleIgnore)!),
+                      onPressed: () => onUserIgnored(context, true)),
+                if (showLater)
+                  TextButton(
+                      child: Text(
+                          messages.message(UpgraderMessage.buttonTitleLater)!),
+                      onPressed: () => onUserLater(context, true)),
+                TextButton(
+                    child: Text(
+                        messages.message(UpgraderMessage.buttonTitleUpdate)!),
+                    onPressed: () => onUserUpdated(context, !blocked()))
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CustomBottomSheetUpgrader extends Upgrader {
+  CustomBottomSheetUpgrader()
+      : super(dialogStyle: UpgradeDialogStyle.customBottomSheet);
+
+  @override
+  Widget customBottomSheet(String title, String message, String? releaseNotes,
+      BuildContext context, UpgraderMessages messages) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(title),
+          SizedBox(height: 16),
           Text(message),
-          Text(releaseNotes),
+          SizedBox(height: 16),
+          if (releaseNotes != null) Text(releaseNotes),
           Row(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
               if (showIgnore)
                 TextButton(
                     child: Text(
-                        messages.message(UpgraderMessage.buttonTitleIgnore)),
+                        messages.message(UpgraderMessage.buttonTitleIgnore)!),
                     onPressed: () => onUserIgnored(context, true)),
               if (showLater)
                 TextButton(
                     child: Text(
-                        messages.message(UpgraderMessage.buttonTitleLater)),
+                        messages.message(UpgraderMessage.buttonTitleLater)!),
                     onPressed: () => onUserLater(context, true)),
               TextButton(
-                  child:
-                      Text(messages.message(UpgraderMessage.buttonTitleUpdate)),
+                  child: Text(
+                      messages.message(UpgraderMessage.buttonTitleUpdate)!),
                   onPressed: () => onUserUpdated(context, !blocked()))
             ],
           )
