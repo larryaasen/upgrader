@@ -48,14 +48,19 @@ enum UpgraderMessage {
 ///
 /// UpgradeAlert(messages: MyUpgraderMessages());
 /// ```
-///
+/// A new [custom] case added to [code] to display [customMessage] instead of default text.
+/// Optionally you can pass desired text for [customMessage] param.
+/// Default value is __"There is an update available for the app."__
 class UpgraderMessages {
   /// The primary language subtag for the locale, which defaults to the
   /// system-reported default locale of the device.
   final String languageCode;
+  final String customMessage;
 
   /// Provide a [code] to override the system-reported default locale.
-  UpgraderMessages({String? code})
+  UpgraderMessages(
+      {String? code,
+      this.customMessage = 'There is an update available for the app.'})
       : languageCode = (code ?? findLanguageCode()) {
     assert(languageCode.isNotEmpty);
   }
@@ -108,6 +113,7 @@ class UpgraderMessages {
 
   /// Override this getter to provide a custom value. Values provided in the
   /// [message] function will be used over this value.
+  // todo: get custom message here
   String get body {
     String message;
     switch (languageCode) {
@@ -242,6 +248,9 @@ class UpgraderMessages {
       case 'zh':
         message =
             '{{appName}}有新的版本！您拥有{{currentInstalledVersion}}的版本可更新到{{currentAppStoreVersion}}的版本。';
+        break;
+      case 'custom':
+        message = customMessage;
         break;
       case 'en':
       default:
