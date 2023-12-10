@@ -35,8 +35,8 @@ class MyApp extends StatelessWidget {
             upgrader: Upgrader(
               appcastConfig: cfg,
               debugLogging: true,
-              dialogStyle: UpgradeDialogStyle.cupertino,
             ),
+            dialogStyle: UpgradeDialogStyle.cupertino,
             child: Center(child: Text('Checking...')),
           )),
     );

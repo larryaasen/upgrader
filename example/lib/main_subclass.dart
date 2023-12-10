@@ -39,11 +39,4 @@ class MyApp extends StatelessWidget {
 /// This class extends / subclasses Upgrader.
 class MyUpgrader extends Upgrader {
   MyUpgrader() : super(debugLogging: true);
-
-  /// This method overrides super class method.
-  @override
-  void popNavigator(BuildContext context) {
-    print('this method overrides popNavigator');
-    super.popNavigator(context);
-  }
 }

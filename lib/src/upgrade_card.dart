@@ -3,10 +3,31 @@
  */
 
 import 'package:flutter/material.dart';
-import 'package:upgrader/upgrader.dart';
+
+import 'alert_style_widget.dart';
+import 'upgrade_messages.dart';
+import 'upgrader.dart';
 
 /// A widget to display the upgrade card.
-class UpgradeCard extends UpgradeBase {
+class UpgradeCard extends StatefulWidget {
+  /// Creates a new [UpgradeCard].
+  UpgradeCard({
+    super.key,
+    Upgrader? upgrader,
+    this.margin = const EdgeInsets.all(4.0),
+    this.maxLines = 15,
+    this.onIgnore,
+    this.onLater,
+    this.onUpdate,
+    this.overflow = TextOverflow.ellipsis,
+    this.showIgnore = true,
+    this.showLater = true,
+    this.showReleaseNotes = true,
+  }) : upgrader = upgrader ?? Upgrader.sharedInstance;
+
+  /// The upgraders used to configure the upgrade dialog.
+  final Upgrader upgrader;
+
   /// The empty space that surrounds the card.
   ///
   /// The default margin is 4.0 logical pixels on all sides:
@@ -16,38 +37,60 @@ class UpgradeCard extends UpgradeBase {
   /// An optional maximum number of lines for the text to span, wrapping if necessary.
   final int? maxLines;
 
+  /// Called when the ignore button is tapped or otherwise activated.
+  /// Return false when the default behavior should not execute.
+  final BoolCallback? onIgnore;
+
+  /// Called when the later button is tapped or otherwise activated.
+  final VoidCallback? onLater;
+
+  /// Called when the update button is tapped or otherwise activated.
+  /// Return false when the default behavior should not execute.
+  final BoolCallback? onUpdate;
+
   /// How visual overflow should be handled.
   final TextOverflow? overflow;
 
-  /// Creates a new [UpgradeCard].
-  UpgradeCard({
-    super.key,
-    Upgrader? upgrader,
-    this.margin = const EdgeInsets.all(4.0),
-    this.maxLines = 15,
-    this.overflow = TextOverflow.ellipsis,
-  }) : super(upgrader ?? Upgrader.sharedInstance);
+  /// Hide or show Ignore button on dialog (default: true)
+  final bool showIgnore;
+
+  /// Hide or show Later button on dialog (default: true)
+  final bool showLater;
+
+  /// Hide or show release notes (default: true)
+  final bool showReleaseNotes;
+
+  @override
+  UpgradeCardBaseState createState() => UpgradeCardBaseState();
+}
+
+class UpgradeCardBaseState extends State<UpgradeCard> {
+  @override
+  void initState() {
+    super.initState();
+    widget.upgrader.initialize();
+  }
 
   /// Describes the part of the user interface represented by this widget.
   @override
-  Widget build(BuildContext context, UpgradeBaseState state) {
-    if (upgrader.debugLogging) {
+  Widget build(BuildContext context) {
+    if (widget.upgrader.debugLogging) {
       print('upgrader: build UpgradeCard');
     }
 
     return StreamBuilder(
-        initialData: state.widget.upgrader.evaluationReady,
-        stream: state.widget.upgrader.evaluationStream,
+        initialData: widget.upgrader.evaluationReady,
+        stream: widget.upgrader.evaluationStream,
         builder: (BuildContext context,
             AsyncSnapshot<UpgraderEvaluateNeed> snapshot) {
           if ((snapshot.connectionState == ConnectionState.waiting ||
                   snapshot.connectionState == ConnectionState.active) &&
               snapshot.data != null &&
               snapshot.data!) {
-            if (upgrader.shouldDisplayUpgrade()) {
-              return buildUpgradeCard(context, state);
+            if (widget.upgrader.shouldDisplayUpgrade()) {
+              return buildUpgradeCard(context);
             } else {
-              if (upgrader.debugLogging) {
+              if (widget.upgrader.debugLogging) {
                 print('upgrader: UpgradeCard will not display');
               }
             }
@@ -57,13 +100,17 @@ class UpgradeCard extends UpgradeBase {
   }
 
   /// Build the UpgradeCard Widget.
-  Widget buildUpgradeCard(BuildContext context, UpgradeBaseState state) {
-    final appMessages = upgrader.determineMessages(context);
+  Widget buildUpgradeCard(BuildContext context) {
+    final appMessages = widget.upgrader.determineMessages(context);
     final title = appMessages.message(UpgraderMessage.title);
-    final message = upgrader.body(appMessages);
-    final releaseNotes = upgrader.releaseNotes;
-    final shouldDisplayReleaseNotes = upgrader.shouldDisplayReleaseNotes();
-    if (upgrader.debugLogging) {
+    final message = widget.upgrader.body(appMessages);
+    final releaseNotes = widget.upgrader.releaseNotes;
+
+    final isBlocked = widget.upgrader.blocked();
+    final showIgnore = isBlocked ? false : widget.showIgnore;
+    final showLater = isBlocked ? false : widget.showLater;
+
+    if (widget.upgrader.debugLogging) {
       print('upgrader: UpgradeCard: will display');
       print('upgrader: UpgradeCard: showDialog title: $title');
       print('upgrader: UpgradeCard: showDialog message: $message');
@@ -85,8 +132,8 @@ class UpgradeCard extends UpgradeBase {
                   style: const TextStyle(fontWeight: FontWeight.bold)),
               Text(
                 releaseNotes,
-                maxLines: maxLines,
-                overflow: overflow,
+                maxLines: widget.maxLines,
+                overflow: widget.overflow,
               ),
             ],
           ));
@@ -94,7 +141,7 @@ class UpgradeCard extends UpgradeBase {
 
     return Card(
         color: Colors.white,
-        margin: margin,
+        margin: widget.margin,
         child: AlertStyleWidget(
             title: Text(title ?? ''),
             content: Column(
@@ -111,29 +158,29 @@ class UpgradeCard extends UpgradeBase {
               ],
             ),
             actions: <Widget>[
-              if (upgrader.showIgnore)
+              if (showIgnore)
                 TextButton(
                     child: Text(appMessages
                             .message(UpgraderMessage.buttonTitleIgnore) ??
                         ''),
                     onPressed: () {
                       // Save the date/time as the last time alerted.
-                      upgrader.saveLastAlerted();
+                      widget.upgrader.saveLastAlerted();
 
-                      upgrader.onUserIgnored(context, false);
-                      state.forceUpdateState();
+                      onUserIgnored();
+                      forceUpdateState();
                     }),
-              if (upgrader.showLater)
+              if (showLater)
                 TextButton(
                     child: Text(
                         appMessages.message(UpgraderMessage.buttonTitleLater) ??
                             ''),
                     onPressed: () {
                       // Save the date/time as the last time alerted.
-                      upgrader.saveLastAlerted();
+                      widget.upgrader.saveLastAlerted();
 
-                      upgrader.onUserLater(context, false);
-                      state.forceUpdateState();
+                      onUserLater();
+                      forceUpdateState();
                     }),
               TextButton(
                   child: Text(
@@ -141,11 +188,57 @@ class UpgradeCard extends UpgradeBase {
                           ''),
                   onPressed: () {
                     // Save the date/time as the last time alerted.
-                    upgrader.saveLastAlerted();
+                    widget.upgrader.saveLastAlerted();
 
-                    upgrader.onUserUpdated(context, false);
-                    state.forceUpdateState();
+                    onUserUpdated();
                   }),
             ]));
+  }
+
+  void forceUpdateState() => setState(() {});
+
+  bool get shouldDisplayReleaseNotes =>
+      widget.showReleaseNotes &&
+      (widget.upgrader.releaseNotes?.isNotEmpty ?? false);
+
+  void onUserIgnored() {
+    if (widget.upgrader.debugLogging) {
+      print('upgrader: button tapped: ignore');
+    }
+
+    // If this callback has been provided, call it.
+    final doProcess = widget.onIgnore?.call() ?? true;
+
+    if (doProcess) {
+      widget.upgrader.saveIgnored();
+    }
+
+    forceUpdateState();
+  }
+
+  void onUserLater() {
+    if (widget.upgrader.debugLogging) {
+      print('upgrader: button tapped: later');
+    }
+
+    // If this callback has been provided, call it.
+    widget.onLater?.call();
+
+    forceUpdateState();
+  }
+
+  void onUserUpdated() {
+    if (widget.upgrader.debugLogging) {
+      print('upgrader: button tapped: update now');
+    }
+
+    // If this callback has been provided, call it.
+    final doProcess = widget.onUpdate?.call() ?? true;
+
+    if (doProcess) {
+      widget.upgrader.sendUserToAppStore();
+    }
+
+    forceUpdateState();
   }
 }

@@ -2,7 +2,6 @@
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:upgrader/src/upgrader_device.dart';
 import 'package:upgrader/upgrader.dart';
 
 void main() {

@@ -1,3 +1,8 @@
+## 9.0.0-alpha.1
+
+- BREAKING: Moved UI related code outside of Upgrader and into UpgradeAlert and UpgradeCard. Also,
+renamed the private methods to make them public.
+
 ## 8.4.0
 
 - [356] Fixed centering issue with Cupertino style UpgradeAlert dialog.
