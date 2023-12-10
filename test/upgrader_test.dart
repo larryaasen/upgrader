@@ -495,6 +495,36 @@ void main() {
     expect(called, false);
   }, skip: false);
 
+  testWidgets('test UpgradeAlert no update', (WidgetTester tester) async {
+    expect(Upgrader.sharedInstance.isTooSoon(), false);
+
+    final upgradeAlert = wrapper(UpgradeAlert());
+    await tester.pumpWidget(upgradeAlert);
+
+    // Pump the UI
+    await tester.pumpAndSettle();
+
+    expect(find.text('IGNORE'), findsNothing);
+    expect(find.text('LATER'), findsNothing);
+    expect(find.text('UPDATE'), findsNothing);
+    expect(find.text('Release Notes'), findsNothing);
+  });
+
+  testWidgets('test UpgradeCard no update', (WidgetTester tester) async {
+    expect(Upgrader.sharedInstance.isTooSoon(), false);
+
+    final upgradeCard = wrapper(UpgradeCard());
+    await tester.pumpWidget(upgradeCard);
+
+    // Pump the UI
+    await tester.pumpAndSettle();
+
+    expect(find.text('IGNORE'), findsNothing);
+    expect(find.text('LATER'), findsNothing);
+    expect(find.text('UPDATE'), findsNothing);
+    expect(find.text('Release Notes'), findsNothing);
+  });
+
   testWidgets('test UpgradeCard upgrade', (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader(
