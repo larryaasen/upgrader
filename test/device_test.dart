@@ -134,21 +134,21 @@ Map _iosInfo({required String baseOS}) {
   return info;
 }
 
-Map _linuxInfo({required String baseOS}) {
-  return {
-    'name': 'a',
-    'version': baseOS,
-    'id': 'a',
-    'idLike': ['a'],
-    'versionCodename': 'a',
-    'versionId': 'a',
-    'prettyName': 'a',
-    'buildId': 'a',
-    'variant': 'a',
-    'variantId': 'a',
-    'machineId': 'a',
-  };
-}
+// Map _linuxInfo({required String baseOS}) {
+//   return {
+//     'name': 'a',
+//     'version': baseOS,
+//     'id': 'a',
+//     'idLike': ['a'],
+//     'versionCodename': 'a',
+//     'versionId': 'a',
+//     'prettyName': 'a',
+//     'buildId': 'a',
+//     'variant': 'a',
+//     'variantId': 'a',
+//     'machineId': 'a',
+//   };
+// }
 
 Map _macOSInfo({required String baseOS}) {
   final info = {
@@ -170,33 +170,33 @@ Map _macOSInfo({required String baseOS}) {
   return info;
 }
 
-Map _windowsInfo({required String baseOS}) {
-  final info = {
-    'computerName': 'a',
-    'numberOfCores': 'a',
-    'systemMemoryInMegabytes': 'a',
-    'userName': 'a',
-    'majorVersion': 'a',
-    'minorVersion': 'a',
-    'buildNumber': 'a',
-    'platformId': 'a',
-    'csdVersion': 'a',
-    'servicePackMajor': 'a',
-    'servicePackMinor': 'a',
-    'suitMask': 'a',
-    'productType': 'a',
-    'reserved': 'a',
-    'buildLab': 'a',
-    'buildLabEx': 'a',
-    'digitalProductId': 'a',
-    'displayVersion': baseOS,
-    'editionId': 'a',
-    'installDate': 'a',
-    'productId': 'a',
-    'productName': 'a',
-    'registeredOwner': 'a',
-    'releaseId': 'a',
-    'deviceId': 'a',
-  };
-  return info;
-}
+// Map _windowsInfo({required String baseOS}) {
+//   final info = {
+//     'computerName': 'a',
+//     'numberOfCores': 'a',
+//     'systemMemoryInMegabytes': 'a',
+//     'userName': 'a',
+//     'majorVersion': 'a',
+//     'minorVersion': 'a',
+//     'buildNumber': 'a',
+//     'platformId': 'a',
+//     'csdVersion': 'a',
+//     'servicePackMajor': 'a',
+//     'servicePackMinor': 'a',
+//     'suitMask': 'a',
+//     'productType': 'a',
+//     'reserved': 'a',
+//     'buildLab': 'a',
+//     'buildLabEx': 'a',
+//     'digitalProductId': 'a',
+//     'displayVersion': baseOS,
+//     'editionId': 'a',
+//     'installDate': 'a',
+//     'productId': 'a',
+//     'productName': 'a',
+//     'registeredOwner': 'a',
+//     'releaseId': 'a',
+//     'deviceId': 'a',
+//   };
+//   return info;
+// }
