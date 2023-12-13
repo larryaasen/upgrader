@@ -32,50 +32,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class CustomAlertUpgrader extends Upgrader {
-  CustomAlertUpgrader() : super(dialogStyle: UpgradeDialogStyle.customAlert);
-
-  @override
-  Widget customAlertDialog(String title, String message, String? releaseNotes,
-      BuildContext context, UpgraderMessages messages) {
-    return Dialog(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(title),
-            SizedBox(height: 16),
-            Text(message),
-            SizedBox(height: 16),
-            if (releaseNotes != null) Text(releaseNotes),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                if (showIgnore)
-                  TextButton(
-                      child: Text(
-                          messages.message(UpgraderMessage.buttonTitleIgnore)!),
-                      onPressed: () => onUserIgnored(context, true)),
-                if (showLater)
-                  TextButton(
-                      child: Text(
-                          messages.message(UpgraderMessage.buttonTitleLater)!),
-                      onPressed: () => onUserLater(context, true)),
-                TextButton(
-                    child: Text(
-                        messages.message(UpgraderMessage.buttonTitleUpdate)!),
-                    onPressed: () => onUserUpdated(context, !blocked()))
-              ],
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class CustomBottomSheetUpgrader extends Upgrader {
   CustomBottomSheetUpgrader()
       : super(dialogStyle: UpgradeDialogStyle.customBottomSheet);
