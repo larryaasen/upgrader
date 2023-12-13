@@ -5,6 +5,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/src/client.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -350,8 +351,11 @@ void main() {
 
   testWidgets('test UpgradeAlert ignore', (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
-    final upgrader =
-        Upgrader(upgraderOS: MockUpgraderOS(ios: true), client: client);
+    final upgrader = Upgrader(
+      upgraderOS: MockUpgraderOS(ios: true),
+      client: client,
+      debugLogging: true,
+    );
 
     upgrader.installPackageInfo(
         packageInfo: PackageInfo(
@@ -402,8 +406,11 @@ void main() {
 
   testWidgets('test UpgradeAlert later', (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
-    final upgrader =
-        Upgrader(upgraderOS: MockUpgraderOS(ios: true), client: client);
+    final upgrader = Upgrader(
+      upgraderOS: MockUpgraderOS(ios: true),
+      client: client,
+      debugLogging: true,
+    );
 
     upgrader.installPackageInfo(
         packageInfo: PackageInfo(
@@ -1120,6 +1127,67 @@ void main() {
       expect(upgrader.appName(), isEmpty);
       expect(upgrader.currentInstalledVersion(), isEmpty);
     }, skip: false);
+
+    testWidgets('test UpgradeAlert with GoRouter', (WidgetTester tester) async {
+      final client = MockITunesSearchClient.setupMockClient();
+      final upgrader = Upgrader(
+        upgraderOS: MockUpgraderOS(ios: true),
+        client: client,
+        debugLogging: true,
+      );
+
+      upgrader.installPackageInfo(
+          packageInfo: PackageInfo(
+              appName: 'Upgrader',
+              packageName: 'com.larryaasen.upgrader',
+              version: '0.9.9',
+              buildNumber: '400'));
+
+      GoRouter routerConfig = GoRouter(
+        initialLocation: '/page2',
+        routes: [
+          GoRoute(
+            path: '/page1',
+            builder: (BuildContext context, GoRouterState state) => Scaffold(
+                appBar: AppBar(title: const Text('Upgrader GoRouter Example')),
+                body: const Center(child: Text('Checking... page1'))),
+          ),
+          GoRoute(
+            path: '/page2',
+            builder: (BuildContext context, GoRouterState state) => Scaffold(
+              appBar: AppBar(title: const Text('Upgrader GoRouter Example')),
+              body: const Center(child: Text('Checking... page2')),
+            ),
+          ),
+        ],
+      );
+
+      final router = MaterialApp.router(
+        title: 'Upgrader GoRouter Example',
+        routerConfig: routerConfig,
+        builder: (context, child) {
+          return UpgradeAlert(
+            upgrader: upgrader,
+            navigatorKey: routerConfig.routerDelegate.navigatorKey,
+            child: child ?? const Text('child'),
+          );
+        },
+      );
+
+      await tester.pumpWidget(router);
+
+      // Pump the UI so the upgrade card is displayed
+      await tester.pumpAndSettle();
+      await tester.pumpAndSettle();
+
+      expect(find.text('Upgrader GoRouter Example'), findsOneWidget);
+
+      expect(find.text('Update App?'), findsOneWidget);
+      expect(find.text('IGNORE'), findsOneWidget);
+      expect(find.text('LATER'), findsOneWidget);
+      expect(find.text('UPDATE NOW'), findsOneWidget);
+      expect(find.text('Release Notes'), findsOneWidget);
+    });
   });
 
   test('test UpgraderMessages', () {
