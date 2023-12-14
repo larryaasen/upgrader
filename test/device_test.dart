@@ -128,8 +128,22 @@ Map _androidInfo({required String baseOS}) {
 }
 
 Map _iosInfo({required String baseOS}) {
+  const iosUtsnameMap = <String, dynamic>{
+    'release': 'release',
+    'version': 'version',
+    'machine': 'machine',
+    'sysname': 'sysname',
+    'nodename': 'nodename',
+  };
   final info = {
+    'name': 'name',
+    'model': 'model',
+    'utsname': iosUtsnameMap,
+    'systemName': 'systemName',
+    'isPhysicalDevice': 'false',
     'systemVersion': baseOS,
+    'localizedModel': 'localizedModel',
+    'identifierForVendor': 'identifierForVendor',
   };
   return info;
 }
