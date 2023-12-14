@@ -1,11 +1,11 @@
 repo_name: larryaasen/upgrader
-report_id: 9c7ef59e1e82b17b47487e618612d98d
+report_id: 17d40cffd39c40ec47d032e816efb325
 repo_type: Public
-timestamp: '2023-11-09T13:06:04+00:00'
+timestamp: '2023-12-14T09:27:18+00:00'
 requested_by: larryaasen
 provider: github
 branch: master
-detected_tools_count: 29
+detected_tools_count: 32
 tools:
 - name: C lang
   description: One of the most widely used programming languages of all time
@@ -88,7 +88,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Frameworks (Full Stack)
   image_url: https://img.stackshare.io/service/1010/m8jf0po4imu8t5eemjdd.png
-  detection_source_url: example/android/app/build.gradle
+  detection_source_url: https://github.com/larryaasen/upgrader/blob/master/example/android/app/build.gradle
   detection_source: example/android/app/build.gradle
   last_updated_by: Larry Aasen
   last_updated_on: 2018-12-03 03:26:33.000000000 Z
@@ -101,9 +101,20 @@ tools:
   category: Languages & Frameworks
   sub_category: Cross-Platform Mobile Development
   image_url: https://img.stackshare.io/service/7180/flutter-mark-square-100.png
-  detection_source: pubspec.yaml
+  detection_source: example/pubspec.yaml
   last_updated_by: Larry Aasen
   last_updated_on: 2023-01-10 02:07:26.000000000 Z
+- name: pgvector
+  description: Open-source vector similarity search for Postgres
+  website_url: https://github.com/pgvector/pgvector/
+  open_source: false
+  hosted_saas: false
+  category: Data Stores
+  sub_category: Database Tools
+  image_url: https://img.stackshare.io/service/109221/default_b888cdf5617d936aa6aacf130911906955508639.png
+  detection_source: example/linux/CMakeLists.txt
+  last_updated_by: Larry Aasen
+  last_updated_on: 2023-05-07 22:58:50.000000000 Z
 - name: CMake
   description: 'An open-source system that manages the build process '
   website_url: http://www.cmake.org/
@@ -141,7 +152,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Continuous Integration
   image_url: https://img.stackshare.io/service/11563/actions.png
-  detection_source: ".github/workflows/platforms.yml"
+  detection_source: ".github/workflows/main.yml"
   last_updated_by: Larry Aasen
   last_updated_on: 2023-05-27 11:49:52.000000000 Z
 - name: Gradle
@@ -199,10 +210,30 @@ tools:
   category: Languages & Frameworks
   sub_category: Operating Systems
   image_url: https://img.stackshare.io/service/9586/ZvmtaSXW_400x400.jpg
-  detection_source_url: example/android/app/build.gradle
+  detection_source_url: https://github.com/larryaasen/upgrader/blob/master/example/android/app/build.gradle
   detection_source: example/android/app/build.gradle
   last_updated_by: Larry Aasen
   last_updated_on: 2018-12-03 03:26:33.000000000 Z
+- name: HTML
+  description: Hypertext Markup Language for creating web pages.
+  website_url: http://
+  open_source: false
+  hosted_saas: false
+  image_url: https://img.stackshare.io/service/2270/no-img-open-source.png
+  detection_source: example/web/index.html
+  last_updated_by: Larry Aasen
+  last_updated_on: 2021-12-11 13:38:43.000000000 Z
+- name: LangChain
+  description: Build AI apps with LLMs through composability
+  website_url: https://github.com/hwchase17/langchain
+  open_source: true
+  hosted_saas: false
+  category: Communications
+  sub_category: Large Language Model Tools
+  image_url: https://img.stackshare.io/service/48790/default_5b6c6b73f1ff3775c85d2a1ba954cb87e30cbf13.jpg
+  detection_source: example/linux/CMakeLists.txt
+  last_updated_by: Larry Aasen
+  last_updated_on: 2023-05-07 22:58:50.000000000 Z
 - name: test
   website_url: test
   open_source: false
@@ -219,7 +250,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Package Managers
   image_url: https://img.stackshare.io/package/pub/image.png
-  detection_source: pubspec.yaml
+  detection_source: example/pubspec.yaml
   last_updated_by: Larry Aasen
   last_updated_on: 2023-01-10 02:07:26.000000000 Z
 - name: html
@@ -231,7 +262,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Package Managers
   image_url: https://img.stackshare.io/package/pub/image.png
-  detection_source_url: pubspec.yaml
+  detection_source_url: https://github.com/larryaasen/upgrader/blob/master/pubspec.yaml
   detection_source: pubspec.yaml
   last_updated_by: Larry Aasen
   last_updated_on: 2023-05-11 12:11:44.000000000 Z
@@ -244,8 +275,8 @@ tools:
   category: Build, Test, Deploy
   sub_category: Package Managers
   image_url: https://img.stackshare.io/package/pub/image.png
-  detection_source_url: example/pubspec.yaml
-  detection_source: pubspec.yaml
+  detection_source_url: https://github.com/larryaasen/upgrader/blob/master/example/pubspec.yaml
+  detection_source: example/pubspec.yaml
   last_updated_by: Larry Aasen
   last_updated_on: 2023-06-01 11:24:32.000000000 Z
 - name: mockito
@@ -257,7 +288,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Package Managers
   image_url: https://img.stackshare.io/package/pub/image.png
-  detection_source_url: pubspec.yaml
+  detection_source_url: https://github.com/larryaasen/upgrader/blob/master/pubspec.yaml
   detection_source: pubspec.yaml
   last_updated_by: Larry Aasen
   last_updated_on: 2023-05-11 12:11:44.000000000 Z
@@ -270,7 +301,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Package Managers
   image_url: https://img.stackshare.io/package/pub/image.png
-  detection_source_url: pubspec.yaml
+  detection_source_url: https://github.com/larryaasen/upgrader/blob/master/pubspec.yaml
   detection_source: pubspec.yaml
   last_updated_by: Larry Aasen
   last_updated_on: 2023-11-07 13:12:06.000000000 Z
@@ -294,7 +325,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Package Managers
   image_url: https://img.stackshare.io/package/pub/image.png
-  detection_source_url: pubspec.yaml
+  detection_source_url: https://github.com/larryaasen/upgrader/blob/master/pubspec.yaml
   detection_source: pubspec.yaml
   last_updated_by: Larry Aasen
   last_updated_on: 2023-05-11 12:11:44.000000000 Z
@@ -308,10 +339,10 @@ tools:
   category: Build, Test, Deploy
   sub_category: Package Managers
   image_url: https://img.stackshare.io/package/pub/image.png
-  detection_source_url: pubspec.yaml
+  detection_source_url: https://github.com/larryaasen/upgrader/blob/master/pubspec.yaml
   detection_source: pubspec.yaml
   last_updated_by: Larry Aasen
-  last_updated_on: 2023-11-07 13:12:06.000000000 Z
+  last_updated_on: 2023-11-28 13:41:54.000000000 Z
 - name: xml
   description: A lightweight library for parsing
   package_url: https://pub.dartlang.org/xml
@@ -321,7 +352,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Package Managers
   image_url: https://img.stackshare.io/package/pub/image.png
-  detection_source_url: pubspec.yaml
+  detection_source_url: https://github.com/larryaasen/upgrader/blob/master/pubspec.yaml
   detection_source: pubspec.yaml
   last_updated_by: Larry Aasen
   last_updated_on: 2018-12-03 03:26:33.000000000 Z
