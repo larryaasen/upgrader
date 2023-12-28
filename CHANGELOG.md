@@ -1,7 +1,7 @@
 ## 9.0.0-alpha.1
 
 - BREAKING: Moved UI related code outside of Upgrader and into UpgradeAlert and UpgradeCard. Also,
-renamed the private methods to make them public.
+renamed the private methods to make them public. Added and improved example code and README.
 
 ## 8.4.0
 

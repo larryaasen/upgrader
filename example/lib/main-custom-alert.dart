@@ -48,6 +48,13 @@ class MyUpgrader extends Upgrader {
 class MyUpgradeAlert extends UpgradeAlert {
   MyUpgradeAlert({super.upgrader, super.child});
 
+  /// Override the [createState] method to provide a custom class
+  /// with overridden methods.
+  @override
+  UpgradeAlertState createState() => MyUpgradeAlertState();
+}
+
+class MyUpgradeAlertState extends UpgradeAlertState {
   @override
   void showTheDialog({
     required BuildContext context,
@@ -79,7 +86,7 @@ class MyUpgradeAlert extends UpgradeAlert {
               TextButton(
                 child: const Text('Yes'),
                 onPressed: () {
-                  onUserUpdated(context, !upgrader.blocked());
+                  onUserUpdated(context, !widget.upgrader.blocked());
                 },
               ),
             ],
