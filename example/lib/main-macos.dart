@@ -15,19 +15,20 @@ void main() async {
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
 
+  static const appcastURL =
+      'https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast_macos.xml';
+  final upgrader = Upgrader(
+    appcastConfig:
+        AppcastConfiguration(url: appcastURL, supportedOS: ['macos']),
+    debugLogging: true,
+  );
+
   @override
   Widget build(BuildContext context) {
-    final appcastURL =
-        'https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast_macos.xml';
-    final cfg = AppcastConfiguration(url: appcastURL, supportedOS: ['macos']);
-
     return MaterialApp(
       title: 'Upgrader Example',
       home: UpgradeAlert(
-          upgrader: Upgrader(
-            appcastConfig: cfg,
-            debugLogging: true,
-          ),
+          upgrader: upgrader,
           child: Scaffold(
             appBar: AppBar(title: Text('Upgrader Example')),
             body: Center(child: Text('Checking...')),

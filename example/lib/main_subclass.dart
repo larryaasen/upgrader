@@ -20,7 +20,9 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
+
+  final upgrader = MyUpgrader();
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,7 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
           appBar: AppBar(title: Text('Upgrader Subclass Example')),
           body: UpgradeAlert(
-            upgrader: MyUpgrader(),
+            upgrader: upgrader,
             child: Center(child: Text('Checking...')),
           )),
     );

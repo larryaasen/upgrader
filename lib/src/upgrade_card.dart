@@ -14,7 +14,7 @@ class UpgradeCard extends StatefulWidget {
   UpgradeCard({
     super.key,
     Upgrader? upgrader,
-    this.margin = const EdgeInsets.all(4.0),
+    this.margin,
     this.maxLines = 15,
     this.onIgnore,
     this.onLater,
@@ -30,9 +30,8 @@ class UpgradeCard extends StatefulWidget {
 
   /// The empty space that surrounds the card.
   ///
-  /// The default margin is 4.0 logical pixels on all sides:
-  /// `EdgeInsets.all(4.0)`.
-  final EdgeInsetsGeometry margin;
+  /// The default margin is [Card.margin].
+  final EdgeInsetsGeometry? margin;
 
   /// An optional maximum number of lines for the text to span, wrapping if necessary.
   final int? maxLines;
@@ -140,7 +139,7 @@ class UpgradeCardBaseState extends State<UpgradeCard> {
     }
 
     return Card(
-        color: Colors.white,
+        // color: Colors.white,
         margin: widget.margin,
         child: AlertStyleWidget(
             title: Text(title ?? ''),

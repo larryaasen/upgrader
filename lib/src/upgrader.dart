@@ -107,14 +107,14 @@ class Upgrader with WidgetsBindingObserver {
   /// will be forced to update to the current version. Optional.
   String? minAppVersion;
 
+  /// Provides information on which OS this code is running on.
+  final UpgraderOS upgraderOS;
+
   /// Called when [Upgrader] determines that an upgrade may or may not be
   /// displayed. The [value] parameter will be true when it should be displayed,
   /// and false when it should not be displayed. One good use for this callback
   /// is logging metrics for your app.
   WillDisplayUpgradeCallback? willDisplayUpgrade;
-
-  /// Provides information on which OS this code is running on.
-  final UpgraderOS upgraderOS;
 
   bool _initCalled = false;
   PackageInfo? _packageInfo;
