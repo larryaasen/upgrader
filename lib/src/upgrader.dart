@@ -33,6 +33,13 @@ typedef WillDisplayUpgradeCallback = void Function(
     String? installedVersion,
     String? appStoreVersion});
 
+typedef OnDisplayUpgradeCallback = bool Function(
+    {required bool display,
+    String? minAppVersion,
+    String? installedVersion,
+    String? appStoreVersion,
+    String? releaseNotes});
+
 /// The type of data in the stream.
 typedef UpgraderEvaluateNeed = bool;
 
@@ -124,6 +131,8 @@ class Upgrader with WidgetsBindingObserver {
   /// Hide or show release notes (default: true)
   bool showReleaseNotes;
 
+  OnDisplayUpgradeCallback? onDisplayUpgrade;
+
   /// The text style for the cupertino dialog buttons. Used only for
   /// [UpgradeDialogStyle.cupertino]. Optional.
   TextStyle? cupertinoButtonTextStyle;
@@ -180,6 +189,7 @@ class Upgrader with WidgetsBindingObserver {
     this.onUpdate,
     this.shouldPopScope,
     this.willDisplayUpgrade,
+    this.onDisplayUpgrade,
     http.Client? client,
     this.showIgnore = true,
     this.showLater = true,
@@ -470,6 +480,17 @@ class Upgrader with WidgetsBindingObserver {
         final appMessages = determineMessages(context);
 
         Future.delayed(const Duration(milliseconds: 0), () {
+          if (onDisplayUpgrade != null) {
+            if (onDisplayUpgrade?.call(
+                    display: shouldDisplay,
+                    minAppVersion: minAppVersion,
+                    installedVersion: _installedVersion,
+                    appStoreVersion: _appStoreVersion,
+                    releaseNotes: _releaseNotes) ==
+                false) {
+              return;
+            }
+          }
           _showDialog(
             context: context,
             title: appMessages.message(UpgraderMessage.title),
