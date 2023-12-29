@@ -461,8 +461,10 @@ void main() {
 
   testWidgets('test UpgradeAlert pop scope', (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
-    final upgrader =
-        Upgrader(upgraderOS: MockUpgraderOS(ios: true), client: client);
+    final upgrader = Upgrader(
+        upgraderOS: MockUpgraderOS(ios: true),
+        client: client,
+        debugLogging: true);
 
     upgrader.installPackageInfo(
         packageInfo: PackageInfo(
