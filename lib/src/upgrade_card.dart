@@ -25,7 +25,7 @@ class UpgradeCard extends UpgradeBase {
     Upgrader? upgrader,
     this.margin = const EdgeInsets.all(4.0),
     this.maxLines = 15,
-    this.overflow = TextOverflow.ellipsis,
+    this.overflow = TextOverflow.ellipsis, required UpgradeAlert child,
   }) : super(upgrader ?? Upgrader.sharedInstance);
 
   /// Describes the part of the user interface represented by this widget.
@@ -93,7 +93,8 @@ class UpgradeCard extends UpgradeBase {
     }
 
     return Card(
-        color: Colors.white,
+        
+        
         margin: margin,
         child: AlertStyleWidget(
             title: Text(title ?? ''),

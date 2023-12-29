@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
               children: [
                 _simpleCard,
                 _simpleCard,
-                UpgradeCard(),
+                UpgradeCard(child: UpgradeAlert(),),
                 _simpleCard,
                 _simpleCard,
               ],
