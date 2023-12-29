@@ -9,6 +9,10 @@ import 'upgrade_messages.dart';
 import 'upgrader.dart';
 
 /// A widget to display the upgrade card.
+/// The only reason this is a [StatefulWidget] and not a [StatelessWidget] is that
+/// the widget needs to rebulid after one of the buttons have been tapped.
+/// Override the [createState] method to provide a custom class
+/// with overridden methods.
 class UpgradeCard extends StatefulWidget {
   /// Creates a new [UpgradeCard].
   UpgradeCard({
@@ -60,10 +64,11 @@ class UpgradeCard extends StatefulWidget {
   final bool showReleaseNotes;
 
   @override
-  UpgradeCardBaseState createState() => UpgradeCardBaseState();
+  UpgradeCardState createState() => UpgradeCardState();
 }
 
-class UpgradeCardBaseState extends State<UpgradeCard> {
+/// The [UpgradeCard] widget state.
+class UpgradeCardState extends State<UpgradeCard> {
   @override
   void initState() {
     super.initState();
@@ -98,16 +103,12 @@ class UpgradeCardBaseState extends State<UpgradeCard> {
         });
   }
 
-  /// Build the UpgradeCard Widget.
+  /// Build the UpgradeCard widget.
   Widget buildUpgradeCard(BuildContext context) {
     final appMessages = widget.upgrader.determineMessages(context);
     final title = appMessages.message(UpgraderMessage.title);
     final message = widget.upgrader.body(appMessages);
     final releaseNotes = widget.upgrader.releaseNotes;
-
-    final isBlocked = widget.upgrader.blocked();
-    final showIgnore = isBlocked ? false : widget.showIgnore;
-    final showLater = isBlocked ? false : widget.showLater;
 
     if (widget.upgrader.debugLogging) {
       print('upgrader: UpgradeCard: will display');
@@ -139,62 +140,66 @@ class UpgradeCardBaseState extends State<UpgradeCard> {
     }
 
     return Card(
-        // color: Colors.white,
-        margin: widget.margin,
-        child: AlertStyleWidget(
-            title: Text(title ?? ''),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(message),
-                Padding(
-                    padding: const EdgeInsets.only(top: 15.0),
-                    child: Text(
-                        appMessages.message(UpgraderMessage.prompt) ?? '')),
-                if (notes != null) notes,
-              ],
-            ),
-            actions: <Widget>[
-              if (showIgnore)
-                TextButton(
-                    child: Text(appMessages
-                            .message(UpgraderMessage.buttonTitleIgnore) ??
-                        ''),
-                    onPressed: () {
-                      // Save the date/time as the last time alerted.
-                      widget.upgrader.saveLastAlerted();
-
-                      onUserIgnored();
-                      forceUpdateState();
-                    }),
-              if (showLater)
-                TextButton(
-                    child: Text(
-                        appMessages.message(UpgraderMessage.buttonTitleLater) ??
-                            ''),
-                    onPressed: () {
-                      // Save the date/time as the last time alerted.
-                      widget.upgrader.saveLastAlerted();
-
-                      onUserLater();
-                      forceUpdateState();
-                    }),
-              TextButton(
-                  child: Text(
-                      appMessages.message(UpgraderMessage.buttonTitleUpdate) ??
-                          ''),
-                  onPressed: () {
-                    // Save the date/time as the last time alerted.
-                    widget.upgrader.saveLastAlerted();
-
-                    onUserUpdated();
-                  }),
-            ]));
+      margin: widget.margin,
+      child: AlertStyleWidget(
+        title: Text(title ?? ''),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(message),
+            Padding(
+                padding: const EdgeInsets.only(top: 15.0),
+                child: Text(appMessages.message(UpgraderMessage.prompt) ?? '')),
+            if (notes != null) notes,
+          ],
+        ),
+        actions: actions(appMessages),
+      ),
+    );
   }
 
-  void forceUpdateState() => setState(() {});
+  void forceRebuild() => setState(() {});
+
+  List<Widget> actions(UpgraderMessages appMessages) {
+    final isBlocked = widget.upgrader.blocked();
+    final showIgnore = isBlocked ? false : widget.showIgnore;
+    final showLater = isBlocked ? false : widget.showLater;
+    return <Widget>[
+      if (showIgnore)
+        TextButton(
+            child: Text(
+                appMessages.message(UpgraderMessage.buttonTitleIgnore) ?? ''),
+            onPressed: () {
+              // Save the date/time as the last time alerted.
+              widget.upgrader.saveLastAlerted();
+
+              onUserIgnored();
+              forceRebuild();
+            }),
+      if (showLater)
+        TextButton(
+            child: Text(
+                appMessages.message(UpgraderMessage.buttonTitleLater) ?? ''),
+            onPressed: () {
+              // Save the date/time as the last time alerted.
+              widget.upgrader.saveLastAlerted();
+
+              onUserLater();
+              forceRebuild();
+            }),
+      TextButton(
+          child: Text(
+              appMessages.message(UpgraderMessage.buttonTitleUpdate) ?? ''),
+          onPressed: () {
+            // Save the date/time as the last time alerted.
+            widget.upgrader.saveLastAlerted();
+
+            onUserUpdated();
+          }),
+    ];
+  }
 
   bool get shouldDisplayReleaseNotes =>
       widget.showReleaseNotes &&
@@ -212,7 +217,7 @@ class UpgradeCardBaseState extends State<UpgradeCard> {
       widget.upgrader.saveIgnored();
     }
 
-    forceUpdateState();
+    forceRebuild();
   }
 
   void onUserLater() {
@@ -223,7 +228,7 @@ class UpgradeCardBaseState extends State<UpgradeCard> {
     // If this callback has been provided, call it.
     widget.onLater?.call();
 
-    forceUpdateState();
+    forceRebuild();
   }
 
   void onUserUpdated() {
@@ -238,6 +243,6 @@ class UpgradeCardBaseState extends State<UpgradeCard> {
       widget.upgrader.sendUserToAppStore();
     }
 
-    forceUpdateState();
+    forceRebuild();
   }
 }

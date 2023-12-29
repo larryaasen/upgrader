@@ -18,14 +18,27 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  final dark = ThemeData.dark(useMaterial3: true);
+
+  final light = ThemeData(
+    cardTheme: CardTheme(color: Colors.greenAccent),
+    // Change the text buttons.
+    textButtonTheme: const TextButtonThemeData(
+      style: ButtonStyle(
+        // Change the color of the text buttons.
+        foregroundColor: MaterialStatePropertyAll(Colors.orange),
+      ),
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Upgrader Example',
+      title: 'Upgrader Card Example',
       home: Scaffold(
-        appBar: AppBar(title: Text('Upgrader Custom Card Example')),
+        appBar: AppBar(title: Text('Upgrader Card Theme Example')),
         body: Container(
           margin: EdgeInsets.only(left: 12.0, right: 12.0),
           child: SingleChildScrollView(
@@ -33,7 +46,7 @@ class MyApp extends StatelessWidget {
               children: [
                 _simpleCard,
                 _simpleCard,
-                MyUpgradeCard(),
+                UpgradeCard(),
                 _simpleCard,
                 _simpleCard,
               ],
@@ -41,6 +54,8 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
+      theme: light,
+      darkTheme: dark,
     );
   }
 
@@ -51,38 +66,4 @@ class MyApp extends StatelessWidget {
           child: Center(child: Text('Card')),
         ),
       );
-}
-
-class MyUpgradeCard extends UpgradeCard {
-  MyUpgradeCard({super.upgrader});
-
-  /// Override the [createState] method to provide a custom class
-  /// with overridden methods.
-  @override
-  UpgradeCardState createState() => MyUpgradeCardState();
-}
-
-class MyUpgradeCardState extends UpgradeCardState {
-  @override
-  Widget buildUpgradeCard(BuildContext context) {
-    final appMessages = widget.upgrader.determineMessages(context);
-    final title = appMessages.message(UpgraderMessage.title);
-    return Card(
-      color: Colors.greenAccent,
-      child: AlertStyleWidget(
-        actions: [
-          TextButton(
-            child: Text(
-                appMessages.message(UpgraderMessage.buttonTitleUpdate) ?? ''),
-            onPressed: () {
-              widget.upgrader.saveLastAlerted();
-              onUserUpdated();
-            },
-          ),
-        ],
-        content: Text(''),
-        title: Text(title ?? ''),
-      ),
-    );
-  }
 }
