@@ -12,7 +12,7 @@ dependencies:
     sdk: flutter
 
   # From fluttercommunity.dev: Get current device information from within the Flutter application.
-  device_info_plus: any
+  device_info_plus: '>=8.1.0 <10.0.0'
 
   # Pure Dart library for HTML5 parsing
   html: ^0.15.3
