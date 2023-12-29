@@ -37,7 +37,7 @@ typedef WillDisplayUpgradeCallback = void Function(
 typedef UpgraderEvaluateNeed = bool;
 
 /// There are two different dialog styles: Cupertino and Material
-enum UpgradeDialogStyle { cupertino, material }
+enum UpgradeDialogStyle { cupertino, material, customAlert, customBottomSheet }
 
 /// A class to define the configuration for the appcast. The configuration
 /// contains two parts: a URL to the appcast, and a list of supported OS
@@ -682,22 +682,62 @@ class Upgrader with WidgetsBindingObserver {
     // Save the date/time as the last time alerted.
     saveLastAlerted();
 
-    showDialog(
-      barrierDismissible: canDismissDialog,
-      context: context,
-      builder: (BuildContext context) {
-        return WillPopScope(
-            onWillPop: () async => _shouldPopScope(),
-            child: _alertDialog(
-              title ?? '',
-              message,
-              releaseNotes,
-              context,
-              dialogStyle == UpgradeDialogStyle.cupertino,
-              messages,
-            ));
-      },
-    );
+    switch (dialogStyle) {
+      case UpgradeDialogStyle.cupertino:
+        showDialog(
+          barrierDismissible: canDismissDialog,
+          context: context,
+          builder: (BuildContext context) {
+            return WillPopScope(
+              onWillPop: () async => _shouldPopScope(),
+              child: _alertDialog(
+                  title!, message, releaseNotes, context, false, messages),
+            );
+          },
+        );
+        break;
+      case UpgradeDialogStyle.material:
+        showDialog(
+          barrierDismissible: canDismissDialog,
+          context: context,
+          builder: (BuildContext context) {
+            return WillPopScope(
+              onWillPop: () async => _shouldPopScope(),
+              child: _alertDialog(
+                  title!, message, releaseNotes, context, true, messages),
+            );
+          },
+        );
+        break;
+      case UpgradeDialogStyle.customAlert:
+        showDialog(
+          barrierDismissible: canDismissDialog,
+          context: context,
+          builder: (BuildContext context) {
+            return WillPopScope(
+              onWillPop: () async => _shouldPopScope(),
+              child: customAlertDialog(
+                  title!, message, releaseNotes, context, messages),
+            );
+          },
+        );
+        break;
+      case UpgradeDialogStyle.customBottomSheet:
+        showModalBottomSheet(
+          isDismissible: canDismissDialog,
+          enableDrag: canDismissDialog,
+          showDragHandle: canDismissDialog,
+          context: context,
+          builder: (BuildContext context) {
+            return WillPopScope(
+              onWillPop: () async => _shouldPopScope(),
+              child: customBottomSheet(
+                  title!, message, releaseNotes, context, messages),
+            );
+          },
+        );
+        break;
+    }
   }
 
   /// Called when the user taps outside of the dialog and [canDismissDialog]
@@ -767,6 +807,18 @@ class Upgrader with WidgetsBindingObserver {
         ? CupertinoAlertDialog(
             title: textTitle, content: content, actions: actions)
         : AlertDialog(title: textTitle, content: content, actions: actions);
+  }
+
+  /// override this method for showing customAlertDialog
+  Widget customAlertDialog(String title, String message, String? releaseNotes,
+      BuildContext context, UpgraderMessages messages) {
+    return const Dialog();
+  }
+
+  /// override this method for showing customBottomSheet
+  Widget customBottomSheet(String title, String message, String? releaseNotes,
+      BuildContext context, UpgraderMessages messages) {
+    return Container();
   }
 
   Widget _button(bool cupertino, String? text, BuildContext context,
