@@ -495,12 +495,11 @@ void main() {
     // Pump the UI so the upgrader can display its dialog
     await tester.pumpAndSettle();
 
-    // Note: his test does not pop scope because there is no way to do that.
-    // await tester.pageBack();
-    // await tester.pumpAndSettle();
-    // expect(find.text(upgrader.messages.buttonTitleLater), findsNothing);
-    expect(called, false);
-  }, skip: false);
+    final dynamic widgetsAppState = tester.state(find.byType(WidgetsApp));
+    await widgetsAppState.didPopRoute();
+    await tester.pump();
+    expect(called, true);
+  });
 
   testWidgets('test UpgradeAlert no update', (WidgetTester tester) async {
     expect(Upgrader.sharedInstance.isTooSoon(), false);
