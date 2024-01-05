@@ -64,7 +64,7 @@ class MyUpgradeCard extends UpgradeCard {
 
 class MyUpgradeCardState extends UpgradeCardState {
   @override
-  Widget buildUpgradeCard(BuildContext context) {
+  Widget buildUpgradeCard(BuildContext context, Key? key) {
     final appMessages = widget.upgrader.determineMessages(context);
     final title = appMessages.message(UpgraderMessage.title);
     return Card(
