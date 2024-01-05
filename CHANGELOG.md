@@ -1,6 +1,7 @@
 ## 9.0.0-alpha.2
 
 - Changed currentAppStoreListingURL, currentAppStoreVersion, and currentInstalledVersion from functions to getters.
+- [371] Added key to alert dialog and alert card.
 
 ## 9.0.0-alpha.1
 

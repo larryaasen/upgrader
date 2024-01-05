@@ -208,6 +208,7 @@ class UpgradeAlertState extends State<UpgradeAlert> {
 
   /// Show the alert dialog.
   void showTheDialog({
+    Key? key = const Key('upgrader_alert_dialog'),
     required BuildContext context,
     required String? title,
     required String message,
@@ -231,6 +232,7 @@ class UpgradeAlertState extends State<UpgradeAlert> {
         return WillPopScope(
             onWillPop: () async => onWillPop(),
             child: alertDialog(
+              key,
               title ?? '',
               message,
               releaseNotes,
@@ -260,8 +262,14 @@ class UpgradeAlertState extends State<UpgradeAlert> {
     return false;
   }
 
-  Widget alertDialog(String title, String message, String? releaseNotes,
-      BuildContext context, bool cupertino, UpgraderMessages messages) {
+  Widget alertDialog(
+      Key? key,
+      String title,
+      String message,
+      String? releaseNotes,
+      BuildContext context,
+      bool cupertino,
+      UpgraderMessages messages) {
     // If installed version is below minimum app version, or is a critical update,
     // disable ignore and later buttons.
     final isBlocked = widget.upgrader.blocked();
@@ -313,8 +321,9 @@ class UpgradeAlertState extends State<UpgradeAlert> {
 
     return cupertino
         ? CupertinoAlertDialog(
-            title: textTitle, content: content, actions: actions)
-        : AlertDialog(title: textTitle, content: content, actions: actions);
+            key: key, title: textTitle, content: content, actions: actions)
+        : AlertDialog(
+            key: key, title: textTitle, content: content, actions: actions);
   }
 
   Widget button(bool cupertino, String? text, BuildContext context,

@@ -66,6 +66,7 @@ class MyUpgradeAlert extends UpgradeAlert {
 class MyUpgradeAlertState extends UpgradeAlertState {
   @override
   void showTheDialog({
+    Key? key,
     required BuildContext context,
     required String? title,
     required String message,

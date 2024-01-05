@@ -92,7 +92,8 @@ class UpgradeCardState extends State<UpgradeCard> {
               snapshot.data != null &&
               snapshot.data!) {
             if (widget.upgrader.shouldDisplayUpgrade()) {
-              return buildUpgradeCard(context);
+              return buildUpgradeCard(
+                  context, const Key('upgrader_alert_card'));
             } else {
               if (widget.upgrader.debugLogging) {
                 print('upgrader: UpgradeCard will not display');
@@ -104,7 +105,7 @@ class UpgradeCardState extends State<UpgradeCard> {
   }
 
   /// Build the UpgradeCard widget.
-  Widget buildUpgradeCard(BuildContext context) {
+  Widget buildUpgradeCard(BuildContext context, Key? key) {
     final appMessages = widget.upgrader.determineMessages(context);
     final title = appMessages.message(UpgraderMessage.title);
     final message = widget.upgrader.body(appMessages);
@@ -140,6 +141,7 @@ class UpgradeCardState extends State<UpgradeCard> {
     }
 
     return Card(
+      key: key,
       margin: widget.margin,
       child: AlertStyleWidget(
         title: Text(title ?? ''),
