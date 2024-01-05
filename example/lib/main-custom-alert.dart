@@ -43,6 +43,15 @@ class MyUpgrader extends Upgrader {
   bool isTooSoon() {
     return super.isTooSoon();
   }
+
+  @override
+  bool isUpdateAvailable() {
+    final appStoreVersion = currentAppStoreVersion;
+    final installedVersion = currentInstalledVersion;
+    print('appStoreVersion=$appStoreVersion');
+    print('installedVersion=$installedVersion');
+    return super.isUpdateAvailable();
+  }
 }
 
 class MyUpgradeAlert extends UpgradeAlert {

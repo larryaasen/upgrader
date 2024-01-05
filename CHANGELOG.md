@@ -1,7 +1,13 @@
+## 9.0.0-alpha.2
+
+- Changed currentAppStoreListingURL, currentAppStoreVersion, and currentInstalledVersion from functions to getters.
+
 ## 9.0.0-alpha.1
 
 - BREAKING: Moved UI related code outside of Upgrader and into UpgradeAlert and UpgradeCard. Also,
 renamed the private methods to make them public. Added and improved example code and README.
+- Minimum Dart SDK 3.1.0
+- Minimum Flutter SDK 3.13.1
 
 ## 8.4.0
 

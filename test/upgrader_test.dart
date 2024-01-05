@@ -110,27 +110,27 @@ void main() {
       expect(await upgrader.initialize(), isTrue);
 
       expect(upgrader.appName(), 'Upgrader');
-      expect(upgrader.currentAppStoreVersion(), '5.6');
-      expect(upgrader.currentInstalledVersion(), '1.9.9');
+      expect(upgrader.currentAppStoreVersion, '5.6');
+      expect(upgrader.currentInstalledVersion, '1.9.9');
       expect(upgrader.isUpdateAvailable(), true);
 
       upgrader.installAppStoreVersion('1.2.3');
-      expect(upgrader.currentAppStoreVersion(), '1.2.3');
+      expect(upgrader.currentAppStoreVersion, '1.2.3');
       expect(upgrader.isUpdateAvailable(), false);
 
       upgrader.installAppStoreVersion('6.2.3');
-      expect(upgrader.currentAppStoreVersion(), '6.2.3');
+      expect(upgrader.currentAppStoreVersion, '6.2.3');
       expect(upgrader.isUpdateAvailable(), true);
 
       upgrader.installAppStoreVersion('1.1.1');
-      expect(upgrader.currentAppStoreVersion(), '1.1.1');
+      expect(upgrader.currentAppStoreVersion, '1.1.1');
       expect(upgrader.isUpdateAvailable(), false);
 
       await upgrader.didChangeAppLifecycleState(AppLifecycleState.resumed);
       expect(upgrader.isUpdateAvailable(), true);
 
       upgrader.installAppStoreVersion('1.1.1');
-      expect(upgrader.currentAppStoreVersion(), '1.1.1');
+      expect(upgrader.currentAppStoreVersion, '1.1.1');
       expect(upgrader.isUpdateAvailable(), false);
 
       upgrader.installPackageInfo(
@@ -160,7 +160,7 @@ void main() {
     upgrader.installAppStoreListingURL(
         'https://itunes.apple.com/us/app/google-maps-transit-food/id585027354?mt=8&uo=4');
 
-    expect(upgrader.currentAppStoreListingURL(),
+    expect(upgrader.currentAppStoreListingURL,
         'https://itunes.apple.com/us/app/google-maps-transit-food/id585027354?mt=8&uo=4');
   }, skip: false);
 
@@ -1126,7 +1126,7 @@ void main() {
       await upgrader.initialize();
       expect(upgrader.shouldDisplayUpgrade(), isFalse);
       expect(upgrader.appName(), isEmpty);
-      expect(upgrader.currentInstalledVersion(), isEmpty);
+      expect(upgrader.currentInstalledVersion, isEmpty);
     }, skip: false);
 
     testWidgets('test UpgradeAlert with GoRouter', (WidgetTester tester) async {

@@ -148,11 +148,11 @@ class Upgrader with WidgetsBindingObserver {
   static const notInitializedExceptionMessage =
       'upgrader: initialize() not called. Must be called first.';
 
-  String? currentAppStoreListingURL() => _appStoreListingURL;
+  String? get currentAppStoreListingURL => _appStoreListingURL;
 
-  String? currentAppStoreVersion() => _appStoreVersion;
+  String? get currentAppStoreVersion => _appStoreVersion;
 
-  String? currentInstalledVersion() => _installedVersion;
+  String? get currentInstalledVersion => _installedVersion;
 
   String? get releaseNotes => _releaseNotes;
 
@@ -395,9 +395,9 @@ class Upgrader with WidgetsBindingObserver {
     var msg = messages.message(UpgraderMessage.body)!;
     msg = msg.replaceAll('{{appName}}', appName());
     msg = msg.replaceAll(
-        '{{currentAppStoreVersion}}', currentAppStoreVersion() ?? '');
+        '{{currentAppStoreVersion}}', currentAppStoreVersion ?? '');
     msg = msg.replaceAll(
-        '{{currentInstalledVersion}}', currentInstalledVersion() ?? '');
+        '{{currentInstalledVersion}}', currentInstalledVersion ?? '');
     return msg;
   }
 
