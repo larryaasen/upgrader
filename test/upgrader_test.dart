@@ -240,6 +240,7 @@ void main() {
     expect(find.text(upgrader.messages!.buttonTitleLater), findsOneWidget);
     expect(find.text(upgrader.messages!.buttonTitleUpdate), findsOneWidget);
     expect(find.text(upgrader.messages!.releaseNotes), findsOneWidget);
+    expect(find.byKey(const Key('upgrader_alert_dialog')), findsOneWidget);
 
     await tester.tap(find.text(upgrader.messages!.buttonTitleUpdate));
     await tester.pumpAndSettle();
