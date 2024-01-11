@@ -2,11 +2,11 @@ repo_name: larryaasen/upgrader
 report_id: 3b5e27a73cf0bcd2a94baea848d6ef3b
 version: 0.1
 repo_type: Public
-timestamp: '2024-01-05T09:26:38+00:00'
+timestamp: '2024-01-11T12:13:23+00:00'
 requested_by: larryaasen
 provider: github
 branch: master
-detected_tools_count: 29
+detected_tools_count: 28
 tools:
 - name: C lang
   description: One of the most widely used programming languages of all time
@@ -220,15 +220,6 @@ tools:
   detection_source: example/android/app/build.gradle
   last_updated_by: Larry Aasen
   last_updated_on: 2018-12-03 03:26:33.000000000 Z
-- name: test
-  website_url: test
-  open_source: false
-  hosted_saas: false
-  image_url: https://img.stackshare.io/service/5477/no-img-open-source.png
-  detection_source_url: https://github.com/larryaasen/upgrader/blob/master/example/pubspec.yaml
-  detection_source: example/pubspec.yaml
-  last_updated_by: Larry Aasen
-  last_updated_on: 2022-11-08 12:34:37.000000000 Z
 - name: flutter
   description: Visit flutter.io to get started
   package_url: https://pub.dartlang.org/flutter
@@ -331,7 +322,7 @@ tools:
   detection_source_url: https://github.com/larryaasen/upgrader/blob/master/pubspec.yaml
   detection_source: pubspec.yaml
   last_updated_by: Larry Aasen
-  last_updated_on: 2023-11-07 13:12:06.000000000 Z
+  last_updated_on: 2023-11-28 13:41:54.000000000 Z
 - name: xml
   description: A lightweight library for parsing
   package_url: https://pub.dartlang.org/xml
