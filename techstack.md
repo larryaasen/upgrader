@@ -52,7 +52,7 @@ Full tech stack [here](/techstack.md)
 # Tech Stack File
 ![](https://img.stackshare.io/repo.svg "repo") [larryaasen/upgrader](https://github.com/larryaasen/upgrader)![](https://img.stackshare.io/public_badge.svg "public")
 <br/><br/>
-|29<br/>Tools used|01/05/24 <br/>Report generated|
+|28<br/>Tools used|01/11/24 <br/>Report generated|
 |------|------|
 </div>
 
@@ -207,7 +207,7 @@ Full tech stack [here](/techstack.md)
 </tr>
 </table>
 
-## Other (2)
+## Other (1)
 <table><tr>
   <td align='center'>
   <img width='36' height='36' src='https://img.stackshare.io/service/9586/ZvmtaSXW_400x400.jpg' alt='Android OS'>
@@ -215,14 +215,6 @@ Full tech stack [here](/techstack.md)
   <sub><a href="https://www.android.com">Android OS</a></sub>
   <br>
   <sub>v13.0</sub>
-</td>
-
-<td align='center'>
-  <img width='36' height='36' src='https://img.stackshare.io/service/5477/no-img-open-source.png' alt='test'>
-  <br>
-  <sub><a href="test">test</a></sub>
-  <br>
-  <sub></sub>
 </td>
 
 </tr>
@@ -242,7 +234,7 @@ Full tech stack [here](/techstack.md)
 |[shared_preferences](https://pub.dartlang.org/shared_preferences)|v2.1.1|11/07/23|Larry Aasen |N/A|N/A|
 |[test](https://pub.dartlang.org/test)|N/A|11/08/22|Larry Aasen |N/A|N/A|
 |[url_launcher](https://pub.dartlang.org/url_launcher)|v6.1.11|05/11/23|Larry Aasen |N/A|N/A|
-|[version](https://pub.dartlang.org/version)|v3.0.2|11/07/23|Larry Aasen |N/A|N/A|
+|[version](https://pub.dartlang.org/version)|v3.0.2|11/28/23|Larry Aasen |N/A|N/A|
 |[xml](https://pub.dartlang.org/xml)|v6.3.0|12/03/18|Larry Aasen |N/A|N/A|
 
 
