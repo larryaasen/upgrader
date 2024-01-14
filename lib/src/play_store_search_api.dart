@@ -6,6 +6,7 @@ import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parse;
 import 'package:http/http.dart' as http;
 import 'package:version/version.dart';
+import 'dart:convert';  
 
 class PlayStoreSearchAPI {
   PlayStoreSearchAPI({http.Client? client}) : client = client ?? http.Client();
@@ -256,8 +257,8 @@ extension PlayStoreResults on PlayStoreSearchAPI {
           nameElement
               .substring(storeNameStartIndex)
               .indexOf(patternEndOfString);
-      final storeName =
-          nameElement.substring(storeNameStartIndex, storeNameEndIndex);
+      final storeName = jsonDecode(
+          '"${nameElement.substring(storeNameStartIndex, storeNameEndIndex)}"');
 
       final versionElement = additionalInfoElementsFiltered
           .where((element) => element.text.contains("\"$storeName\""))
