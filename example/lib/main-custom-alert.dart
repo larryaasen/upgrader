@@ -78,6 +78,7 @@ class MyUpgradeAlertState extends UpgradeAlertState {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
+            key: key,
             title: const Text('Update?'),
             content: const SingleChildScrollView(
               child: ListBody(

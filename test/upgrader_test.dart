@@ -15,6 +15,7 @@ import 'appcast_test.dart';
 import 'fake_appcast.dart';
 import 'mock_itunes_client.dart';
 import 'mock_play_store_client.dart';
+import 'test_utils.dart';
 
 // FYI: Platform.operatingSystem can be "macos" or "linux" in a unit test.
 // FYI: defaultTargetPlatform is TargetPlatform.android in a unit test.
@@ -202,8 +203,10 @@ void main() {
     var called = false;
     var notCalled = true;
 
+    final dialogKey = GlobalKey(debugLabel: 'gloabl_upgrader_alert_dialog');
     final upgradeAlert = wrapper(
       UpgradeAlert(
+        dialogKey: dialogKey,
         upgrader: upgrader,
         onUpdate: () {
           called = true;
@@ -240,7 +243,7 @@ void main() {
     expect(find.text(upgrader.messages!.buttonTitleLater), findsOneWidget);
     expect(find.text(upgrader.messages!.buttonTitleUpdate), findsOneWidget);
     expect(find.text(upgrader.messages!.releaseNotes), findsOneWidget);
-    expect(find.byKey(const Key('upgrader_alert_dialog')), findsOneWidget);
+    expect(find.byKey(dialogKey), findsOneWidget);
 
     await tester.tap(find.text(upgrader.messages!.buttonTitleUpdate));
     await tester.pumpAndSettle();
@@ -340,6 +343,7 @@ void main() {
     expect(find.text(upgrader.messages!.buttonTitleIgnore), findsOneWidget);
     expect(find.text(upgrader.messages!.buttonTitleLater), findsOneWidget);
     expect(find.text(upgrader.messages!.buttonTitleUpdate), findsOneWidget);
+    expect(find.byKey(const Key('upgrader_alert_dialog')), findsOneWidget);
 
     await tester.tap(find.text(upgrader.messages!.buttonTitleUpdate));
     await tester.pumpAndSettle();
@@ -518,182 +522,6 @@ void main() {
     expect(find.text('UPDATE'), findsNothing);
     expect(find.text('Release Notes'), findsNothing);
   });
-
-  testWidgets('test UpgradeCard no update', (WidgetTester tester) async {
-    expect(Upgrader.sharedInstance.isTooSoon(), false);
-
-    final upgradeCard = wrapper(UpgradeCard());
-    await tester.pumpWidget(upgradeCard);
-
-    // Pump the UI
-    await tester.pumpAndSettle();
-
-    expect(find.text('IGNORE'), findsNothing);
-    expect(find.text('LATER'), findsNothing);
-    expect(find.text('UPDATE'), findsNothing);
-    expect(find.text('Release Notes'), findsNothing);
-  });
-
-  testWidgets('test UpgradeCard upgrade', (WidgetTester tester) async {
-    final client = MockITunesSearchClient.setupMockClient();
-    final upgrader = Upgrader(
-        upgraderOS: MockUpgraderOS(ios: true),
-        client: client,
-        debugLogging: true);
-
-    upgrader.installPackageInfo(
-        packageInfo: PackageInfo(
-            appName: 'Upgrader',
-            packageName: 'com.larryaasen.upgrader',
-            version: '0.9.9',
-            buildNumber: '400'));
-    upgrader.initialize().then((value) {});
-    await tester.pumpAndSettle();
-
-    expect(upgrader.isTooSoon(), false);
-
-    var called = false;
-    var notCalled = true;
-    final upgradeCard = wrapper(
-      UpgradeCard(
-        upgrader: upgrader,
-        onUpdate: () {
-          called = true;
-          return true;
-        },
-        onIgnore: () {
-          notCalled = false;
-          return true;
-        },
-        onLater: () {
-          notCalled = false;
-        },
-      ),
-    );
-    await tester.pumpWidget(upgradeCard);
-
-    // Pump the UI so the upgrade card is displayed
-    await tester.pumpAndSettle();
-
-    expect(upgrader.messages, isNull);
-    upgrader.messages = UpgraderMessages();
-    expect(upgrader.messages, isNotNull);
-
-    expect(find.text(upgrader.messages!.releaseNotes), findsOneWidget);
-    expect(find.text(upgrader.releaseNotes!), findsOneWidget);
-    await tester.tap(find.text(upgrader.messages!.buttonTitleUpdate));
-    await tester.pumpAndSettle();
-
-    expect(called, true);
-    expect(notCalled, true);
-    expect(find.text(upgrader.messages!.buttonTitleUpdate), findsNothing);
-  }, skip: false);
-
-  testWidgets('test UpgradeCard ignore', (WidgetTester tester) async {
-    final client = MockITunesSearchClient.setupMockClient();
-    final upgrader = Upgrader(
-        upgraderOS: MockUpgraderOS(ios: true),
-        client: client,
-        debugLogging: true);
-
-    upgrader.installPackageInfo(
-        packageInfo: PackageInfo(
-            appName: 'Upgrader',
-            packageName: 'com.larryaasen.upgrader',
-            version: '0.9.9',
-            buildNumber: '400'));
-    upgrader.initialize().then((value) {});
-    await tester.pumpAndSettle();
-
-    expect(upgrader.isTooSoon(), false);
-
-    var called = false;
-    var notCalled = true;
-    final upgradeCard = wrapper(
-      UpgradeCard(
-        upgrader: upgrader,
-        onUpdate: () {
-          notCalled = false;
-          return true;
-        },
-        onIgnore: () {
-          called = true;
-          return true;
-        },
-        onLater: () {
-          notCalled = false;
-        },
-      ),
-    );
-    await tester.pumpWidget(upgradeCard);
-
-    // Pump the UI so the upgrade card is displayed
-    await tester.pumpAndSettle();
-
-    expect(upgrader.messages, isNull);
-    upgrader.messages = UpgraderMessages();
-    expect(upgrader.messages, isNotNull);
-
-    await tester.tap(find.text(upgrader.messages!.buttonTitleIgnore));
-    await tester.pumpAndSettle();
-
-    expect(called, true);
-    expect(notCalled, true);
-    expect(find.text(upgrader.messages!.buttonTitleIgnore), findsNothing);
-  }, skip: false);
-
-  testWidgets('test UpgradeCard later', (WidgetTester tester) async {
-    final client = MockITunesSearchClient.setupMockClient();
-    final upgrader = Upgrader(
-        upgraderOS: MockUpgraderOS(ios: true),
-        client: client,
-        debugLogging: true);
-
-    upgrader.installPackageInfo(
-        packageInfo: PackageInfo(
-            appName: 'Upgrader',
-            packageName: 'com.larryaasen.upgrader',
-            version: '0.9.9',
-            buildNumber: '400'));
-    upgrader.initialize().then((value) {});
-    await tester.pumpAndSettle();
-
-    expect(upgrader.isTooSoon(), false);
-
-    var called = false;
-    var notCalled = true;
-    final upgradeCard = wrapper(
-      UpgradeCard(
-        upgrader: upgrader,
-        onUpdate: () {
-          notCalled = false;
-          return true;
-        },
-        onIgnore: () {
-          notCalled = false;
-          return true;
-        },
-        onLater: () {
-          called = true;
-        },
-      ),
-    );
-    await tester.pumpWidget(upgradeCard);
-
-    // Pump the UI so the upgrade card is displayed
-    await tester.pumpAndSettle(const Duration(milliseconds: 5000));
-
-    expect(upgrader.messages, isNull);
-    upgrader.messages = UpgraderMessages();
-    expect(upgrader.messages, isNotNull);
-
-    await tester.tap(find.text(upgrader.messages!.buttonTitleLater));
-    await tester.pumpAndSettle();
-
-    expect(called, true);
-    expect(notCalled, true);
-    expect(find.text(upgrader.messages!.buttonTitleLater), findsNothing);
-  }, skip: false);
 
   testWidgets('test upgrader minAppVersion', (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
@@ -1253,13 +1081,4 @@ class MyUpgraderMessages extends UpgraderMessages {
 
   @override
   String get releaseNotes => 'ddd';
-}
-
-Widget wrapper(Widget child) {
-  return MaterialApp(
-    home: Scaffold(
-      body: child,
-      appBar: AppBar(title: const Text('Upgrader test')),
-    ),
-  );
 }

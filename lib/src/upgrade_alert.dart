@@ -29,6 +29,7 @@ class UpgradeAlert extends StatefulWidget {
     this.showLater = true,
     this.showReleaseNotes = true,
     this.cupertinoButtonTextStyle,
+    this.dialogKey,
     this.navigatorKey,
     this.child,
   }) : upgrader = upgrader ?? Upgrader.sharedInstance;
@@ -70,6 +71,9 @@ class UpgradeAlert extends StatefulWidget {
   /// The text style for the cupertino dialog buttons. Used only for
   /// [UpgradeDialogStyle.cupertino]. Optional.
   final TextStyle? cupertinoButtonTextStyle;
+
+  /// The [Key] assigned to the dialog when it is shown.
+  final GlobalKey? dialogKey;
 
   /// For use by the Router architecture as part of the RouterDelegate.
   final GlobalKey<NavigatorState>? navigatorKey;
@@ -138,6 +142,7 @@ class UpgradeAlertState extends State<UpgradeAlert> {
 
       Future.delayed(const Duration(milliseconds: 0), () {
         showTheDialog(
+          key: widget.dialogKey ?? const Key('upgrader_alert_dialog'),
           context: context,
           title: appMessages.message(UpgraderMessage.title),
           message: widget.upgrader.body(appMessages),
@@ -208,7 +213,7 @@ class UpgradeAlertState extends State<UpgradeAlert> {
 
   /// Show the alert dialog.
   void showTheDialog({
-    Key? key = const Key('upgrader_alert_dialog'),
+    Key? key,
     required BuildContext context,
     required String? title,
     required String message,

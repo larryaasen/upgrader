@@ -1,3 +1,7 @@
+## 9.0.0-alpha.3
+
+- [371] Added the parameter `dialogKey` to `UpgraderAlert` that is used by the alert dialog.
+
 ## 9.0.0-alpha.2
 
 - Changed currentAppStoreListingURL, currentAppStoreVersion, and currentInstalledVersion from functions to getters.
