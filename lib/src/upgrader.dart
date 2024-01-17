@@ -364,8 +364,7 @@ class Upgrader with WidgetsBindingObserver {
         iTunes.client = client;
         final response = await (iTunes
             .lookupByBundleId(_packageInfo!.packageName, country: country));
-
-        if (response != null && response['resultCount'] > 0) {
+        if (response != null) {
           _appStoreVersion = iTunes.version(response);
           _appStoreListingURL = iTunes.trackViewUrl(response);
           _releaseNotes ??= iTunes.releaseNotes(response);
