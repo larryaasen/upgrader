@@ -26,11 +26,11 @@ typedef VoidBoolCallback = void Function(bool value);
 
 /// Signature of callback for willDisplayUpgrade. Includes display,
 /// minAppVersion, installedVersion, and appStoreVersion.
-typedef WillDisplayUpgradeCallback = void Function(
-    {required bool display,
-    String? minAppVersion,
-    String? installedVersion,
-    String? appStoreVersion});
+typedef WillDisplayUpgradeCallback = void Function({
+  required bool display,
+  String? installedVersion,
+  required UpgraderVersionInfo versionInfo,
+});
 
 /// The type of data in the stream.
 typedef UpgraderEvaluateNeed = bool;
@@ -38,6 +38,8 @@ typedef UpgraderEvaluateNeed = bool;
 /// A class to define the configuration for the appcast. The configuration
 /// contains two parts: a URL to the appcast, and a list of supported OS
 /// names, such as "android", "fuchsia", "ios", "linux" "macos", "web", "windows".
+
+// TODO: remove this class
 class AppcastConfiguration {
   final List<String>? supportedOS;
   final String? url;
@@ -49,6 +51,7 @@ class AppcastConfiguration {
 }
 
 /// Creates a shared instance of [Upgrader].
+// TODO: maybe this should not be created as a global.
 Upgrader _sharedInstance = Upgrader();
 
 /// A class to configure the upgrade dialog.
@@ -66,18 +69,25 @@ class Upgrader with WidgetsBindingObserver {
     this.countryCode,
     this.languageCode,
     this.minAppVersion,
+    UpgraderStoreController? storeController,
     UpgraderOS? upgraderOS,
   })  : client = client ?? http.Client(),
+        storeController = storeController ?? UpgraderStoreController(),
         upgraderOS = upgraderOS ?? UpgraderOS() {
     if (debugLogging) print("upgrader: instantiated.");
   }
 
   /// Provide an Appcast that can be replaced for mock testing.
+  // TODO: remove this class
   final Appcast? appcast;
 
   /// The appcast configuration ([AppcastConfiguration]) used by [Appcast].
   /// When an appcast is configured for iOS, the iTunes lookup is not used.
+  // TODO: remove this class
   final AppcastConfiguration? appcastConfig;
+
+  /// The controller that provides the store details for each platform.
+  final UpgraderStoreController storeController;
 
   /// Provide an HTTP Client that can be replaced for mock testing.
   final http.Client client;
@@ -118,17 +128,14 @@ class Upgrader with WidgetsBindingObserver {
 
   bool _initCalled = false;
   PackageInfo? _packageInfo;
+  PackageInfo? get packageInfo => _packageInfo;
 
   String? _installedVersion;
-  String? _appStoreVersion;
-  String? _appStoreListingURL;
-  String? _releaseNotes;
-  String? _updateAvailable;
+  Version? _updateAvailable;
   DateTime? _lastTimeAlerted;
-  String? _lastVersionAlerted;
-  String? _userIgnoredVersion;
+  Version? _lastVersionAlerted;
+  Version? _userIgnoredVersion;
   bool _hasAlerted = false;
-  bool _isCriticalUpdate = false;
 
   /// Track the initialization future so that [initialize] can be called multiple times.
   Future<bool>? _futureInit;
@@ -148,35 +155,40 @@ class Upgrader with WidgetsBindingObserver {
   static const notInitializedExceptionMessage =
       'upgrader: initialize() not called. Must be called first.';
 
-  String? get currentAppStoreListingURL => _appStoreListingURL;
+  String? get currentAppStoreListingURL => _versionInfo?.appStoreListingURL;
 
-  String? get currentAppStoreVersion => _appStoreVersion;
+  String? get currentAppStoreVersion =>
+      _versionInfo?.appStoreVersion?.toString();
 
   String? get currentInstalledVersion => _installedVersion;
 
-  String? get releaseNotes => _releaseNotes;
+  String? get releaseNotes => _versionInfo?.releaseNotes;
 
   void installPackageInfo({PackageInfo? packageInfo}) {
     _packageInfo = packageInfo;
     _initCalled = false;
   }
 
-  void installAppStoreVersion(String version) => _appStoreVersion = version;
+  // void installAppStoreVersion(String version) => _appStoreVersion = version;
 
-  void installAppStoreListingURL(String url) => _appStoreListingURL = url;
+  // void installAppStoreListingURL(String url) => _appStoreListingURL = url;
+
+  /// The latest version info for this app.
+  UpgraderVersionInfo? _versionInfo;
+
+  /// The latest version info for this app.
+  UpgraderVersionInfo? get versionInfo => _versionInfo;
 
   /// Initialize [Upgrader] by getting saved preferences, getting platform package info, and getting
   /// released version info.
   Future<bool> initialize() async {
-    if (debugLogging) {
-      print('upgrader: initialize called');
-    }
+    if (debugLogging) print('upgrader: initialize called');
+
     if (_futureInit != null) return _futureInit!;
 
     _futureInit = Future(() async {
-      if (debugLogging) {
-        print('upgrader: initializing');
-      }
+      if (debugLogging) print('upgrader: initializing');
+
       if (_initCalled) {
         assert(false, 'This should never happen.');
         return true;
@@ -185,19 +197,7 @@ class Upgrader with WidgetsBindingObserver {
 
       await getSavedPrefs();
 
-      if (debugLogging) {
-        print('upgrader: default operatingSystem: '
-            '${upgraderOS.operatingSystem} ${upgraderOS.operatingSystemVersion}');
-        print('upgrader: operatingSystem: ${upgraderOS.operatingSystem}');
-        print('upgrader: '
-            'isAndroid: ${upgraderOS.isAndroid}, '
-            'isIOS: ${upgraderOS.isIOS}, '
-            'isLinux: ${upgraderOS.isLinux}, '
-            'isMacOS: ${upgraderOS.isMacOS}, '
-            'isWindows: ${upgraderOS.isWindows}, '
-            'isFuchsia: ${upgraderOS.isFuchsia}, '
-            'isWeb: ${upgraderOS.isWeb}');
-      }
+      if (debugLogging) print('upgrader: $upgraderOS');
 
       if (_packageInfo == null) {
         _packageInfo = await PackageInfo.fromPlatform();
@@ -211,9 +211,10 @@ class Upgrader with WidgetsBindingObserver {
 
       _installedVersion = _packageInfo!.version;
 
-      await updateVersionInfo();
+      _versionInfo = await updateVersionInfo();
 
-      // Add an observer of application events.
+      // Add an observer of application events, so that when the app returns
+      // from the background, the version info is updated.
       WidgetsBinding.instance.addObserver(this);
 
       _evaluationReady = true;
@@ -248,116 +249,52 @@ class Upgrader with WidgetsBindingObserver {
     }
   }
 
-  Future<bool> updateVersionInfo() async {
-    // If there is an appcast for this platform
-    if (isAppcastThisPlatform()) {
+  /// Update the version info for this app.
+  Future<UpgraderVersionInfo?> updateVersionInfo() async {
+    if (_packageInfo == null || _packageInfo!.packageName.isEmpty) {
+      return null;
+    }
+
+    // Determine the store to be used for this app.
+    final store = storeController.getUpgraderStore(upgraderOS);
+    if (store == null) return null;
+
+    // Determine the installed version of this app.
+    late Version installedVersion;
+    try {
+      installedVersion = Version.parse(_installedVersion!);
+    } catch (e) {
       if (debugLogging) {
-        print('upgrader: appcast is available for this platform');
-      }
-
-      final appcast = this.appcast ?? Appcast(client: client);
-      await appcast.parseAppcastItemsFromUri(appcastConfig!.url!);
-      if (debugLogging) {
-        var count = appcast.items == null ? 0 : appcast.items!.length;
-        print('upgrader: appcast item count: $count');
-      }
-      final criticalUpdateItem = appcast.bestCriticalItem();
-      final criticalVersion = criticalUpdateItem?.versionString ?? '';
-
-      final bestItem = appcast.bestItem();
-      if (bestItem != null &&
-          bestItem.versionString != null &&
-          bestItem.versionString!.isNotEmpty) {
-        if (debugLogging) {
-          print(
-              'upgrader: appcast best item version: ${bestItem.versionString}');
-          print(
-              'upgrader: appcast critical update item version: ${criticalUpdateItem?.versionString}');
-        }
-
-        try {
-          if (criticalVersion.isNotEmpty &&
-              Version.parse(_installedVersion!) <
-                  Version.parse(criticalVersion)) {
-            _isCriticalUpdate = true;
-          }
-        } catch (e) {
-          print('upgrader: updateVersionInfo could not parse version info $e');
-          _isCriticalUpdate = false;
-        }
-
-        _appStoreVersion = bestItem.versionString;
-        _appStoreListingURL = bestItem.fileURL;
-        _releaseNotes = bestItem.itemDescription;
-      }
-    } else {
-      if (_packageInfo == null || _packageInfo!.packageName.isEmpty) {
-        return false;
-      }
-
-      // The  country code of the locale, defaulting to `US`.
-      final country = countryCode ?? findCountryCode();
-      if (debugLogging) {
-        print('upgrader: countryCode: $country');
-      }
-
-      // The  language code of the locale, defaulting to `en`.
-      final language = languageCode ?? findLanguageCode();
-      if (debugLogging) {
-        print('upgrader: languageCode: $language');
-      }
-
-      // Get Android version from Google Play Store, or
-      // get iOS version from iTunes Store.
-      if (upgraderOS.isAndroid) {
-        await getAndroidStoreVersion(country: country, language: language);
-      } else if (upgraderOS.isIOS) {
-        final iTunes = ITunesSearchAPI();
-        iTunes.debugLogging = debugLogging;
-        iTunes.client = client;
-        final response = await (iTunes
-            .lookupByBundleId(_packageInfo!.packageName, country: country));
-
-        if (response != null) {
-          _appStoreVersion = iTunes.version(response);
-          _appStoreListingURL = iTunes.trackViewUrl(response);
-          _releaseNotes ??= iTunes.releaseNotes(response);
-          final mav = iTunes.minAppVersion(response);
-          if (mav != null) {
-            minAppVersion = mav.toString();
-            if (debugLogging) {
-              print('upgrader: ITunesResults.minAppVersion: $minAppVersion');
-            }
-          }
-        }
+        print('upgrader: installedVersion exception: $e');
+        return null;
       }
     }
 
-    return true;
+    // Determine the country code of the locale, defaulting to `US`.
+    final country = countryCode ?? findCountryCode();
+    if (debugLogging) {
+      print('upgrader: countryCode: $country');
+    }
+
+    // Determine the language code of the locale, defaulting to `en`.
+    final language = languageCode ?? findLanguageCode();
+    if (debugLogging) {
+      print('upgrader: languageCode: $language');
+    }
+
+    // Get the version info from the store.
+    final versionInfo = store.getVersionInfo(
+        upgrader: this,
+        installedVersion: installedVersion,
+        country: country,
+        language: language);
+
+    return versionInfo;
   }
 
   /// Android info is fetched by parsing the html of the app store page.
   Future<bool?> getAndroidStoreVersion(
       {String? country, String? language}) async {
-    final id = _packageInfo!.packageName;
-    final playStore = PlayStoreSearchAPI(client: client);
-    playStore.debugLogging = debugLogging;
-    final response =
-        await (playStore.lookupById(id, country: country, language: language));
-    if (response != null) {
-      _appStoreVersion ??= playStore.version(response);
-      _appStoreListingURL ??=
-          playStore.lookupURLById(id, language: language, country: country);
-      _releaseNotes ??= playStore.releaseNotes(response);
-      final mav = playStore.minAppVersion(response);
-      if (mav != null) {
-        minAppVersion = mav.toString();
-        if (debugLogging) {
-          print('upgrader: PlayStoreResults.minAppVersion: $minAppVersion');
-        }
-      }
-    }
-
     return true;
   }
 
@@ -436,7 +373,7 @@ class Upgrader with WidgetsBindingObserver {
   }
 
   bool blocked() {
-    return belowMinAppVersion() || _isCriticalUpdate;
+    return belowMinAppVersion() || versionInfo?.isCriticalUpdate == true;
   }
 
   bool shouldDisplayUpgrade() {
@@ -464,12 +401,12 @@ class Upgrader with WidgetsBindingObserver {
     }
 
     // Call the [willDisplayUpgrade] callback when available.
-    if (willDisplayUpgrade != null) {
+    if (willDisplayUpgrade != null && versionInfo != null) {
       willDisplayUpgrade!(
-          display: rv,
-          minAppVersion: minAppVersion,
-          installedVersion: _installedVersion,
-          appStoreVersion: _appStoreVersion);
+        display: rv,
+        installedVersion: _installedVersion,
+        versionInfo: versionInfo!,
+      );
     }
 
     return rv;
@@ -506,8 +443,8 @@ class Upgrader with WidgetsBindingObserver {
   }
 
   bool alreadyIgnoredThisVersion() {
-    final rv =
-        _userIgnoredVersion != null && _userIgnoredVersion == _appStoreVersion;
+    final rv = _userIgnoredVersion != null &&
+        _userIgnoredVersion == versionInfo?.appStoreVersion;
     if (rv && debugLogging) {
       print('upgrader: alreadyIgnoredThisVersion: true');
     }
@@ -516,21 +453,19 @@ class Upgrader with WidgetsBindingObserver {
 
   bool isUpdateAvailable() {
     if (debugLogging) {
-      print('upgrader: appStoreVersion: $_appStoreVersion');
       print('upgrader: installedVersion: $_installedVersion');
       print('upgrader: minAppVersion: $minAppVersion');
     }
-    if (_appStoreVersion == null || _installedVersion == null) {
+    if (versionInfo?.appStoreVersion == null || _installedVersion == null) {
       if (debugLogging) print('upgrader: isUpdateAvailable: false');
       return false;
     }
 
     try {
-      final appStoreVersion = Version.parse(_appStoreVersion!);
       final installedVersion = Version.parse(_installedVersion!);
 
-      final available = appStoreVersion > installedVersion;
-      _updateAvailable = available ? _appStoreVersion : null;
+      final available = versionInfo!.appStoreVersion! > installedVersion;
+      _updateAvailable = available ? versionInfo?.appStoreVersion : null;
     } on Exception catch (e) {
       if (debugLogging) {
         print('upgrader: isUpdateAvailable: $e');
@@ -585,8 +520,9 @@ class Upgrader with WidgetsBindingObserver {
   Future<bool> saveIgnored() async {
     var prefs = await SharedPreferences.getInstance();
 
-    _userIgnoredVersion = _appStoreVersion;
-    await prefs.setString('userIgnoredVersion', _userIgnoredVersion ?? '');
+    _userIgnoredVersion = versionInfo?.appStoreVersion;
+    await prefs.setString(
+        'userIgnoredVersion', _userIgnoredVersion?.toString() ?? '');
     return true;
   }
 
@@ -595,8 +531,9 @@ class Upgrader with WidgetsBindingObserver {
     _lastTimeAlerted = DateTime.now();
     await prefs.setString('lastTimeAlerted', _lastTimeAlerted.toString());
 
-    _lastVersionAlerted = _appStoreVersion;
-    await prefs.setString('lastVersionAlerted', _lastVersionAlerted ?? '');
+    _lastVersionAlerted = versionInfo?.appStoreVersion;
+    await prefs.setString(
+        'lastVersionAlerted', _lastVersionAlerted?.toString() ?? '');
 
     _hasAlerted = true;
     return true;
@@ -609,28 +546,46 @@ class Upgrader with WidgetsBindingObserver {
       _lastTimeAlerted = DateTime.parse(lastTimeAlerted);
     }
 
-    _lastVersionAlerted = prefs.getString('lastVersionAlerted');
-
-    _userIgnoredVersion = prefs.getString('userIgnoredVersion');
+    final versionAlerted = prefs.getString('lastVersionAlerted');
+    if (versionAlerted != null) {
+      try {
+        _lastVersionAlerted = Version.parse(versionAlerted);
+      } catch (e) {
+        if (debugLogging) {
+          print('upgrader: lastVersionAlerted exception: $e');
+        }
+      }
+    }
+    final ignoredVersion = prefs.getString('userIgnoredVersion');
+    if (ignoredVersion != null) {
+      try {
+        _userIgnoredVersion = Version.parse(ignoredVersion);
+      } catch (e) {
+        if (debugLogging) {
+          print('upgrader: userIgnoredVersion exception: $e');
+        }
+      }
+    }
 
     return true;
   }
 
   void sendUserToAppStore() async {
-    if (_appStoreListingURL == null || _appStoreListingURL!.isEmpty) {
+    final appStoreListingURL = versionInfo?.appStoreListingURL;
+    if (appStoreListingURL == null || appStoreListingURL.isEmpty) {
       if (debugLogging) {
-        print('upgrader: empty _appStoreListingURL');
+        print('upgrader: empty appStoreListingURL');
       }
       return;
     }
 
     if (debugLogging) {
-      print('upgrader: launching: $_appStoreListingURL');
+      print('upgrader: launching: $appStoreListingURL');
     }
 
-    if (await canLaunchUrl(Uri.parse(_appStoreListingURL!))) {
+    if (await canLaunchUrl(Uri.parse(appStoreListingURL))) {
       try {
-        await launchUrl(Uri.parse(_appStoreListingURL!),
+        await launchUrl(Uri.parse(appStoreListingURL),
             mode: upgraderOS.isAndroid
                 ? LaunchMode.externalNonBrowserApplication
                 : LaunchMode.platformDefault);
@@ -641,4 +596,287 @@ class Upgrader with WidgetsBindingObserver {
       }
     } else {}
   }
+}
+
+class UpgraderVersionInfo {
+  final String? appStoreListingURL;
+  final Version? appStoreVersion;
+  final Version? installedVersion;
+  final bool? isCriticalUpdate;
+  final Version? minAppVersion;
+  final String? releaseNotes;
+
+  UpgraderVersionInfo({
+    this.appStoreListingURL,
+    this.appStoreVersion,
+    this.installedVersion,
+    this.isCriticalUpdate,
+    this.minAppVersion,
+    this.releaseNotes,
+  });
+
+  @override
+  String toString() {
+    return 'appStoreListingURL: $appStoreListingURL, '
+        'appStoreVersion: $appStoreVersion, '
+        'installedVersion: $installedVersion, '
+        'isCriticalUpdate: $isCriticalUpdate, '
+        'minAppVersion: $minAppVersion, '
+        'releaseNotes: $releaseNotes';
+  }
+}
+
+abstract class UpgraderStore {
+  Future<UpgraderVersionInfo> getVersionInfo(
+      {required Upgrader upgrader,
+      required Version installedVersion,
+      required String? country,
+      required String? language});
+}
+
+class UpgraderAppStore extends UpgraderStore {
+  @override
+  Future<UpgraderVersionInfo> getVersionInfo(
+      {required Upgrader upgrader,
+      required Version installedVersion,
+      required String? country,
+      required String? language}) async {
+    String? appStoreListingURL;
+    Version? appStoreVersion;
+    bool? isCriticalUpdate;
+    Version? minAppVersion;
+    String? releaseNotes;
+
+    final iTunes = ITunesSearchAPI();
+    iTunes.debugLogging = upgrader.debugLogging;
+    iTunes.client = upgrader.client;
+    final response = await (iTunes
+        .lookupByBundleId(upgrader.packageInfo!.packageName, country: country));
+
+    if (response != null) {
+      final version = iTunes.version(response);
+      if (version != null) {
+        try {
+          appStoreVersion = Version.parse(version);
+        } catch (e) {
+          if (upgrader.debugLogging) {
+            print('upgrader: UpgraderAppStore.appStoreVersion exception: $e');
+          }
+        }
+      }
+      appStoreListingURL = iTunes.trackViewUrl(response);
+      releaseNotes ??= iTunes.releaseNotes(response);
+      minAppVersion = iTunes.minAppVersion(response);
+      if (minAppVersion != null) {
+        if (upgrader.debugLogging) {
+          print('upgrader: UpgraderAppStore.minAppVersion: $minAppVersion');
+        }
+      }
+    }
+
+    final versionInfo = UpgraderVersionInfo(
+      installedVersion: installedVersion,
+      appStoreListingURL: appStoreListingURL,
+      appStoreVersion: appStoreVersion,
+      isCriticalUpdate: isCriticalUpdate,
+      minAppVersion: minAppVersion,
+      releaseNotes: releaseNotes,
+    );
+    if (upgrader.debugLogging) {
+      print('upgrader: UpgraderAppStore: version info: $versionInfo');
+    }
+    return versionInfo;
+  }
+}
+
+class UpgraderPlayStore extends UpgraderStore {
+  @override
+  Future<UpgraderVersionInfo> getVersionInfo(
+      {required Upgrader upgrader,
+      required Version installedVersion,
+      required String? country,
+      required String? language}) async {
+    final id = upgrader.packageInfo!.packageName;
+    final playStore = PlayStoreSearchAPI(client: upgrader.client);
+    playStore.debugLogging = upgrader.debugLogging;
+
+    String? appStoreListingURL;
+    Version? appStoreVersion;
+    bool? isCriticalUpdate;
+    Version? minAppVersion;
+    String? releaseNotes;
+
+    final response =
+        await playStore.lookupById(id, country: country, language: language);
+    if (response != null) {
+      final version = playStore.version(response);
+      if (version != null) {
+        try {
+          appStoreVersion = Version.parse(version);
+        } catch (e) {
+          if (upgrader.debugLogging) {
+            print('upgrader: UpgraderPlayStore.appStoreVersion exception: $e');
+          }
+        }
+      }
+
+      appStoreListingURL ??=
+          playStore.lookupURLById(id, language: language, country: country);
+      releaseNotes ??= playStore.releaseNotes(response);
+      final mav = playStore.minAppVersion(response);
+      if (mav != null) {
+        try {
+          final minVersion = mav.toString();
+          minAppVersion = Version.parse(minVersion);
+
+          if (upgrader.debugLogging) {
+            print('upgrader: UpgraderPlayStore.minAppVersion: $minAppVersion');
+          }
+        } catch (e) {
+          if (upgrader.debugLogging) {
+            print('upgrader: UpgraderPlayStore.minAppVersion exception: $e');
+          }
+        }
+      }
+    }
+
+    final versionInfo = UpgraderVersionInfo(
+      installedVersion: installedVersion,
+      appStoreListingURL: appStoreListingURL,
+      appStoreVersion: appStoreVersion,
+      isCriticalUpdate: isCriticalUpdate,
+      minAppVersion: minAppVersion,
+      releaseNotes: releaseNotes,
+    );
+    if (upgrader.debugLogging) {
+      print('upgrader: UpgraderPlayStore: version info: $versionInfo');
+    }
+    return versionInfo;
+  }
+}
+
+class UpgraderAppcastStore extends UpgraderStore {
+  UpgraderAppcastStore({required this.appcastURL});
+
+  final String appcastURL;
+
+  @override
+  Future<UpgraderVersionInfo> getVersionInfo(
+      {required Upgrader upgrader,
+      required Version installedVersion,
+      required String? country,
+      required String? language}) async {
+    String? appStoreListingURL;
+    Version? appStoreVersion;
+    bool? isCriticalUpdate;
+    String? releaseNotes;
+
+    final appcast = Appcast(client: upgrader.client);
+    await appcast.parseAppcastItemsFromUri(appcastURL);
+    if (upgrader.debugLogging) {
+      var count = appcast.items == null ? 0 : appcast.items!.length;
+      print('upgrader: UpgraderAppcastStore item count: $count');
+    }
+    final criticalUpdateItem = appcast.bestCriticalItem();
+    final criticalVersion = criticalUpdateItem?.versionString ?? '';
+
+    final bestItem = appcast.bestItem();
+    if (bestItem != null &&
+        bestItem.versionString != null &&
+        bestItem.versionString!.isNotEmpty) {
+      if (upgrader.debugLogging) {
+        print('upgrader: UpgraderAppcastStore best item version: '
+            '${bestItem.versionString}');
+        print('upgrader: UpgraderAppcastStore critical update item version: '
+            '${criticalUpdateItem?.versionString}');
+      }
+
+      try {
+        if (criticalVersion.isNotEmpty &&
+            installedVersion < Version.parse(criticalVersion)) {
+          isCriticalUpdate = true;
+        }
+      } catch (e) {
+        if (upgrader.debugLogging) {
+          print(
+              'upgrader: UpgraderAppcastStore: updateVersionInfo could not parse version info $e');
+        }
+      }
+
+      if (bestItem.versionString != null) {
+        try {
+          appStoreVersion = Version.parse(bestItem.versionString!);
+        } catch (e) {
+          if (upgrader.debugLogging) {
+            print(
+                'upgrader: UpgraderAppcastStore: best item version could not be parsed: '
+                '${bestItem.versionString}');
+          }
+        }
+      }
+
+      appStoreListingURL = bestItem.fileURL;
+      releaseNotes = bestItem.itemDescription;
+    }
+
+    final versionInfo = UpgraderVersionInfo(
+      installedVersion: installedVersion,
+      appStoreListingURL: appStoreListingURL,
+      appStoreVersion: appStoreVersion,
+      isCriticalUpdate: isCriticalUpdate,
+      releaseNotes: releaseNotes,
+    );
+    if (upgrader.debugLogging) {
+      print('upgrader: UpgraderAppcastStore: version info: $versionInfo');
+    }
+    return versionInfo;
+  }
+}
+
+class UpgraderConfiguration {
+  String get appStoreListingURL => throw UnimplementedError();
+}
+
+/// A controller that provides the store details for each platform.
+class UpgraderStoreController {
+  /// Creates a controller that provides the store details for each platform.
+  UpgraderStoreController({
+    this.onAndroid = onAndroidStore,
+    this.onFuchsia,
+    this.oniOS = onIOSStore,
+    this.onLinux,
+    this.onMacOS,
+    this.onWeb,
+    this.onWindows,
+  });
+
+  final UpgraderStore Function()? onAndroid;
+  final UpgraderStore Function()? onFuchsia;
+  final UpgraderStore Function()? oniOS;
+  final UpgraderStore Function()? onLinux;
+  final UpgraderStore Function()? onMacOS;
+  final UpgraderStore Function()? onWeb;
+  final UpgraderStore Function()? onWindows;
+
+  UpgraderStore? getUpgraderStore(UpgraderOS upgraderOS) {
+    switch (upgraderOS.currentOSType) {
+      case UpgraderOSType.android:
+        return onAndroid?.call();
+      case UpgraderOSType.fuchsia:
+        return onFuchsia?.call();
+      case UpgraderOSType.ios:
+        return oniOS?.call();
+      case UpgraderOSType.linux:
+        return onLinux?.call();
+      case UpgraderOSType.macos:
+        return onMacOS?.call();
+      case UpgraderOSType.web:
+        return onWeb?.call();
+      case UpgraderOSType.windows:
+        return onWindows?.call();
+    }
+  }
+
+  static UpgraderStore onAndroidStore() => UpgraderPlayStore();
+  static UpgraderStore onIOSStore() => UpgraderAppStore();
 }

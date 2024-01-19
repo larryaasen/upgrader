@@ -50,7 +50,7 @@ Tapping the UPDATE NOW button takes the user to the App Store (iOS) or Google Pl
 Just wrap your home widget in the `UpgradeAlert` widget, and it will handle the rest.
 ```dart
 class MyApp extends StatelessWidget {
-  const MyApp({Key key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {

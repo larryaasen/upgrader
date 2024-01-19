@@ -134,7 +134,7 @@ class UpgradeAlertState extends State<UpgradeAlert> {
   void checkVersion({required BuildContext context}) {
     final shouldDisplay = widget.upgrader.shouldDisplayUpgrade();
     if (widget.upgrader.debugLogging) {
-      print('upgrader: shouldDisplayReleaseNotes: shouldDisplayReleaseNotes');
+      print('upgrader: shouldDisplayReleaseNotes: $shouldDisplayReleaseNotes');
     }
     if (shouldDisplay) {
       displayed = true;

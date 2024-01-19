@@ -5,9 +5,20 @@
 import "package:os_detect/os_detect.dart" as platform;
 import 'package:flutter/foundation.dart';
 
+enum UpgraderOSType {
+  android,
+  fuchsia,
+  ios,
+  linux,
+  macos,
+  web,
+  windows,
+}
+
 /// A class that indicates which OS this code is running on.
 class UpgraderOS {
   String? _current;
+  UpgraderOSType? _currentOSType;
 
   String get current {
     if (_current != null) return _current!;
@@ -27,6 +38,26 @@ class UpgraderOS {
                                 ? 'windows'
                                 : '';
     return _current ?? '';
+  }
+
+  UpgraderOSType get currentOSType {
+    if (_currentOSType != null) return _currentOSType!;
+    _currentOSType = isAndroid
+        ? UpgraderOSType.android
+        : isFuchsia
+            ? UpgraderOSType.fuchsia
+            : isIOS
+                ? UpgraderOSType.ios
+                : isLinux
+                    ? UpgraderOSType.linux
+                    : isMacOS
+                        ? UpgraderOSType.macos
+                        : isWeb
+                            ? UpgraderOSType.web
+                            : isWindows
+                                ? UpgraderOSType.windows
+                                : UpgraderOSType.android;
+    return _currentOSType ?? UpgraderOSType.android;
   }
 
   /// The target operating system.
@@ -108,6 +139,11 @@ class UpgraderOS {
     } catch (e) {
       return false;
     }
+  }
+
+  @override
+  String toString() {
+    return 'operatingSystem: $operatingSystem, version: $operatingSystemVersion';
   }
 }
 

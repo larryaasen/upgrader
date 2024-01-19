@@ -58,6 +58,7 @@ class PlayStoreSearchAPI {
     }
   }
 
+  /// Create a URL that points to the Play Store details for an app.
   String? lookupURLById(String id,
       {String? country = 'US',
       String? language = 'en',

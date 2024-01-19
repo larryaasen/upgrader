@@ -9,11 +9,6 @@ void main() async {
   // Only call clearSavedSettings() during testing to reset internal values.
   await Upgrader.clearSavedSettings(); // REMOVE this for release builds
 
-  // On Android, the default behavior will be to use the Google Play Store
-  // version of the app.
-  // On iOS, the default behavior will be to use the App Store version of
-  // the app, so update the Bundle Identifier in example/ios/Runner with a
-  // valid identifier already in the App Store.
   runApp(MyApp());
 }
 
@@ -29,8 +24,8 @@ class MyApp extends StatelessWidget {
       home: MyUpgradeAlert(
           upgrader: upgrader,
           child: Scaffold(
-            appBar: AppBar(title: Text('Upgrader Custom Alert Example')),
-            body: Center(child: Text('Checking...')),
+            appBar: AppBar(title: const Text('Upgrader Custom Alert Example')),
+            body: const Center(child: Text('Checking...')),
           )),
     );
   }
@@ -40,22 +35,17 @@ class MyUpgrader extends Upgrader {
   MyUpgrader({super.debugLogging});
 
   @override
-  bool isTooSoon() {
-    return super.isTooSoon();
-  }
-
-  @override
   bool isUpdateAvailable() {
-    final appStoreVersion = currentAppStoreVersion;
+    final storeVersion = currentAppStoreVersion;
     final installedVersion = currentInstalledVersion;
-    print('appStoreVersion=$appStoreVersion');
+    print('storeVersion=$storeVersion');
     print('installedVersion=$installedVersion');
     return super.isUpdateAvailable();
   }
 }
 
 class MyUpgradeAlert extends UpgradeAlert {
-  MyUpgradeAlert({super.upgrader, super.child});
+  MyUpgradeAlert({super.key, super.upgrader, super.child});
 
   /// Override the [createState] method to provide a custom class
   /// with overridden methods.

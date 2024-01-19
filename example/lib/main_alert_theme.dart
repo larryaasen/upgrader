@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
   final dark = ThemeData.dark(useMaterial3: true);
 
   final light = ThemeData(
-    dialogTheme: DialogTheme(
+    dialogTheme: const DialogTheme(
       titleTextStyle: TextStyle(color: Colors.red, fontSize: 48),
       contentTextStyle: TextStyle(color: Colors.green, fontSize: 18),
     ),
@@ -42,8 +42,8 @@ class MyApp extends StatelessWidget {
       title: 'Upgrader Example',
       home: UpgradeAlert(
           child: Scaffold(
-        appBar: AppBar(title: Text('Upgrader Alert Theme Example')),
-        body: Center(child: Text('Checking...')),
+        appBar: AppBar(title: const Text('Upgrader Alert Theme Example')),
+        body: const Center(child: Text('Checking...')),
       )),
       theme: light,
       darkTheme: dark,

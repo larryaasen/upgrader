@@ -9,7 +9,7 @@ void main() async {
   // Only call clearSavedSettings() during testing to reset internal values.
   await Upgrader.clearSavedSettings(); // REMOVE this for release builds
 
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -21,8 +21,8 @@ class MyApp extends StatelessWidget {
       title: 'Upgrader Example - Multiple',
       home: UpgradeAlert(
           child: Scaffold(
-        appBar: AppBar(title: Text('Upgrader Example - Multiple')),
-        body: Center(child: UpgradeAlert(child: Text('Checking...'))),
+        appBar: AppBar(title: const Text('Upgrader Example - Multiple')),
+        body: Center(child: UpgradeAlert(child: const Text('Checking...'))),
       )),
     );
   }

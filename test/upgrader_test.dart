@@ -115,22 +115,22 @@ void main() {
       expect(upgrader.currentInstalledVersion, '1.9.9');
       expect(upgrader.isUpdateAvailable(), true);
 
-      upgrader.installAppStoreVersion('1.2.3');
+      // upgrader.installAppStoreVersion('1.2.3');
       expect(upgrader.currentAppStoreVersion, '1.2.3');
       expect(upgrader.isUpdateAvailable(), false);
 
-      upgrader.installAppStoreVersion('6.2.3');
+      // upgrader.installAppStoreVersion('6.2.3');
       expect(upgrader.currentAppStoreVersion, '6.2.3');
       expect(upgrader.isUpdateAvailable(), true);
 
-      upgrader.installAppStoreVersion('1.1.1');
+      // upgrader.installAppStoreVersion('1.1.1');
       expect(upgrader.currentAppStoreVersion, '1.1.1');
       expect(upgrader.isUpdateAvailable(), false);
 
       await upgrader.didChangeAppLifecycleState(AppLifecycleState.resumed);
       expect(upgrader.isUpdateAvailable(), true);
 
-      upgrader.installAppStoreVersion('1.1.1');
+      // upgrader.installAppStoreVersion('1.1.1');
       expect(upgrader.currentAppStoreVersion, '1.1.1');
       expect(upgrader.isUpdateAvailable(), false);
 
@@ -158,8 +158,8 @@ void main() {
 
   testWidgets('test installAppStoreListingURL', (WidgetTester tester) async {
     final upgrader = Upgrader();
-    upgrader.installAppStoreListingURL(
-        'https://itunes.apple.com/us/app/google-maps-transit-food/id585027354?mt=8&uo=4');
+    // upgrader.installAppStoreListingURL(
+    //     'https://itunes.apple.com/us/app/google-maps-transit-food/id585027354?mt=8&uo=4');
 
     expect(upgrader.currentAppStoreListingURL,
         'https://itunes.apple.com/us/app/google-maps-transit-food/id585027354?mt=8&uo=4');
@@ -727,16 +727,16 @@ void main() {
       await upgrader.initialize();
 
       var notCalled = true;
-      upgrader.willDisplayUpgrade = (
-          {required bool display,
-          String? minAppVersion,
-          String? installedVersion,
-          String? appStoreVersion}) {
+      upgrader.willDisplayUpgrade = ({
+        required bool display,
+        String? installedVersion,
+        required UpgraderVersionInfo versionInfo,
+      }) {
         expect(display, true);
         expect(installedVersion, '1.9.6');
 
         /// Appcast Test critical version.
-        expect(appStoreVersion, '3.0.0');
+        expect(versionInfo.appStoreVersion, '3.0.0');
         notCalled = false;
       };
 
@@ -775,14 +775,14 @@ void main() {
       await upgrader.initialize();
 
       var notCalled = true;
-      upgrader.willDisplayUpgrade = (
-          {required bool display,
-          String? minAppVersion,
-          String? installedVersion,
-          String? appStoreVersion}) {
+      upgrader.willDisplayUpgrade = ({
+        required bool display,
+        String? installedVersion,
+        required UpgraderVersionInfo versionInfo,
+      }) {
         expect(display, true);
         expect(installedVersion, '1.9.6');
-        expect(appStoreVersion, '2.3.2');
+        expect(versionInfo.appStoreVersion, '2.3.2');
         notCalled = false;
       };
 
@@ -850,15 +850,15 @@ void main() {
 
       // Test the willDisplayUpgrade callback
       var notCalled = true;
-      upgrader.willDisplayUpgrade = (
-          {required bool display,
-          String? minAppVersion,
-          String? installedVersion,
-          String? appStoreVersion}) {
+      upgrader.willDisplayUpgrade = ({
+        required bool display,
+        String? installedVersion,
+        required UpgraderVersionInfo versionInfo,
+      }) {
         expect(display, false);
-        expect(minAppVersion, isNull);
+        expect(versionInfo.minAppVersion, isNull);
         expect(installedVersion, isNull);
-        expect(appStoreVersion, isNull);
+        expect(versionInfo.appStoreVersion, isNull);
         notCalled = false;
       };
       expect(upgrader.shouldDisplayUpgrade(), false);
@@ -866,15 +866,15 @@ void main() {
 
       upgrader.debugDisplayAlways = true;
       notCalled = true;
-      upgrader.willDisplayUpgrade = (
-          {required bool display,
-          String? minAppVersion,
-          String? installedVersion,
-          String? appStoreVersion}) {
+      upgrader.willDisplayUpgrade = ({
+        required bool display,
+        String? installedVersion,
+        required UpgraderVersionInfo versionInfo,
+      }) {
         expect(display, true);
-        expect(minAppVersion, isNull);
+        expect(versionInfo.minAppVersion, isNull);
         expect(installedVersion, isNull);
-        expect(appStoreVersion, isNull);
+        expect(versionInfo.appStoreVersion, isNull);
         notCalled = false;
       };
       expect(upgrader.shouldDisplayUpgrade(), true);
@@ -898,16 +898,16 @@ void main() {
 
       await upgrader.initialize();
       var notCalled = true;
-      upgrader.willDisplayUpgrade = (
-          {required bool display,
-          String? minAppVersion,
-          String? installedVersion,
-          String? appStoreVersion}) {
+      upgrader.willDisplayUpgrade = ({
+        required bool display,
+        String? installedVersion,
+        required UpgraderVersionInfo versionInfo,
+      }) {
         expect(display, true);
-        expect(minAppVersion, '2.0.0');
+        expect(versionInfo.minAppVersion, '2.0.0');
         expect(upgrader.minAppVersion, '2.0.0');
         expect(installedVersion, '1.9.6');
-        expect(appStoreVersion, '5.6');
+        expect(versionInfo.appStoreVersion, '5.6');
         notCalled = false;
       };
 

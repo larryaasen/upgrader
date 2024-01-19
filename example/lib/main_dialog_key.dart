@@ -13,13 +13,12 @@ void main() async {
   // Only call clearSavedSettings() during testing to reset internal values.
   await Upgrader.clearSavedSettings(); // REMOVE this for release builds
 
-  final log =
-      () => print('$dialogKey mounted=${dialogKey.currentContext?.mounted}');
-  unawaited(Future.delayed(Duration(seconds: 0)).then((value) => log()));
-  unawaited(Future.delayed(Duration(seconds: 3)).then((value) => log()));
-  unawaited(Future.delayed(Duration(seconds: 4)).then((value) => log()));
+  log() => print('$dialogKey mounted=${dialogKey.currentContext?.mounted}');
+  unawaited(Future.delayed(const Duration(seconds: 0)).then((value) => log()));
+  unawaited(Future.delayed(const Duration(seconds: 3)).then((value) => log()));
+  unawaited(Future.delayed(const Duration(seconds: 4)).then((value) => log()));
 
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -32,8 +31,8 @@ class MyApp extends StatelessWidget {
       home: UpgradeAlert(
           dialogKey: dialogKey,
           child: Scaffold(
-            appBar: AppBar(title: Text('Upgrader Example')),
-            body: Center(child: Text('Checking...')),
+            appBar: AppBar(title: const Text('Upgrader Example')),
+            body: const Center(child: Text('Checking...')),
           )),
     );
   }

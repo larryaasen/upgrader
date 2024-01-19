@@ -11,12 +11,7 @@ void main() async {
   // Only call clearSavedSettings() during testing to reset internal values.
   await Upgrader.clearSavedSettings(); // REMOVE this for release builds
 
-  // On Android, the default behavior will be to use the Google Play Store
-  // version of the app.
-  // On iOS, the default behavior will be to use the App Store version of
-  // the app, so update the Bundle Identifier in example/ios/Runner with a
-  // valid identifier already in the App Store.
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -27,9 +22,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Upgrader Card Example',
       home: Scaffold(
-        appBar: AppBar(title: Text('Upgrader Card Example')),
+        appBar: AppBar(title: const Text('Upgrader Card Example')),
         body: Container(
-          margin: EdgeInsets.only(left: 12.0, right: 12.0),
+          margin: const EdgeInsets.only(left: 12.0, right: 12.0),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -46,7 +41,7 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  Widget get _simpleCard => Card(
+  Widget get _simpleCard => const Card(
         child: SizedBox(
           width: 200,
           height: 50,
