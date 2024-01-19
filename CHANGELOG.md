@@ -1,3 +1,17 @@
+## 9.0.0
+
+### BREAKING CHANGES
+
+- Moved UI related code outside of Upgrader and into UpgradeAlert and UpgradeCard. Also,
+renamed the private methods to make them public. Added and improved example code and README.
+- Minimum Dart SDK 3.1.0
+- Minimum Flutter SDK 3.13.1
+- [371] Added key to alert dialog and alert card.
+- [371] Added the parameter `dialogKey` to `UpgraderAlert` that is used by the alert dialog.
+- Changed currentAppStoreListingURL, currentAppStoreVersion, and currentInstalledVersion from functions to getters.
+
+Note: This [9.0.0] release is the same as [9.0.0-alpha.3].
+
 ## 9.0.0-alpha.3
 
 - [371] Added the parameter `dialogKey` to `UpgraderAlert` that is used by the alert dialog.
