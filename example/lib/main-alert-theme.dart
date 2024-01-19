@@ -1,6 +1,4 @@
-/*
- * Copyright (c) 2023 Larry Aasen. All rights reserved.
- */
+// Copyright (c) 2023 Larry Aasen. All rights reserved.
 
 import 'package:flutter/material.dart';
 import 'package:upgrader/upgrader.dart';
@@ -19,31 +17,36 @@ void main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class MyApp extends StatelessWidget {
+  MyApp({super.key});
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
+  final dark = ThemeData.dark(useMaterial3: true);
 
-class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(Duration()).then((value) {
-      setState(() {});
-    });
-  }
+  final light = ThemeData(
+    dialogTheme: DialogTheme(
+      titleTextStyle: TextStyle(color: Colors.red, fontSize: 48),
+      contentTextStyle: TextStyle(color: Colors.green, fontSize: 18),
+    ),
+    // Change the text buttons.
+    textButtonTheme: const TextButtonThemeData(
+      style: ButtonStyle(
+        // Change the color of the text buttons.
+        foregroundColor: MaterialStatePropertyAll(Colors.orange),
+      ),
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Upgrader StatefulWidget Example',
+      title: 'Upgrader Example',
       home: UpgradeAlert(
           child: Scaffold(
-        appBar: AppBar(title: Text('Upgrader StatefulWidget Example')),
+        appBar: AppBar(title: Text('Upgrader Alert Theme Example')),
         body: Center(child: Text('Checking...')),
       )),
+      theme: light,
+      darkTheme: dark,
     );
   }
 }

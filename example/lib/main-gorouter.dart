@@ -13,7 +13,7 @@ void main() async {
   runApp(MyApp());
 }
 
-GoRouter routerConfig = GoRouter(
+final routerConfig = GoRouter(
   initialLocation: '/page2',
   routes: [
     GoRoute(

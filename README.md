@@ -43,11 +43,11 @@ Tapping IGNORE prevents the alert from being displayed again for that version.
 
 Tapping the LATER button just closes the alert allowing the alert to be displayed sometime in the future.
 
-Tapping the UPDATE NOW button takes the user to the App Store (iOS) or Google Play Store (Android) where the user is required to initiate the update process.
+Tapping the UPDATE NOW button takes the user to the App Store (iOS) or Google Play Store (Android) where the user is expected to initiate the update process.
 
 ## Alert Example
 
-Just wrap your body widget in the `UpgradeAlert` widget, and it will handle the rest.
+Just wrap your home widget in the `UpgradeAlert` widget, and it will handle the rest.
 ```dart
 class MyApp extends StatelessWidget {
   const MyApp({Key key}) : super(key: key);
@@ -71,14 +71,14 @@ class MyApp extends StatelessWidget {
 ![image](screenshots/example1.png)
 
 
-## Cupertino Alert Example
+## Cupertino alert example
 
 You can also display a Cupertino style dialog by using the `dialogStyle` parameter.
 ```dart
-          body: UpgradeAlert(
-            upgrader: Upgrader(dialogStyle: UpgradeDialogStyle.cupertino),
-            child: Center(child: Text('Checking...')),
-          )
+  body: UpgradeAlert(
+    dialogStyle: UpgradeDialogStyle.cupertino,
+    child: Center(child: Text('Checking...')),
+  )
 ```
 
 ## Screenshot of Cupertino alert
@@ -111,30 +111,52 @@ For [appcast](#appcast)), the release notes are taken from the description field
 
 ## Customization
 
-The Upgrader class can be customized by setting parameters in the constructor.
+The alert can be customized by changing the `DialogTheme` on the `MaterialApp`, or by overriding methods in the `UpgradeAlert` class. See these examples for more details:
+- [example/lib/main-alert-theme.dart](example/lib/main-alert-theme.dart)
+- [example/lib/main-custom-alert.dart](example/lib/main-custom-alert.dart)
 
-* appcast: Provide an Appcast that can be replaced for mock testing, defaults to ```null```
-* appcastConfig: the appcast configuration, defaults to ```null```
+The card can be customized by changing the `CardTheme` on the `MaterialApp`, or by overriding methods in the `UpgradeCard` class. See these examples for more details:
+- [example/lib/main-card-theme.dart](example/lib/main-card-theme.dart)
+- [example/lib/main-custom-card.dart](example/lib/main-custom-card.dart)
+
+Here are the custom parameters for `UpgradeAlert`:
+
 * canDismissDialog: can alert dialog be dismissed on tap outside of the alert dialog, which defaults to ```false``` (not used by UpgradeCard)
-* countryCode: the country code that will override the system locale, which defaults to ```null```
 * cupertinoButtonTextStyle: the text style for the cupertino dialog buttons, which defaults to ```null```
-* languageCode: the language code that will override the system locale, which defaults to ```null```
-* client: an HTTP Client that can be replaced for mock testing, defaults to ```null```
-* debugDisplayAlways: always force the upgrade to be available, defaults to ```false```
-* debugDisplayOnce: display the upgrade at least once, defaults to ```false```
-* debugLogging: display logging statements, which defaults to ```false```
 * dialogStyle: the upgrade dialog style, either ```material``` or ```cupertino```, defaults to ```material```, used only by UpgradeAlert, works on Android and iOS.
-* durationUntilAlertAgain: duration until alerting user again, which defaults to ```3 days```
-* messages: optional localized messages used for display in `upgrader`
-* minAppVersion: the minimum app version supported by this app. Earlier versions of this app will be forced to update to the current version. It should be a valid version string like this: ```2.0.13```. Defaults to ```null```.
 * onIgnore: called when the ignore button is tapped, defaults to ```null```
 * onLater: called when the later button is tapped, defaults to ```null```
 * onUpdate: called when the update button is tapped, defaults to ```null```
-* platform: The [TargetPlatform] that identifies the platform on which the package is currently executing. Defaults to [defaultTargetPlatform]. Note that [TargetPlatform] does not include web, but includes mobile and desktop. This parameter is normally used to change the target platform during testing.
 * shouldPopScope: called when the back button is tapped, defaults to ```null```
 * showIgnore: hide or show Ignore button, which defaults to ```true```
 * showLater: hide or show Later button, which defaults to ```true```
 * showReleaseNotes: hide or show release notes, which defaults to ```true```
+
+Here are the custom parameters for `UpgradeCard`:
+
+* margin: The empty space that surrounds the card, defaults to ```null```
+* maxLines: An optional maximum number of lines for the text to span, wrapping if necessary, defaults to ```null```
+* onIgnore: called when the ignore button is tapped, defaults to ```null```
+* onLater: called when the later button is tapped, defaults to ```null```
+* onUpdate: called when the update button is tapped, defaults to ```null```
+* overflow: How visual overflow should be handled, defaults to ```null```
+* showIgnore: hide or show Ignore button, which defaults to ```true```
+* showLater: hide or show Later button, which defaults to ```true```
+* showReleaseNotes: hide or show release notes, which defaults to ```true```
+
+The `Upgrader` class can be customized by setting parameters in the constructor, and passing it
+
+* appcast: Provide an Appcast that can be replaced for mock testing, defaults to ```null```
+* appcastConfig: the appcast configuration, defaults to ```null```
+* client: an HTTP Client that can be replaced for mock testing, defaults to ```null```
+* countryCode: the country code that will override the system locale, which defaults to ```null```
+* languageCode: the language code that will override the system locale, which defaults to ```null```
+* debugDisplayAlways: always force the upgrade to be available, defaults to ```false```
+* debugDisplayOnce: display the upgrade at least once, defaults to ```false```
+* debugLogging: display logging statements, which defaults to ```false```
+* durationUntilAlertAgain: duration until alerting user again, which defaults to ```3 days```
+* messages: optional localized messages used for display in `upgrader`
+* minAppVersion: the minimum app version supported by this app. Earlier versions of this app will be forced to update to the current version. It should be a valid version string like this: ```2.0.13```. Defaults to ```null```.
 * upgraderOS: Provides information on which OS this code is running on, defaults to ```null```
 * willDisplayUpgrade: called when ```upgrader``` determines that an upgrade may
 or may not be displayed, defaults to ```null```
@@ -204,7 +226,7 @@ When using the ```UpgradeAlert``` widget, the Android back button will not
 dismiss the alert dialog by default. To allow the back button to dismiss the
 dialog, use ```shouldPopScope``` and return true like this:
 ```
-UpgradeAlert(Upgrader(shouldPopScope: () => true));
+UpgradeAlert(shouldPopScope: () => true);
 ```
 
 ## Country Code
@@ -218,7 +240,7 @@ On Android, the `upgrader` package uses the system locale to determine the count
 
 ## Android Language Code
 
-Android description and release notes language, defaults to `en`.
+Android description and release notes language default to `en`.
 
 ## Limitations
 These widgets work on both Android and iOS. When running on Android the Google
@@ -258,22 +280,20 @@ The Appcast class can be used stand alone or as part of `upgrader`.
 ### Appcast Example
 This is an Appcast example for Android.
 ```dart
+static const appcastURL =
+    'https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast.xml';
+final upgrader = Upgrader(
+    appcastConfig:
+        AppcastConfiguration(url: appcastURL, supportedOS: ['android']));
+
 @override
 Widget build(BuildContext context) {
-  // On Android, setup the Appcast.
-  // On iOS, the default behavior will be to use the App Store version.
-  final appcastURL =
-      'https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast.xml';
-  final cfg = AppcastConfiguration(url: appcastURL, supportedOS: ['android']);
-
   return MaterialApp(
     title: 'Upgrader Example',
     home: Scaffold(
-        appBar: AppBar(
-          title: Text('Upgrader Example'),
-        ),
+        appBar: AppBar(title: Text('Upgrader Appcast Example')),
         body: UpgradeAlert(
-          Upgrader(appcastConfig: cfg),
+          upgrader: upgrader,
           child: Center(child: Text('Checking...')),
         )),
   );

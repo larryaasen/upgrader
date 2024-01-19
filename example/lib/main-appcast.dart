@@ -21,21 +21,20 @@ void main() async {
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
 
+  static const appcastURL =
+      'https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast.xml';
+  final upgrader = Upgrader(
+      appcastConfig:
+          AppcastConfiguration(url: appcastURL, supportedOS: ['android']));
+
   @override
   Widget build(BuildContext context) {
-    final appcastURL =
-        'https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast.xml';
-    final cfg = AppcastConfiguration(url: appcastURL, supportedOS: ['android']);
-
     return MaterialApp(
       title: 'Upgrader Example',
       home: Scaffold(
           appBar: AppBar(title: Text('Upgrader Appcast Example')),
           body: UpgradeAlert(
-            upgrader: Upgrader(
-              appcastConfig: cfg,
-              debugLogging: true,
-            ),
+            upgrader: upgrader,
             child: Center(child: Text('Checking...')),
           )),
     );

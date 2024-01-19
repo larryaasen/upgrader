@@ -43,9 +43,7 @@ class _MyAppState extends State<MyApp> {
           ElevatedButton(
             onPressed: () async {
               await Upgrader.clearSavedSettings();
-              _upgrader = Upgrader(
-                  dialogStyle: UpgradeDialogStyle.cupertino,
-                  debugLogging: true);
+              _upgrader = Upgrader(debugLogging: true);
               setState(() => _testState = 2);
             },
             child: Text('Dialog Alert - Cupertino'),
@@ -65,7 +63,10 @@ class _MyAppState extends State<MyApp> {
         break;
       case 2:
         content = UpgradeAlert(
-            key: Key('ua_2'), upgrader: _upgrader, child: scaffold);
+            key: Key('ua_2'),
+            upgrader: _upgrader,
+            dialogStyle: UpgradeDialogStyle.cupertino,
+            child: scaffold);
         break;
       default:
     }

@@ -76,20 +76,21 @@ class MyApp extends StatelessWidget {
 }
 
 class DemoApp extends StatelessWidget {
+  static const appcastURL =
+      'https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast.xml';
+  final upgrader = Upgrader(
+    appcastConfig:
+        AppcastConfiguration(url: appcastURL, supportedOS: ['android']),
+    debugLogging: true,
+    messages: MyUpgraderMessages(code: 'es'),
+  );
+
   @override
   Widget build(BuildContext context) {
-    final appcastURL =
-        'https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast.xml';
-    final cfg = AppcastConfiguration(url: appcastURL, supportedOS: ['android']);
-
     return Scaffold(
         appBar: AppBar(title: Text(DemoLocalizations.of(context).title)),
         body: UpgradeAlert(
-          upgrader: Upgrader(
-            appcastConfig: cfg,
-            debugLogging: true,
-            messages: MyUpgraderMessages(code: 'es'),
-          ),
+          upgrader: upgrader,
           child: Center(child: Text(DemoLocalizations.of(context).checking)),
         ));
   }

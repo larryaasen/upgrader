@@ -1,7 +1,11 @@
-// Copyright (c) 2023 Larry Aasen. All rights reserved.
+// Copyright (c) 2024 Larry Aasen. All rights reserved.
+
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:upgrader/upgrader.dart';
+
+final dialogKey = GlobalKey(debugLabel: 'gloabl_upgrader_alert_dialog');
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -9,26 +13,24 @@ void main() async {
   // Only call clearSavedSettings() during testing to reset internal values.
   await Upgrader.clearSavedSettings(); // REMOVE this for release builds
 
+  final log =
+      () => print('$dialogKey mounted=${dialogKey.currentContext?.mounted}');
+  unawaited(Future.delayed(Duration(seconds: 0)).then((value) => log()));
+  unawaited(Future.delayed(Duration(seconds: 3)).then((value) => log()));
+  unawaited(Future.delayed(Duration(seconds: 4)).then((value) => log()));
+
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
-
-  static const appcastURL =
-      'https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast_macos.xml';
-  final upgrader = Upgrader(
-    appcastConfig:
-        AppcastConfiguration(url: appcastURL, supportedOS: ['macos']),
-    debugLogging: true,
-  );
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Upgrader Example',
       home: UpgradeAlert(
-          upgrader: upgrader,
+          dialogKey: dialogKey,
           child: Scaffold(
             appBar: AppBar(title: Text('Upgrader Example')),
             body: Center(child: Text('Checking...')),

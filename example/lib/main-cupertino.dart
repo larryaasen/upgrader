@@ -23,22 +23,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appcastURL =
-        'https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast.xml';
-    final cfg = AppcastConfiguration(url: appcastURL, supportedOS: ['android']);
-
     return MaterialApp(
       title: 'Upgrader Example',
       home: Scaffold(
-          appBar: AppBar(title: Text('Upgrader Cupertino Example')),
-          body: UpgradeAlert(
-            upgrader: Upgrader(
-              appcastConfig: cfg,
-              debugLogging: true,
-              dialogStyle: UpgradeDialogStyle.cupertino,
-            ),
-            child: Center(child: Text('Checking...')),
-          )),
+        appBar: AppBar(title: Text('Upgrader Cupertino Example')),
+        body: UpgradeAlert(
+          dialogStyle: UpgradeDialogStyle.cupertino,
+          child: Center(child: Text('Checking...')),
+        ),
+      ),
     );
   }
 }

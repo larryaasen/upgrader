@@ -1,3 +1,19 @@
+## 9.0.0-alpha.3
+
+- [371] Added the parameter `dialogKey` to `UpgraderAlert` that is used by the alert dialog.
+
+## 9.0.0-alpha.2
+
+- Changed currentAppStoreListingURL, currentAppStoreVersion, and currentInstalledVersion from functions to getters.
+- [371] Added key to alert dialog and alert card.
+
+## 9.0.0-alpha.1
+
+- BREAKING: Moved UI related code outside of Upgrader and into UpgradeAlert and UpgradeCard. Also,
+renamed the private methods to make them public. Added and improved example code and README.
+- Minimum Dart SDK 3.1.0
+- Minimum Flutter SDK 3.13.1
+
 ## 8.4.0
 
 - [356] Fixed centering issue with Cupertino style UpgradeAlert dialog.
