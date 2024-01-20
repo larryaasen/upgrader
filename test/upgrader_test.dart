@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2023 Larry Aasen. All rights reserved.
+ * Copyright (c) 2018-2024 Larry Aasen. All rights reserved.
  */
 
 import 'package:flutter/cupertino.dart';
@@ -111,7 +111,7 @@ void main() {
       expect(await upgrader.initialize(), isTrue);
 
       expect(upgrader.appName(), 'Upgrader');
-      expect(upgrader.currentAppStoreVersion, '5.6');
+      expect(upgrader.currentAppStoreVersion, '5.6.0');
       expect(upgrader.currentInstalledVersion, '1.9.9');
       expect(upgrader.isUpdateAvailable(), true);
 
@@ -680,12 +680,14 @@ void main() {
       final fakeAppcast = FakeAppcast();
       final client = MockITunesSearchClient.setupMockClient();
       final upgrader = Upgrader(
-          upgraderOS: MockUpgraderOS(os: 'ios', ios: true),
-          client: client,
-          debugLogging: true,
-          appcastConfig: fakeAppcast.config,
-          appcast: fakeAppcast)
-        ..installPackageInfo(
+        upgraderOS: MockUpgraderOS(os: 'ios', ios: true),
+        client: client,
+        debugLogging: true,
+        storeController: UpgraderStoreController(
+          oniOS: () => UpgraderAppcastStore(
+              appcastURL: 'https://sparkle-project.org/test/testappcast.xml'),
+        ),
+      )..installPackageInfo(
           packageInfo: PackageInfo(
             appName: 'Upgrader',
             packageName: 'com.larryaasen.upgrader',
@@ -703,18 +705,15 @@ void main() {
       final upgraderOS = MockUpgraderOS(android: true);
       final Client mockClient =
           setupMockClient(filePath: 'test/testappcast_critical.xml');
-      final appcast = Appcast(
-          client: mockClient,
-          upgraderOS: upgraderOS,
-          upgraderDevice: MockUpgraderDevice());
 
       final upgrader = Upgrader(
+        client: mockClient,
         upgraderOS: upgraderOS,
         debugLogging: true,
-        appcastConfig: AppcastConfiguration(
-          url: 'https://sparkle-project.org/test/testappcast.xml',
+        storeController: UpgraderStoreController(
+          onAndroid: () => UpgraderAppcastStore(
+              appcastURL: 'https://sparkle-project.org/test/testappcast.xml'),
         ),
-        appcast: appcast,
       )..installPackageInfo(
           packageInfo: PackageInfo(
             appName: 'Upgrader',
@@ -751,18 +750,15 @@ void main() {
 
       final Client mockClient =
           setupMockClient(filePath: 'test/testappcastmulti.xml');
-      final appcast = Appcast(
-          client: mockClient,
-          upgraderOS: upgraderOS,
-          upgraderDevice: MockUpgraderDevice());
 
       final upgrader = Upgrader(
+        client: mockClient,
         upgraderOS: upgraderOS,
         debugLogging: true,
-        appcastConfig: AppcastConfiguration(
-          url: 'https://sparkle-project.org/test/testappcast.xml',
+        storeController: UpgraderStoreController(
+          oniOS: () => UpgraderAppcastStore(
+              appcastURL: 'https://sparkle-project.org/test/testappcast.xml'),
         ),
-        appcast: appcast,
       )..installPackageInfo(
           packageInfo: PackageInfo(
             appName: 'Upgrader',
@@ -907,7 +903,7 @@ void main() {
         expect(versionInfo.minAppVersion, '2.0.0');
         expect(upgrader.minAppVersion, '2.0.0');
         expect(installedVersion, '1.9.6');
-        expect(versionInfo.appStoreVersion, '5.6');
+        expect(versionInfo.appStoreVersion, '5.6.0');
         notCalled = false;
       };
 

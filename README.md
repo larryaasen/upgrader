@@ -433,8 +433,11 @@ UpgradeAlert(Upgrader(messages: UpgraderMessages(code: 'es')));
 ## Semantic Versioning
 
 The `upgrader` package uses the [version](https://pub.dev/packages/version) package that
-is in compliance with the Semantic Versioning spec at http://semver.org/.
-
+is in compliance with the Semantic Versioning spec at http://semver.org/. It converts any
+version string to a 3 digit version: MAJOR.MINOR.PATCH. For versions that only use 1
+digit (MAJOR), it converts it to a 3 digit version: MAJOR.0.0, and for versions that
+only use 2 digits (MAJOR.MINOR), it converts it to a 3 digit version: MAJOR.MINOR.0, to
+be compliant with Semantic Versioning.
 
 ## iTunes Search API
 

@@ -1,3 +1,8 @@
+## Next
+
+- Implemented [UpgraderState] that is used internally to replace evaluation ready.
+- Removed Appcast configration so that an Appcast [UpgraderStore] can be used.
+
 ## 9.0.0-alpha.3
 
 - [371] Added the parameter `dialogKey` to `UpgraderAlert` that is used by the alert dialog.

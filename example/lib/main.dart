@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2023 Larry Aasen. All rights reserved.
+ * Copyright (c) 2019-2024 Larry Aasen. All rights reserved.
  */
 
 import 'package:flutter/material.dart';
@@ -27,11 +27,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Upgrader Example',
       home: UpgradeAlert(
-          upgrader: Upgrader(debugLogging: true),
-          child: Scaffold(
-            appBar: AppBar(title: const Text('Upgrader Example')),
-            body: const Center(child: Text('Checking...')),
-          )),
+        child: Scaffold(
+          appBar: AppBar(title: const Text('Upgrader Example')),
+          body: const Center(child: Text('Checking...')),
+        ),
+      ),
     );
   }
 }
