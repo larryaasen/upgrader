@@ -27,10 +27,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Upgrader Example',
       home: UpgradeAlert(
+          upgrader: Upgrader(
+              messages: UpgraderMessages(
+                  code: 'custom', customMessage: 'Hello World!')),
           child: Scaffold(
-        appBar: AppBar(title: Text('Upgrader Example')),
-        body: Center(child: Text('Checking...')),
-      )),
+            appBar: AppBar(title: Text('Upgrader Example')),
+            body: Center(child: Text('Checking...')),
+          )),
     );
   }
 }
