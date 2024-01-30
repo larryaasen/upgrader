@@ -144,9 +144,24 @@ class UpgraderPlayStore extends UpgraderStore {
 }
 
 class UpgraderAppcastStore extends UpgraderStore {
-  UpgraderAppcastStore({required this.appcastURL});
+  UpgraderAppcastStore({
+    required this.appcastURL,
+    this.appcast,
+    // this.client,
+  });
 
   final String appcastURL;
+  final Appcast? appcast;
+  // final http.Client? client;
+
+  //   /// Provide an HTTP Client that can be replaced during testing.
+  // final http.Client client;
+
+  // /// Provide [UpgraderOS] that can be replaced during testing.
+  // final UpgraderOS upgraderOS;
+
+  // /// Provide [UpgraderDevice] that ca be replaced during testing.
+  // final UpgraderDevice upgraderDevice;
 
   @override
   Future<UpgraderVersionInfo> getVersionInfo(
@@ -159,16 +174,20 @@ class UpgraderAppcastStore extends UpgraderStore {
     bool? isCriticalUpdate;
     String? releaseNotes;
 
-    final appcast = Appcast(client: state.client);
-    await appcast.parseAppcastItemsFromUri(appcastURL);
+    final localAppcast = appcast ??
+        Appcast(
+            client: state.client,
+            upgraderDevice: state.upgraderDevice,
+            upgraderOS: state.upgraderOS);
+    await localAppcast.parseAppcastItemsFromUri(appcastURL);
     if (state.debugLogging) {
-      var count = appcast.items == null ? 0 : appcast.items!.length;
+      var count = localAppcast.items == null ? 0 : localAppcast.items!.length;
       print('upgrader: UpgraderAppcastStore item count: $count');
     }
-    final criticalUpdateItem = appcast.bestCriticalItem();
+    final criticalUpdateItem = localAppcast.bestCriticalItem();
     final criticalVersion = criticalUpdateItem?.versionString ?? '';
 
-    final bestItem = appcast.bestItem();
+    final bestItem = localAppcast.bestItem();
     if (bestItem != null &&
         bestItem.versionString != null &&
         bestItem.versionString!.isNotEmpty) {
@@ -187,7 +206,7 @@ class UpgraderAppcastStore extends UpgraderStore {
       } catch (e) {
         if (state.debugLogging) {
           print(
-              'upgrader: UpgraderAppcastStore: updateVersionInfo could not parse version info $e');
+              'upgrader: UpgraderAppcastStore: getVersionInfo could not parse version info $e');
         }
       }
 
