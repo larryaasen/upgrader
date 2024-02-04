@@ -77,18 +77,18 @@ void main() {
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle();
 
-    expect(upgrader.messages, isNull);
-    upgrader.messages = UpgraderMessages();
-    expect(upgrader.messages, isNotNull);
+    expect(upgrader.state.messages, isNull);
+    upgrader.updateState(upgrader.state.copyWith(messages: UpgraderMessages()));
+    expect(upgrader.state.messages, isNotNull);
 
-    expect(find.text(upgrader.messages!.releaseNotes), findsOneWidget);
+    expect(find.text(upgrader.state.messages!.releaseNotes), findsOneWidget);
     expect(find.text(upgrader.releaseNotes!), findsOneWidget);
-    await tester.tap(find.text(upgrader.messages!.buttonTitleUpdate));
+    await tester.tap(find.text(upgrader.state.messages!.buttonTitleUpdate));
     await tester.pumpAndSettle();
 
     expect(called, true);
     expect(notCalled, true);
-    expect(find.text(upgrader.messages!.buttonTitleUpdate), findsNothing);
+    expect(find.text(upgrader.state.messages!.buttonTitleUpdate), findsNothing);
   }, skip: false);
 
   testWidgets('test UpgradeCard ignore', (WidgetTester tester) async {
@@ -132,16 +132,16 @@ void main() {
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle();
 
-    expect(upgrader.messages, isNull);
-    upgrader.messages = UpgraderMessages();
-    expect(upgrader.messages, isNotNull);
+    expect(upgrader.state.messages, isNull);
+    upgrader.updateState(upgrader.state.copyWith(messages: UpgraderMessages()));
+    expect(upgrader.state.messages, isNotNull);
 
-    await tester.tap(find.text(upgrader.messages!.buttonTitleIgnore));
+    await tester.tap(find.text(upgrader.state.messages!.buttonTitleIgnore));
     await tester.pumpAndSettle();
 
     expect(called, true);
     expect(notCalled, true);
-    expect(find.text(upgrader.messages!.buttonTitleIgnore), findsNothing);
+    expect(find.text(upgrader.state.messages!.buttonTitleIgnore), findsNothing);
   }, skip: false);
 
   testWidgets('test UpgradeCard later', (WidgetTester tester) async {
@@ -185,15 +185,15 @@ void main() {
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle(const Duration(milliseconds: 5000));
 
-    expect(upgrader.messages, isNull);
-    upgrader.messages = UpgraderMessages();
-    expect(upgrader.messages, isNotNull);
+    expect(upgrader.state.messages, isNull);
+    upgrader.updateState(upgrader.state.copyWith(messages: UpgraderMessages()));
+    expect(upgrader.state.messages, isNotNull);
 
-    await tester.tap(find.text(upgrader.messages!.buttonTitleLater));
+    await tester.tap(find.text(upgrader.state.messages!.buttonTitleLater));
     await tester.pumpAndSettle();
 
     expect(called, true);
     expect(notCalled, true);
-    expect(find.text(upgrader.messages!.buttonTitleLater), findsNothing);
+    expect(find.text(upgrader.state.messages!.buttonTitleLater), findsNothing);
   }, skip: false);
 }

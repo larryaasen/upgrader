@@ -5,6 +5,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:version/version.dart';
 
 import 'upgrade_device.dart';
+import 'upgrade_messages.dart';
 import 'upgrade_os.dart';
 import 'upgrader_version_info.dart';
 
@@ -17,7 +18,9 @@ class UpgraderState {
     this.debugDisplayAlways = false,
     this.debugDisplayOnce = false,
     this.debugLogging = false,
+    this.durationUntilAlertAgain = const Duration(days: 3),
     this.languageCodeOverride,
+    this.messages,
     this.minAppVersion,
     this.packageInfo,
     required this.upgraderDevice,
@@ -40,8 +43,15 @@ class UpgraderState {
   /// Enable print statements for debugging.
   final bool debugLogging;
 
-  /// The country code that will override the system locale. Optional. Used only for Android.
+  /// Duration until alerting user again.
+  final Duration durationUntilAlertAgain;
+
+  /// The country code that will override the system locale. Optional. Used
+  /// only for Android.
   final String? languageCodeOverride;
+
+  /// The localized messages used for display in upgrader.
+  final UpgraderMessages? messages;
 
   /// The minimum app version supported by this app. Earlier versions of this app
   /// will be forced to update to the current version. Optional.
@@ -67,7 +77,9 @@ class UpgraderState {
     bool? debugDisplayAlways,
     bool? debugDisplayOnce,
     bool? debugLogging,
+    Duration? durationUntilAlertAgain,
     String? languageCodeOverride,
+    UpgraderMessages? messages,
     Version? minAppVersion,
     PackageInfo? packageInfo,
     UpgraderDevice? upgraderDevice,
@@ -80,7 +92,10 @@ class UpgraderState {
       debugDisplayAlways: debugDisplayAlways ?? this.debugDisplayAlways,
       debugDisplayOnce: debugDisplayOnce ?? this.debugDisplayOnce,
       debugLogging: debugLogging ?? this.debugLogging,
+      durationUntilAlertAgain:
+          durationUntilAlertAgain ?? this.durationUntilAlertAgain,
       languageCodeOverride: languageCodeOverride ?? this.languageCodeOverride,
+      messages: messages ?? this.messages,
       minAppVersion: minAppVersion ?? this.minAppVersion,
       packageInfo: packageInfo ?? this.packageInfo,
       upgraderDevice: upgraderDevice ?? this.upgraderDevice,
@@ -94,6 +109,7 @@ class UpgraderState {
   UpgraderState copyWithNull({
     bool? countryCodeOverride,
     bool? languageCodeOverride,
+    bool? messages,
     bool? minAppVersion,
     bool? packageInfo,
     bool? versionInfo,
@@ -105,8 +121,10 @@ class UpgraderState {
       debugDisplayAlways: debugDisplayAlways,
       debugDisplayOnce: debugDisplayOnce,
       debugLogging: debugLogging,
+      durationUntilAlertAgain: durationUntilAlertAgain,
       languageCodeOverride:
           languageCodeOverride == true ? null : this.languageCodeOverride,
+      messages: messages == true ? null : this.messages,
       minAppVersion: minAppVersion == true ? null : this.minAppVersion,
       packageInfo: packageInfo == true ? null : this.packageInfo,
       upgraderDevice: upgraderDevice,

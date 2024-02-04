@@ -34,18 +34,26 @@ typedef WillDisplayUpgradeCallback = void Function({
 /// Creates a shared instance of [Upgrader].
 Upgrader _sharedInstance = Upgrader();
 
-/// A class to configure the upgrade dialog.
+/// An upgrade controllerthat maintains a [state] that is used to
+/// trigger an alert or other UI to evaluate upgrading criteria.
+///
+/// See also:
+///
+///  * [UpgraderMessages], the default localized messages used for display.
+///  * [UpgraderState], the [Upgrader] state.
 class Upgrader with WidgetsBindingObserver {
+  /// Creates an uprade controller that maintains a [state] that is used to
+  /// trigger an alert or other UI to evaluate upgrading criteria.
   Upgrader({
-    this.messages,
     bool debugDisplayAlways = false,
     bool debugDisplayOnce = false,
     bool debugLogging = false,
-    this.durationUntilAlertAgain = const Duration(days: 3),
+    Duration durationUntilAlertAgain = const Duration(days: 3),
     this.willDisplayUpgrade,
     http.Client? client,
     String? countryCode,
     String? languageCode,
+    UpgraderMessages? messages,
     String? minAppVersion,
     UpgraderStoreController? storeController,
     UpgraderDevice? upgraderDevice,
@@ -56,28 +64,22 @@ class Upgrader with WidgetsBindingObserver {
           debugDisplayAlways: debugDisplayAlways,
           debugDisplayOnce: debugDisplayOnce,
           debugLogging: debugLogging,
+          durationUntilAlertAgain: durationUntilAlertAgain,
           languageCodeOverride: languageCode,
+          messages: messages,
           minAppVersion:
-              _parseVersion(minAppVersion, 'minAppVersion', debugLogging),
+              parseVersion(minAppVersion, 'minAppVersion', debugLogging),
           upgraderDevice: upgraderDevice ?? UpgraderDevice(),
           upgraderOS: upgraderOS ?? UpgraderOS(),
         ),
         storeController = storeController ?? UpgraderStoreController() {
-    if (debugLogging) print("upgrader: instantiated");
+    if (_state.debugLogging) {
+      print("upgrader: instantiated");
+    }
   }
 
-  /// The [Upgrader] state.
-  UpgraderState _state;
-  UpgraderState get state => _state;
-
   /// The controller that provides the store details for each platform.
-  final UpgraderStoreController storeController;
-
-  /// Duration until alerting user again
-  final Duration durationUntilAlertAgain;
-
-  /// The localized messages used for display in upgrader.
-  UpgraderMessages? messages;
+  UpgraderStoreController storeController;
 
   /// Called when [Upgrader] determines that an upgrade may or may not be
   /// displayed. The [value] parameter will be true when it should be displayed,
@@ -85,77 +87,30 @@ class Upgrader with WidgetsBindingObserver {
   /// is logging metrics for your app.
   WillDisplayUpgradeCallback? willDisplayUpgrade;
 
-  bool _initCalled = false;
-  String? _installedVersion;
-  Version? _updateAvailable;
-  DateTime? _lastTimeAlerted;
-  Version? _lastVersionAlerted;
-  Version? _userIgnoredVersion;
-  bool _hasAlerted = false;
+  /// A shared instance of [Upgrader].
+  static Upgrader get sharedInstance => _sharedInstance;
 
-  /// Track the initialization future so that [initialize] can be called multiple times.
-  Future<bool>? _futureInit;
+  /// The [Upgrader] state.
+  UpgraderState _state;
+  UpgraderState get state => _state;
 
   /// A stream that provides a new state each time an evaluation should be performed.
   /// The values will always be the state.
   Stream<UpgraderState> get stateStream => _streamController.stream;
   final _streamController = StreamController<UpgraderState>.broadcast();
 
-  /// A shared instance of [Upgrader].
-  static Upgrader get sharedInstance => _sharedInstance;
+  /// Track the initialization future so that [initialize] can be called multiple times.
+  Future<bool>? _futureInit;
+
+  bool _initCalled = false;
+  Version? _updateAvailable;
+  DateTime? _lastTimeAlerted;
+  Version? _lastVersionAlerted;
+  Version? _userIgnoredVersion;
+  bool _hasAlerted = false;
 
   static const notInitializedExceptionMessage =
       'upgrader: initialize() not called. Must be called first.';
-
-  String? get currentAppStoreListingURL =>
-      state.versionInfo?.appStoreListingURL;
-
-  String? get currentAppStoreVersion =>
-      state.versionInfo?.appStoreVersion?.toString();
-
-  String? get currentInstalledVersion => _installedVersion;
-
-  String? get releaseNotes => state.versionInfo?.releaseNotes;
-
-  void installPackageInfo({PackageInfo? packageInfo}) {
-    updateState(state.copyWith(packageInfo: packageInfo));
-    _initCalled = false;
-  }
-
-  /// The minAppVersion in the Upgrader state.
-  String? get minAppVersion => state.minAppVersion.toString();
-
-  set minAppVersion(String? version) {
-    if (version == null) {
-      updateState(state.copyWithNull(minAppVersion: true));
-    } else {
-      final parsedVersion =
-          _parseVersion(version, 'minAppVersion', state.debugLogging);
-      if (parsedVersion != null) {
-        updateState(state.copyWith(minAppVersion: parsedVersion));
-      }
-    }
-  }
-
-  static Version? _parseVersion(
-      String? version, String name, bool debugLogging) {
-    if (version == null) return null;
-    try {
-      return Version.parse(version);
-    } catch (e) {
-      // if (state.debugLogging) {
-      print('upgrader: _parseVersion $name exception: $e');
-      // }
-      return null;
-    }
-  }
-
-  // void installAppStoreVersion(String version) => _appStoreVersion = version;
-
-  // void installAppStoreListingURL(String url) => _appStoreListingURL = url;
-
-  /// The latest version info for this app.
-  UpgraderVersionInfo? get versionInfo => state.versionInfo;
 
   /// Initialize [Upgrader] by getting saved preferences, getting platform package info, and getting
   /// released version info.
@@ -190,9 +145,7 @@ class Upgrader with WidgetsBindingObserver {
         }
       }
 
-      _installedVersion = state.packageInfo!.version;
-
-      updateState(state.copyWith(versionInfo: await updateVersionInfo()));
+      await updateVersionInfo();
 
       // Add an observer of application events, so that when the app returns
       // from the background, the version info is updated.
@@ -203,9 +156,18 @@ class Upgrader with WidgetsBindingObserver {
     return _futureInit!;
   }
 
-  /// Updates the Upgrader state.
-  void updateState(UpgraderState newState) {
+  /// Updates the Upgrader state, which updates the stream, which triggers a
+  /// call to [shouldDisplayUpgrade].
+  void updateState(UpgraderState newState,
+      {bool updateTheVersionInfo = false}) {
     _state = newState;
+
+    if (updateTheVersionInfo) {
+      Future.delayed(Duration.zero).then((value) async {
+        await updateVersionInfo();
+      });
+      return;
+    }
     updateStream();
   }
 
@@ -229,49 +191,61 @@ class Upgrader with WidgetsBindingObserver {
 
     // When app has resumed from background.
     if (lifecycleState == AppLifecycleState.resumed) {
-      updateState(state.copyWith(versionInfo: await updateVersionInfo()));
+      await updateVersionInfo();
     }
   }
 
-  /// Update the version info for this app.
+  /// Update the version info for this app by using an [UpgraderStore] to get
+  /// the [UpgraderVersionInfo].
   Future<UpgraderVersionInfo?> updateVersionInfo() async {
     if (state.packageInfo == null || state.packageInfo!.packageName.isEmpty) {
+      updateState(state.copyWithNull(versionInfo: null));
       return null;
     }
 
     // Determine the store to be used for this app.
     final store = storeController.getUpgraderStore(state.upgraderOS);
-    if (store == null) return null;
+    if (store == null) {
+      updateState(state.copyWithNull(versionInfo: null));
+      return null;
+    }
 
     // Determine the installed version of this app.
     late Version installedVersion;
     try {
-      installedVersion = Version.parse(_installedVersion!);
+      installedVersion = Version.parse(state.packageInfo!.version);
     } catch (e) {
       if (state.debugLogging) {
         print('upgrader: installedVersion exception: $e');
-        return null;
       }
+      updateState(state.copyWithNull(versionInfo: null));
+      return null;
     }
 
+    final locale = findLocale();
+
     // Determine the country code of the locale, defaulting to `US`.
-    final country = state.countryCodeOverride ?? findCountryCode();
+    final country =
+        state.countryCodeOverride ?? findCountryCode(locale: locale);
     if (state.debugLogging) {
       print('upgrader: countryCode: $country');
     }
 
     // Determine the language code of the locale, defaulting to `en`.
-    final language = state.languageCodeOverride ?? findLanguageCode();
+    final language =
+        state.languageCodeOverride ?? findLanguageCode(locale: locale);
     if (state.debugLogging) {
       print('upgrader: languageCode: $language');
     }
 
     // Get the version info from the store.
-    final versionInfo = store.getVersionInfo(
+    final versionInfo = await store.getVersionInfo(
         state: state,
         installedVersion: installedVersion,
         country: country,
         language: language);
+
+    updateState(state.copyWith(versionInfo: versionInfo));
 
     return versionInfo;
   }
@@ -284,7 +258,7 @@ class Upgrader with WidgetsBindingObserver {
 
   bool verifyInit() {
     if (!_initCalled) {
-      throw ('upgrader: initialize() not called. Must be called first.');
+      throw (notInitializedExceptionMessage);
     }
     return true;
   }
@@ -302,40 +276,6 @@ class Upgrader with WidgetsBindingObserver {
     msg = msg.replaceAll(
         '{{currentInstalledVersion}}', currentInstalledVersion ?? '');
     return msg;
-  }
-
-  /// Determine which [UpgraderMessages] object to use. It will be either the one passed
-  /// to [Upgrader], or one based on the app locale.
-  UpgraderMessages determineMessages(BuildContext context) {
-    {
-      late UpgraderMessages appMessages;
-      if (messages != null) {
-        appMessages = messages!;
-      } else {
-        String? languageCode;
-        try {
-          // Get the current locale in the app.
-          final locale = Localizations.localeOf(context);
-          // Get the current language code in the app.
-          languageCode = locale.languageCode;
-          if (state.debugLogging) {
-            print('upgrader: current locale: $locale');
-          }
-        } catch (e) {
-          // ignored, really.
-        }
-
-        appMessages = UpgraderMessages(code: languageCode);
-      }
-
-      if (appMessages.languageCode.isEmpty) {
-        print('upgrader: error -> languageCode is empty');
-      } else if (state.debugLogging) {
-        print('upgrader: languageCode: ${appMessages.languageCode}');
-      }
-
-      return appMessages;
-    }
   }
 
   bool blocked() {
@@ -370,7 +310,7 @@ class Upgrader with WidgetsBindingObserver {
     if (willDisplayUpgrade != null) {
       willDisplayUpgrade!(
         display: rv,
-        installedVersion: _installedVersion,
+        installedVersion: state.packageInfo?.version,
         versionInfo: versionInfo,
       );
     }
@@ -382,9 +322,9 @@ class Upgrader with WidgetsBindingObserver {
   bool belowMinAppVersion() {
     var rv = false;
     final minVersion = state.minAppVersion ?? versionInfo?.minAppVersion;
-    if (minVersion != null) {
+    if (minVersion != null && state.packageInfo != null) {
       try {
-        final installedVersion = Version.parse(_installedVersion!);
+        final installedVersion = Version.parse(state.packageInfo!.version);
         rv = installedVersion < minVersion;
       } catch (e) {
         if (state.debugLogging) {
@@ -401,7 +341,7 @@ class Upgrader with WidgetsBindingObserver {
     }
 
     final lastAlertedDuration = DateTime.now().difference(_lastTimeAlerted!);
-    final rv = lastAlertedDuration < durationUntilAlertAgain;
+    final rv = lastAlertedDuration < state.durationUntilAlertAgain;
     if (rv && state.debugLogging) {
       print('upgrader: isTooSoon: true');
     }
@@ -419,16 +359,17 @@ class Upgrader with WidgetsBindingObserver {
 
   bool isUpdateAvailable() {
     if (state.debugLogging) {
-      print('upgrader: installedVersion: $_installedVersion');
+      print('upgrader: installedVersion: ${state.packageInfo?.version}');
       print('upgrader: minAppVersion: ${state.minAppVersion}');
     }
-    if (versionInfo?.appStoreVersion == null || _installedVersion == null) {
+    if (versionInfo?.appStoreVersion == null ||
+        state.packageInfo?.version == null) {
       if (state.debugLogging) print('upgrader: isUpdateAvailable: false');
       return false;
     }
 
     try {
-      final installedVersion = Version.parse(_installedVersion!);
+      final installedVersion = Version.parse(state.packageInfo!.version);
 
       final available = versionInfo!.appStoreVersion! > installedVersion;
       _updateAvailable = available ? versionInfo?.appStoreVersion : null;
@@ -442,35 +383,31 @@ class Upgrader with WidgetsBindingObserver {
     return isAvailable;
   }
 
-  /// Determine the current country code, either from the context, or
-  /// from the system-reported default locale of the device. The default
-  /// is `US`.
-  String? findCountryCode({BuildContext? context}) {
+  Locale findLocale({BuildContext? context}) {
     Locale? locale;
     if (context != null) {
       locale = Localizations.maybeLocaleOf(context);
-    } else {
-      // Get the system locale
-      locale = PlatformDispatcher.instance.locale;
     }
-    final code = locale == null || locale.countryCode == null
-        ? 'US'
-        : locale.countryCode;
+    locale ??= PlatformDispatcher.instance.locale;
+    if (state.debugLogging) {
+      print('upgrader: current locale: $locale');
+    }
+    return locale;
+  }
+
+  /// Determine the current country code, either from the context, or
+  /// from the system-reported default locale of the device. The default
+  /// is `US`.
+  String? findCountryCode({required Locale locale}) {
+    final code = locale.countryCode ?? 'US';
     return code;
   }
 
   /// Determine the current language code, either from the context, or
   /// from the system-reported default locale of the device. The default
   /// is `en`.
-  String? findLanguageCode({BuildContext? context}) {
-    Locale? locale;
-    if (context != null) {
-      locale = Localizations.maybeLocaleOf(context);
-    } else {
-      // Get the system locale
-      locale = PlatformDispatcher.instance.locale;
-    }
-    final code = locale == null ? 'en' : locale.languageCode;
+  String? findLanguageCode({required Locale locale}) {
+    final code = locale.languageCode;
     return code;
   }
 
@@ -481,6 +418,28 @@ class Upgrader with WidgetsBindingObserver {
     await prefs.remove('lastVersionAlerted');
 
     return;
+  }
+
+  /// Determine which [UpgraderMessages] object to use. It will be either the one passed
+  /// to [Upgrader], or one based on the app locale.
+  UpgraderMessages determineMessages(BuildContext context) {
+    if (state.messages != null) return state.messages!;
+
+    String? languageCode = state.languageCodeOverride;
+    if (languageCode == null) {
+      final locale = findLocale(context: context);
+      languageCode = locale.languageCode;
+    }
+
+    final appMessages = UpgraderMessages(code: languageCode);
+
+    if (appMessages.languageCode.isEmpty) {
+      print('upgrader: error -> languageCode is empty');
+    } else if (state.debugLogging) {
+      print('upgrader: languageCode: ${appMessages.languageCode}');
+    }
+
+    return appMessages;
   }
 
   Future<bool> saveIgnored() async {
@@ -511,7 +470,6 @@ class Upgrader with WidgetsBindingObserver {
     if (lastTimeAlerted != null) {
       _lastTimeAlerted = DateTime.parse(lastTimeAlerted);
     }
-
     final versionAlerted = prefs.getString('lastVersionAlerted');
     if (versionAlerted != null) {
       try {
@@ -536,6 +494,7 @@ class Upgrader with WidgetsBindingObserver {
     return true;
   }
 
+  /// Launch the app store from the app store listing URL.
   void sendUserToAppStore() async {
     final appStoreListingURL = versionInfo?.appStoreListingURL;
     if (appStoreListingURL == null || appStoreListingURL.isEmpty) {
@@ -560,6 +519,59 @@ class Upgrader with WidgetsBindingObserver {
           print('upgrader: launch to app store failed: $e');
         }
       }
-    } else {}
+    }
   }
+
+  static Version? parseVersion(
+      String? version, String name, bool debugLogging) {
+    if (version == null) return null;
+    try {
+      return Version.parse(version);
+    } catch (e) {
+      // if (state.debugLogging) {
+      print('upgrader: _parseVersion $name exception: $e');
+      // }
+      return null;
+    }
+  }
+}
+
+extension UpgraderExt on Upgrader {
+  String? get currentAppStoreListingURL =>
+      state.versionInfo?.appStoreListingURL;
+
+  String? get currentAppStoreVersion =>
+      state.versionInfo?.appStoreVersion?.toString();
+
+  String? get currentInstalledVersion => state.packageInfo?.version;
+
+  String? get releaseNotes => state.versionInfo?.releaseNotes;
+
+  void installPackageInfo({PackageInfo? packageInfo}) {
+    updateState(state.copyWith(packageInfo: packageInfo),
+        updateTheVersionInfo: true);
+  }
+
+  /// The minAppVersion in the Upgrader state.
+  String? get minAppVersion => state.minAppVersion.toString();
+
+  set minAppVersion(String? version) {
+    if (version == null) {
+      updateState(
+          state.copyWithNull(
+            minAppVersion: true,
+          ),
+          updateTheVersionInfo: true);
+    } else {
+      final parsedVersion =
+          Upgrader.parseVersion(version, 'minAppVersion', state.debugLogging);
+      if (parsedVersion != null) {
+        updateState(state.copyWith(minAppVersion: parsedVersion),
+            updateTheVersionInfo: true);
+      }
+    }
+  }
+
+  /// The latest version info for this app.
+  UpgraderVersionInfo? get versionInfo => state.versionInfo;
 }

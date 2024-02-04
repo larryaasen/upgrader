@@ -180,21 +180,23 @@ void main() {
     expect(upgrader.isUpdateAvailable(), true);
     expect(upgrader.isTooSoon(), false);
 
-    expect(upgrader.messages, isNull);
-    upgrader.messages = UpgraderMessages();
-    expect(upgrader.messages, isNotNull);
+    expect(upgrader.state.messages, isNull);
+    upgrader.updateState(upgrader.state.copyWith(messages: UpgraderMessages()));
+    upgrader.updateState(upgrader.state.copyWith(messages: UpgraderMessages()));
+    expect(upgrader.state.messages, isNotNull);
 
-    expect(upgrader.messages?.buttonTitleIgnore, 'IGNORE');
-    expect(upgrader.messages?.buttonTitleLater, 'LATER');
-    expect(upgrader.messages?.buttonTitleUpdate, 'UPDATE NOW');
-    expect(upgrader.messages?.releaseNotes, 'Release Notes');
+    expect(upgrader.state.messages?.buttonTitleIgnore, 'IGNORE');
+    expect(upgrader.state.messages?.buttonTitleLater, 'LATER');
+    expect(upgrader.state.messages?.buttonTitleUpdate, 'UPDATE NOW');
+    expect(upgrader.state.messages?.releaseNotes, 'Release Notes');
 
-    upgrader.messages = MyUpgraderMessages();
+    upgrader
+        .updateState(upgrader.state.copyWith(messages: MyUpgraderMessages()));
 
-    expect(upgrader.messages!.buttonTitleIgnore, 'aaa');
-    expect(upgrader.messages!.buttonTitleLater, 'bbb');
-    expect(upgrader.messages!.buttonTitleUpdate, 'ccc');
-    expect(upgrader.messages!.releaseNotes, 'ddd');
+    expect(upgrader.state.messages!.buttonTitleIgnore, 'aaa');
+    expect(upgrader.state.messages!.buttonTitleLater, 'bbb');
+    expect(upgrader.state.messages!.buttonTitleUpdate, 'ccc');
+    expect(upgrader.state.messages!.releaseNotes, 'ddd');
 
     var called = false;
     var notCalled = true;
@@ -229,24 +231,27 @@ void main() {
 
     expect(upgrader.isTooSoon(), true);
 
-    expect(find.text(upgrader.messages!.title), findsOneWidget);
-    expect(find.text(upgrader.body(upgrader.messages!)), findsOneWidget);
-    expect(find.text(upgrader.messages!.releaseNotes), findsOneWidget);
+    expect(find.text(upgrader.state.messages!.title), findsOneWidget);
+    expect(find.text(upgrader.body(upgrader.state.messages!)), findsOneWidget);
+    expect(find.text(upgrader.state.messages!.releaseNotes), findsOneWidget);
     expect(find.text(upgrader.releaseNotes!), findsOneWidget);
-    expect(find.text(upgrader.messages!.prompt), findsOneWidget);
+    expect(find.text(upgrader.state.messages!.prompt), findsOneWidget);
     expect(find.byType(TextButton), findsNWidgets(3));
-    expect(find.text(upgrader.messages!.buttonTitleIgnore), findsOneWidget);
-    expect(find.text(upgrader.messages!.buttonTitleLater), findsOneWidget);
-    expect(find.text(upgrader.messages!.buttonTitleUpdate), findsOneWidget);
-    expect(find.text(upgrader.messages!.releaseNotes), findsOneWidget);
+    expect(
+        find.text(upgrader.state.messages!.buttonTitleIgnore), findsOneWidget);
+    expect(
+        find.text(upgrader.state.messages!.buttonTitleLater), findsOneWidget);
+    expect(
+        find.text(upgrader.state.messages!.buttonTitleUpdate), findsOneWidget);
+    expect(find.text(upgrader.state.messages!.releaseNotes), findsOneWidget);
     expect(find.byKey(dialogKey), findsOneWidget);
 
-    await tester.tap(find.text(upgrader.messages!.buttonTitleUpdate));
+    await tester.tap(find.text(upgrader.state.messages!.buttonTitleUpdate));
     await tester.pumpAndSettle();
-    expect(find.text(upgrader.messages!.buttonTitleIgnore), findsNothing);
-    expect(find.text(upgrader.messages!.buttonTitleLater), findsNothing);
-    expect(find.text(upgrader.messages!.buttonTitleUpdate), findsNothing);
-    expect(find.text(upgrader.messages!.releaseNotes), findsNothing);
+    expect(find.text(upgrader.state.messages!.buttonTitleIgnore), findsNothing);
+    expect(find.text(upgrader.state.messages!.buttonTitleLater), findsNothing);
+    expect(find.text(upgrader.state.messages!.buttonTitleUpdate), findsNothing);
+    expect(find.text(upgrader.state.messages!.releaseNotes), findsNothing);
     expect(called, true);
     expect(notCalled, true);
     // });
@@ -277,19 +282,20 @@ void main() {
     expect(upgrader.isUpdateAvailable(), true);
     expect(upgrader.isTooSoon(), false);
 
-    expect(upgrader.messages, isNull);
-    upgrader.messages = UpgraderMessages();
-    expect(upgrader.messages, isNotNull);
+    expect(upgrader.state.messages, isNull);
+    upgrader.updateState(upgrader.state.copyWith(messages: UpgraderMessages()));
+    expect(upgrader.state.messages, isNotNull);
 
-    expect(upgrader.messages!.buttonTitleIgnore, 'IGNORE');
-    expect(upgrader.messages!.buttonTitleLater, 'LATER');
-    expect(upgrader.messages!.buttonTitleUpdate, 'UPDATE NOW');
+    expect(upgrader.state.messages!.buttonTitleIgnore, 'IGNORE');
+    expect(upgrader.state.messages!.buttonTitleLater, 'LATER');
+    expect(upgrader.state.messages!.buttonTitleUpdate, 'UPDATE NOW');
 
-    upgrader.messages = MyUpgraderMessages();
+    upgrader
+        .updateState(upgrader.state.copyWith(messages: MyUpgraderMessages()));
 
-    expect(upgrader.messages!.buttonTitleIgnore, 'aaa');
-    expect(upgrader.messages!.buttonTitleLater, 'bbb');
-    expect(upgrader.messages!.buttonTitleUpdate, 'ccc');
+    expect(upgrader.state.messages!.buttonTitleIgnore, 'aaa');
+    expect(upgrader.state.messages!.buttonTitleLater, 'bbb');
+    expect(upgrader.state.messages!.buttonTitleUpdate, 'ccc');
 
     var called = false;
     var notCalled = true;
@@ -324,11 +330,11 @@ void main() {
 
     expect(upgrader.isTooSoon(), true);
 
-    expect(find.text(upgrader.messages!.title), findsOneWidget);
-    expect(find.text(upgrader.body(upgrader.messages!)), findsOneWidget);
-    expect(find.text(upgrader.messages!.releaseNotes), findsOneWidget);
+    expect(find.text(upgrader.state.messages!.title), findsOneWidget);
+    expect(find.text(upgrader.body(upgrader.state.messages!)), findsOneWidget);
+    expect(find.text(upgrader.state.messages!.releaseNotes), findsOneWidget);
     expect(find.text(upgrader.releaseNotes!), findsOneWidget);
-    expect(find.text(upgrader.messages!.prompt), findsOneWidget);
+    expect(find.text(upgrader.state.messages!.prompt), findsOneWidget);
     expect(find.byType(CupertinoDialogAction), findsNWidgets(3));
     expect(
       find.byWidgetPredicate((widget) =>
@@ -336,16 +342,19 @@ void main() {
           widget.textStyle == cupertinoButtonTextStyle),
       findsNWidgets(3),
     );
-    expect(find.text(upgrader.messages!.buttonTitleIgnore), findsOneWidget);
-    expect(find.text(upgrader.messages!.buttonTitleLater), findsOneWidget);
-    expect(find.text(upgrader.messages!.buttonTitleUpdate), findsOneWidget);
+    expect(
+        find.text(upgrader.state.messages!.buttonTitleIgnore), findsOneWidget);
+    expect(
+        find.text(upgrader.state.messages!.buttonTitleLater), findsOneWidget);
+    expect(
+        find.text(upgrader.state.messages!.buttonTitleUpdate), findsOneWidget);
     expect(find.byKey(const Key('upgrader_alert_dialog')), findsOneWidget);
 
-    await tester.tap(find.text(upgrader.messages!.buttonTitleUpdate));
+    await tester.tap(find.text(upgrader.state.messages!.buttonTitleUpdate));
     await tester.pumpAndSettle();
-    expect(find.text(upgrader.messages!.buttonTitleIgnore), findsNothing);
-    expect(find.text(upgrader.messages!.buttonTitleLater), findsNothing);
-    expect(find.text(upgrader.messages!.buttonTitleUpdate), findsNothing);
+    expect(find.text(upgrader.state.messages!.buttonTitleIgnore), findsNothing);
+    expect(find.text(upgrader.state.messages!.buttonTitleLater), findsNothing);
+    expect(find.text(upgrader.state.messages!.buttonTitleUpdate), findsNothing);
     expect(called, true);
     expect(notCalled, true);
   }, skip: false);
@@ -369,9 +378,9 @@ void main() {
 
     expect(upgrader.isTooSoon(), false);
 
-    expect(upgrader.messages, isNull);
-    upgrader.messages = UpgraderMessages();
-    expect(upgrader.messages, isNotNull);
+    expect(upgrader.state.messages, isNull);
+    upgrader.updateState(upgrader.state.copyWith(messages: UpgraderMessages()));
+    expect(upgrader.state.messages, isNotNull);
 
     var called = false;
     var notCalled = true;
@@ -398,9 +407,9 @@ void main() {
     // Pump the UI so the upgrader can display its dialog
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text(upgrader.messages!.buttonTitleIgnore));
+    await tester.tap(find.text(upgrader.state.messages!.buttonTitleIgnore));
     await tester.pumpAndSettle();
-    expect(find.text(upgrader.messages!.buttonTitleIgnore), findsNothing);
+    expect(find.text(upgrader.state.messages!.buttonTitleIgnore), findsNothing);
     expect(called, true);
     expect(notCalled, true);
   }, skip: false);
@@ -424,9 +433,9 @@ void main() {
 
     expect(upgrader.isTooSoon(), false);
 
-    expect(upgrader.messages, isNull);
-    upgrader.messages = UpgraderMessages();
-    expect(upgrader.messages, isNotNull);
+    expect(upgrader.state.messages, isNull);
+    upgrader.updateState(upgrader.state.copyWith(messages: UpgraderMessages()));
+    expect(upgrader.state.messages, isNotNull);
 
     var called = false;
     var notCalled = true;
@@ -453,9 +462,9 @@ void main() {
     // Pump the UI so the upgrader can display its dialog
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text(upgrader.messages!.buttonTitleLater));
+    await tester.tap(find.text(upgrader.state.messages!.buttonTitleLater));
     await tester.pumpAndSettle();
-    expect(find.text(upgrader.messages!.buttonTitleLater), findsNothing);
+    expect(find.text(upgrader.state.messages!.buttonTitleLater), findsNothing);
     expect(called, true);
     expect(notCalled, true);
   }, skip: false);
@@ -478,9 +487,9 @@ void main() {
 
     expect(upgrader.isTooSoon(), false);
 
-    expect(upgrader.messages, isNull);
-    upgrader.messages = UpgraderMessages();
-    expect(upgrader.messages, isNotNull);
+    expect(upgrader.state.messages, isNull);
+    upgrader.updateState(upgrader.state.copyWith(messages: UpgraderMessages()));
+    expect(upgrader.state.messages, isNotNull);
 
     var called = false;
     final upgradeAlert = wrapper(
@@ -564,13 +573,14 @@ void main() {
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle(const Duration(milliseconds: 5000));
 
-    expect(upgrader.messages, isNull);
-    upgrader.messages = UpgraderMessages();
-    expect(upgrader.messages, isNotNull);
+    expect(upgrader.state.messages, isNull);
+    upgrader.updateState(upgrader.state.copyWith(messages: UpgraderMessages()));
+    expect(upgrader.state.messages, isNotNull);
 
-    expect(find.text(upgrader.messages!.buttonTitleIgnore), findsNothing);
-    expect(find.text(upgrader.messages!.buttonTitleLater), findsNothing);
-    expect(find.text(upgrader.messages!.buttonTitleUpdate), findsOneWidget);
+    expect(find.text(upgrader.state.messages!.buttonTitleIgnore), findsNothing);
+    expect(find.text(upgrader.state.messages!.buttonTitleLater), findsNothing);
+    expect(
+        find.text(upgrader.state.messages!.buttonTitleUpdate), findsOneWidget);
   }, skip: false);
 
   testWidgets('test upgrader minAppVersion description android',
@@ -660,11 +670,11 @@ void main() {
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle();
 
-    expect(upgrader.messages, isNull);
-    upgrader.messages = UpgraderMessages();
-    expect(upgrader.messages, isNotNull);
+    expect(upgrader.state.messages, isNull);
+    upgrader.updateState(upgrader.state.copyWith(messages: UpgraderMessages()));
+    expect(upgrader.state.messages, isNotNull);
 
-    final laterButton = find.text(upgrader.messages!.buttonTitleLater);
+    final laterButton = find.text(upgrader.state.messages!.buttonTitleLater);
     expect(laterButton, findsNothing);
 
     expect(called, false);
@@ -791,41 +801,41 @@ void main() {
 
   test('durationUntilAlertAgain defaults to 3 days', () async {
     final upgrader = Upgrader();
-    expect(upgrader.durationUntilAlertAgain, const Duration(days: 3));
+    expect(upgrader.state.durationUntilAlertAgain, const Duration(days: 3));
   }, skip: false);
 
   test('durationUntilAlertAgain is 0 days', () async {
     final upgrader =
         Upgrader(durationUntilAlertAgain: const Duration(seconds: 0));
-    expect(upgrader.durationUntilAlertAgain, const Duration(seconds: 0));
+    expect(upgrader.state.durationUntilAlertAgain, const Duration(seconds: 0));
 
     UpgradeAlert(upgrader: upgrader);
-    expect(upgrader.durationUntilAlertAgain, const Duration(seconds: 0));
+    expect(upgrader.state.durationUntilAlertAgain, const Duration(seconds: 0));
 
     UpgradeCard(upgrader: upgrader);
-    expect(upgrader.durationUntilAlertAgain, const Duration(seconds: 0));
+    expect(upgrader.state.durationUntilAlertAgain, const Duration(seconds: 0));
   }, skip: false);
 
   test('durationUntilAlertAgain card is valid', () async {
     final upgrader = Upgrader(durationUntilAlertAgain: const Duration(days: 3));
     UpgradeCard(upgrader: upgrader);
-    expect(upgrader.durationUntilAlertAgain, const Duration(days: 3));
+    expect(upgrader.state.durationUntilAlertAgain, const Duration(days: 3));
 
     final upgrader2 =
         Upgrader(durationUntilAlertAgain: const Duration(days: 10));
     UpgradeCard(upgrader: upgrader2);
-    expect(upgrader2.durationUntilAlertAgain, const Duration(days: 10));
+    expect(upgrader2.state.durationUntilAlertAgain, const Duration(days: 10));
   }, skip: false);
 
   test('durationUntilAlertAgain alert is valid', () async {
     final upgrader = Upgrader(durationUntilAlertAgain: const Duration(days: 3));
     UpgradeAlert(upgrader: upgrader);
-    expect(upgrader.durationUntilAlertAgain, const Duration(days: 3));
+    expect(upgrader.state.durationUntilAlertAgain, const Duration(days: 3));
 
     final upgrader2 =
         Upgrader(durationUntilAlertAgain: const Duration(days: 10));
     UpgradeAlert(upgrader: upgrader2);
-    expect(upgrader2.durationUntilAlertAgain, const Duration(days: 10));
+    expect(upgrader2.state.durationUntilAlertAgain, const Duration(days: 10));
   }, skip: false);
 
   group('shouldDisplayUpgrade', () {
