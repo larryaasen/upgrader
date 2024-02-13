@@ -118,7 +118,7 @@ void main() {
       expect(mock3.isWeb, true);
     });
 
-    test('MockUpgraderOS', () async {
+    test('MockUpgraderOS current', () async {
       expect(MockUpgraderOS().current, '');
       expect(MockUpgraderOS(android: true).current, 'android');
       expect(MockUpgraderOS(fuchsia: true).current, 'fuchsia');
@@ -127,6 +127,20 @@ void main() {
       expect(MockUpgraderOS(macos: true).current, 'macos');
       expect(MockUpgraderOS(web: true).current, 'web');
       expect(MockUpgraderOS(windows: true).current, 'windows');
+    });
+
+    test('MockUpgraderOS currentOSType', () async {
+      expect(MockUpgraderOS().currentOSType, UpgraderOSType.android);
+      expect(
+          MockUpgraderOS(android: true).currentOSType, UpgraderOSType.android);
+      expect(
+          MockUpgraderOS(fuchsia: true).currentOSType, UpgraderOSType.fuchsia);
+      expect(MockUpgraderOS(ios: true).currentOSType, UpgraderOSType.ios);
+      expect(MockUpgraderOS(linux: true).currentOSType, UpgraderOSType.linux);
+      expect(MockUpgraderOS(macos: true).currentOSType, UpgraderOSType.macos);
+      expect(MockUpgraderOS(web: true).currentOSType, UpgraderOSType.web);
+      expect(
+          MockUpgraderOS(windows: true).currentOSType, UpgraderOSType.windows);
     });
   });
 }

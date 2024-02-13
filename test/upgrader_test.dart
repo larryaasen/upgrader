@@ -78,6 +78,27 @@ void main() {
     });
   });
 
+  // testWidgets('test Upgrader no package info', (WidgetTester tester) async {
+  //   await tester.runAsync(() async {
+  //     final client = MockITunesSearchClient.setupMockClient();
+  //     final upgrader = Upgrader(
+  //       upgraderOS: MockUpgraderOS(ios: true),
+  //       client: client,
+  //       debugLogging: true,
+  //     );
+
+  //     expect(tester.takeException(), null);
+  //     await tester.pumpAndSettle();
+  //     try {
+  //       expect(upgrader.appName(), 'Upgrader');
+  //     } catch (e) {
+  //       expect(e, Upgrader.notInitializedExceptionMessage);
+  //     }
+
+  //     expect(await upgrader.initialize(), isTrue);
+  //   });
+  // });
+
   testWidgets('test Upgrader clearSavedSettings', (WidgetTester tester) async {
     await Upgrader.clearSavedSettings();
   }, skip: false);

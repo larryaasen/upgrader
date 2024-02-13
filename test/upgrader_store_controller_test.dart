@@ -13,6 +13,7 @@ void main() {
   test('UpgraderAppStore returns UpgraderVersionInfo', () async {
     final installedVersion = Version(1, 9, 6);
     final state = UpgraderState(
+      debugLogging: true,
       client: MockITunesSearchClient.setupMockClient(),
       packageInfo: PackageInfo(
         appName: 'Upgrader',
@@ -45,6 +46,7 @@ void main() {
   test('UpgraderPlayStore returns UpgraderVersionInfo', () async {
     final installedVersion = Version(1, 9, 6);
     final state = UpgraderState(
+      debugLogging: true,
       client: await MockPlayStoreSearchClient.setupMockClient(),
       packageInfo: PackageInfo(
         appName: 'Upgrader',
@@ -82,6 +84,7 @@ void main() {
   test('UpgraderAppcastStore returns UpgraderVersionInfo', () async {
     final installedVersion = Version.parse('1.9.6');
     final state = UpgraderState(
+      debugLogging: true,
       client: await MockPlayStoreSearchClient.setupMockClient(),
       packageInfo: PackageInfo(
         appName: 'Upgrader',
