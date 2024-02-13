@@ -28,6 +28,7 @@ class MockITunesSearchClient {
             'bundleId': 'com.google.Maps',
             'currency': currency,
             'releaseNotes': 'Bug fixes.',
+            'trackViewUrl': 'https://example.com/app',
             if (description.isNotEmpty) 'description': description
           }
         ]
