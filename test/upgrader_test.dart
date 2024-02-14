@@ -169,6 +169,7 @@ void main() {
 
       await upgrader.didChangeAppLifecycleState(AppLifecycleState.resumed);
       expect(upgrader.isUpdateAvailable(), true);
+      expect(upgrader.currentAppStoreVersion, '7.0.0');
 
       upgrader.installPackageInfo(
           packageInfo: PackageInfo(
@@ -178,6 +179,17 @@ void main() {
               buildNumber: '400'));
 
       await upgrader.didChangeAppLifecycleState(AppLifecycleState.resumed);
+      expect(upgrader.isUpdateAvailable(), false);
+
+      upgrader.installPackageInfo(
+          packageInfo: PackageInfo(
+              appName: 'Upgrader',
+              packageName: 'com.larryaasen.upgrader.4',
+              version: '1.9.9',
+              buildNumber: '400'));
+
+      await upgrader.didChangeAppLifecycleState(AppLifecycleState.resumed);
+      expect(upgrader.currentAppStoreVersion, isNull);
       expect(upgrader.isUpdateAvailable(), false);
     });
   });
@@ -623,6 +635,27 @@ void main() {
 
     expect(upgrader.belowMinAppVersion(), true);
     expect(upgrader.state.versionInfo?.minAppVersion.toString(), '4.5.6');
+  }, skip: false);
+
+  testWidgets('test upgrader store version android',
+      (WidgetTester tester) async {
+    final client = await MockPlayStoreSearchClient.setupMockClient();
+    final upgrader = Upgrader(
+        upgraderOS: MockUpgraderOS(android: true),
+        client: client,
+        debugLogging: true);
+
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.testing.test7',
+            version: '2.9.9',
+            buildNumber: '400'));
+    upgrader.initialize().then((value) {});
+    await tester.pumpAndSettle();
+
+    expect(upgrader.belowMinAppVersion(), isFalse);
+    expect(upgrader.state.versionInfo?.appStoreVersion, isNull);
   }, skip: false);
 
   testWidgets('test upgrader minAppVersion description ios',

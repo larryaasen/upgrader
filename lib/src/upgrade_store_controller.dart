@@ -47,7 +47,8 @@ class UpgraderAppStore extends UpgraderStore {
           appStoreVersion = Version.parse(version);
         } catch (e) {
           if (state.debugLogging) {
-            print('upgrader: UpgraderAppStore.appStoreVersion exception: $e');
+            print(
+                'upgrader: UpgraderAppStore.appStoreVersion "$version" exception: $e');
           }
         }
       }
@@ -103,7 +104,8 @@ class UpgraderPlayStore extends UpgraderStore {
           appStoreVersion = Version.parse(version);
         } catch (e) {
           if (state.debugLogging) {
-            print('upgrader: UpgraderPlayStore.appStoreVersion exception: $e');
+            print(
+                'upgrader: UpgraderPlayStore.appStoreVersion "$version" exception: $e');
           }
         }
       }
@@ -238,10 +240,6 @@ class UpgraderAppcastStore extends UpgraderStore {
     }
     return versionInfo;
   }
-}
-
-class UpgraderConfiguration {
-  String get appStoreListingURL => throw UnimplementedError();
 }
 
 /// A controller that provides the store details for each platform.
