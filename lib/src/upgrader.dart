@@ -133,8 +133,14 @@ class Upgrader with WidgetsBindingObserver {
       if (state.debugLogging) print('upgrader: ${state.upgraderOS}');
 
       if (state.packageInfo == null) {
-        final packageInfo = await PackageInfo.fromPlatform();
-        updateState(state.copyWith(packageInfo: packageInfo));
+        try {
+          final packageInfo = await PackageInfo.fromPlatform();
+          updateState(state.copyWith(packageInfo: packageInfo));
+        } catch (e) {
+          if (state.debugLogging) {
+            print('upgrader: PackageInfo exception: $e');
+          }
+        }
       }
 
       final packageInfo = state.packageInfo;

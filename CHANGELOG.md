@@ -1,7 +1,7 @@
-## Next
+## 10.0.0-alpha.1
 
 - Implemented [UpgraderState] that is used internally to replace evaluation ready.
-- Removed Appcast configuration so that an Appcast [UpgraderStore] can be used.
+- BREAKING: Removed Appcast configuration so that an Appcast [UpgraderStore] can be used.
 
 ## 9.0.0
 
