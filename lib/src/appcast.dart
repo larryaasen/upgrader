@@ -101,10 +101,10 @@ class Appcast {
   }
 
   /// Download the Appcast from [appCastURL].
-  Future<List<AppcastItem>?> parseAppcastItemsFromUri(String appCastURL) async {
+  Future<List<AppcastItem>?> parseAppcastItemsFromUri(String appCastURL, {Map<String,String>? headers}) async {
     http.Response response;
     try {
-      response = await client.get(Uri.parse(appCastURL));
+      response = await client.get(Uri.parse(appCastURL), headers: headers);
     } catch (e) {
       print('upgrader: parseAppcastItemsFromUri exception: $e');
       return null;

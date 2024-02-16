@@ -42,7 +42,7 @@ class FakeAppcast extends Fake implements TestAppcast {
   }
 
   @override
-  Future<List<AppcastItem>> parseAppcastItemsFromUri(String appCastURL) async {
+  Future<List<AppcastItem>> parseAppcastItemsFromUri(String appCastURL, {Map<String,String>? headers}) async {
     callCount++;
 
     return [AppcastItem()];

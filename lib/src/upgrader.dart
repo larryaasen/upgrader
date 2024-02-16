@@ -40,10 +40,12 @@ typedef UpgraderEvaluateNeed = bool;
 /// names, such as "android", "fuchsia", "ios", "linux" "macos", "web", "windows".
 class AppcastConfiguration {
   final List<String>? supportedOS;
+  final Map<String, String>? headers;
   final String? url;
 
   AppcastConfiguration({
     this.supportedOS,
+    this.headers,
     this.url,
   });
 }
@@ -256,7 +258,8 @@ class Upgrader with WidgetsBindingObserver {
       }
 
       final appcast = this.appcast ?? Appcast(client: client);
-      await appcast.parseAppcastItemsFromUri(appcastConfig!.url!);
+      await appcast.parseAppcastItemsFromUri(appcastConfig!.url!,
+          headers: appcastConfig!.headers);
       if (debugLogging) {
         var count = appcast.items == null ? 0 : appcast.items!.length;
         print('upgrader: appcast item count: $count');
