@@ -54,7 +54,8 @@ class UpgraderState {
   final UpgraderMessages? messages;
 
   /// The minimum app version supported by this app. Earlier versions of this app
-  /// will be forced to update to the current version. Optional.
+  /// will be forced to update to the current version. Overrides any minimum
+  /// app version from UpgraderStore. Optional.
   final Version? minAppVersion;
 
   /// The app package metadata information.

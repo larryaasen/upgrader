@@ -45,19 +45,19 @@ class Upgrader with WidgetsBindingObserver {
   /// Creates an uprade controller that maintains a [state] that is used to
   /// trigger an alert or other UI to evaluate upgrading criteria.
   Upgrader({
+    http.Client? client,
+    String? countryCode,
     bool debugDisplayAlways = false,
     bool debugDisplayOnce = false,
     bool debugLogging = false,
     Duration durationUntilAlertAgain = const Duration(days: 3),
-    this.willDisplayUpgrade,
-    http.Client? client,
-    String? countryCode,
     String? languageCode,
     UpgraderMessages? messages,
     String? minAppVersion,
     UpgraderStoreController? storeController,
     UpgraderDevice? upgraderDevice,
     UpgraderOS? upgraderOS,
+    this.willDisplayUpgrade,
   })  : _state = UpgraderState(
           client: client ?? http.Client(),
           countryCodeOverride: countryCode,

@@ -1,3 +1,13 @@
+## 10.0.0 next
+
+This major update changes the structure of how the internal state is maintained and how access to app stores is provided. The API has not changed for the standard use cases. However, the way in which Appcast is used has changed slightly.
+
+This update also makes it easier to extend upgrader to support more app stores without changing upgrader. This will come into play when used on Linux and Windows, or when supporting alternate app stores on Android.
+
+### Changes
+- Implemented [UpgraderState] that is used internally to replace evaluation ready.
+- BREAKING: Removed Appcast configuration so that an Appcast [UpgraderStore] can be used.
+
 ## 10.0.0-alpha.1
 
 - Implemented [UpgraderState] that is used internally to replace evaluation ready.
