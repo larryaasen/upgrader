@@ -1,4 +1,6 @@
-## 10.0.0 next
+## 10.0.0-alpha.2
+
+(README file and documentation updates)
 
 This major update changes the structure of how the internal state is maintained and how access to app stores is provided. The API has not changed for the standard use cases. However, the way in which Appcast is used has changed slightly.
 
