@@ -14,7 +14,7 @@ jobs:
     strategy:
       matrix:
         runs-on-name: ['windows-latest']
-        flutter-version: ['3.3.12']
+        flutter-version: ['3.16.0']
 
     runs-on: ${{ matrix.runs-on-name }}
 
