@@ -20,7 +20,7 @@ class UpgradeAlert extends StatefulWidget {
   UpgradeAlert({
     super.key,
     Upgrader? upgrader,
-    this.canDismissDialog = false,
+    this.barrierDismissible = false,
     this.dialogStyle = UpgradeDialogStyle.material,
     this.onIgnore,
     this.onLater,
@@ -38,8 +38,9 @@ class UpgradeAlert extends StatefulWidget {
   /// The upgraders used to configure the upgrade dialog.
   final Upgrader upgrader;
 
-  /// Can alert dialog be dismissed on tap outside of the alert dialog. Not used by [UpgradeCard]. (default: false)
-  final bool canDismissDialog;
+  /// The `barrierDismissible` argument is used to indicate whether tapping on the
+  /// barrier will dismiss the dialog. (default: false)
+  final bool barrierDismissible;
 
   /// The upgrade dialog style. Used only on UpgradeAlert. (default: material)
   final UpgradeDialogStyle dialogStyle;
@@ -55,9 +56,7 @@ class UpgradeAlert extends StatefulWidget {
   /// Return false when the default behavior should not execute.
   final BoolCallback? onUpdate;
 
-  /// Called when the user taps outside of the dialog and [canDismissDialog]
-  /// is false. Also called when the back button is pressed. Return true for
-  /// the screen to be popped.
+  /// Called to determine if the dialog blocks the current route from being popped.
   final BoolCallback? shouldPopScope;
 
   /// Hide or show Ignore button on dialog (default: true)
@@ -132,7 +131,6 @@ class UpgradeAlertState extends State<UpgradeAlert> {
   }
 
   /// Will show the alert dialog when it should be dispalyed.
-  /// Only called by [UpgradeAlert] and not used by [UpgradeCard].
   void checkVersion({required BuildContext context}) {
     final shouldDisplay = widget.upgrader.shouldDisplayUpgrade();
     if (widget.upgrader.state.debugLogging) {
@@ -150,7 +148,7 @@ class UpgradeAlertState extends State<UpgradeAlert> {
           message: widget.upgrader.body(appMessages),
           releaseNotes:
               shouldDisplayReleaseNotes ? widget.upgrader.releaseNotes : null,
-          canDismissDialog: widget.canDismissDialog,
+          barrierDismissible: widget.barrierDismissible,
           messages: appMessages,
         );
       });
@@ -220,7 +218,7 @@ class UpgradeAlertState extends State<UpgradeAlert> {
     required String? title,
     required String message,
     required String? releaseNotes,
-    required bool canDismissDialog,
+    required bool barrierDismissible,
     required UpgraderMessages messages,
   }) {
     if (widget.upgrader.state.debugLogging) {
@@ -233,30 +231,35 @@ class UpgradeAlertState extends State<UpgradeAlert> {
     widget.upgrader.saveLastAlerted();
 
     showDialog(
-      barrierDismissible: canDismissDialog,
+      barrierDismissible: barrierDismissible,
       context: context,
       builder: (BuildContext context) {
-        return WillPopScope(
-            onWillPop: () async => onWillPop(),
-            child: alertDialog(
-              key,
-              title ?? '',
-              message,
-              releaseNotes,
-              context,
-              widget.dialogStyle == UpgradeDialogStyle.cupertino,
-              messages,
-            ));
+        return PopScope(
+          canPop: onCanPop(),
+          onPopInvoked: (didPop) {
+            if (widget.upgrader.state.debugLogging) {
+              print('upgrader: showTheDialog onPopInvoked: $didPop');
+            }
+          },
+          child: alertDialog(
+            key,
+            title ?? '',
+            message,
+            releaseNotes,
+            context,
+            widget.dialogStyle == UpgradeDialogStyle.cupertino,
+            messages,
+          ),
+        );
       },
     );
   }
 
-  /// Called when the user taps outside of the dialog and [canDismissDialog]
-  /// is false. Also called when the back button is pressed. Return true for
-  /// the screen to be popped. Defaults to false.
-  bool onWillPop() {
+  /// Determines if the dialog blocks the current route from being popped.
+  /// Will return the result from [shouldPopScope] if it is not null, otherwise it will return false.
+  bool onCanPop() {
     if (widget.upgrader.state.debugLogging) {
-      print('upgrader: onWillPop called');
+      print('upgrader: onCanPop called');
     }
     if (widget.shouldPopScope != null) {
       final should = widget.shouldPopScope!();

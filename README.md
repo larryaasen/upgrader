@@ -121,13 +121,13 @@ The card can be customized by changing the `CardTheme` on the `MaterialApp`, or 
 
 Here are the custom parameters for `UpgradeAlert`:
 
-* canDismissDialog: can alert dialog be dismissed on tap outside of the alert dialog, which defaults to ```false``` (not used by UpgradeCard)
+* barrierDismissible: used to indicate whether tapping on the barrier will dismiss the dialog, which defaults to ```false```
 * cupertinoButtonTextStyle: the text style for the cupertino dialog buttons, which defaults to ```null```
 * dialogStyle: the upgrade dialog style, either ```material``` or ```cupertino```, defaults to ```material```, used only by UpgradeAlert, works on Android and iOS.
 * onIgnore: called when the ignore button is tapped, defaults to ```null```
 * onLater: called when the later button is tapped, defaults to ```null```
 * onUpdate: called when the update button is tapped, defaults to ```null```
-* shouldPopScope: called when the back button is tapped, defaults to ```null```
+* shouldPopScope: called to determine if the dialog blocks the current route from being popped, which defaults to ```null```
 * showIgnore: hide or show Ignore button, which defaults to ```true```
 * showLater: hide or show Later button, which defaults to ```true```
 * showReleaseNotes: hide or show release notes, which defaults to ```true```

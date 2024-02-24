@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Upgrader Example',
       home: UpgradeAlert(
+        upgrader: Upgrader(debugLogging: true),
         child: Scaffold(
           appBar: AppBar(title: const Text('Upgrader Example')),
           body: const Center(child: Text('Checking...')),

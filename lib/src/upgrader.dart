@@ -211,6 +211,9 @@ class Upgrader with WidgetsBindingObserver {
     // Determine the store to be used for this app.
     final store = storeController.getUpgraderStore(state.upgraderOS);
     if (store == null) {
+      if (state.debugLogging) {
+        print('upgrader: updateVersionInfo found no store controller');
+      }
       updateState(state.copyWithNull(versionInfo: null));
       return null;
     }
@@ -253,12 +256,6 @@ class Upgrader with WidgetsBindingObserver {
     updateState(state.copyWith(versionInfo: versionInfo));
 
     return versionInfo;
-  }
-
-  /// Android info is fetched by parsing the html of the app store page.
-  Future<bool?> getAndroidStoreVersion(
-      {String? country, String? language}) async {
-    return true;
   }
 
   bool verifyInit() {

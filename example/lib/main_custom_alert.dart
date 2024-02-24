@@ -61,7 +61,7 @@ class MyUpgradeAlertState extends UpgradeAlertState {
     required String? title,
     required String message,
     required String? releaseNotes,
-    required bool canDismissDialog,
+    required bool barrierDismissible,
     required UpgraderMessages messages,
   }) {
     showDialog(
