@@ -9,11 +9,6 @@ void main() async {
   // Only call clearSavedSettings() during testing to reset internal values.
   await Upgrader.clearSavedSettings(); // REMOVE this for release builds
 
-  // On Android, the default behavior will be to use the Google Play Store
-  // version of the app.
-  // On iOS, the default behavior will be to use the App Store version of
-  // the app, so update the Bundle Identifier in example/ios/Runner with a
-  // valid identifier already in the App Store.
   runApp(MyApp());
 }
 
@@ -23,10 +18,7 @@ class MyApp extends StatelessWidget {
   final dark = ThemeData.dark(useMaterial3: true);
 
   final light = ThemeData(
-    dialogTheme: DialogTheme(
-      titleTextStyle: TextStyle(color: Colors.red, fontSize: 48),
-      contentTextStyle: TextStyle(color: Colors.green, fontSize: 18),
-    ),
+    cardTheme: const CardTheme(color: Colors.greenAccent),
     // Change the text buttons.
     textButtonTheme: const TextButtonThemeData(
       style: ButtonStyle(
@@ -39,14 +31,34 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Upgrader Example',
-      home: UpgradeAlert(
-          child: Scaffold(
-        appBar: AppBar(title: Text('Upgrader Alert Theme Example')),
-        body: Center(child: Text('Checking...')),
-      )),
+      title: 'Upgrader Card Example',
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Upgrader Card Theme Example')),
+        body: Container(
+          margin: const EdgeInsets.only(left: 12.0, right: 12.0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                _simpleCard,
+                _simpleCard,
+                UpgradeCard(),
+                _simpleCard,
+                _simpleCard,
+              ],
+            ),
+          ),
+        ),
+      ),
       theme: light,
       darkTheme: dark,
     );
   }
+
+  Widget get _simpleCard => const Card(
+        child: SizedBox(
+          width: 200,
+          height: 50,
+          child: Center(child: Text('Card')),
+        ),
+      );
 }

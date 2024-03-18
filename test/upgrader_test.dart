@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2023 Larry Aasen. All rights reserved.
+ * Copyright (c) 2018-2024 Larry Aasen. All rights reserved.
  */
 
 import 'package:flutter/cupertino.dart';
@@ -10,6 +10,7 @@ import 'package:http/src/client.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upgrader/upgrader.dart';
+import 'package:version/version.dart';
 
 import 'appcast_test.dart';
 import 'fake_appcast.dart';
@@ -77,13 +78,55 @@ void main() {
     });
   });
 
+  // testWidgets('test Upgrader no package info', (WidgetTester tester) async {
+  //   await tester.runAsync(() async {
+  //     final client = MockITunesSearchClient.setupMockClient();
+  //     final upgrader = Upgrader(
+  //       upgraderOS: MockUpgraderOS(ios: true),
+  //       client: client,
+  //       debugLogging: true,
+  //     );
+
+  //     expect(tester.takeException(), null);
+  //     await tester.pumpAndSettle();
+  //     try {
+  //       expect(upgrader.appName(), 'Upgrader');
+  //     } catch (e) {
+  //       expect(e, Upgrader.notInitializedExceptionMessage);
+  //     }
+
+  //     expect(await upgrader.initialize(), isTrue);
+  //   });
+  // });
+
   testWidgets('test Upgrader clearSavedSettings', (WidgetTester tester) async {
     await Upgrader.clearSavedSettings();
   }, skip: false);
 
+  testWidgets('test Upgrader stand alone', (WidgetTester tester) async {
+    final client = MockITunesSearchClient.setupMockClient();
+    final upgrader = Upgrader(
+        upgraderOS: MockUpgraderOS(ios: true),
+        client: client,
+        debugLogging: true);
+
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '0.9.9',
+            buildNumber: '400'));
+
+    upgrader.initialize().then((value) {});
+
+    await tester.pumpAndSettle();
+
+    expect(upgrader.isUpdateAvailable(), true);
+    expect(upgrader.currentAppStoreVersion, '5.6.0');
+  });
+
   testWidgets('test Upgrader class', (WidgetTester tester) async {
     await tester.runAsync(() async {
-      // test code here
       final client = MockITunesSearchClient.setupMockClient();
       final upgrader = Upgrader(
           upgraderOS: MockUpgraderOS(ios: true),
@@ -111,26 +154,30 @@ void main() {
       expect(await upgrader.initialize(), isTrue);
 
       expect(upgrader.appName(), 'Upgrader');
-      expect(upgrader.currentAppStoreVersion, '5.6');
+      expect(upgrader.currentAppStoreVersion, '5.6.0');
       expect(upgrader.currentInstalledVersion, '1.9.9');
       expect(upgrader.isUpdateAvailable(), true);
 
-      upgrader.installAppStoreVersion('1.2.3');
+      upgrader.updateState(upgrader.state.copyWith(
+          versionInfo: UpgraderVersionInfo(appStoreVersion: Version(1, 2, 3))));
       expect(upgrader.currentAppStoreVersion, '1.2.3');
       expect(upgrader.isUpdateAvailable(), false);
 
-      upgrader.installAppStoreVersion('6.2.3');
+      upgrader.updateState(upgrader.state.copyWith(
+          versionInfo: UpgraderVersionInfo(appStoreVersion: Version(6, 2, 3))));
       expect(upgrader.currentAppStoreVersion, '6.2.3');
       expect(upgrader.isUpdateAvailable(), true);
 
-      upgrader.installAppStoreVersion('1.1.1');
+      upgrader.updateState(upgrader.state.copyWith(
+          versionInfo: UpgraderVersionInfo(appStoreVersion: Version(1, 1, 1))));
       expect(upgrader.currentAppStoreVersion, '1.1.1');
       expect(upgrader.isUpdateAvailable(), false);
 
       await upgrader.didChangeAppLifecycleState(AppLifecycleState.resumed);
       expect(upgrader.isUpdateAvailable(), true);
 
-      upgrader.installAppStoreVersion('1.1.1');
+      upgrader.updateState(upgrader.state.copyWith(
+          versionInfo: UpgraderVersionInfo(appStoreVersion: Version(1, 1, 1))));
       expect(upgrader.currentAppStoreVersion, '1.1.1');
       expect(upgrader.isUpdateAvailable(), false);
 
@@ -143,6 +190,7 @@ void main() {
 
       await upgrader.didChangeAppLifecycleState(AppLifecycleState.resumed);
       expect(upgrader.isUpdateAvailable(), true);
+      expect(upgrader.currentAppStoreVersion, '7.0.0');
 
       upgrader.installPackageInfo(
           packageInfo: PackageInfo(
@@ -153,17 +201,19 @@ void main() {
 
       await upgrader.didChangeAppLifecycleState(AppLifecycleState.resumed);
       expect(upgrader.isUpdateAvailable(), false);
+
+      upgrader.installPackageInfo(
+          packageInfo: PackageInfo(
+              appName: 'Upgrader',
+              packageName: 'com.larryaasen.upgrader.4',
+              version: '1.9.9',
+              buildNumber: '400'));
+
+      await upgrader.didChangeAppLifecycleState(AppLifecycleState.resumed);
+      expect(upgrader.currentAppStoreVersion, isNull);
+      expect(upgrader.isUpdateAvailable(), false);
     });
   });
-
-  testWidgets('test installAppStoreListingURL', (WidgetTester tester) async {
-    final upgrader = Upgrader();
-    upgrader.installAppStoreListingURL(
-        'https://itunes.apple.com/us/app/google-maps-transit-food/id585027354?mt=8&uo=4');
-
-    expect(upgrader.currentAppStoreListingURL,
-        'https://itunes.apple.com/us/app/google-maps-transit-food/id585027354?mt=8&uo=4');
-  }, skip: false);
 
   testWidgets('test UpgradeAlert', (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
@@ -184,21 +234,23 @@ void main() {
     expect(upgrader.isUpdateAvailable(), true);
     expect(upgrader.isTooSoon(), false);
 
-    expect(upgrader.messages, isNull);
-    upgrader.messages = UpgraderMessages();
-    expect(upgrader.messages, isNotNull);
+    expect(upgrader.state.messages, isNull);
+    upgrader.updateState(upgrader.state.copyWith(messages: UpgraderMessages()));
+    upgrader.updateState(upgrader.state.copyWith(messages: UpgraderMessages()));
+    expect(upgrader.state.messages, isNotNull);
 
-    expect(upgrader.messages?.buttonTitleIgnore, 'IGNORE');
-    expect(upgrader.messages?.buttonTitleLater, 'LATER');
-    expect(upgrader.messages?.buttonTitleUpdate, 'UPDATE NOW');
-    expect(upgrader.messages?.releaseNotes, 'Release Notes');
+    expect(upgrader.state.messages?.buttonTitleIgnore, 'IGNORE');
+    expect(upgrader.state.messages?.buttonTitleLater, 'LATER');
+    expect(upgrader.state.messages?.buttonTitleUpdate, 'UPDATE NOW');
+    expect(upgrader.state.messages?.releaseNotes, 'Release Notes');
 
-    upgrader.messages = MyUpgraderMessages();
+    upgrader
+        .updateState(upgrader.state.copyWith(messages: MyUpgraderMessages()));
 
-    expect(upgrader.messages!.buttonTitleIgnore, 'aaa');
-    expect(upgrader.messages!.buttonTitleLater, 'bbb');
-    expect(upgrader.messages!.buttonTitleUpdate, 'ccc');
-    expect(upgrader.messages!.releaseNotes, 'ddd');
+    expect(upgrader.state.messages!.buttonTitleIgnore, 'aaa');
+    expect(upgrader.state.messages!.buttonTitleLater, 'bbb');
+    expect(upgrader.state.messages!.buttonTitleUpdate, 'ccc');
+    expect(upgrader.state.messages!.releaseNotes, 'ddd');
 
     var called = false;
     var notCalled = true;
@@ -233,24 +285,27 @@ void main() {
 
     expect(upgrader.isTooSoon(), true);
 
-    expect(find.text(upgrader.messages!.title), findsOneWidget);
-    expect(find.text(upgrader.body(upgrader.messages!)), findsOneWidget);
-    expect(find.text(upgrader.messages!.releaseNotes), findsOneWidget);
+    expect(find.text(upgrader.state.messages!.title), findsOneWidget);
+    expect(find.text(upgrader.body(upgrader.state.messages!)), findsOneWidget);
+    expect(find.text(upgrader.state.messages!.releaseNotes), findsOneWidget);
     expect(find.text(upgrader.releaseNotes!), findsOneWidget);
-    expect(find.text(upgrader.messages!.prompt), findsOneWidget);
+    expect(find.text(upgrader.state.messages!.prompt), findsOneWidget);
     expect(find.byType(TextButton), findsNWidgets(3));
-    expect(find.text(upgrader.messages!.buttonTitleIgnore), findsOneWidget);
-    expect(find.text(upgrader.messages!.buttonTitleLater), findsOneWidget);
-    expect(find.text(upgrader.messages!.buttonTitleUpdate), findsOneWidget);
-    expect(find.text(upgrader.messages!.releaseNotes), findsOneWidget);
+    expect(
+        find.text(upgrader.state.messages!.buttonTitleIgnore), findsOneWidget);
+    expect(
+        find.text(upgrader.state.messages!.buttonTitleLater), findsOneWidget);
+    expect(
+        find.text(upgrader.state.messages!.buttonTitleUpdate), findsOneWidget);
+    expect(find.text(upgrader.state.messages!.releaseNotes), findsOneWidget);
     expect(find.byKey(dialogKey), findsOneWidget);
 
-    await tester.tap(find.text(upgrader.messages!.buttonTitleUpdate));
+    await tester.tap(find.text(upgrader.state.messages!.buttonTitleUpdate));
     await tester.pumpAndSettle();
-    expect(find.text(upgrader.messages!.buttonTitleIgnore), findsNothing);
-    expect(find.text(upgrader.messages!.buttonTitleLater), findsNothing);
-    expect(find.text(upgrader.messages!.buttonTitleUpdate), findsNothing);
-    expect(find.text(upgrader.messages!.releaseNotes), findsNothing);
+    expect(find.text(upgrader.state.messages!.buttonTitleIgnore), findsNothing);
+    expect(find.text(upgrader.state.messages!.buttonTitleLater), findsNothing);
+    expect(find.text(upgrader.state.messages!.buttonTitleUpdate), findsNothing);
+    expect(find.text(upgrader.state.messages!.releaseNotes), findsNothing);
     expect(called, true);
     expect(notCalled, true);
     // });
@@ -281,19 +336,20 @@ void main() {
     expect(upgrader.isUpdateAvailable(), true);
     expect(upgrader.isTooSoon(), false);
 
-    expect(upgrader.messages, isNull);
-    upgrader.messages = UpgraderMessages();
-    expect(upgrader.messages, isNotNull);
+    expect(upgrader.state.messages, isNull);
+    upgrader.updateState(upgrader.state.copyWith(messages: UpgraderMessages()));
+    expect(upgrader.state.messages, isNotNull);
 
-    expect(upgrader.messages!.buttonTitleIgnore, 'IGNORE');
-    expect(upgrader.messages!.buttonTitleLater, 'LATER');
-    expect(upgrader.messages!.buttonTitleUpdate, 'UPDATE NOW');
+    expect(upgrader.state.messages!.buttonTitleIgnore, 'IGNORE');
+    expect(upgrader.state.messages!.buttonTitleLater, 'LATER');
+    expect(upgrader.state.messages!.buttonTitleUpdate, 'UPDATE NOW');
 
-    upgrader.messages = MyUpgraderMessages();
+    upgrader
+        .updateState(upgrader.state.copyWith(messages: MyUpgraderMessages()));
 
-    expect(upgrader.messages!.buttonTitleIgnore, 'aaa');
-    expect(upgrader.messages!.buttonTitleLater, 'bbb');
-    expect(upgrader.messages!.buttonTitleUpdate, 'ccc');
+    expect(upgrader.state.messages!.buttonTitleIgnore, 'aaa');
+    expect(upgrader.state.messages!.buttonTitleLater, 'bbb');
+    expect(upgrader.state.messages!.buttonTitleUpdate, 'ccc');
 
     var called = false;
     var notCalled = true;
@@ -328,11 +384,11 @@ void main() {
 
     expect(upgrader.isTooSoon(), true);
 
-    expect(find.text(upgrader.messages!.title), findsOneWidget);
-    expect(find.text(upgrader.body(upgrader.messages!)), findsOneWidget);
-    expect(find.text(upgrader.messages!.releaseNotes), findsOneWidget);
+    expect(find.text(upgrader.state.messages!.title), findsOneWidget);
+    expect(find.text(upgrader.body(upgrader.state.messages!)), findsOneWidget);
+    expect(find.text(upgrader.state.messages!.releaseNotes), findsOneWidget);
     expect(find.text(upgrader.releaseNotes!), findsOneWidget);
-    expect(find.text(upgrader.messages!.prompt), findsOneWidget);
+    expect(find.text(upgrader.state.messages!.prompt), findsOneWidget);
     expect(find.byType(CupertinoDialogAction), findsNWidgets(3));
     expect(
       find.byWidgetPredicate((widget) =>
@@ -340,16 +396,19 @@ void main() {
           widget.textStyle == cupertinoButtonTextStyle),
       findsNWidgets(3),
     );
-    expect(find.text(upgrader.messages!.buttonTitleIgnore), findsOneWidget);
-    expect(find.text(upgrader.messages!.buttonTitleLater), findsOneWidget);
-    expect(find.text(upgrader.messages!.buttonTitleUpdate), findsOneWidget);
+    expect(
+        find.text(upgrader.state.messages!.buttonTitleIgnore), findsOneWidget);
+    expect(
+        find.text(upgrader.state.messages!.buttonTitleLater), findsOneWidget);
+    expect(
+        find.text(upgrader.state.messages!.buttonTitleUpdate), findsOneWidget);
     expect(find.byKey(const Key('upgrader_alert_dialog')), findsOneWidget);
 
-    await tester.tap(find.text(upgrader.messages!.buttonTitleUpdate));
+    await tester.tap(find.text(upgrader.state.messages!.buttonTitleUpdate));
     await tester.pumpAndSettle();
-    expect(find.text(upgrader.messages!.buttonTitleIgnore), findsNothing);
-    expect(find.text(upgrader.messages!.buttonTitleLater), findsNothing);
-    expect(find.text(upgrader.messages!.buttonTitleUpdate), findsNothing);
+    expect(find.text(upgrader.state.messages!.buttonTitleIgnore), findsNothing);
+    expect(find.text(upgrader.state.messages!.buttonTitleLater), findsNothing);
+    expect(find.text(upgrader.state.messages!.buttonTitleUpdate), findsNothing);
     expect(called, true);
     expect(notCalled, true);
   }, skip: false);
@@ -373,9 +432,9 @@ void main() {
 
     expect(upgrader.isTooSoon(), false);
 
-    expect(upgrader.messages, isNull);
-    upgrader.messages = UpgraderMessages();
-    expect(upgrader.messages, isNotNull);
+    expect(upgrader.state.messages, isNull);
+    upgrader.updateState(upgrader.state.copyWith(messages: UpgraderMessages()));
+    expect(upgrader.state.messages, isNotNull);
 
     var called = false;
     var notCalled = true;
@@ -402,9 +461,9 @@ void main() {
     // Pump the UI so the upgrader can display its dialog
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text(upgrader.messages!.buttonTitleIgnore));
+    await tester.tap(find.text(upgrader.state.messages!.buttonTitleIgnore));
     await tester.pumpAndSettle();
-    expect(find.text(upgrader.messages!.buttonTitleIgnore), findsNothing);
+    expect(find.text(upgrader.state.messages!.buttonTitleIgnore), findsNothing);
     expect(called, true);
     expect(notCalled, true);
   }, skip: false);
@@ -428,9 +487,9 @@ void main() {
 
     expect(upgrader.isTooSoon(), false);
 
-    expect(upgrader.messages, isNull);
-    upgrader.messages = UpgraderMessages();
-    expect(upgrader.messages, isNotNull);
+    expect(upgrader.state.messages, isNull);
+    upgrader.updateState(upgrader.state.copyWith(messages: UpgraderMessages()));
+    expect(upgrader.state.messages, isNotNull);
 
     var called = false;
     var notCalled = true;
@@ -457,9 +516,9 @@ void main() {
     // Pump the UI so the upgrader can display its dialog
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text(upgrader.messages!.buttonTitleLater));
+    await tester.tap(find.text(upgrader.state.messages!.buttonTitleLater));
     await tester.pumpAndSettle();
-    expect(find.text(upgrader.messages!.buttonTitleLater), findsNothing);
+    expect(find.text(upgrader.state.messages!.buttonTitleLater), findsNothing);
     expect(called, true);
     expect(notCalled, true);
   }, skip: false);
@@ -482,9 +541,9 @@ void main() {
 
     expect(upgrader.isTooSoon(), false);
 
-    expect(upgrader.messages, isNull);
-    upgrader.messages = UpgraderMessages();
-    expect(upgrader.messages, isNotNull);
+    expect(upgrader.state.messages, isNull);
+    upgrader.updateState(upgrader.state.copyWith(messages: UpgraderMessages()));
+    expect(upgrader.state.messages, isNotNull);
 
     var called = false;
     final upgradeAlert = wrapper(
@@ -568,13 +627,14 @@ void main() {
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle(const Duration(milliseconds: 5000));
 
-    expect(upgrader.messages, isNull);
-    upgrader.messages = UpgraderMessages();
-    expect(upgrader.messages, isNotNull);
+    expect(upgrader.state.messages, isNull);
+    upgrader.updateState(upgrader.state.copyWith(messages: UpgraderMessages()));
+    expect(upgrader.state.messages, isNotNull);
 
-    expect(find.text(upgrader.messages!.buttonTitleIgnore), findsNothing);
-    expect(find.text(upgrader.messages!.buttonTitleLater), findsNothing);
-    expect(find.text(upgrader.messages!.buttonTitleUpdate), findsOneWidget);
+    expect(find.text(upgrader.state.messages!.buttonTitleIgnore), findsNothing);
+    expect(find.text(upgrader.state.messages!.buttonTitleLater), findsNothing);
+    expect(
+        find.text(upgrader.state.messages!.buttonTitleUpdate), findsOneWidget);
   }, skip: false);
 
   testWidgets('test upgrader minAppVersion description android',
@@ -595,7 +655,28 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(upgrader.belowMinAppVersion(), true);
-    expect(upgrader.minAppVersion, '4.5.6');
+    expect(upgrader.state.versionInfo?.minAppVersion.toString(), '4.5.6');
+  }, skip: false);
+
+  testWidgets('test upgrader store version android',
+      (WidgetTester tester) async {
+    final client = await MockPlayStoreSearchClient.setupMockClient();
+    final upgrader = Upgrader(
+        upgraderOS: MockUpgraderOS(android: true),
+        client: client,
+        debugLogging: true);
+
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.testing.test7',
+            version: '2.9.9',
+            buildNumber: '400'));
+    upgrader.initialize().then((value) {});
+    await tester.pumpAndSettle();
+
+    expect(upgrader.belowMinAppVersion(), isFalse);
+    expect(upgrader.state.versionInfo?.appStoreVersion, isNull);
   }, skip: false);
 
   testWidgets('test upgrader minAppVersion description ios',
@@ -618,7 +699,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(upgrader.belowMinAppVersion(), true);
-    expect(upgrader.minAppVersion, '4.5.6');
+    expect(upgrader.state.versionInfo?.minAppVersion.toString(), '4.5.6');
   }, skip: false);
 
   testWidgets('test UpgradeWidget unknown app', (WidgetTester tester) async {
@@ -664,217 +745,216 @@ void main() {
     // Pump the UI so the upgrade card is displayed
     await tester.pumpAndSettle();
 
-    expect(upgrader.messages, isNull);
-    upgrader.messages = UpgraderMessages();
-    expect(upgrader.messages, isNotNull);
+    expect(upgrader.state.messages, isNull);
+    upgrader.updateState(upgrader.state.copyWith(messages: UpgraderMessages()));
+    expect(upgrader.state.messages, isNotNull);
 
-    final laterButton = find.text(upgrader.messages!.buttonTitleLater);
+    final laterButton = find.text(upgrader.state.messages!.buttonTitleLater);
     expect(laterButton, findsNothing);
 
     expect(called, false);
     expect(notCalled, true);
   }, skip: false);
 
-  group('initialize', () {
-    test('should use fake Appcast', () async {
-      final fakeAppcast = FakeAppcast();
-      final client = MockITunesSearchClient.setupMockClient();
-      final upgrader = Upgrader(
-          upgraderOS: MockUpgraderOS(os: 'ios', ios: true),
-          client: client,
-          debugLogging: true,
-          appcastConfig: fakeAppcast.config,
-          appcast: fakeAppcast)
-        ..installPackageInfo(
-          packageInfo: PackageInfo(
-            appName: 'Upgrader',
-            packageName: 'com.larryaasen.upgrader',
-            version: '1.9.6',
-            buildNumber: '42',
-          ),
-        );
-
-      await upgrader.initialize();
-
-      expect(fakeAppcast.callCount, greaterThan(0));
-    }, skip: false);
-
-    test('will use appcast critical version if exists', () async {
-      final upgraderOS = MockUpgraderOS(android: true);
-      final Client mockClient =
-          setupMockClient(filePath: 'test/testappcast_critical.xml');
-      final appcast = Appcast(
-          client: mockClient,
-          upgraderOS: upgraderOS,
-          upgraderDevice: MockUpgraderDevice());
-
-      final upgrader = Upgrader(
-        upgraderOS: upgraderOS,
-        debugLogging: true,
-        appcastConfig: AppcastConfiguration(
-          url: 'https://sparkle-project.org/test/testappcast.xml',
+  test('should use fake Appcast', () async {
+    final fakeAppcast = FakeAppcast();
+    final client = MockITunesSearchClient.setupMockClient();
+    final upgrader = Upgrader(
+      upgraderOS: MockUpgraderOS(os: 'ios', ios: true),
+      client: client,
+      debugLogging: true,
+      storeController: UpgraderStoreController(
+        oniOS: () => UpgraderAppcastStore(
+          appcastURL: 'https://sparkle-project.org/test/testappcast.xml',
+          appcast: fakeAppcast,
         ),
-        appcast: appcast,
-      )..installPackageInfo(
-          packageInfo: PackageInfo(
-            appName: 'Upgrader',
-            packageName: 'com.larryaasen.upgrader',
-            version: '1.9.6',
-            buildNumber: '42',
-          ),
-        );
-
-      await upgrader.initialize();
-
-      var notCalled = true;
-      upgrader.willDisplayUpgrade = (
-          {required bool display,
-          String? minAppVersion,
-          String? installedVersion,
-          String? appStoreVersion}) {
-        expect(display, true);
-        expect(installedVersion, '1.9.6');
-
-        /// Appcast Test critical version.
-        expect(appStoreVersion, '3.0.0');
-        notCalled = false;
-      };
-
-      final shouldDisplayUpgrade = upgrader.shouldDisplayUpgrade();
-
-      expect(shouldDisplayUpgrade, isTrue);
-      expect(notCalled, false);
-    }, skip: false);
-
-    test('will use appcast last item', () async {
-      final upgraderOS = MockUpgraderOS(ios: true);
-
-      final Client mockClient =
-          setupMockClient(filePath: 'test/testappcastmulti.xml');
-      final appcast = Appcast(
-          client: mockClient,
-          upgraderOS: upgraderOS,
-          upgraderDevice: MockUpgraderDevice());
-
-      final upgrader = Upgrader(
-        upgraderOS: upgraderOS,
-        debugLogging: true,
-        appcastConfig: AppcastConfiguration(
-          url: 'https://sparkle-project.org/test/testappcast.xml',
+      ),
+    )..installPackageInfo(
+        packageInfo: PackageInfo(
+          appName: 'Upgrader',
+          packageName: 'com.larryaasen.upgrader',
+          version: '1.9.6',
+          buildNumber: '42',
         ),
-        appcast: appcast,
-      )..installPackageInfo(
-          packageInfo: PackageInfo(
-            appName: 'Upgrader',
-            packageName: 'com.larryaasen.upgrader',
-            version: '1.9.6',
-            buildNumber: '42',
-          ),
-        );
+      );
 
-      await upgrader.initialize();
+    await upgrader.initialize();
 
-      var notCalled = true;
-      upgrader.willDisplayUpgrade = (
-          {required bool display,
-          String? minAppVersion,
-          String? installedVersion,
-          String? appStoreVersion}) {
-        expect(display, true);
-        expect(installedVersion, '1.9.6');
-        expect(appStoreVersion, '2.3.2');
-        notCalled = false;
-      };
+    expect(fakeAppcast.callCount, greaterThan(0));
+  }, skip: false);
 
-      final shouldDisplayUpgrade = upgrader.shouldDisplayUpgrade();
+  test('will use appcast critical version if exists', () async {
+    final upgraderOS = MockUpgraderOS(android: true);
+    final Client mockClient =
+        setupMockClient(filePath: 'test/testappcast_critical.xml');
 
-      expect(shouldDisplayUpgrade, isTrue);
-      expect(notCalled, false);
-    }, skip: false);
+    final upgrader = Upgrader(
+      client: mockClient,
+      upgraderOS: upgraderOS,
+      upgraderDevice: MockUpgraderDevice(),
+      debugLogging: true,
+      storeController: UpgraderStoreController(
+        onAndroid: () => UpgraderAppcastStore(
+          appcastURL: 'https://sparkle-project.org/test/testappcast.xml',
+          // client: mockClient,
+        ),
+      ),
+    )..installPackageInfo(
+        packageInfo: PackageInfo(
+          appName: 'Upgrader',
+          packageName: 'com.larryaasen.upgrader',
+          version: '1.9.6',
+          buildNumber: '42',
+        ),
+      );
 
-    test('durationUntilAlertAgain defaults to 3 days', () async {
-      final upgrader = Upgrader();
-      expect(upgrader.durationUntilAlertAgain, const Duration(days: 3));
-    }, skip: false);
+    await upgrader.initialize();
 
-    test('durationUntilAlertAgain is 0 days', () async {
-      final upgrader =
-          Upgrader(durationUntilAlertAgain: const Duration(seconds: 0));
-      expect(upgrader.durationUntilAlertAgain, const Duration(seconds: 0));
+    var notCalled = true;
+    upgrader.willDisplayUpgrade = ({
+      required bool display,
+      String? installedVersion,
+      UpgraderVersionInfo? versionInfo,
+    }) {
+      expect(display, true);
+      expect(installedVersion, '1.9.6');
 
-      UpgradeAlert(upgrader: upgrader);
-      expect(upgrader.durationUntilAlertAgain, const Duration(seconds: 0));
+      /// Appcast Test critical version.
+      expect(versionInfo!.appStoreVersion.toString(), '3.0.0');
+      notCalled = false;
+    };
 
-      UpgradeCard(upgrader: upgrader);
-      expect(upgrader.durationUntilAlertAgain, const Duration(seconds: 0));
-    }, skip: false);
+    final shouldDisplayUpgrade = upgrader.shouldDisplayUpgrade();
 
-    test('durationUntilAlertAgain card is valid', () async {
-      final upgrader =
-          Upgrader(durationUntilAlertAgain: const Duration(days: 3));
-      UpgradeCard(upgrader: upgrader);
-      expect(upgrader.durationUntilAlertAgain, const Duration(days: 3));
+    expect(shouldDisplayUpgrade, isTrue);
+    expect(notCalled, false);
+  }, skip: false);
 
-      final upgrader2 =
-          Upgrader(durationUntilAlertAgain: const Duration(days: 10));
-      UpgradeCard(upgrader: upgrader2);
-      expect(upgrader2.durationUntilAlertAgain, const Duration(days: 10));
-    }, skip: false);
+  test('will use appcast last item', () async {
+    final upgraderOS = MockUpgraderOS(ios: true);
 
-    test('durationUntilAlertAgain alert is valid', () async {
-      final upgrader =
-          Upgrader(durationUntilAlertAgain: const Duration(days: 3));
-      UpgradeAlert(upgrader: upgrader);
-      expect(upgrader.durationUntilAlertAgain, const Duration(days: 3));
+    final Client mockClient =
+        setupMockClient(filePath: 'test/testappcastmulti.xml');
 
-      final upgrader2 =
-          Upgrader(durationUntilAlertAgain: const Duration(days: 10));
-      UpgradeAlert(upgrader: upgrader2);
-      expect(upgrader2.durationUntilAlertAgain, const Duration(days: 10));
-    }, skip: false);
-  });
+    final upgrader = Upgrader(
+      client: mockClient,
+      upgraderOS: upgraderOS,
+      upgraderDevice: MockUpgraderDevice(),
+      debugLogging: true,
+      storeController: UpgraderStoreController(
+        oniOS: () => UpgraderAppcastStore(
+            appcastURL: 'https://sparkle-project.org/test/testappcast.xml'),
+      ),
+    )..installPackageInfo(
+        packageInfo: PackageInfo(
+          appName: 'Upgrader',
+          packageName: 'com.larryaasen.upgrader',
+          version: '1.9.6',
+          buildNumber: '42',
+        ),
+      );
+
+    await upgrader.initialize();
+
+    var notCalled = true;
+    upgrader.willDisplayUpgrade = ({
+      required bool display,
+      String? installedVersion,
+      UpgraderVersionInfo? versionInfo,
+    }) {
+      expect(display, true);
+      expect(installedVersion, '1.9.6');
+      expect(versionInfo!.appStoreVersion.toString(), '2.3.2');
+      notCalled = false;
+    };
+
+    final shouldDisplayUpgrade = upgrader.shouldDisplayUpgrade();
+
+    expect(shouldDisplayUpgrade, isTrue);
+    expect(notCalled, false);
+  }, skip: false);
+
+  test('durationUntilAlertAgain defaults to 3 days', () async {
+    final upgrader = Upgrader();
+    expect(upgrader.state.durationUntilAlertAgain, const Duration(days: 3));
+  }, skip: false);
+
+  test('durationUntilAlertAgain is 0 days', () async {
+    final upgrader =
+        Upgrader(durationUntilAlertAgain: const Duration(seconds: 0));
+    expect(upgrader.state.durationUntilAlertAgain, const Duration(seconds: 0));
+
+    UpgradeAlert(upgrader: upgrader);
+    expect(upgrader.state.durationUntilAlertAgain, const Duration(seconds: 0));
+
+    UpgradeCard(upgrader: upgrader);
+    expect(upgrader.state.durationUntilAlertAgain, const Duration(seconds: 0));
+  }, skip: false);
+
+  test('durationUntilAlertAgain card is valid', () async {
+    final upgrader = Upgrader(durationUntilAlertAgain: const Duration(days: 3));
+    UpgradeCard(upgrader: upgrader);
+    expect(upgrader.state.durationUntilAlertAgain, const Duration(days: 3));
+
+    final upgrader2 =
+        Upgrader(durationUntilAlertAgain: const Duration(days: 10));
+    UpgradeCard(upgrader: upgrader2);
+    expect(upgrader2.state.durationUntilAlertAgain, const Duration(days: 10));
+  }, skip: false);
+
+  test('durationUntilAlertAgain alert is valid', () async {
+    final upgrader = Upgrader(durationUntilAlertAgain: const Duration(days: 3));
+    UpgradeAlert(upgrader: upgrader);
+    expect(upgrader.state.durationUntilAlertAgain, const Duration(days: 3));
+
+    final upgrader2 =
+        Upgrader(durationUntilAlertAgain: const Duration(days: 10));
+    UpgradeAlert(upgrader: upgrader2);
+    expect(upgrader2.state.durationUntilAlertAgain, const Duration(days: 10));
+  }, skip: false);
 
   group('shouldDisplayUpgrade', () {
-    test('should respect debugDisplayAlways property', () {
+    test('should respect debugDisplayAlways property', () async {
       final client = MockITunesSearchClient.setupMockClient();
       final upgrader = Upgrader(
+          upgraderDevice: MockUpgraderDevice(),
           upgraderOS: MockUpgraderOS(ios: true),
           client: client,
           debugLogging: true);
 
       expect(upgrader.shouldDisplayUpgrade(), false);
-      upgrader.debugDisplayAlways = true;
+      upgrader.updateState(upgrader.state.copyWith(debugDisplayAlways: true));
       expect(upgrader.shouldDisplayUpgrade(), true);
-      upgrader.debugDisplayAlways = false;
+      upgrader.updateState(upgrader.state.copyWith(debugDisplayAlways: false));
       expect(upgrader.shouldDisplayUpgrade(), false);
 
       // Test the willDisplayUpgrade callback
       var notCalled = true;
-      upgrader.willDisplayUpgrade = (
-          {required bool display,
-          String? minAppVersion,
-          String? installedVersion,
-          String? appStoreVersion}) {
+      upgrader.willDisplayUpgrade = ({
+        required bool display,
+        String? installedVersion,
+        UpgraderVersionInfo? versionInfo,
+      }) {
         expect(display, false);
-        expect(minAppVersion, isNull);
+        expect(versionInfo?.minAppVersion, isNull);
         expect(installedVersion, isNull);
-        expect(appStoreVersion, isNull);
+        expect(versionInfo?.appStoreVersion, isNull);
         notCalled = false;
       };
       expect(upgrader.shouldDisplayUpgrade(), false);
       expect(notCalled, false);
 
-      upgrader.debugDisplayAlways = true;
+      upgrader.updateState(upgrader.state.copyWith(debugDisplayAlways: true));
       notCalled = true;
-      upgrader.willDisplayUpgrade = (
-          {required bool display,
-          String? minAppVersion,
-          String? installedVersion,
-          String? appStoreVersion}) {
+      upgrader.willDisplayUpgrade = ({
+        required bool display,
+        String? installedVersion,
+        UpgraderVersionInfo? versionInfo,
+      }) {
         expect(display, true);
-        expect(minAppVersion, isNull);
+        expect(versionInfo?.minAppVersion, isNull);
         expect(installedVersion, isNull);
-        expect(appStoreVersion, isNull);
+        expect(versionInfo?.appStoreVersion, isNull);
         notCalled = false;
       };
       expect(upgrader.shouldDisplayUpgrade(), true);
@@ -898,16 +978,16 @@ void main() {
 
       await upgrader.initialize();
       var notCalled = true;
-      upgrader.willDisplayUpgrade = (
-          {required bool display,
-          String? minAppVersion,
-          String? installedVersion,
-          String? appStoreVersion}) {
+      upgrader.willDisplayUpgrade = ({
+        required bool display,
+        String? installedVersion,
+        UpgraderVersionInfo? versionInfo,
+      }) {
         expect(display, true);
-        expect(minAppVersion, '2.0.0');
+        expect(versionInfo!.minAppVersion, isNull);
         expect(upgrader.minAppVersion, '2.0.0');
         expect(installedVersion, '1.9.6');
-        expect(appStoreVersion, '5.6');
+        expect(versionInfo.appStoreVersion.toString(), '5.6.0');
         notCalled = false;
       };
 

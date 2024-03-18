@@ -10,7 +10,7 @@ void main() async {
   // Only call clearSavedSettings() during testing to reset internal values.
   await Upgrader.clearSavedSettings(); // REMOVE this for release builds
 
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 final routerConfig = GoRouter(
@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return UpgradeAlert(
           navigatorKey: routerConfig.routerDelegate.navigatorKey,
-          child: child ?? Text('child'),
+          child: child ?? const Text('child'),
         );
       },
     );
@@ -53,7 +53,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Upgrader GoRouter Example')),
+      appBar: AppBar(title: const Text('Upgrader GoRouter Example')),
       body: Center(child: Text('Checking... $title')),
     );
   }

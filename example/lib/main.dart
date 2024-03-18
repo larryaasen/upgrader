@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2023 Larry Aasen. All rights reserved.
+ * Copyright (c) 2019-2024 Larry Aasen. All rights reserved.
  */
 
 import 'package:flutter/material.dart';
@@ -16,7 +16,7 @@ void main() async {
   // On iOS, the default behavior will be to use the App Store version of
   // the app, so update the Bundle Identifier in example/ios/Runner with a
   // valid identifier already in the App Store.
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -27,10 +27,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Upgrader Example',
       home: UpgradeAlert(
-          child: Scaffold(
-        appBar: AppBar(title: Text('Upgrader Example')),
-        body: Center(child: Text('Checking...')),
-      )),
+        upgrader: Upgrader(debugLogging: true),
+        child: Scaffold(
+          appBar: AppBar(title: const Text('Upgrader Example')),
+          body: const Center(child: Text('Checking...')),
+        ),
+      ),
     );
   }
 }

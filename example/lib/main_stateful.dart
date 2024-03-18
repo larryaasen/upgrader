@@ -11,12 +11,7 @@ void main() async {
   // Only call clearSavedSettings() during testing to reset internal values.
   await Upgrader.clearSavedSettings(); // REMOVE this for release builds
 
-  // On Android, the default behavior will be to use the Google Play Store
-  // version of the app.
-  // On iOS, the default behavior will be to use the App Store version of
-  // the app, so update the Bundle Identifier in example/ios/Runner with a
-  // valid identifier already in the App Store.
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -30,7 +25,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration()).then((value) {
+    Future.delayed(const Duration()).then((value) {
       setState(() {});
     });
   }
@@ -41,8 +36,8 @@ class _MyAppState extends State<MyApp> {
       title: 'Upgrader StatefulWidget Example',
       home: UpgradeAlert(
           child: Scaffold(
-        appBar: AppBar(title: Text('Upgrader StatefulWidget Example')),
-        body: Center(child: Text('Checking...')),
+        appBar: AppBar(title: const Text('Upgrader StatefulWidget Example')),
+        body: const Center(child: Text('Checking...')),
       )),
     );
   }
