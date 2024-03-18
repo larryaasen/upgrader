@@ -16,6 +16,7 @@ final _filenames = {
   'com.testing.test5': 'test_play_store_page5.txt',
   'com.testing.test6': 'test_play_store_page6.txt',
   'com.testing.test7': 'test_play_store_page7.txt',
+  'com.testing.test8': 'test_play_store_page8.txt',
 };
 
 // Create a MockClient using the Mock class provided by the Mockito package.

@@ -103,9 +103,30 @@ void main() {
     await Upgrader.clearSavedSettings();
   }, skip: false);
 
+  testWidgets('test Upgrader stand alone', (WidgetTester tester) async {
+    final client = MockITunesSearchClient.setupMockClient();
+    final upgrader = Upgrader(
+        upgraderOS: MockUpgraderOS(ios: true),
+        client: client,
+        debugLogging: true);
+
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '0.9.9',
+            buildNumber: '400'));
+
+    upgrader.initialize().then((value) {});
+
+    await tester.pumpAndSettle();
+
+    expect(upgrader.isUpdateAvailable(), true);
+    expect(upgrader.currentAppStoreVersion, '5.6.0');
+  });
+
   testWidgets('test Upgrader class', (WidgetTester tester) async {
     await tester.runAsync(() async {
-      // test code here
       final client = MockITunesSearchClient.setupMockClient();
       final upgrader = Upgrader(
           upgraderOS: MockUpgraderOS(ios: true),

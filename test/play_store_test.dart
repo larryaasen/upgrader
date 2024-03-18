@@ -127,6 +127,29 @@ void main() {
     expect(await playStore.lookupById('com.not.a.valid.application'), isNull);
   }, skip: false);
 
+  test(
+      'testing lookupById with redesignedVersion title with special characters',
+      () async {
+    final client = await MockPlayStoreSearchClient.setupMockClient();
+    final playStore = PlayStoreSearchAPI(client: client);
+
+    final response = await playStore.lookupById('com.testing.test8');
+    expect(response, isNotNull);
+    expect(response, isInstanceOf<Document>());
+
+    expect(
+        playStore.releaseNotes(response!), 'Minor updates and improvements.');
+    expect(playStore.version(response), '2.3.0');
+    expect(playStore.description(response)?.length, greaterThan(10));
+    expect(
+        pmav(response,
+            tagRES:
+                r'\[\Minimum supported app version\:[\s]*(?<version>[^\s]+)[\s]*\]'),
+        '2.0.0');
+
+    expect(await playStore.lookupById('com.not.a.valid.application'), isNull);
+  }, skip: false);
+
   test('testing lookupById with invalid version', () async {
     final client = await MockPlayStoreSearchClient.setupMockClient();
     final playStore = PlayStoreSearchAPI(client: client);
