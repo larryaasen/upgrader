@@ -1,3 +1,7 @@
+## 10.0.1
+
+- Allowed for dependency package_info_plus version 6.0.0.
+
 ## 10.0.0
 
 This major update changes the structure of how the internal state is maintained and how access to app stores is provided. The API has not changed for the standard use cases. However, the way in which Appcast is used has changed slightly.
