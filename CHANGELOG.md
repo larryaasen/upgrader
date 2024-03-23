@@ -1,6 +1,6 @@
 ## 10.0.1
 
-- Allowed for dependency package_info_plus version 6.0.0.
+- Allowed for device_info_plus 10.0.0 and package_info_plus 6.0.0.
 
 ## 10.0.0
 
