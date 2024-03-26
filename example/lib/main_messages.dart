@@ -13,15 +13,11 @@ void main() async {
   // Only call clearSavedSettings() during testing to reset internal values.
   await Upgrader.clearSavedSettings(); // REMOVE this for release builds
 
-  // On Android, setup the Appcast.
-  // On iOS, the default behavior will be to use the App Store version of
-  // the app, so update the Bundle Identifier in example/ios/Runner with a
-  // valid identifier already in the App Store.
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,67 +25,70 @@ class MyApp extends StatelessWidget {
       onGenerateTitle: (BuildContext context) =>
           DemoLocalizations.of(context).title,
       home: DemoApp(),
-      localizationsDelegates: [
-        const DemoLocalizationsDelegate(),
+      localizationsDelegates: const [
+        DemoLocalizationsDelegate(),
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: [
-        const Locale('en', ''), // English, no country code
-        const Locale('ar', ''), // Arabic, no country code
-        const Locale('bn', ''), // Bengali, no country code
-        const Locale('da', ''), // Danish, no country code
-        const Locale('es', ''), // Spanish, no country code
-        const Locale('fa', ''), // Persian, no country code
-        const Locale('fil', ''), // Filipino, no country code
-        const Locale('fr', ''), // French, no country code
-        const Locale('de', ''), // German, no country code
-        const Locale('el', ''), // Greek, no country code
-        const Locale('he', ''), // Hebrew, no country code
-        const Locale('hi', ''), // Hindi, no country code
-        const Locale('ht', ''), // Haitian Creole, no country code
-        const Locale('hu', ''), // Hungarian, no country code
-        const Locale('id', ''), // Indonesian, no country code
-        const Locale('it', ''), // Italian, no country code
-        const Locale('ja', ''), // Japanese, no country code
-        const Locale('kk', ''), // Kazakh, no country code
-        const Locale('km', ''), // Khmer, no country code
-        const Locale('ko', ''), // Korean, no country code
-        const Locale('lt', ''), // Lithuanian, no country code
-        const Locale('mn', ''), // Mongolian, no country code
-        const Locale('nb', ''), // Norwegian, no country code
-        const Locale('nl', ''), // Dutch, no country code
-        const Locale('pt', ''), // Portuguese, no country code
-        const Locale('pl', ''), // Polish, no country code
-        const Locale('ru', ''), // Russian, no country code
-        const Locale('sv', ''), // Swedish, no country code
-        const Locale('ta', ''), // Tamil, no country code
-        const Locale('te', ''), // Telugu, no country code
-        const Locale('tr', ''), // Turkish, no country code
-        const Locale('uk', ''), // Ukrainian, no country code
-        const Locale('vi', ''), // Vietnamese, no country code
-        const Locale('zh', ''), // Chinese, no country code
+      supportedLocales: const [
+        Locale('en', ''), // English, no country code
+        Locale('ar', ''), // Arabic, no country code
+        Locale('bn', ''), // Bengali, no country code
+        Locale('da', ''), // Danish, no country code
+        Locale('es', ''), // Spanish, no country code
+        Locale('fa', ''), // Persian, no country code
+        Locale('fil', ''), // Filipino, no country code
+        Locale('fr', ''), // French, no country code
+        Locale('de', ''), // German, no country code
+        Locale('el', ''), // Greek, no country code
+        Locale('he', ''), // Hebrew, no country code
+        Locale('hi', ''), // Hindi, no country code
+        Locale('ht', ''), // Haitian Creole, no country code
+        Locale('hu', ''), // Hungarian, no country code
+        Locale('id', ''), // Indonesian, no country code
+        Locale('it', ''), // Italian, no country code
+        Locale('ja', ''), // Japanese, no country code
+        Locale('kk', ''), // Kazakh, no country code
+        Locale('km', ''), // Khmer, no country code
+        Locale('ko', ''), // Korean, no country code
+        Locale('lt', ''), // Lithuanian, no country code
+        Locale('mn', ''), // Mongolian, no country code
+        Locale('nb', ''), // Norwegian, no country code
+        Locale('nl', ''), // Dutch, no country code
+        Locale('pt', ''), // Portuguese, no country code
+        Locale('pl', ''), // Polish, no country code
+        Locale('ru', ''), // Russian, no country code
+        Locale('sv', ''), // Swedish, no country code
+        Locale('ta', ''), // Tamil, no country code
+        Locale('te', ''), // Telugu, no country code
+        Locale('tr', ''), // Turkish, no country code
+        Locale('uk', ''), // Ukrainian, no country code
+        Locale('vi', ''), // Vietnamese, no country code
+        Locale('zh', ''), // Chinese, no country code
       ],
     );
   }
 }
 
 class DemoApp extends StatelessWidget {
+  static const appcastURL =
+      'https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast.xml';
+  final upgrader = Upgrader(
+    storeController: UpgraderStoreController(
+        onAndroid: () => UpgraderAppcastStore(appcastURL: appcastURL)),
+    debugLogging: true,
+    messages: MyUpgraderMessages(code: 'es'),
+  );
+
+  DemoApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    final appcastURL =
-        'https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast.xml';
-    final cfg = AppcastConfiguration(url: appcastURL, supportedOS: ['android']);
-
     return Scaffold(
         appBar: AppBar(title: Text(DemoLocalizations.of(context).title)),
         body: UpgradeAlert(
-          upgrader: Upgrader(
-            appcastConfig: cfg,
-            debugLogging: true,
-            messages: MyUpgraderMessages(code: 'es'),
-          ),
+          upgrader: upgrader,
           child: Center(child: Text(DemoLocalizations.of(context).checking)),
         ));
   }

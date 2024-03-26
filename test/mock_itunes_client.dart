@@ -28,6 +28,7 @@ class MockITunesSearchClient {
             'bundleId': 'com.google.Maps',
             'currency': currency,
             'releaseNotes': 'Bug fixes.',
+            'trackViewUrl': 'https://example.com/app',
             if (description.isNotEmpty) 'description': description
           }
         ]
@@ -77,6 +78,22 @@ class MockITunesSearchClient {
               'results': [
                 {
                   'version': '1.0',
+                  'bundleId': 'com.google.Maps',
+                  'currency': currency,
+                  'releaseNotes': 'Bug fixes.',
+                  if (description.isNotEmpty) 'description': description
+                }
+              ]
+            }),
+            200);
+      } else if (url ==
+          ITunesSearchAPI().lookupURLByBundleId('com.larryaasen.upgrader.4',
+              country: country, useCacheBuster: false)) {
+        return http.Response(
+            json.encode({
+              'results': [
+                {
+                  'version': '7.0.a',
                   'bundleId': 'com.google.Maps',
                   'currency': currency,
                   'releaseNotes': 'Bug fixes.',

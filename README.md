@@ -43,14 +43,14 @@ Tapping IGNORE prevents the alert from being displayed again for that version.
 
 Tapping the LATER button just closes the alert allowing the alert to be displayed sometime in the future.
 
-Tapping the UPDATE NOW button takes the user to the App Store (iOS) or Google Play Store (Android) where the user is required to initiate the update process.
+Tapping the UPDATE NOW button takes the user to the App Store (iOS) or Google Play Store (Android) where the user is expected to initiate the update process.
 
 ## Alert Example
 
-Just wrap your body widget in the `UpgradeAlert` widget, and it will handle the rest.
+Just wrap your home widget in the `UpgradeAlert` widget, and it will handle the rest.
 ```dart
 class MyApp extends StatelessWidget {
-  const MyApp({Key key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -71,14 +71,14 @@ class MyApp extends StatelessWidget {
 ![image](screenshots/example1.png)
 
 
-## Cupertino Alert Example
+## Cupertino alert example
 
 You can also display a Cupertino style dialog by using the `dialogStyle` parameter.
 ```dart
-          body: UpgradeAlert(
-            upgrader: Upgrader(dialogStyle: UpgradeDialogStyle.cupertino),
-            child: Center(child: Text('Checking...')),
-          )
+  body: UpgradeAlert(
+    dialogStyle: UpgradeDialogStyle.cupertino,
+    child: Center(child: Text('Checking...')),
+  )
 ```
 
 ## Screenshot of Cupertino alert
@@ -111,33 +111,79 @@ For [appcast](#appcast)), the release notes are taken from the description field
 
 ## Customization
 
-The Upgrader class can be customized by setting parameters in the constructor.
+The alert can be customized by changing the `DialogTheme` on the `MaterialApp`, or by overriding methods in the `UpgradeAlert` class. See these examples for more details:
+- [example/lib/main-alert-theme.dart](example/lib/main-alert-theme.dart)
+- [example/lib/main-custom-alert.dart](example/lib/main-custom-alert.dart)
 
-* appcast: Provide an Appcast that can be replaced for mock testing, defaults to ```null```
-* appcastConfig: the appcast configuration, defaults to ```null```
-* canDismissDialog: can alert dialog be dismissed on tap outside of the alert dialog, which defaults to ```false``` (not used by UpgradeCard)
-* countryCode: the country code that will override the system locale, which defaults to ```null```
+The card can be customized by changing the `CardTheme` on the `MaterialApp`, or by overriding methods in the `UpgradeCard` class. See these examples for more details:
+- [example/lib/main-card-theme.dart](example/lib/main-card-theme.dart)
+- [example/lib/main-custom-card.dart](example/lib/main-custom-card.dart)
+
+Here are the custom parameters for `UpgradeAlert`:
+
+* barrierDismissible: used to indicate whether tapping on the barrier will dismiss the dialog, which defaults to ```false```
 * cupertinoButtonTextStyle: the text style for the cupertino dialog buttons, which defaults to ```null```
-* languageCode: the language code that will override the system locale, which defaults to ```null```
-* client: an HTTP Client that can be replaced for mock testing, defaults to ```null```
-* debugDisplayAlways: always force the upgrade to be available, defaults to ```false```
-* debugDisplayOnce: display the upgrade at least once, defaults to ```false```
-* debugLogging: display logging statements, which defaults to ```false```
 * dialogStyle: the upgrade dialog style, either ```material``` or ```cupertino```, defaults to ```material```, used only by UpgradeAlert, works on Android and iOS.
-* durationUntilAlertAgain: duration until alerting user again, which defaults to ```3 days```
-* messages: optional localized messages used for display in `upgrader`
-* minAppVersion: the minimum app version supported by this app. Earlier versions of this app will be forced to update to the current version. It should be a valid version string like this: ```2.0.13```. Defaults to ```null```.
 * onIgnore: called when the ignore button is tapped, defaults to ```null```
 * onLater: called when the later button is tapped, defaults to ```null```
 * onUpdate: called when the update button is tapped, defaults to ```null```
-* platform: The [TargetPlatform] that identifies the platform on which the package is currently executing. Defaults to [defaultTargetPlatform]. Note that [TargetPlatform] does not include web, but includes mobile and desktop. This parameter is normally used to change the target platform during testing.
-* shouldPopScope: called when the back button is tapped, defaults to ```null```
+* shouldPopScope: called to determine if the dialog blocks the current route from being popped, which defaults to ```null```
 * showIgnore: hide or show Ignore button, which defaults to ```true```
 * showLater: hide or show Later button, which defaults to ```true```
 * showReleaseNotes: hide or show release notes, which defaults to ```true```
-* upgraderOS: Provides information on which OS this code is running on, defaults to ```null```
+
+Here are the custom parameters for `UpgradeCard`:
+
+* margin: The empty space that surrounds the card, defaults to ```null```
+* maxLines: An optional maximum number of lines for the text to span, wrapping if necessary, defaults to ```null```
+* onIgnore: called when the ignore button is tapped, defaults to ```null```
+* onLater: called when the later button is tapped, defaults to ```null```
+* onUpdate: called when the update button is tapped, defaults to ```null```
+* overflow: How visual overflow should be handled, defaults to ```null```
+* showIgnore: hide or show Ignore button, which defaults to ```true```
+* showLater: hide or show Later button, which defaults to ```true```
+* showReleaseNotes: hide or show release notes, which defaults to ```true```
+
+The `Upgrader` class can be customized by setting parameters in the constructor, and passing it
+
+* client: an HTTP Client that can be replaced for mock testing, defaults to `http.Client()`.
+* countryCode: the country code that will override the system locale, which defaults to ```null```
+* debugDisplayAlways: always force the upgrade to be available, defaults to ```false```
+* debugDisplayOnce: display the upgrade at least once, defaults to ```false```
+* debugLogging: display logging statements, which defaults to ```false```
+* durationUntilAlertAgain: duration until alerting user again, which defaults to ```3 days```
+* languageCode: the language code that will override the system locale, which defaults to ```null```
+* messages: optional localized messages used for display in `upgrader`
+* minAppVersion: the minimum app version supported by this app. Earlier versions of this app will be forced to update to the current version. It should be a valid version string like this: ```2.0.13```. Overrides any minimum app version from UpgraderStore. Defaults to ```null```.
+* storeController: a controller that provides the store details for each platform, defaults to `UpgraderStoreController()`.
+* upgraderDevice: an abstraction of the device_info details which is used for the OS version, defaults to `UpgraderDevice()`.
+* upgraderOS: information on which OS this code is running on, defaults to `UpgraderOS()`.
 * willDisplayUpgrade: called when ```upgrader``` determines that an upgrade may
 or may not be displayed, defaults to ```null```
+
+The  `UpgraderStoreController` class is a controller that provides the store details
+for each platform.
+* onAndroid: defaults to `UpgraderPlayStore()` that extends `UpgraderStore`.
+* onFuchsia: defaults to `UpgraderAppStore()` that extends `UpgraderStore`.
+* oniOS: defaults to `null`.
+* onLinux: defaults to `null`.
+* onMacOS: defaults to `null`.
+* onWeb: defaults to `null`.
+* onWindows: defaults to `null`.
+
+To change the `UpgraderStore` for a platform, replace the platform with a
+different store. Here is an example of using an Appcast on iOS.
+```
+final upgrader = Upgrader(
+  storeController: UpgraderStoreController(
+    onAndroid: () => UpgraderPlayStore(),
+    oniOS: () => UpgraderAppcastStore(appcastURL: appcastURL),
+  ),
+);
+```
+
+You can even subclass `UpgraderStore` or an existing store class like
+`UpgraderPlayStore` to provide your own customization.
 
 ## Minimum App Version
 The `upgrader` package can enforce a minimum app version simply by adding a
@@ -182,7 +228,7 @@ a navigatorKey to the ```UpgradeAlert``` widget so that the correct route
 context is used. Below is part of the code you will need for this. Also,
 checkout the [example/lib/main-gorouter.dart](example/lib/main-gorouter.dart) example for a more complete example.
 
-```
+```dart
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
@@ -204,7 +250,7 @@ When using the ```UpgradeAlert``` widget, the Android back button will not
 dismiss the alert dialog by default. To allow the back button to dismiss the
 dialog, use ```shouldPopScope``` and return true like this:
 ```
-UpgradeAlert(Upgrader(shouldPopScope: () => true));
+UpgradeAlert(shouldPopScope: () => true);
 ```
 
 ## Country Code
@@ -218,7 +264,7 @@ On Android, the `upgrader` package uses the system locale to determine the count
 
 ## Android Language Code
 
-Android description and release notes language, defaults to `en`.
+Android description and release notes language default to `en`.
 
 ## Limitations
 These widgets work on both Android and iOS. When running on Android the Google
@@ -238,42 +284,42 @@ There is an [appcast](#appcast) that can be used to remotely configure the
 latest app version. See [appcast](#appcast) below for more details.
 
 ## Appcast
-
-The class [Appcast](lib/src/appcast.dart), in this Flutter package, is used by the `upgrader` widgets
-to download app details from an appcast,
-based on the [Sparkle](https://sparkle-project.org/) framework by Andy Matuschak.
-You can read the Sparkle documentation here:
-https://sparkle-project.org/documentation/publishing/.
+The `upgrader` package supports Appcast as an `UpgraderStore`.
 
 An appcast is an RSS feed with one channel that has a collection of items that each describe
 one app version. The appcast will describe each app version and will provide the latest app
 version to `upgrader` that indicates when an upgrade should be recommended.
 
+Appcast is based on the [Sparkle](https://sparkle-project.org/) framework by Andy Matuschak.
+You can read the Sparkle documentation here:
+https://sparkle-project.org/documentation/publishing/.
+
 The appcast must be hosted on a server that can be reached by everyone from the app. The appcast
 XML file can be autogenerated during the release process, or just manually updated after a release
 is available on the app store.
 
-The Appcast class can be used stand alone or as part of `upgrader`.
+The class [UpgraderAppcastStore](lib/src/upgrade_store_controller.dart), in this
+Flutter package, is used by `upgrader` to download app details from an appcast.
 
 ### Appcast Example
 This is an Appcast example for Android.
 ```dart
+static const appcastURL =
+    'https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast.xml';
+final upgrader = Upgrader(
+  storeController: UpgraderStoreController(
+    onAndroid: () => UpgraderAppcastStore(appcastURL: appcastURL),
+  ),
+);
+
 @override
 Widget build(BuildContext context) {
-  // On Android, setup the Appcast.
-  // On iOS, the default behavior will be to use the App Store version.
-  final appcastURL =
-      'https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast.xml';
-  final cfg = AppcastConfiguration(url: appcastURL, supportedOS: ['android']);
-
   return MaterialApp(
     title: 'Upgrader Example',
     home: Scaffold(
-        appBar: AppBar(
-          title: Text('Upgrader Example'),
-        ),
+        appBar: AppBar(title: Text('Upgrader Appcast Example')),
         body: UpgradeAlert(
-          Upgrader(appcastConfig: cfg),
+          upgrader: upgrader,
           child: Center(child: Text('Checking...')),
         )),
   );
@@ -399,7 +445,7 @@ class MySpanishMessages extends UpgraderMessages {
   }
 }
 
-UpgradeAlert(Upgrader(messages: MySpanishMessages()));
+UpgradeAlert(upgrader: Upgrader(messages: MySpanishMessages()));
 ```
 
 You can even force the `upgrader` package to use a specific language, instead of the
@@ -407,14 +453,17 @@ system language on the device. Just pass the language code to an instance of
 UpgraderMessages when displaying the alert or card. Here is an example:
 
 ```dart
-UpgradeAlert(Upgrader(messages: UpgraderMessages(code: 'es')));
+UpgradeAlert(upgrader: Upgrader(messages: UpgraderMessages(code: 'es')));
 ```
 
 ## Semantic Versioning
 
 The `upgrader` package uses the [version](https://pub.dev/packages/version) package that
-is in compliance with the Semantic Versioning spec at http://semver.org/.
-
+is in compliance with the Semantic Versioning spec at http://semver.org/. It converts any
+version string to a 3 digit version: MAJOR.MINOR.PATCH. For versions that only use 1
+digit (MAJOR), it converts it to a 3 digit version: MAJOR.0.0, and for versions that
+only use 2 digits (MAJOR.MINOR), it converts it to a 3 digit version: MAJOR.MINOR.0, to
+be compliant with Semantic Versioning.
 
 ## iTunes Search API
 
@@ -478,29 +527,33 @@ which can be enabled by setting `debugLogging` to `true`.
 
 It should look something like this:
 ```
-flutter: upgrader: languageCode: en
-flutter: upgrader: build UpgradeAlert
-flutter: upgrader: default operatingSystem: ios 11.4
-flutter: upgrader: operatingSystem: ios
-flutter: upgrader: platform: TargetPlatform.iOS
-flutter: upgrader: package info packageName: com.google.Maps
-flutter: upgrader: package info appName: Upgrader
-flutter: upgrader: package info version: 1.0.0
+flutter: upgrader: operatingSystem: ios, version: Version 17.0.1 (Build 21A342)
+flutter: upgrader: packageInfo packageName: com.google.Maps
+flutter: upgrader: packageInfo appName: Upgrader
+flutter: upgrader: packageInfo version: 1.0.0
+flutter: upgrader: current locale: en_US
 flutter: upgrader: countryCode: US
+flutter: upgrader: languageCode: en
+flutter: upgrader: download: https://itunes.apple.com/lookup?bundleId=com.google.Maps&country=US&_cb=1708305624824631
+flutter: upgrader: response statusCode: 200
+flutter: upgrader: UpgraderAppStore: version info: appStoreListingURL: https://apps.apple.com/us/app/google-maps/id585027354?uo=4, appStoreVersion: 6.102.3, installedVersion: 1.0.0, isCriticalUpdate: null, minAppVersion: null, releaseNotes: Thanks for using Google Maps! This release brings bug fixes that improve our product to help you discover new places and navigate to them.
+flutter: upgrader: need to evaluate version
 flutter: upgrader: blocked: false
 flutter: upgrader: debugDisplayAlways: false
 flutter: upgrader: debugDisplayOnce: false
 flutter: upgrader: hasAlerted: false
-flutter: upgrader: appStoreVersion: 5.81
 flutter: upgrader: installedVersion: 1.0.0
 flutter: upgrader: minAppVersion: null
 flutter: upgrader: isUpdateAvailable: true
 flutter: upgrader: shouldDisplayUpgrade: true
 flutter: upgrader: shouldDisplayReleaseNotes: true
-flutter: upgrader: showDialog title: Update App?
-flutter: upgrader: showDialog message: A new version of Upgrader is available! Version 5.81 is now available-you have 1.0.0.
-flutter: upgrader: showDialog releaseNotes: Thanks for using Google Maps! This release brings bug fixes that improve our product to help you discover new places and navigate to them.
+flutter: upgrader: current locale: en_US
+flutter: upgrader: languageCode: en
+flutter: upgrader: showTheDialog title: Update App?
+flutter: upgrader: showTheDialog message: A new version of Upgrader is available! Version 6.102.3 is now available-you have 1.0.0.
+flutter: upgrader: showTheDialog releaseNotes: Thanks for using Google Maps! This release brings bug fixes that improve our product to help you discover new places and navigate to them.
 ```
+
 Also, please include the upgrader version number from the pubspec.lock file, which should look something like this:
 ```
   upgrader:

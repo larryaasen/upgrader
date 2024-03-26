@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019-2024 Larry Aasen. All rights reserved.
+ * Copyright (c) 2019-2022 Larry Aasen. All rights reserved.
  */
 
 import 'package:flutter/material.dart';
@@ -17,23 +17,25 @@ void main() async {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
-  final _upgrader = MyUpgrader();
+  static const appcastURL =
+      'https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast.xml';
+  final upgrader = Upgrader(
+    storeController: UpgraderStoreController(
+        onAndroid: () => UpgraderAppcastStore(appcastURL: appcastURL)),
+    debugLogging: true,
+    minAppVersion: '1.1.0',
+  );
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Upgrader Subclass Example',
+      title: 'Upgrader Example',
       home: Scaffold(
-          appBar: AppBar(title: const Text('Upgrader Subclass Example')),
+          appBar: AppBar(title: const Text('Upgrader Example')),
           body: UpgradeAlert(
-            upgrader: _upgrader,
+            upgrader: upgrader,
             child: const Center(child: Text('Checking...')),
           )),
     );
   }
-}
-
-/// This class extends / subclasses Upgrader.
-class MyUpgrader extends Upgrader {
-  MyUpgrader() : super(debugLogging: true);
 }

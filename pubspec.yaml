@@ -1,18 +1,18 @@
 name: upgrader
 description: Flutter package for prompting users to upgrade when there is a newer version of the app in the store.
-version: 8.4.0
+version: 10.0.1
 homepage: https://github.com/larryaasen/upgrader
 
 environment:
-  sdk: '>=2.18.6 <4.0.0'
-  flutter: ">=3.10.0"
+  sdk: '>=3.1.0 <4.0.0'
+  flutter: ">=3.16.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
   # From fluttercommunity.dev: Get current device information from within the Flutter application.
-  device_info_plus: any
+  device_info_plus: '>=8.1.0 <11.0.0'
 
   # Pure Dart library for HTML5 parsing
   html: ^0.15.3
@@ -24,7 +24,7 @@ dependencies:
   os_detect: ^2.0.1
 
   # From Flutter Community: Provides an API for querying information about an application package.
-  package_info_plus: '>=4.0.1 <6.0.0'
+  package_info_plus: '>=4.0.1 <7.0.0'
 
   # From Flutter Team: Wraps NSUserDefaults (on iOS) and SharedPreferences (on Android).
   shared_preferences: '>=2.1.1 <3.0.0'
@@ -43,7 +43,8 @@ dev_dependencies:
     sdk: flutter
 
   # From Dart Team: Mock library for Dart inspired by Mockito.
-  mockito: ^5.4.0
-  flutter_lints: ^2.0.1
+  mockito: ^5.4.3
+  flutter_lints: ^2.0.3
+  go_router: ^7.1.1
 
 flutter:

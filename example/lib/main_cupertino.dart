@@ -1,4 +1,6 @@
-// Copyright (c) 2023 Larry Aasen. All rights reserved.
+/*
+ * Copyright (c) 2020-2022 Larry Aasen. All rights reserved.
+ */
 
 import 'package:flutter/material.dart';
 import 'package:upgrader/upgrader.dart';
@@ -18,12 +20,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Upgrader Example - Multiple',
-      home: UpgradeAlert(
-          child: Scaffold(
-        appBar: AppBar(title: const Text('Upgrader Example - Multiple')),
-        body: Center(child: UpgradeAlert(child: const Text('Checking...'))),
-      )),
+      title: 'Upgrader Example',
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Upgrader Cupertino Example')),
+        body: UpgradeAlert(
+          dialogStyle: UpgradeDialogStyle.cupertino,
+          child: const Center(child: Text('Checking...')),
+        ),
+      ),
     );
   }
 }

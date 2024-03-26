@@ -88,13 +88,11 @@ class UpgraderMessages {
     Locale? locale;
     if (context != null) {
       locale = Localizations.maybeLocaleOf(context);
-    } else {
-      // Get the system locale
-      locale = PlatformDispatcher.instance.locale;
     }
-    final code = locale == null || locale.languageCode.isEmpty
-        ? 'en'
-        : locale.languageCode;
+    // Get the system locale
+    locale ??= PlatformDispatcher.instance.locale;
+
+    final code = locale.languageCode.isEmpty ? 'en' : locale.languageCode;
     return code;
   }
 

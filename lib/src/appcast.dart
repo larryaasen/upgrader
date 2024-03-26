@@ -11,7 +11,7 @@ import 'package:version/version.dart';
 import 'package:xml/xml.dart';
 
 import 'upgrade_os.dart';
-import 'upgrader_device.dart';
+import 'upgrade_device.dart';
 
 /// The [Appcast] class is used to download an Appcast, based on the Sparkle
 /// framework by Andy Matuschak.

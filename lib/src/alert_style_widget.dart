@@ -33,11 +33,11 @@ class AlertStyleWidget extends StatelessWidget {
   final Widget? title;
 
   const AlertStyleWidget({
-    Key? key,
+    super.key,
     required this.content,
     required this.actions,
     this.title,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

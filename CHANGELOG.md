@@ -1,3 +1,77 @@
+## 10.0.1
+
+- Allowed for device_info_plus 10.0.0 and package_info_plus 6.0.0.
+
+## 10.0.0
+
+This major update changes the structure of how the internal state is maintained and how access to app stores is provided. The API has not changed for the standard use cases. However, the way in which Appcast is used has changed slightly.
+
+This update also makes it easier to extend upgrader to support more app stores without changing upgrader. This will come into play when used on Linux and Windows, or when supporting alternate app stores on Android.
+
+## 10.0.0-alpha.3
+
+- Fixed deprecation warning for WillPopScope and replaced it with PopScope, which required the minimum Flutter SDK version to be moved up to 3.16.0 in this package.
+- Renamed parameter canDismissDialog to barrierDismissible in `UpgradeAlert`.
+
+### 10.0.0
+
+This major update changes the structure of how the internal state is maintained and how access to app stores is provided. The API has not changed for the standard use cases. However, the way in which Appcast is used has changed slightly.
+
+This update also makes it easier to extend upgrader to support more app stores without changing upgrader. This will come into play when used on Linux and Windows, or when supporting alternate app stores on Android.
+
+### Changes in 10.0.0
+- Implemented [UpgraderState] that is used internally to replace evaluation ready.
+- BREAKING: Removed Appcast configuration so that an Appcast [UpgraderStore] can be used.
+- Fixed deprecation warning for WillPopScope and replaced it with PopScope, which required the minimum Flutter SDK version to be moved up to 3.16.0 in this package.
+- Renamed parameter canDismissDialog to barrierDismissible in `UpgradeAlert`.
+
+## 10.0.0-alpha.2
+
+(README file and documentation updates)
+
+This major update changes the structure of how the internal state is maintained and how access to app stores is provided. The API has not changed for the standard use cases. However, the way in which Appcast is used has changed slightly.
+
+This update also makes it easier to extend upgrader to support more app stores without changing upgrader. This will come into play when used on Linux and Windows, or when supporting alternate app stores on Android.
+
+### Changes in 10.0.0
+- Implemented [UpgraderState] that is used internally to replace evaluation ready.
+- BREAKING: Removed Appcast configuration so that an Appcast [UpgraderStore] can be used.
+
+## 10.0.0-alpha.1
+
+- Implemented [UpgraderState] that is used internally to replace evaluation ready.
+- BREAKING: Removed Appcast configuration so that an Appcast [UpgraderStore] can be used.
+
+## 9.0.0
+
+### BREAKING CHANGES
+
+- Moved UI related code outside of Upgrader and into UpgradeAlert and UpgradeCard. Also,
+renamed the private methods to make them public. Added and improved example code and README.
+- Minimum Dart SDK 3.1.0
+- Minimum Flutter SDK 3.13.1
+- [371] Added key to alert dialog and alert card.
+- [371] Added the parameter `dialogKey` to `UpgraderAlert` that is used by the alert dialog.
+- Changed currentAppStoreListingURL, currentAppStoreVersion, and currentInstalledVersion from functions to getters.
+
+Note: This [9.0.0] release is the same as [9.0.0-alpha.3].
+
+## 9.0.0-alpha.3
+
+- [371] Added the parameter `dialogKey` to `UpgraderAlert` that is used by the alert dialog.
+
+## 9.0.0-alpha.2
+
+- Changed currentAppStoreListingURL, currentAppStoreVersion, and currentInstalledVersion from functions to getters.
+- [371] Added key to alert dialog and alert card.
+
+## 9.0.0-alpha.1
+
+- BREAKING: Moved UI related code outside of Upgrader and into UpgradeAlert and UpgradeCard. Also,
+renamed the private methods to make them public. Added and improved example code and README.
+- Minimum Dart SDK 3.1.0
+- Minimum Flutter SDK 3.13.1
+
 ## 8.4.0
 
 - [356] Fixed centering issue with Cupertino style UpgradeAlert dialog.
