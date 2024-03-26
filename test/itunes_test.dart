@@ -65,10 +65,7 @@ void main() {
 
     final response = await iTunes.lookupByBundleId('com.google.MyApp',
         useCacheBuster: false);
-    expect(response, isInstanceOf<Map>());
-    final results = response!['results'];
-    expect(results, isNotNull);
-    expect(results.length, 0);
+    expect(response, isNull);
   }, skip: false);
 
   test('testing lookupById', () async {
