@@ -39,9 +39,11 @@ void main() {
   });
 
   test('testing lookupByBundleId', () async {
-    final client = MockITunesSearchClient.setupMockClient();
+    final client = MockITunesSearchClient.setupMockClient(
+        verifyHeaders: {'header1': 'value1'});
     final iTunes = ITunesSearchAPI();
     iTunes.client = client;
+    iTunes.clientHeaders = {'header1': 'value1'};
 
     final response =
         await iTunes.lookupByBundleId('com.google.Maps', useCacheBuster: false);

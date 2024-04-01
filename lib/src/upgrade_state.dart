@@ -14,6 +14,7 @@ class UpgraderState {
   /// Creates an [Upgrader] state.
   UpgraderState({
     required this.client,
+    this.clientHeaders,
     this.countryCodeOverride,
     this.debugDisplayAlways = false,
     this.debugDisplayOnce = false,
@@ -30,6 +31,9 @@ class UpgraderState {
 
   /// Provide an HTTP Client that can be replaced during testing.
   final http.Client client;
+
+  /// Provide the HTTP headers used by [client].
+  final Map<String, String>? clientHeaders;
 
   /// The country code that will override the system locale. Optional.
   final String? countryCodeOverride;
@@ -74,6 +78,7 @@ class UpgraderState {
   /// Creates a new state object by copying existing data and modifying selected fields.
   UpgraderState copyWith({
     http.Client? client,
+    Map<String, String>? clientHeaders,
     String? countryCodeOverride,
     bool? debugDisplayAlways,
     bool? debugDisplayOnce,
@@ -89,6 +94,7 @@ class UpgraderState {
   }) {
     return UpgraderState(
       client: client ?? this.client,
+      clientHeaders: clientHeaders ?? this.clientHeaders,
       countryCodeOverride: countryCodeOverride ?? this.countryCodeOverride,
       debugDisplayAlways: debugDisplayAlways ?? this.debugDisplayAlways,
       debugDisplayOnce: debugDisplayOnce ?? this.debugDisplayOnce,
@@ -117,6 +123,7 @@ class UpgraderState {
   }) {
     return UpgraderState(
       client: client,
+      clientHeaders: clientHeaders,
       countryCodeOverride:
           countryCodeOverride == true ? null : this.countryCodeOverride,
       debugDisplayAlways: debugDisplayAlways,

@@ -46,6 +46,7 @@ class Upgrader with WidgetsBindingObserver {
   /// trigger an alert or other UI to evaluate upgrading criteria.
   Upgrader({
     http.Client? client,
+    Map<String, String>? clientHeaders,
     String? countryCode,
     bool debugDisplayAlways = false,
     bool debugDisplayOnce = false,
@@ -60,6 +61,7 @@ class Upgrader with WidgetsBindingObserver {
     this.willDisplayUpgrade,
   })  : _state = UpgraderState(
           client: client ?? http.Client(),
+          clientHeaders: clientHeaders,
           countryCodeOverride: countryCode,
           debugDisplayAlways: debugDisplayAlways,
           debugDisplayOnce: debugDisplayOnce,
