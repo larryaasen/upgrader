@@ -47,8 +47,10 @@ void main() {
   }, skip: false);
 
   test('testing lookupById', () async {
-    final client = await MockPlayStoreSearchClient.setupMockClient();
-    final playStore = PlayStoreSearchAPI(client: client);
+    final client = await MockPlayStoreSearchClient.setupMockClient(
+        verifyHeaders: {'header1': 'value1'});
+    final playStore = PlayStoreSearchAPI(
+        client: client, clientHeaders: {'header1': 'value1'});
     expect(() async => await playStore.lookupById(''), throwsAssertionError);
 
     final response = await playStore.lookupById('com.kotoko.express');

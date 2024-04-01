@@ -37,6 +37,7 @@ class UpgraderAppStore extends UpgraderStore {
     final iTunes = ITunesSearchAPI();
     iTunes.debugLogging = state.debugLogging;
     iTunes.client = state.client;
+    iTunes.clientHeaders = state.clientHeaders;
     final response = await (iTunes
         .lookupByBundleId(state.packageInfo!.packageName, country: country));
 
@@ -86,7 +87,8 @@ class UpgraderPlayStore extends UpgraderStore {
       required String? language}) async {
     if (state.packageInfo == null) return UpgraderVersionInfo();
     final id = state.packageInfo!.packageName;
-    final playStore = PlayStoreSearchAPI(client: state.client);
+    final playStore = PlayStoreSearchAPI(
+        client: state.client, clientHeaders: state.clientHeaders);
     playStore.debugLogging = state.debugLogging;
 
     String? appStoreListingURL;
@@ -149,21 +151,10 @@ class UpgraderAppcastStore extends UpgraderStore {
   UpgraderAppcastStore({
     required this.appcastURL,
     this.appcast,
-    // this.client,
   });
 
   final String appcastURL;
   final Appcast? appcast;
-  // final http.Client? client;
-
-  //   /// Provide an HTTP Client that can be replaced during testing.
-  // final http.Client client;
-
-  // /// Provide [UpgraderOS] that can be replaced during testing.
-  // final UpgraderOS upgraderOS;
-
-  // /// Provide [UpgraderDevice] that ca be replaced during testing.
-  // final UpgraderDevice upgraderDevice;
 
   @override
   Future<UpgraderVersionInfo> getVersionInfo(
@@ -179,6 +170,7 @@ class UpgraderAppcastStore extends UpgraderStore {
     final localAppcast = appcast ??
         Appcast(
             client: state.client,
+            clientHeaders: state.clientHeaders,
             upgraderDevice: state.upgraderDevice,
             upgraderOS: state.upgraderOS);
     await localAppcast.parseAppcastItemsFromUri(appcastURL);

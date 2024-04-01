@@ -1,3 +1,7 @@
+## Next
+
+- Added client headers that can optionally be passed in with a client. (Fix for [PR](https://github.com/larryaasen/upgrader/pull/386))
+
 ## 10.0.1
 
 - Allowed for device_info_plus 10.0.0 and package_info_plus 6.0.0.

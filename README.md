@@ -147,6 +147,7 @@ Here are the custom parameters for `UpgradeCard`:
 The `Upgrader` class can be customized by setting parameters in the constructor, and passing it
 
 * client: an HTTP Client that can be replaced for mock testing, defaults to `http.Client()`.
+* clientHeaders: Provide the HTTP headers used by `client`, which defaults to ```null```
 * countryCode: the country code that will override the system locale, which defaults to ```null```
 * debugDisplayAlways: always force the upgrade to be available, defaults to ```false```
 * debugDisplayOnce: display the upgrade at least once, defaults to ```false```

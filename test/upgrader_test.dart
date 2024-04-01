@@ -660,11 +660,15 @@ void main() {
 
   testWidgets('test upgrader store version android',
       (WidgetTester tester) async {
-    final client = await MockPlayStoreSearchClient.setupMockClient();
+    final client = await MockPlayStoreSearchClient.setupMockClient(
+      verifyHeaders: {'header1': 'value1'},
+    );
     final upgrader = Upgrader(
-        upgraderOS: MockUpgraderOS(android: true),
-        client: client,
-        debugLogging: true);
+      upgraderOS: MockUpgraderOS(android: true),
+      client: client,
+      clientHeaders: {'header1': 'value1'},
+      debugLogging: true,
+    );
 
     upgrader.installPackageInfo(
         packageInfo: PackageInfo(
@@ -756,12 +760,10 @@ void main() {
     expect(notCalled, true);
   }, skip: false);
 
-  test('should use fake Appcast', () async {
+  test('should use Appcast', () async {
     final fakeAppcast = FakeAppcast();
-    final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader(
       upgraderOS: MockUpgraderOS(os: 'ios', ios: true),
-      client: client,
       debugLogging: true,
       storeController: UpgraderStoreController(
         oniOS: () => UpgraderAppcastStore(
@@ -781,6 +783,31 @@ void main() {
     await upgrader.initialize();
 
     expect(fakeAppcast.callCount, greaterThan(0));
+  }, skip: false);
+
+  test('should use Appcast headers', () async {
+    final upgrader = Upgrader(
+      upgraderOS: MockUpgraderOS(ios: true),
+      debugLogging: true,
+      client: MockITunesSearchClient.setupMockClient(
+          verifyHeaders: {'header1': 'value1'}),
+      clientHeaders: {'header1': 'value1'},
+      storeController: UpgraderStoreController(
+        oniOS: () => UpgraderAppcastStore(
+          appcastURL: 'https://sparkle-project.org/test/testappcast.xml',
+        ),
+      ),
+      upgraderDevice: MockUpgraderDevice(),
+    )..installPackageInfo(
+        packageInfo: PackageInfo(
+          appName: 'Upgrader',
+          packageName: 'com.larryaasen.upgrader',
+          version: '1.9.6',
+          buildNumber: '42',
+        ),
+      );
+
+    await upgrader.initialize();
   }, skip: false);
 
   test('will use appcast critical version if exists', () async {
@@ -963,9 +990,12 @@ void main() {
 
     test('should return true when version is below minAppVersion', () async {
       final upgrader = Upgrader(
-          debugLogging: true,
-          upgraderOS: MockUpgraderOS(ios: true),
-          client: MockITunesSearchClient.setupMockClient())
+        debugLogging: true,
+        upgraderOS: MockUpgraderOS(ios: true),
+        client: MockITunesSearchClient.setupMockClient(
+            verifyHeaders: {'header1': 'value1'}),
+        clientHeaders: {'header1': 'value1'},
+      )
         ..minAppVersion = '2.0.0'
         ..installPackageInfo(
           packageInfo: PackageInfo(

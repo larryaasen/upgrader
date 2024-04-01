@@ -4,6 +4,7 @@
 
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:upgrader/upgrader.dart';
@@ -22,9 +23,15 @@ final _filenames = {
 // Create a MockClient using the Mock class provided by the Mockito package.
 // We will create a new instances of this class in each test.
 class MockPlayStoreSearchClient {
-  static Future<http.Client> setupMockClient() async {
+  static Future<http.Client> setupMockClient(
+      {Map<String, String>? verifyHeaders}) async {
     final client = MockClient((http.Request request) async {
       var url = request.url.toString();
+
+      if (verifyHeaders != null) {
+        assert(mapEquals(verifyHeaders, request.headers));
+      }
+
       final index = url.indexOf('_cb=');
       if (index > 0) {
         url = url.substring(0, index - 1);

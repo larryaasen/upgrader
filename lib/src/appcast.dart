@@ -22,6 +22,9 @@ class Appcast {
   /// Provide an HTTP Client that can be replaced during testing.
   final http.Client client;
 
+  /// Provide the HTTP headers used by [client].
+  final Map<String, String>? clientHeaders;
+
   /// Provide [UpgraderOS] that can be replaced during testing.
   final UpgraderOS upgraderOS;
 
@@ -30,6 +33,7 @@ class Appcast {
 
   Appcast({
     http.Client? client,
+    this.clientHeaders,
     UpgraderOS? upgraderOS,
     UpgraderDevice? upgraderDevice,
   })  : client = client ?? http.Client(),
@@ -104,7 +108,8 @@ class Appcast {
   Future<List<AppcastItem>?> parseAppcastItemsFromUri(String appCastURL) async {
     http.Response response;
     try {
-      response = await client.get(Uri.parse(appCastURL));
+      response =
+          await client.get(Uri.parse(appCastURL), headers: clientHeaders);
     } catch (e) {
       print('upgrader: parseAppcastItemsFromUri exception: $e');
       return null;

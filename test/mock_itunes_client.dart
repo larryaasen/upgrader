@@ -3,6 +3,7 @@
  */
 
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:upgrader/upgrader.dart';
@@ -13,6 +14,7 @@ class MockITunesSearchClient {
   static http.Client setupMockClient({
     String country = 'US',
     String description = '',
+    Map<String, String>? verifyHeaders,
   }) {
     final currency = country == 'US'
         ? 'USD'
@@ -21,6 +23,10 @@ class MockITunesSearchClient {
             : '';
 
     final client = MockClient((http.Request request) async {
+      if (verifyHeaders != null) {
+        assert(mapEquals(verifyHeaders, request.headers));
+      }
+
       final resultsMap = {
         'results': [
           {

@@ -8,13 +8,17 @@ import 'package:http/http.dart' as http;
 import 'package:version/version.dart';
 
 class PlayStoreSearchAPI {
-  PlayStoreSearchAPI({http.Client? client}) : client = client ?? http.Client();
+  PlayStoreSearchAPI({http.Client? client, this.clientHeaders})
+      : client = client ?? http.Client();
 
   /// Play Store Search Api URL
   final String playStorePrefixURL = 'play.google.com';
 
   /// Provide an HTTP Client that can be replaced for mock testing.
   final http.Client? client;
+
+  /// Provide the HTTP headers used by [client].
+  final Map<String, String>? clientHeaders;
 
   /// Enable print statements for debugging.
   bool debugLogging = false;
@@ -34,7 +38,8 @@ class PlayStoreSearchAPI {
     }
 
     try {
-      final response = await client!.get(Uri.parse(url));
+      final response =
+          await client!.get(Uri.parse(url), headers: clientHeaders);
       if (response.statusCode < 200 || response.statusCode >= 300) {
         if (debugLogging) {
           print(
