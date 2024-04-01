@@ -140,6 +140,7 @@ class ITunesSearchAPI {
             print(
                 'upgrader.ITunesSearchAPI: results are empty: $decodedResults');
           }
+          return null;
         }
         return decodedResults;
       }
