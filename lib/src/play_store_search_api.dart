@@ -3,7 +3,7 @@
  */
 
 import 'package:html/dom.dart';
-import 'package:html/parser.dart' show parse;
+import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:version/version.dart';
 
@@ -264,9 +264,10 @@ extension PlayStoreResults on PlayStoreSearchAPI {
               .indexOf(patternEndOfString);
       final storeName =
           nameElement.substring(storeNameStartIndex, storeNameEndIndex);
+      final storeNameCleaned = storeName.replaceAll(r'\u0027', '\'');
 
       final versionElement = additionalInfoElementsFiltered
-          .where((element) => element.text.contains("\"$storeName\""))
+          .where((element) => element.text.contains("\"$storeNameCleaned\""))
           .first
           .text;
       final storeVersionStartIndex =

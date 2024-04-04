@@ -250,4 +250,10 @@ void main() {
                 r'\[\Minimum supported app version\:[\s]*(?<version>[^\s]+)[\s]*\]'),
         '4.5.6+1');
   });
+
+  test('testing special characters', () async {
+    const msg = 'McDonald\u0027s';
+    expect(msg.replaceAll(r"\u0027", "'"), 'McDonald\'s');
+    expect(msg.replaceAll(r"\u0027", '\''), 'McDonald\'s');
+  });
 }

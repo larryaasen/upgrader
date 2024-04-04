@@ -1,11 +1,12 @@
-## Next
+## 10.1.0
 
-- Added client headers that can optionally be passed in with a client. (Fix for [PR](https://github.com/larryaasen/upgrader/pull/386))
+- [[386](https://github.com/larryaasen/upgrader/pull/386)] Added client headers that can optionally be passed in with a client.
+- [[375](https://github.com/larryaasen/upgrader/issues/375)] Fixed issue with Android Play Store titles that contained "\u0027".
 
 ## 10.0.1
 
 - Allowed for device_info_plus 10.0.0 and package_info_plus 6.0.0.
-
+    
 ## 10.0.0
 
 This major update changes the structure of how the internal state is maintained and how access to app stores is provided. The API has not changed for the standard use cases. However, the way in which Appcast is used has changed slightly.
