@@ -466,6 +466,22 @@ digit (MAJOR), it converts it to a 3 digit version: MAJOR.0.0, and for versions 
 only use 2 digits (MAJOR.MINOR), it converts it to a 3 digit version: MAJOR.MINOR.0, to
 be compliant with Semantic Versioning.
 
+## Examples
+
+There are [plenty of examples](https://github.com/larryaasen/upgrader/tree/master/example/lib) that cover various different situations that may
+help you customize the `upgrader` experience for your app. Check these out.
+
+|  |  |  |
+| --- | --- | --- |
+| main.dart | main_alert_again.dart | main_alert_theme.dart |
+| main_appcast.dart | main_card.dart | main_card_theme.dart |
+| main_cupertino.dart | main_custom_alert.dart | main_custom_card.dart |
+| main_dialog_key.dart | main_driver.dart | main_gorouter.dart |
+| main_localized_rtl.dart | main_macos.dart | main_messages.dart |
+| main_min_app_version.dart | main_multiple.dart | main_stateful.dart |
+| main_subclass.dart |  |  |
+
+
 ## iTunes Search API
 
 There is a class in this Flutter package used by the `upgrader` widgets to download app details
