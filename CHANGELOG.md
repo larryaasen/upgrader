@@ -1,3 +1,7 @@
+## 10.2.0
+
+Allowed for package_info_plus 7.0.0.
+
 ## 10.1.0
 
 [[386](https://github.com/larryaasen/upgrader/pull/386)] Added client headers that can optionally be passed in with a client.
