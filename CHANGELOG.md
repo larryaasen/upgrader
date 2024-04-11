@@ -4,6 +4,10 @@
 
 [[375](https://github.com/larryaasen/upgrader/issues/375)] Fixed issue with Android Play Store titles that contained "\u0027".
 
+## 10.0.2
+
+Allowed for package_info_plus 6.0.0.
+
 ## 10.0.1
 
 Allowed for device_info_plus 10.0.0 and package_info_plus 6.0.0.
@@ -649,12 +653,12 @@ the US. The country code can be overriden with the optional `countryCode` parame
 
 ## 0.10.4
 
-* Updated dependency xml to ">=3.5.0 <5.0.0" to improve score on pub.dev in the 
+* Updated dependency xml to ">=3.5.0 <5.0.0" to improve score on pub.dev in the
 Maintenance issues and suggestions section.
 
 ## 0.10.3
 
-* Updated depenency flutter_device_locale to 0.4.0, and xml to 3.5.0, to improve score on pub.dev in the 
+* Updated depenency flutter_device_locale to 0.4.0, and xml to 3.5.0, to improve score on pub.dev in the
 Maintenance issues and suggestions section.
 
 ## 0.10.2
@@ -670,7 +674,7 @@ Maintenance issues and suggestions section.
 
 * Added options to hide ignore and later buttons. (Thanks to Karthik Ponnam)
 * Added option to close alert dialog on tap outside of alert dialog. (Thanks to Karthik Ponnam)
-* 
+*
 
 ## 0.9.0
 
@@ -730,7 +734,7 @@ defaults to debug logging on, and added command line app to evaluate the iTunes 
 * added many customizations to the widget including callbacks for onIgnore, onLater, and onUpdate
 * updated the README screenshot
 * updated tests, improved README
-* broke out widget into new file 
+* broke out widget into new file
 
 ## 0.1.0
 
