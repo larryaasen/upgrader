@@ -122,6 +122,7 @@ Map _androidInfo({required String baseOS}) {
     'systemFeatures': [],
     'displayMetrics': displayMetrics,
     'serialNumber': 'a',
+    'isLowRamDevice': false,
     'version': version,
   };
   return build;
