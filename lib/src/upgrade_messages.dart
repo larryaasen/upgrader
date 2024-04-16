@@ -45,8 +45,10 @@ enum UpgraderMessage {
 ///   @override
 ///   String get buttonTitleIgnore => 'My Ignore';
 /// }
+///
 /// UpgradeAlert(upgrader: Upgrader(messages: MyUpgraderMessages());
 /// ```
+///
 class UpgraderMessages {
   /// The primary language subtag for the locale, which defaults to the
   /// system-reported default locale of the device.
