@@ -24,7 +24,7 @@ dependencies:
   os_detect: ^2.0.1
 
   # From Flutter Community: Provides an API for querying information about an application package.
-  package_info_plus: ^4.0.1
+  package_info_plus: ^8.0.0
 
   # From Flutter Team: Wraps NSUserDefaults (on iOS) and SharedPreferences (on Android).
   shared_preferences: ^2.1.1
@@ -44,6 +44,6 @@ dev_dependencies:
 
   # From Dart Team: Mock library for Dart inspired by Mockito.
   mockito: ^5.4.0
-  flutter_lints: ^2.0.1
+  flutter_lints: ^3.0.2
 
 flutter:
