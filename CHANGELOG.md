@@ -1,3 +1,7 @@
+## 10.3.0
+
+Allowed for package_info_plus 8.0.0.
+
 ## 10.2.0
 
 Allowed for package_info_plus 7.0.0.
