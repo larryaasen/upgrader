@@ -371,7 +371,7 @@ UpgradeAlert(Upgrader(messages: MyUpgraderMessages()));
 
 ## Language localization
 
-The strings displayed in `upgrader` are already localized in 34 languages. New languages will be
+The strings displayed in `upgrader` are already localized in 35 languages. New languages will be
 supported in the future with minor updates. It also supports right to left languages.
 
 Languages supported:
@@ -409,6 +409,7 @@ Languages supported:
 * Turkish ('tr')
 * Ukrainian ('uk')
 * Vietnamese ('vi')
+* Kurdish Sorani ('ku')
 
 The `upgrader` package can be supplied with additional languages in your code by extending the `UpgraderMessages` class
 to provide custom values.
