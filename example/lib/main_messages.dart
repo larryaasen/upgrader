@@ -52,6 +52,7 @@ class MyApp extends StatelessWidget {
         Locale('kk', ''), // Kazakh, no country code
         Locale('km', ''), // Khmer, no country code
         Locale('ko', ''), // Korean, no country code
+        Locale('ku', ''), // Kurdish Sorani, no country code
         Locale('lt', ''), // Lithuanian, no country code
         Locale('mn', ''), // Mongolian, no country code
         Locale('nb', ''), // Norwegian, no country code
@@ -149,6 +150,7 @@ class DemoLocalizationsDelegate
         'kk',
         'km',
         'ko',
+        'ku',
         'lt',
         'mn',
         'nb',

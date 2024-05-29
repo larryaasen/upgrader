@@ -185,6 +185,10 @@ class UpgraderMessages {
         message =
             '{{appName}}이 새 버전으로 업데이트되었습니다! 최신 버전 {{currentAppStoreVersion}}으로 업그레이드 가능합니다 - 현재 버전 {{currentInstalledVersion}}.';
         break;
+      case 'ku':
+        message =
+            'وەشانی نوێی {{appName}} بەردەستە! وەشانی {{currentAppStoreVersion}} بەردەستە- تۆ وەشانی {{currentInstalledVersion}} دابەزاندوە.';
+        break;
       case 'lt':
         message =
             'Išleista nauja programos {{appName}} versija! Versija {{currentAppStoreVersion}} yra prieinama, jūs turite {{currentInstalledVersion}}.';
@@ -240,10 +244,6 @@ class UpgraderMessages {
       case 'zh':
         message =
             '{{appName}}有新的版本！您拥有{{currentInstalledVersion}}的版本可更新到{{currentAppStoreVersion}}的版本。';
-        break;
-      case 'ku':
-        message =
-            'وەشانی نوێی {{appName}} بەردەستە! وەشانی {{currentAppStoreVersion}} بەردەستە- تۆ وەشانی {{currentInstalledVersion}} دابەزاندوە.';
         break;
       case 'en':
       default:
@@ -316,6 +316,9 @@ class UpgraderMessages {
         break;
       case 'ko':
         message = '무시';
+        break;
+      case 'ku':
+        message = 'پشتگوێخستن';
         break;
       case 'lt':
         message = 'IGNORUOTI';
@@ -433,6 +436,9 @@ class UpgraderMessages {
       case 'ko':
         message = '나중에';
         break;
+      case 'ku':
+        message = 'دواتر';
+        break;
       case 'lt':
         message = 'ATNAUJINTI VĖLIAU';
         break;
@@ -474,9 +480,6 @@ class UpgraderMessages {
         break;
       case 'zh':
         message = '以后';
-      case 'ku':
-        message = 'دواتر';
-        break;
       case 'en':
       default:
         message = 'LATER';
@@ -548,6 +551,9 @@ class UpgraderMessages {
       case 'ko':
         message = '지금 업데이트';
         break;
+      case 'ku':
+        message = 'نوێکردنەوە';
+        break;
       case 'lt':
         message = 'ATNAUJINTI DABAR';
         break;
@@ -589,9 +595,6 @@ class UpgraderMessages {
         break;
       case 'zh':
         message = '更新';
-        break;
-      case 'ku':
-        message = 'نوێکردنەوە';
         break;
       case 'en':
       default:
@@ -664,6 +667,9 @@ class UpgraderMessages {
       case 'ko':
         message = '지금 업데이트를 시작하시겠습니까?';
         break;
+      case 'ku':
+        message = 'دەتەوێت ئێستا نوێی بکەیەوە؟';
+        break;
       case 'lt':
         message = 'Ar norite atnaujinti dabar?';
         break;
@@ -705,9 +711,6 @@ class UpgraderMessages {
         break;
       case 'zh':
         message = '您现在要更新应用程序吗？';
-        break;
-      case 'ku':
-        message = 'دەتەوێت ئێستا نوێی بکەیەوە؟';
         break;
       case 'en':
       default:
@@ -753,6 +756,9 @@ class UpgraderMessages {
       case 'ja':
         message = 'リリースノート';
         break;
+      case 'ku':
+        message = 'تیبینەکانی وەشان';
+        break;
       case 'pt':
         message = 'Novidades';
         break;
@@ -764,10 +770,6 @@ class UpgraderMessages {
         break;
       case 'tr':
         message = 'Yayın Notları';
-        break;
-
-      case 'ku':
-        message = 'تیبینەکانی وەشان';
         break;
 
       case 'bn':
@@ -860,6 +862,9 @@ class UpgraderMessages {
       case 'ko':
         message = '앱을 업데이트하시겠습니까?';
         break;
+      case 'ku':
+        message = 'نوێکردنەوەی ئەپ؟';
+        break;
       case 'lt':
         message = 'Atnaujinti programą?';
         break;
@@ -902,9 +907,6 @@ class UpgraderMessages {
       case 'zh':
         message = '更新应用程序？';
         break;
-      case 'ku':
-        message = 'نوێکردنەوەی ئەپ؟';
-        break;        
       case 'en':
       default:
         message = 'Update App?';
