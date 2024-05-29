@@ -241,6 +241,10 @@ class UpgraderMessages {
         message =
             '{{appName}}有新的版本！您拥有{{currentInstalledVersion}}的版本可更新到{{currentAppStoreVersion}}的版本。';
         break;
+      case 'ku':
+        message =
+            'وەشانی نوێی {{appName}} بەردەستە! وەشانی {{currentAppStoreVersion}} بەردەستە- تۆ وەشانی {{currentInstalledVersion}} دابەزاندوە.';
+        break;
       case 'en':
       default:
         message =
@@ -470,6 +474,8 @@ class UpgraderMessages {
         break;
       case 'zh':
         message = '以后';
+      case 'ku':
+        message = 'دواتر';
         break;
       case 'en':
       default:
@@ -584,6 +590,9 @@ class UpgraderMessages {
       case 'zh':
         message = '更新';
         break;
+      case 'ku':
+        message = 'نوێکردنەوە';
+        break;
       case 'en':
       default:
         message = 'UPDATE NOW';
@@ -697,6 +706,9 @@ class UpgraderMessages {
       case 'zh':
         message = '您现在要更新应用程序吗？';
         break;
+      case 'ku':
+        message = 'دەتەوێت ئێستا نوێی بکەیەوە؟';
+        break;
       case 'en':
       default:
         message = 'Would you like to update it now?';
@@ -752,6 +764,10 @@ class UpgraderMessages {
         break;
       case 'tr':
         message = 'Yayın Notları';
+        break;
+
+      case 'ku':
+        message = 'تیبینەکانی وەشان';
         break;
 
       case 'bn':
@@ -886,6 +902,9 @@ class UpgraderMessages {
       case 'zh':
         message = '更新应用程序？';
         break;
+      case 'ku':
+        message = 'نوێکردنەوەی ئەپ؟';
+        break;        
       case 'en':
       default:
         message = 'Update App?';
