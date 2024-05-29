@@ -155,7 +155,7 @@ class UpgraderMessages {
         break;
       case 'ht':
         message =
-            'Yon nouvo vèsyon {{appName}} disponib! Vèsyon {{currentAppStoreVersion}} disponib, epi ou gen vèsyon {{currentInstalledVersion}}.';
+            'Yon nouvo vèsyon {{appName}} disponib! Vèsyon {{currentAppStoreVersion}} disponib, ou gen vèsyon {{currentInstalledVersion}}.';
         break;
       case 'hu':
         message =
@@ -290,7 +290,7 @@ class UpgraderMessages {
         message = 'नज़रअंदाज़ करना';
         break;
       case 'ht':
-        message = 'IGNORE';
+        message = 'INYORE';
         break;
       case 'hu':
         message = 'KIHAGYOM';
@@ -632,7 +632,7 @@ class UpgraderMessages {
         message = 'क्या आप इसे अभी अद्यतन करना चाहेंगे?';
         break;
       case 'ht':
-        message = 'Èske ou vle mete ajou aplikasyon an kounye a?';
+        message = 'Èske ou vle mete aplikasyon an ajou kounye a?';
         break;
       case 'hu':
         message = 'Akarja most frissíteni?';
@@ -821,7 +821,7 @@ class UpgraderMessages {
         message = 'अद्यतन ऐप?';
         break;
       case 'ht':
-        message = 'Mete ajou app a?';
+        message = 'Mete app la ajou?';
         break;
       case 'hu':
         message = 'FrissÍtés?';
