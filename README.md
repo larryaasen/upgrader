@@ -395,6 +395,7 @@ Languages supported:
 * Kazakh ('kk')
 * Khmer ('km')
 * Korean ('ko')
+* Kurdish Sorani ('ku')
 * Lithuanian ('lt')
 * Mongolian ('mn')
 * Norwegian ('nb')
@@ -409,7 +410,7 @@ Languages supported:
 * Turkish ('tr')
 * Ukrainian ('uk')
 * Vietnamese ('vi')
-* Kurdish Sorani ('ku')
+
 
 The `upgrader` package can be supplied with additional languages in your code by extending the `UpgraderMessages` class
 to provide custom values.
