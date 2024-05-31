@@ -483,6 +483,25 @@ help you customize the `upgrader` experience for your app. Check these out.
 | main_min_app_version.dart | main_multiple.dart | main_stateful.dart |
 | main_subclass.dart |  |  |
 
+## Tapping UPDATE NOW button issue on Android
+
+Seeing an error similar to this on Android after tapping the UPDATE NOW button?
+```
+I/UrlLauncher(11833): component name for https://www.google.com/ is null
+```
+
+Adding this to the AndroidManifest.xml file will solve this issue. Add this at the bottom of the file just above the closing `</manifest>` tag.
+```
+    <queries>
+      <intent>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data android:scheme="https" />
+      </intent>
+    </queries>
+```
+
+This was taken from this Android documentation: https://developer.android.com/training/package-visibility/use-cases#check-browser-available
 
 ## iTunes Search API
 
