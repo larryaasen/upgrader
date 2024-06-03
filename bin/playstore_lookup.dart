@@ -36,7 +36,7 @@ void main(List<String> arguments) async {
   }
 
   final playStore = PlayStoreSearchAPI();
-  playStore.debugEnabled = true;
+  playStore.debugLogging = true;
 
   final results = await playStore.lookupById(lookupId, country: lookupCountry);
 
@@ -45,10 +45,10 @@ void main(List<String> arguments) async {
     return;
   }
 
-  final description = PlayStoreResults.description(results);
-  final minAppVersion = PlayStoreResults.minAppVersion(results);
-  final releaseNotes = PlayStoreResults.releaseNotes(results);
-  final version = PlayStoreResults.version(results);
+  final description = playStore.description(results);
+  final minAppVersion = playStore.minAppVersion(results);
+  final releaseNotes = playStore.releaseNotes(results);
+  final version = playStore.version(results);
 
   print('playstore_lookup description: $description');
   print('playstore_lookup minAppVersion: $minAppVersion');

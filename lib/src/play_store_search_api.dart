@@ -3,12 +3,13 @@
  */
 
 import 'package:html/dom.dart';
-import 'package:html/parser.dart' show parse;
+import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:version/version.dart';
 
 class PlayStoreSearchAPI {
-  PlayStoreSearchAPI({http.Client? client}) : client = client ?? http.Client();
+  PlayStoreSearchAPI({http.Client? client, this.clientHeaders})
+      : client = client ?? http.Client();
 
   /// Play Store Search Api URL
   final String playStorePrefixURL = 'play.google.com';
@@ -16,7 +17,11 @@ class PlayStoreSearchAPI {
   /// Provide an HTTP Client that can be replaced for mock testing.
   final http.Client? client;
 
-  bool debugEnabled = false;
+  /// Provide the HTTP headers used by [client].
+  final Map<String, String>? clientHeaders;
+
+  /// Enable print statements for debugging.
+  bool debugLogging = false;
 
   /// Look up by id.
   Future<Document?> lookupById(String id,
@@ -28,15 +33,18 @@ class PlayStoreSearchAPI {
 
     final url = lookupURLById(id,
         country: country, language: language, useCacheBuster: useCacheBuster)!;
-    if (debugEnabled) {
+    if (debugLogging) {
       print('upgrader: lookupById url: $url');
     }
 
     try {
-      final response = await client!.get(Uri.parse(url));
+      final response =
+          await client!.get(Uri.parse(url), headers: clientHeaders);
       if (response.statusCode < 200 || response.statusCode >= 300) {
-        print(
-            'upgrader: Can\'t find an app in the Play Store with the id: $id');
+        if (debugLogging) {
+          print(
+              'upgrader: Can\'t find an app in the Play Store with the id: $id');
+        }
         return null;
       }
 
@@ -48,11 +56,14 @@ class PlayStoreSearchAPI {
 
       return decodedResults;
     } on Exception catch (e) {
-      print('upgrader: lookupById exception: $e');
+      if (debugLogging) {
+        print('upgrader: lookupById exception: $e');
+      }
       return null;
     }
   }
 
+  /// Create a URL that points to the Play Store details for an app.
   String? lookupURLById(String id,
       {String? country = 'US',
       String? language = 'en',
@@ -85,11 +96,11 @@ class PlayStoreSearchAPI {
   }
 }
 
-class PlayStoreResults {
+extension PlayStoreResults on PlayStoreSearchAPI {
   static RegExp releaseNotesSpan = RegExp(r'>(.*?)</span>');
 
   /// Return field description from Play Store results.
-  static String? description(Document response) {
+  String? description(Document response) {
     try {
       final sectionElements = response.getElementsByClassName('W4P4ne');
       final descriptionElement = sectionElements[0];
@@ -104,14 +115,16 @@ class PlayStoreResults {
   }
 
   /// Return field description from Redesigned Play Store results.
-  static String? redesignedDescription(Document response) {
+  String? redesignedDescription(Document response) {
     try {
       final sectionElements = response.getElementsByClassName('bARER');
       final descriptionElement = sectionElements.last;
       final description = descriptionElement.text;
       return description;
     } catch (e) {
-      print('upgrader: PlayStoreResults.redesignedDescription exception: $e');
+      if (debugLogging) {
+        print('upgrader: PlayStoreResults.redesignedDescription exception: $e');
+      }
     }
     return null;
   }
@@ -120,17 +133,17 @@ class PlayStoreResults {
   /// The [tagRegExpSource] is used to represent the format of a tag using a regular expression.
   /// The format in the description by default is like this: `[Minimum supported app version: 1.2.3]`, which
   /// returns the version `1.2.3`. If there is no match, it returns null.
-  static Version? minAppVersion(
+  Version? minAppVersion(
     Document response, {
     String tagRegExpSource =
         r'\[\Minimum supported app version\:[\s]*(?<version>[^\s]+)[\s]*\]',
   }) {
     Version? version;
     try {
-      final description = PlayStoreResults.description(response);
-      if (description != null) {
+      final desc = description(response);
+      if (desc != null) {
         final regExp = RegExp(tagRegExpSource, caseSensitive: false);
-        final match = regExp.firstMatch(description);
+        final match = regExp.firstMatch(desc);
         final mav = match?.namedGroup('version');
 
         if (mav != null) {
@@ -138,20 +151,24 @@ class PlayStoreResults {
             // Verify version string using class Version
             version = Version.parse(mav);
           } on Exception catch (e) {
-            print(
-                'upgrader: PlayStoreResults.minAppVersion: mav=$mav, tag=$tagRegExpSource, error=$e');
+            if (debugLogging) {
+              print(
+                  'upgrader: PlayStoreResults.minAppVersion: mav=$mav, tag=$tagRegExpSource, error=$e');
+            }
           }
         }
       }
     } on Exception catch (e) {
-      print('upgrader.PlayStoreResults.minAppVersion : $e');
+      if (debugLogging) {
+        print('upgrader.PlayStoreResults.minAppVersion : $e');
+      }
     }
     return version;
   }
 
   /// Returns field releaseNotes from Play Store results. When there are no
   /// release notes, the main app description is used.
-  static String? releaseNotes(Document response) {
+  String? releaseNotes(Document response) {
     try {
       final sectionElements = response.getElementsByClassName('W4P4ne');
       final releaseNotesElement = sectionElements.firstWhere(
@@ -173,7 +190,7 @@ class PlayStoreResults {
 
   /// Returns field releaseNotes from Redesigned Play Store results. When there are no
   /// release notes, the main app description is used.
-  static String? redesignedReleaseNotes(Document response) {
+  String? redesignedReleaseNotes(Document response) {
     try {
       final sectionElements =
           response.querySelectorAll('[itemprop="description"]');
@@ -182,12 +199,15 @@ class PlayStoreResults {
       final releaseNotes = multilineReleaseNotes(rawReleaseNotes);
       return releaseNotes;
     } catch (e) {
-      print('upgrader: PlayStoreResults.redesignedReleaseNotes exception: $e');
+      if (debugLogging) {
+        print(
+            'upgrader: PlayStoreResults.redesignedReleaseNotes exception: $e');
+      }
     }
     return null;
   }
 
-  static String? multilineReleaseNotes(Element rawReleaseNotes) {
+  String? multilineReleaseNotes(Element rawReleaseNotes) {
     final innerHtml = rawReleaseNotes.innerHtml;
     String? releaseNotes = innerHtml;
 
@@ -201,7 +221,7 @@ class PlayStoreResults {
   }
 
   /// Return field version from Play Store results.
-  static String? version(Document response) {
+  String? version(Document response) {
     String? version;
     try {
       final additionalInfoElements = response.getElementsByClassName('hAyfc');
@@ -219,7 +239,7 @@ class PlayStoreResults {
   }
 
   /// Return field version from Redesigned Play Store results.
-  static String? redesignedVersion(Document response) {
+  String? redesignedVersion(Document response) {
     String? version;
     try {
       const patternName = ",\"name\":\"";
@@ -244,9 +264,10 @@ class PlayStoreResults {
               .indexOf(patternEndOfString);
       final storeName =
           nameElement.substring(storeNameStartIndex, storeNameEndIndex);
+      final storeNameCleaned = storeName.replaceAll(r'\u0027', '\'');
 
       final versionElement = additionalInfoElementsFiltered
-          .where((element) => element.text.contains("\"$storeName\""))
+          .where((element) => element.text.contains("\"$storeNameCleaned\""))
           .first
           .text;
       final storeVersionStartIndex =
@@ -261,7 +282,9 @@ class PlayStoreResults {
       // storeVersion might be: 'Varies with device', which is not a valid version.
       version = Version.parse(storeVersion).toString();
     } catch (e) {
-      print('upgrader: PlayStoreResults.redesignedVersion exception: $e');
+      if (debugLogging) {
+        print('upgrader: PlayStoreResults.redesignedVersion exception: $e');
+      }
     }
 
     return version;
