@@ -1151,6 +1151,7 @@ void main() {
     verifyMessages(UpgraderMessages(code: 'kk'), 'kk');
     verifyMessages(UpgraderMessages(code: 'km'), 'km');
     verifyMessages(UpgraderMessages(code: 'ko'), 'ko');
+    verifyMessages(UpgraderMessages(code: 'ku'), 'ku');
     verifyMessages(UpgraderMessages(code: 'lt'), 'lt');
     verifyMessages(UpgraderMessages(code: 'mn'), 'mn');
     verifyMessages(UpgraderMessages(code: 'nb'), 'nb');

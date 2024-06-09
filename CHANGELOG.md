@@ -1,3 +1,12 @@
+## Next
+
+- [413] Fixed Haitian Creole messages to use correct grammar. (thanks to @wjeanvilma)
+- [415] Added Kurdish Sorani ('ku') language translation. (thanks to @drpshtiwan)
+
+## 10.3.0
+
+Allowed for package_info_plus 8.0.0.
+
 ## 10.2.0
 
 Allowed for package_info_plus 7.0.0.
