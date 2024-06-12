@@ -5,13 +5,13 @@
 [![pub package](https://img.shields.io/pub/v/upgrader.svg)](https://pub.dartlang.org/packages/upgrader)
 [![GitHub Stars](https://img.shields.io/github/stars/larryaasen/upgrader.svg)](https://github.com/larryaasen/upgrader/stargazers)
 <a href="https://www.buymeacoffee.com/larryaasen">
-  <img alt="Buy me a coffee" src="https://img.shields.io/badge/Donate-Buy%20Me%20A%20Coffee-yellow.svg">
+<img alt="Buy me a coffee" src="https://img.shields.io/badge/Donate-Buy%20Me%20A%20Coffee-yellow.svg">
 </a>
 [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/upgraderpackage.svg?style=social&label=Follow%20%40upgraderpackage)](https://twitter.com/upgraderpackage)
 
 A Flutter package for prompting users to upgrade when there is a newer version of the app in the store.
 
-## Overview 
+## Overview
 
 When a newer app version is available in the app store, a simple alert prompt or card is
 displayed.
@@ -25,15 +25,16 @@ will become more likely that users on other app stores need to be nagged about u
 ### Platform Support
 
 | Platform | Automatically Supported? | Appcast Supported? |
-| --- | --- | --- |
-| ANDROID | &#9989; Yes | &#9989; Yes |
-| IOS | &#9989; Yes | &#9989; Yes |
-| LINUX | &#10060; No | &#9989; Yes |
-| MACOS | &#10060; No | &#9989; Yes |
-| WEB | &#10060; No | &#9989; Yes |
-| WINDOWS | &#10060; No | &#9989; Yes |
+| -------- | ------------------------ | ------------------ |
+| ANDROID  | &#9989; Yes              | &#9989; Yes        |
+| IOS      | &#9989; Yes              | &#9989; Yes        |
+| LINUX    | &#10060; No              | &#9989; Yes        |
+| MACOS    | &#10060; No              | &#9989; Yes        |
+| WEB      | &#10060; No              | &#9989; Yes        |
+| WINDOWS  | &#10060; No              | &#9989; Yes        |
 
 ## Widgets
+
 The widgets come in two flavors: alert or card. The [UpgradeAlert](#alert-example) widget is used to display the
 popup alert prompt, and the [UpgradeCard](#card-example) widget is used to display the inline material design card.
 
@@ -47,7 +48,9 @@ Tapping the UPDATE NOW button takes the user to the App Store (iOS) or Google Pl
 
 ## Alert Example
 
+ 
 Just wrap your home widget in the `UpgradeAlert` widget, and it will handle the rest.
+ 
 ```dart
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -70,10 +73,13 @@ class MyApp extends StatelessWidget {
 
 ![image](screenshots/example1.png)
 
+ 
 
 ## Cupertino alert example
+ 
 
 You can also display a Cupertino style dialog by using the `dialogStyle` parameter.
+
 ```dart
   body: UpgradeAlert(
     dialogStyle: UpgradeDialogStyle.cupertino,
@@ -89,6 +95,7 @@ You can also display a Cupertino style dialog by using the `dialogStyle` paramet
 
 Just return an `UpgradeCard` widget in your build method and a material design card will be displayed
 when an update is detected. The widget will have width and height of 0.0 when no update is detected.
+
 ```dart
 return Container(
         margin: EdgeInsets.fromLTRB(12.0, 0.0, 12.0, 0.0),
@@ -100,9 +107,11 @@ return Container(
 ![image](screenshots/example2.png)
 
 ## Localization
+
 The text displayed in the `upgrader` package is localized in [many languages](#language-localization), and supports customization.
 
 ## Release Notes
+
 The release notes are displayed by default when a new version is available. On Android
 the release notes are taken from the the WHAT'S NEW section on Google Play when
 available, otherwise the main app description is used.
@@ -115,6 +124,7 @@ The alert can be customized by changing the `DialogTheme` on the `MaterialApp`, 
 - [example/lib/main-alert-theme.dart](example/lib/main-alert-theme.dart)
 - [example/lib/main-custom-alert.dart](example/lib/main-custom-alert.dart)
 
+ 
 The card can be customized by changing the `CardTheme` on the `MaterialApp`, or by overriding methods in the `UpgradeCard` class. See these examples for more details:
 - [example/lib/main-card-theme.dart](example/lib/main-card-theme.dart)
 - [example/lib/main-custom-card.dart](example/lib/main-custom-card.dart)
@@ -161,6 +171,7 @@ The `Upgrader` class can be customized by setting parameters in the constructor,
 * upgraderOS: information on which OS this code is running on, defaults to `UpgraderOS()`.
 * willDisplayUpgrade: called when ```upgrader``` determines that an upgrade may
 or may not be displayed, defaults to ```null```
+ 
 
 The  `UpgraderStoreController` class is a controller that provides the store details
 for each platform.
@@ -187,15 +198,18 @@ You can even subclass `UpgraderStore` or an existing store class like
 `UpgraderPlayStore` to provide your own customization.
 
 ## Minimum App Version
+
 The `upgrader` package can enforce a minimum app version simply by adding a
 version number to the description field in the app stores.
 
 For the Android Play Store, use this format:
+
 ```
 [Minimum supported app version: 1.2.3]
 ```
 
 For the iOS App Store, use this format:
+
 ```
 [:mav: 1.2.3]
 ```
@@ -206,7 +220,6 @@ and Later buttons will automatically be hidden.
 
 ![image](screenshots/example-minappversion.png)
 
-
 After the app containing this text has been submitted for review, approved, and
 released on the app store, the version number will be visible to the `upgrader`
 package. When the minimum app version is updated in the future, all previously
@@ -215,17 +228,19 @@ installed apps with this package will recognize and honor that value.
 This overrides any value supplied in the `minAppVersion` parameter.
 
 ### Android
+
 Add this text to the bottom of the full description field in the Google Play
 Console under the main store listing.
 
 ### iOS
+
 Add this text to the bottom of the description field in App Store Connect in the
 description field.
 
 ## Go Router
 
 When using GoRouter (package go_router) with upgrader, you may need to provide
-a navigatorKey to the ```UpgradeAlert``` widget so that the correct route 
+a navigatorKey to the `UpgradeAlert` widget so that the correct route
 context is used. Below is part of the code you will need for this. Also,
 checkout the [example/lib/main-gorouter.dart](example/lib/main-gorouter.dart) example for a more complete example.
 
@@ -247,9 +262,10 @@ checkout the [example/lib/main-gorouter.dart](example/lib/main-gorouter.dart) ex
 
 ## Android Back Button
 
-When using the ```UpgradeAlert``` widget, the Android back button will not
+When using the `UpgradeAlert` widget, the Android back button will not
 dismiss the alert dialog by default. To allow the back button to dismiss the
-dialog, use ```shouldPopScope``` and return true like this:
+dialog, use `shouldPopScope` and return true like this:
+
 ```
 UpgradeAlert(shouldPopScope: () => true);
 ```
@@ -268,9 +284,10 @@ On Android, the `upgrader` package uses the system locale to determine the count
 Android description and release notes language default to `en`.
 
 ## Limitations
+
 These widgets work on both Android and iOS. When running on Android the Google
 Play Store will provide the latest app version.
- When running on iOS the App Store will provide the
+When running on iOS the App Store will provide the
 latest app version. In all cases, the widget will display the prompt at the
 appropriate times.
 
@@ -303,7 +320,9 @@ The class [UpgraderAppcastStore](lib/src/upgrade_store_controller.dart), in this
 Flutter package, is used by `upgrader` to download app details from an appcast.
 
 ### Appcast Example
+
 This is an Appcast example for Android.
+
 ```dart
 static const appcastURL =
     'https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast.xml';
@@ -328,6 +347,7 @@ Widget build(BuildContext context) {
 ```
 
 ### Appcast Sample File
+
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
@@ -344,6 +364,7 @@ Widget build(BuildContext context) {
 ```
 
 ### Appcast Class
+
 ```dart
 final appcast = Appcast();
 final items = await appcast.parseAppcastItemsFromUri('https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast.xml');
@@ -375,6 +396,7 @@ The strings displayed in `upgrader` are already localized in 35 languages. New l
 supported in the future with minor updates. It also supports right to left languages.
 
 Languages supported:
+ 
 * English ('en')
 * Arabic ('ar')
 * Bengali ('bn')
@@ -410,6 +432,7 @@ Languages supported:
 * Turkish ('tr')
 * Ukrainian ('uk')
 * Vietnamese ('vi')
+ 
 
 
 The `upgrader` package can be supplied with additional languages in your code by extending the `UpgraderMessages` class
@@ -468,6 +491,7 @@ digit (MAJOR), it converts it to a 3 digit version: MAJOR.0.0, and for versions 
 only use 2 digits (MAJOR.MINOR), it converts it to a 3 digit version: MAJOR.MINOR.0, to
 be compliant with Semantic Versioning.
 
+ 
 ## Examples
 
 There are [plenty of examples](https://github.com/larryaasen/upgrader/tree/master/example/lib) that cover various different situations that may
@@ -502,7 +526,7 @@ Adding this to the AndroidManifest.xml file will solve this issue. Add this at t
 ```
 
 This was taken from this Android documentation: https://developer.android.com/training/package-visibility/use-cases#check-browser-available
-
+ 
 ## iTunes Search API
 
 There is a class in this Flutter package used by the `upgrader` widgets to download app details
@@ -511,6 +535,7 @@ from the
 The class ITunesSearchAPI can be used standalone to query iTunes for app details.
 
 ### ITunesSearchAPI Example
+
 ```dart
 final iTunes = ITunesSearchAPI();
 final resultsFuture = iTunes.lookupByBundleId('com.google.Maps');
@@ -520,18 +545,21 @@ resultsFuture.then((results) {
 ```
 
 ### Results
-[![image](screenshots/results.png)](screenshots/results.png)
 
+[![image](screenshots/results.png)](screenshots/results.png)
 
 ### Command Line App - Android
 
 There is a command line app used to display the results from Google Play Store. The code is located in
 bin/playstore_lookup.dart, and can be run from the command line like this:
+
 ```
 $ cd bin
 $ dart playstore_lookup.dart id=com.google.android.apps.mapslite
 ```
+
 Results:
+
 ```
 playstore_lookup releaseNotes: • Support plus.codes URLs• Bug fixes
 playstore_lookup version: 152.0.0
@@ -539,12 +567,16 @@ playstore_lookup version: 152.0.0
 ```
 
 ### Command Line App - iOS
+
 There is a command line app used to display the results from iTunes Search. The code is located in
 bin/itunes_lookup.dart, and can be run from the command line like this:
+
 ```
 $ dart itunes_lookup.dart bundleid=com.google.Maps
 ```
+
 Results:
+
 ```
 upgrader: download: https://itunes.apple.com/lookup?bundleId=com.google.Maps
 upgrader: response statusCode: 200
@@ -564,6 +596,7 @@ To better assist in analyzing issues, please include all of the `upgrader` log,
 which can be enabled by setting `debugLogging` to `true`.
 
 It should look something like this:
+
 ```
 flutter: upgrader: operatingSystem: ios, version: Version 17.0.1 (Build 21A342)
 flutter: upgrader: packageInfo packageName: com.google.Maps
@@ -593,6 +626,7 @@ flutter: upgrader: showTheDialog releaseNotes: Thanks for using Google Maps! Thi
 ```
 
 Also, please include the upgrader version number from the pubspec.lock file, which should look something like this:
+
 ```
   upgrader:
     dependency: "direct main"
@@ -603,8 +637,8 @@ Also, please include the upgrader version number from the pubspec.lock file, whi
     version: "3.6.0"
 ```
 
-
 ## Contributing
+
 All [comments](https://github.com/larryaasen/upgrader/issues) and [pull requests](https://github.com/larryaasen/upgrader/pulls) are welcome.
 
 ## Donations / Sponsor
