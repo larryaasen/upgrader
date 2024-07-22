@@ -314,10 +314,6 @@ void main() {
   testWidgets('test UpgradeAlert Cupertino', (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
 
-    const cupertinoButtonTextStyle = TextStyle(
-      fontSize: 14,
-      color: Colors.green,
-    );
     final upgrader = Upgrader(
       upgraderOS: MockUpgraderOS(ios: true),
       client: client,
@@ -357,7 +353,6 @@ void main() {
     final upgradeAlert = wrapper(
       UpgradeAlert(
         upgrader: upgrader,
-        cupertinoButtonTextStyle: cupertinoButtonTextStyle,
         dialogStyle: UpgradeDialogStyle.cupertino,
         onUpdate: () {
           called = true;
@@ -390,12 +385,6 @@ void main() {
     expect(find.text(upgrader.releaseNotes!), findsOneWidget);
     expect(find.text(upgrader.state.messages!.prompt), findsOneWidget);
     expect(find.byType(CupertinoDialogAction), findsNWidgets(3));
-    expect(
-      find.byWidgetPredicate((widget) =>
-          widget is CupertinoDialogAction &&
-          widget.textStyle == cupertinoButtonTextStyle),
-      findsNWidgets(3),
-    );
     expect(
         find.text(upgrader.state.messages!.buttonTitleIgnore), findsOneWidget);
     expect(
