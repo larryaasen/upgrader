@@ -320,13 +320,28 @@ class UpgradeAlertState extends State<UpgradeAlert> {
         )));
     final actions = <Widget>[
       if (showIgnore)
-        button(cupertino, messages.message(UpgraderMessage.buttonTitleIgnore),
-            context, () => onUserIgnored(context, true)),
+        button(
+          cupertino: cupertino,
+          text: messages.message(UpgraderMessage.buttonTitleIgnore),
+          context: context,
+          onPressed: () => onUserIgnored(context, true),
+          isDefaultAction: false,
+        ),
       if (showLater)
-        button(cupertino, messages.message(UpgraderMessage.buttonTitleLater),
-            context, () => onUserLater(context, true)),
-      button(cupertino, messages.message(UpgraderMessage.buttonTitleUpdate),
-          context, () => onUserUpdated(context, !widget.upgrader.blocked())),
+        button(
+          cupertino: cupertino,
+          text: messages.message(UpgraderMessage.buttonTitleLater),
+          context: context,
+          onPressed: () => onUserLater(context, true),
+          isDefaultAction: false,
+        ),
+      button(
+        cupertino: cupertino,
+        text: messages.message(UpgraderMessage.buttonTitleUpdate),
+        context: context,
+        onPressed: () => onUserUpdated(context, !widget.upgrader.blocked()),
+        isDefaultAction: true,
+      ),
     ];
 
     return cupertino
@@ -336,12 +351,18 @@ class UpgradeAlertState extends State<UpgradeAlert> {
             key: key, title: textTitle, content: content, actions: actions);
   }
 
-  Widget button(bool cupertino, String? text, BuildContext context,
-      VoidCallback? onPressed) {
+  Widget button({
+    required bool cupertino,
+    String? text,
+    required BuildContext context,
+    VoidCallback? onPressed,
+    bool isDefaultAction = false,
+  }) {
     return cupertino
         ? CupertinoDialogAction(
             textStyle: widget.cupertinoButtonTextStyle,
             onPressed: onPressed,
+            isDefaultAction: isDefaultAction,
             child: Text(text ?? ''))
         : TextButton(onPressed: onPressed, child: Text(text ?? ''));
   }
