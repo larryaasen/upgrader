@@ -39,7 +39,7 @@ class UpgraderAppStore extends UpgraderStore {
     iTunes.client = state.client;
     iTunes.clientHeaders = state.clientHeaders;
     final response = await (iTunes
-        .lookupByBundleId(state.packageInfo!.packageName, country: country));
+        .lookupByBundleId(state.packageInfo!.packageName, country: country, language: language));
 
     if (response != null) {
       final version = iTunes.version(response);
