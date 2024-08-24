@@ -8,7 +8,6 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
-import 'package:upgrader/src/upgrader_device.dart';
 import 'package:upgrader/upgrader.dart';
 
 void main() {
@@ -213,7 +212,7 @@ void validateItems(List<AppcastItem> items, Appcast appcast) {
   expect(items[0].osString, isNull);
 
   expect(items[1].title, equals('Version 3.0'));
-  expect(items[1].itemDescription, equals(null));
+  expect(items[1].itemDescription, equals('Minor updates and improvements.'));
   expect(items[1].dateString, equals(null));
   expect(
       items[1].fileURL, equals('http://localhost:1337/Sparkle_Test_App.zip'));
@@ -227,7 +226,7 @@ void validateItems(List<AppcastItem> items, Appcast appcast) {
   expect(items[1].osString, equals('android'));
 
   expect(items[2].title, equals('Version 4.0'));
-  expect(items[2].itemDescription, equals(null));
+  expect(items[2].itemDescription, equals('Minor updates and improvements.'));
   expect(items[2].dateString, 'Sat, 26 Jul 2014 15:20:13 +0000');
   expect(
       items[2].fileURL, equals('http://localhost:1337/Sparkle_Test_App.zip'));

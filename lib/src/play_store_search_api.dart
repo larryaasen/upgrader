@@ -3,18 +3,22 @@
  */
 
 import 'package:html/dom.dart';
-import 'package:html/parser.dart' show parse;
+import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
 import 'package:version/version.dart';
 
 class PlayStoreSearchAPI {
-  PlayStoreSearchAPI({http.Client? client}) : client = client ?? http.Client();
+  PlayStoreSearchAPI({http.Client? client, this.clientHeaders})
+      : client = client ?? http.Client();
 
   /// Play Store Search Api URL
   final String playStorePrefixURL = 'play.google.com';
 
   /// Provide an HTTP Client that can be replaced for mock testing.
   final http.Client? client;
+
+  /// Provide the HTTP headers used by [client].
+  final Map<String, String>? clientHeaders;
 
   /// Enable print statements for debugging.
   bool debugLogging = false;
@@ -34,7 +38,8 @@ class PlayStoreSearchAPI {
     }
 
     try {
-      final response = await client!.get(Uri.parse(url));
+      final response =
+          await client!.get(Uri.parse(url), headers: clientHeaders);
       if (response.statusCode < 200 || response.statusCode >= 300) {
         if (debugLogging) {
           print(
@@ -58,6 +63,7 @@ class PlayStoreSearchAPI {
     }
   }
 
+  /// Create a URL that points to the Play Store details for an app.
   String? lookupURLById(String id,
       {String? country = 'US',
       String? language = 'en',
@@ -258,9 +264,10 @@ extension PlayStoreResults on PlayStoreSearchAPI {
               .indexOf(patternEndOfString);
       final storeName =
           nameElement.substring(storeNameStartIndex, storeNameEndIndex);
+      final storeNameCleaned = storeName.replaceAll(r'\u0027', '\'');
 
       final versionElement = additionalInfoElementsFiltered
-          .where((element) => element.text.contains("\"$storeName\""))
+          .where((element) => element.text.contains("\"$storeNameCleaned\""))
           .first
           .text;
       final storeVersionStartIndex =
