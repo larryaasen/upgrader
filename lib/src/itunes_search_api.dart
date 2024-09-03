@@ -21,6 +21,9 @@ class ITunesSearchAPI {
   /// Provide an HTTP Client that can be replaced for mock testing.
   http.Client? client = http.Client();
 
+  /// Provide the HTTP headers used by [client].
+  Map<String, String>? clientHeaders;
+
   /// Enable print statements for debugging.
   bool debugLogging = false;
 
@@ -44,7 +47,8 @@ class ITunesSearchAPI {
     }
 
     try {
-      final response = await client!.get(Uri.parse(url));
+      final response =
+          await client!.get(Uri.parse(url), headers: clientHeaders);
       if (debugLogging) {
         print('upgrader: response statusCode: ${response.statusCode}');
       }
@@ -75,7 +79,8 @@ class ITunesSearchAPI {
       print('upgrader: download: $url');
     }
     try {
-      final response = await client!.get(Uri.parse(url));
+      final response =
+          await client!.get(Uri.parse(url), headers: clientHeaders);
       final decodedResults = _decodeResults(response.body);
       return decodedResults;
     } catch (e) {
@@ -144,6 +149,7 @@ class ITunesSearchAPI {
             print(
                 'upgrader.ITunesSearchAPI: results are empty: $decodedResults');
           }
+          return null;
         }
         return decodedResults;
       }

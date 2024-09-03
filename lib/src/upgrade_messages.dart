@@ -46,7 +46,9 @@ enum UpgraderMessage {
 ///   String get buttonTitleIgnore => 'My Ignore';
 /// }
 ///
-/// UpgradeAlert(messages: MyUpgraderMessages());
+/// final upgrader = Upgrader(messages: MyUpgraderMessages());
+/// ...
+/// UpgradeAlert(upgrader: upgrader);
 /// ```
 ///
 class UpgraderMessages {
@@ -88,13 +90,11 @@ class UpgraderMessages {
     Locale? locale;
     if (context != null) {
       locale = Localizations.maybeLocaleOf(context);
-    } else {
-      // Get the system locale
-      locale = PlatformDispatcher.instance.locale;
     }
-    final code = locale == null || locale.languageCode.isEmpty
-        ? 'en'
-        : locale.languageCode;
+    // Get the system locale
+    locale ??= PlatformDispatcher.instance.locale;
+
+    final code = locale.languageCode.isEmpty ? 'en' : locale.languageCode;
     return code;
   }
 
@@ -157,7 +157,7 @@ class UpgraderMessages {
         break;
       case 'ht':
         message =
-            'Yon nouvo vèsyon {{appName}} disponib! Vèsyon {{currentAppStoreVersion}} disponib, epi ou gen vèsyon {{currentInstalledVersion}}.';
+            'Yon nouvo vèsyon {{appName}} disponib! Vèsyon {{currentAppStoreVersion}} disponib, ou gen vèsyon {{currentInstalledVersion}}.';
         break;
       case 'hu':
         message =
@@ -186,6 +186,10 @@ class UpgraderMessages {
       case 'ko':
         message =
             '{{appName}}이 새 버전으로 업데이트되었습니다! 최신 버전 {{currentAppStoreVersion}}으로 업그레이드 가능합니다 - 현재 버전 {{currentInstalledVersion}}.';
+        break;
+      case 'ku':
+        message =
+            'وەشانی نوێی {{appName}} بەردەستە! وەشانی {{currentAppStoreVersion}} بەردەستە- تۆ وەشانی {{currentInstalledVersion}} دابەزاندوە.';
         break;
       case 'lt':
         message =
@@ -292,7 +296,7 @@ class UpgraderMessages {
         message = 'नज़रअंदाज़ करना';
         break;
       case 'ht':
-        message = 'IGNORE';
+        message = 'INYORE';
         break;
       case 'hu':
         message = 'KIHAGYOM';
@@ -314,6 +318,9 @@ class UpgraderMessages {
         break;
       case 'ko':
         message = '무시';
+        break;
+      case 'ku':
+        message = 'پشتگوێخستن';
         break;
       case 'lt':
         message = 'IGNORUOTI';
@@ -431,6 +438,9 @@ class UpgraderMessages {
       case 'ko':
         message = '나중에';
         break;
+      case 'ku':
+        message = 'دواتر';
+        break;
       case 'lt':
         message = 'ATNAUJINTI VĖLIAU';
         break;
@@ -472,7 +482,6 @@ class UpgraderMessages {
         break;
       case 'zh':
         message = '以后';
-        break;
       case 'en':
       default:
         message = 'LATER';
@@ -543,6 +552,9 @@ class UpgraderMessages {
         break;
       case 'ko':
         message = '지금 업데이트';
+        break;
+      case 'ku':
+        message = 'نوێکردنەوە';
         break;
       case 'lt':
         message = 'ATNAUJINTI DABAR';
@@ -634,7 +646,7 @@ class UpgraderMessages {
         message = 'क्या आप इसे अभी अद्यतन करना चाहेंगे?';
         break;
       case 'ht':
-        message = 'Èske ou vle mete ajou aplikasyon an kounye a?';
+        message = 'Èske ou vle mete aplikasyon an ajou kounye a?';
         break;
       case 'hu':
         message = 'Akarja most frissíteni?';
@@ -656,6 +668,9 @@ class UpgraderMessages {
         break;
       case 'ko':
         message = '지금 업데이트를 시작하시겠습니까?';
+        break;
+      case 'ku':
+        message = 'دەتەوێت ئێستا نوێی بکەیەوە؟';
         break;
       case 'lt':
         message = 'Ar norite atnaujinti dabar?';
@@ -743,6 +758,9 @@ class UpgraderMessages {
       case 'ja':
         message = 'リリースノート';
         break;
+      case 'ku':
+        message = 'تیبینەکانی وەشان';
+        break;
       case 'pt':
         message = 'Novidades';
         break;
@@ -823,7 +841,7 @@ class UpgraderMessages {
         message = 'अद्यतन ऐप?';
         break;
       case 'ht':
-        message = 'Mete ajou app a?';
+        message = 'Mete app la ajou?';
         break;
       case 'hu':
         message = 'FrissÍtés?';
@@ -845,6 +863,9 @@ class UpgraderMessages {
         break;
       case 'ko':
         message = '앱을 업데이트하시겠습니까?';
+        break;
+      case 'ku':
+        message = 'نوێکردنەوەی ئەپ؟';
         break;
       case 'lt':
         message = 'Atnaujinti programą?';
