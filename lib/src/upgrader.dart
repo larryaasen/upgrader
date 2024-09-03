@@ -239,6 +239,37 @@ class Upgrader with WidgetsBindingObserver {
         state.countryCodeOverride ?? findCountryCode(locale: locale);
     if (state.debugLogging) {
       print('upgrader: countryCode: $country');
+      // The  language code of the locale, defaulting to `en`.
+      final language = languageCode ?? findLanguageCode();
+      if (debugLogging) {
+        print('upgrader: languageCode: $language');
+      }
+
+      // Get Android version from Google Play Store, or
+      // get iOS version from iTunes Store.
+      if (upgraderOS.isAndroid) {
+        await _getAndroidStoreVersion(country: country, language: language);
+      } else if (upgraderOS.isIOS) {
+        final iTunes = ITunesSearchAPI();
+        iTunes.debugLogging = debugLogging;
+        iTunes.client = client;
+        final response = await (iTunes
+            .lookupByBundleId(_packageInfo!.packageName, language: language,
+            country:country));
+
+        if (response != null) {
+          _appStoreVersion = iTunes.version(response);
+          _appStoreListingURL = iTunes.trackViewUrl(response);
+          _releaseNotes ??= iTunes.releaseNotes(response);
+          final mav = iTunes.minAppVersion(response);
+          if (mav != null) {
+            minAppVersion = mav.toString();
+            if (debugLogging) {
+              print('upgrader: ITunesResults.minAppVersion: $minAppVersion');
+            }
+          }
+        }
+      }
     }
 
     // Determine the language code of the locale, defaulting to `en`.
