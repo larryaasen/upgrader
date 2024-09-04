@@ -140,9 +140,10 @@ class UpgradeAlertState extends State<UpgradeAlert> {
       displayed = true;
       final appMessages = widget.upgrader.determineMessages(context);
 
-      Future.delayed(const Duration(milliseconds: 0), () {
+      Future.delayed(Duration.zero, () {
         showTheDialog(
           key: widget.dialogKey ?? const Key('upgrader_alert_dialog'),
+          // ignore: use_build_context_synchronously
           context: context,
           title: appMessages.message(UpgraderMessage.title),
           message: widget.upgrader.body(appMessages),
@@ -236,7 +237,7 @@ class UpgradeAlertState extends State<UpgradeAlert> {
       builder: (BuildContext context) {
         return PopScope(
           canPop: onCanPop(),
-          onPopInvoked: (didPop) {
+          onPopInvokedWithResult: (didPop, result) {
             if (widget.upgrader.state.debugLogging) {
               print('upgrader: showTheDialog onPopInvoked: $didPop');
             }

@@ -18,7 +18,7 @@ jobs:
     timeout-minutes: 20
     strategy:
       matrix:
-        flutter-version: ['3.16.0', '3.19.4']
+        flutter-version: ['3.16.0', '3.19.4', '3.24.1']
 
     steps:
       - uses: actions/checkout@v3
@@ -33,7 +33,7 @@ jobs:
 
       - name: Analyze
         run: flutter analyze
-      
+
       - name: Run unit and widget tests
         run: flutter test --coverage --coverage-path=lcov.info
 
