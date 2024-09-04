@@ -1,4 +1,4 @@
-## 10.4.0
+## 11.0.0
 
 - [413] Fixed Haitian Creole messages to use correct grammar. (thanks to @wjeanvilma)
 - [415] Added Kurdish Sorani ('ku') language translation. (thanks to @drpshtiwan)
