@@ -2,6 +2,7 @@
 
 - [413] Fixed Haitian Creole messages to use correct grammar. (thanks to @wjeanvilma)
 - [415] Added Kurdish Sorani ('ku') language translation. (thanks to @drpshtiwan)
+- Minimum Flutter supported version is now 3.22.0, and minimum Dart version is 3.4.0.
 - Minor updates to address deprecation warnings.
 
 ## 10.3.0
