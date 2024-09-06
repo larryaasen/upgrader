@@ -29,7 +29,10 @@ class UpgradeAlert extends StatefulWidget {
     this.showIgnore = true,
     this.showLater = true,
     this.showReleaseNotes = true,
-    this.cupertinoButtonTextStyle,
+    this.buttonsTextStyle,
+    this.laterButtonStyle,
+    this.ignoreButtonStyle,
+    this.updateButtonStyle,
     this.dialogKey,
     this.navigatorKey,
     this.child,
@@ -68,9 +71,22 @@ class UpgradeAlert extends StatefulWidget {
   /// Hide or show release notes (default: true)
   final bool showReleaseNotes;
 
-  /// The text style for the cupertino dialog buttons. Used only for
-  /// [UpgradeDialogStyle.cupertino]. Optional.
-  final TextStyle? cupertinoButtonTextStyle;
+  /// The text style for the all buttons.
+  /// if [TextStyle] for specific button is passed then this style will be ignored
+  /// for that specific button
+  final TextStyle? buttonsTextStyle;
+
+  /// The text style for the ignore button.
+  /// This will overide the [buttonsTextStyle].
+  final TextStyle? ignoreButtonStyle;
+
+  /// The text style for the later button.
+  /// This will overide the [buttonsTextStyle].
+  final TextStyle? laterButtonStyle;
+
+  /// The text style for the update button.
+  /// This will overide the [buttonsTextStyle].
+  final TextStyle? updateButtonStyle;
 
   /// The [Key] assigned to the dialog when it is shown.
   final GlobalKey? dialogKey;
@@ -320,14 +336,40 @@ class UpgradeAlertState extends State<UpgradeAlert> {
           ],
         )));
     final actions = <Widget>[
+      //
+      // ignore button
       if (showIgnore)
-        button(cupertino, messages.message(UpgraderMessage.buttonTitleIgnore),
-            context, () => onUserIgnored(context, true)),
+        _button(
+          _DialogButtons.ignore,
+          cupertino,
+          messages.message(UpgraderMessage.buttonTitleIgnore),
+          context,
+          () => onUserIgnored(context, true),
+        ),
+
+      //
+      // later button
       if (showLater)
-        button(cupertino, messages.message(UpgraderMessage.buttonTitleLater),
-            context, () => onUserLater(context, true)),
-      button(cupertino, messages.message(UpgraderMessage.buttonTitleUpdate),
-          context, () => onUserUpdated(context, !widget.upgrader.blocked())),
+        _button(
+          _DialogButtons.later,
+          cupertino,
+          messages.message(UpgraderMessage.buttonTitleLater),
+          context,
+          () => onUserLater(context, true),
+        ),
+
+      //
+      // update button
+      _button(
+        _DialogButtons.update,
+        cupertino,
+        messages.message(UpgraderMessage.buttonTitleUpdate),
+        context,
+        () => onUserUpdated(
+          context,
+          !widget.upgrader.blocked(),
+        ),
+      ),
     ];
 
     return cupertino
@@ -337,13 +379,41 @@ class UpgradeAlertState extends State<UpgradeAlert> {
             key: key, title: textTitle, content: content, actions: actions);
   }
 
-  Widget button(bool cupertino, String? text, BuildContext context,
-      VoidCallback? onPressed) {
+  Widget _button(_DialogButtons dialogButton, bool cupertino, String? text,
+      BuildContext context, VoidCallback? onPressed) {
+    TextStyle? buttonStyle;
+
+    //
+    // check for the botton and load desired style for button
+    if (dialogButton == _DialogButtons.ignore) {
+      buttonStyle = widget.ignoreButtonStyle ?? widget.buttonsTextStyle;
+    } else if (dialogButton == _DialogButtons.later) {
+      buttonStyle = widget.laterButtonStyle ?? widget.buttonsTextStyle;
+    } else {
+      buttonStyle = widget.updateButtonStyle ?? widget.buttonsTextStyle;
+    }
+
+    //
+    // build action button
     return cupertino
         ? CupertinoDialogAction(
-            textStyle: widget.cupertinoButtonTextStyle,
+            textStyle: buttonStyle,
             onPressed: onPressed,
-            child: Text(text ?? ''))
-        : TextButton(onPressed: onPressed, child: Text(text ?? ''));
+            child: Text(text ?? ''),
+          )
+        : TextButton(
+            onPressed: onPressed,
+            child: Text(
+              text ?? '',
+              style: buttonStyle,
+            ),
+          );
   }
+}
+
+enum _DialogButtons {
+  // ignore: unused_field
+  ignore,
+  later,
+  update,
 }
