@@ -303,7 +303,7 @@ class Upgrader with WidgetsBindingObserver {
       rv = false;
     } else if (isBlocked) {
       rv = true;
-    } else if (isTooSoon() || alreadyIgnoredThisVersion()) {
+    } else if (alreadyIgnoredThisVersion()) {
       rv = false;
     }
     if (state.debugLogging) {
