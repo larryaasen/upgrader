@@ -40,7 +40,7 @@ class ITunesSearchAPI {
     }
 
     final url = lookupURLByBundleId(bundleId,
-        country: country ??= '', language: language ?? '', useCacheBuster:
+        country: country ?? '', language: language ?? '', useCacheBuster:
         useCacheBuster)!;
     if (debugLogging) {
       print('upgrader: download: $url');
