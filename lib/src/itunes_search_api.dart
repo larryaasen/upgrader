@@ -32,16 +32,18 @@ class ITunesSearchAPI {
   /// ```lookupURLByBundleId('com.google.Maps');```
   /// ```lookupURLByBundleId('com.google.Maps', country: 'FR');```
   Future<Map?> lookupByBundleId(String bundleId,
-      {String? country = 'US',String? language = 'en', bool useCacheBuster =
-      true}) async {
+      {String? country = 'US',
+      String? language = 'en',
+      bool useCacheBuster = true}) async {
     assert(bundleId.isNotEmpty);
     if (bundleId.isEmpty) {
       return null;
     }
 
     final url = lookupURLByBundleId(bundleId,
-        country: country ?? '', language: language ?? '', useCacheBuster:
-        useCacheBuster)!;
+        country: country ?? '',
+        language: language ?? '',
+        useCacheBuster: useCacheBuster)!;
     if (debugLogging) {
       print('upgrader: download: $url');
     }
@@ -96,16 +98,18 @@ class ITunesSearchAPI {
   /// ```lookupURLByBundleId('com.google.Maps');```
   /// ```lookupURLByBundleId('com.google.Maps', country: 'FR');```
   String? lookupURLByBundleId(String bundleId,
-      {String country = 'US', String language = 'en', bool useCacheBuster =
-      true}) {
+      {String country = 'US',
+      String language = 'en',
+      bool useCacheBuster = true}) {
     if (bundleId.isEmpty) {
       return null;
     }
 
-    return lookupURLByQSP(
-        {'bundleId': bundleId, 'country': country.toUpperCase(),
-          'lang': language},
-        useCacheBuster: useCacheBuster);
+    return lookupURLByQSP({
+      'bundleId': bundleId,
+      'country': country.toUpperCase(),
+      'lang': language
+    }, useCacheBuster: useCacheBuster);
   }
 
   /// Look up URL by id.
