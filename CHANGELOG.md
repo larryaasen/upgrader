@@ -1,3 +1,7 @@
+## 11.2.0
+
+- [432] On CupertinoAlertDialog configured CupertinoActionButton isDefaultAction property for the Update button. Thanks to @lukemmtt for the change.
+
 ## 11.1.0
 
 - [439] Added: Passed the language code to iTunes search api to get localized release notes for the iOS App Store. Thanks to @ibraheemalayan and @Add00w for the changes.
