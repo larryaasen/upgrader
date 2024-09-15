@@ -1,11 +1,11 @@
 name: upgrader
 description: Flutter package for prompting users to upgrade when there is a newer version of the app in the store.
-version: 10.3.0
+version: 11.2.0
 homepage: https://github.com/larryaasen/upgrader
 
 environment:
-  sdk: '>=3.1.0 <4.0.0'
-  flutter: ">=3.16.0"
+  sdk: '>=3.5.0 <4.0.0'
+  flutter: ">=3.24.0"
 
 dependencies:
   flutter:
@@ -44,7 +44,7 @@ dev_dependencies:
 
   # From Dart Team: Mock library for Dart inspired by Mockito.
   mockito: ^5.4.3
-  flutter_lints: ^2.0.3
-  go_router: ^7.1.1
+  flutter_lints: ^4.0.0
+  go_router: ^14.2.7
 
 flutter:

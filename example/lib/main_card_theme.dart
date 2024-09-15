@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
     textButtonTheme: const TextButtonThemeData(
       style: ButtonStyle(
         // Change the color of the text buttons.
-        foregroundColor: MaterialStatePropertyAll(Colors.orange),
+        foregroundColor: WidgetStatePropertyAll(Colors.orange),
       ),
     ),
   );

@@ -34,7 +34,7 @@ typedef WillDisplayUpgradeCallback = void Function({
 /// Creates a shared instance of [Upgrader].
 Upgrader _sharedInstance = Upgrader();
 
-/// An upgrade controllerthat maintains a [state] that is used to
+/// An upgrade controller that maintains a [state] that is used to
 /// trigger an alert or other UI to evaluate upgrading criteria.
 ///
 /// See also:
