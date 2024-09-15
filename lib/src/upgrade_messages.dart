@@ -135,6 +135,10 @@ class UpgraderMessages {
         message =
             'نسخه‌ی جدیدی از {{appName}} موجود است! نسخه‌ی {{currentAppStoreVersion}} در دسترس است ولی شما همچنان از نسخه‌ی {{currentInstalledVersion}} استفاده می‌کنید.';
         break;
+      case 'ps':
+        message =
+            'د {{appName}} آپلیکشن  نوې نسخه شتون لري! {{currentAppStoreVersion}} شتون لري، مګر تاسو اوس هم {{currentInstalledVersion}} کاروئ.';
+        break;
       case 'fil':
         message =
             'May bagong bersyon ang {{appName}} na pwede nang magamit! Ang bersyong {{currentAppStoreVersion}} ay pwede nang magamit. Ikaw ay kasalukuyang gumagamit ng bersyong {{currentInstalledVersion}}.';
@@ -280,6 +284,9 @@ class UpgraderMessages {
       case 'fa':
         message = 'ردکردن';
         break;
+      case 'ps':
+        message = 'ردکول';
+        break;
       case 'fil':
         message = 'HUWAG PANSININ';
         break;
@@ -399,6 +406,9 @@ class UpgraderMessages {
       case 'fa':
         message = 'بعدا';
         break;
+      case 'ps':
+        message = 'وروسته';
+        break;
       case 'fil':
         message = 'MAMAYA';
         break;
@@ -513,6 +523,9 @@ class UpgraderMessages {
         break;
       case 'fa':
         message = 'بروزرسانی';
+        break;
+      case 'ps':
+        message = 'اوس تازه کړئ';
         break;
       case 'fil':
         message = 'I-UPDATE NA NGAYON';
@@ -629,6 +642,9 @@ class UpgraderMessages {
         break;
       case 'fa':
         message = 'آیا بروزرسانی می‌کنید؟';
+        break;
+      case 'ps':
+        message = 'آی غواړئ دا اوس تازه کړئ؟';
         break;
       case 'fil':
         message = 'Gusto mo bang i-update ito ngayon?';
@@ -777,6 +793,7 @@ class UpgraderMessages {
       case 'bn':
       case 'el':
       case 'fa':
+      case 'ps':
       case 'fil':
       case 'ht':
       case 'hu':
@@ -824,6 +841,9 @@ class UpgraderMessages {
         break;
       case 'fa':
         message = 'نسخه‌ی جدید';
+        break;
+      case 'ps':
+        message = 'نوې نسخه';
         break;
       case 'fil':
         message = 'I-update ang app?';
