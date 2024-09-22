@@ -609,7 +609,7 @@ All [comments](https://github.com/larryaasen/upgrader/issues) and [pull requests
 
 ## Donations / Sponsor
 
-Please sponsor or donate to the creator of `upgrader` on [Flattr](https://flattr.com/@larryaasen) or [Patreon](https://www.patreon.com/larryaasen).
+Please sponsor or donate to the creator of `upgrader` on [Patreon](https://www.patreon.com/larryaasen).
 
 ## Builds
 
