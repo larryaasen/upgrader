@@ -1,7 +1,18 @@
-## Next
+## 11.2.0
+
+- [432] On CupertinoAlertDialog configured CupertinoActionButton isDefaultAction property for the Update button. Thanks to @lukemmtt for the change.
+- Removed old travis.yaml CI file.
+
+## 11.1.0
+
+- [439] Added: Passed the language code to iTunes search api to get localized release notes for the iOS App Store. Thanks to @ibraheemalayan and @Add00w for the changes.
+
+## 11.0.0
 
 - [413] Fixed Haitian Creole messages to use correct grammar. (thanks to @wjeanvilma)
 - [415] Added Kurdish Sorani ('ku') language translation. (thanks to @drpshtiwan)
+- Minimum Flutter supported version is now 3.24.0, and minimum Dart version is 3.5.0.
+- Minor updates to address deprecation warnings.
 
 ## 10.3.0
 
@@ -662,12 +673,12 @@ the US. The country code can be overriden with the optional `countryCode` parame
 
 ## 0.10.4
 
-* Updated dependency xml to ">=3.5.0 <5.0.0" to improve score on pub.dev in the 
+* Updated dependency xml to ">=3.5.0 <5.0.0" to improve score on pub.dev in the
 Maintenance issues and suggestions section.
 
 ## 0.10.3
 
-* Updated depenency flutter_device_locale to 0.4.0, and xml to 3.5.0, to improve score on pub.dev in the 
+* Updated depenency flutter_device_locale to 0.4.0, and xml to 3.5.0, to improve score on pub.dev in the
 Maintenance issues and suggestions section.
 
 ## 0.10.2
@@ -683,7 +694,7 @@ Maintenance issues and suggestions section.
 
 * Added options to hide ignore and later buttons. (Thanks to Karthik Ponnam)
 * Added option to close alert dialog on tap outside of alert dialog. (Thanks to Karthik Ponnam)
-* 
+*
 
 ## 0.9.0
 
@@ -743,7 +754,7 @@ defaults to debug logging on, and added command line app to evaluate the iTunes 
 * added many customizations to the widget including callbacks for onIgnore, onLater, and onUpdate
 * updated the README screenshot
 * updated tests, improved README
-* broke out widget into new file 
+* broke out widget into new file
 
 ## 0.1.0
 

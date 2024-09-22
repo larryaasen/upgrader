@@ -183,7 +183,7 @@ class MyUpgraderMessages extends UpgraderMessages {
   @override
   String get buttonTitleIgnore => 'My Ignore 1';
 
-  MyUpgraderMessages({String? code}) : super(code: code);
+  MyUpgraderMessages({super.code});
 
   /// Override the message function to provide your own language localization.
   @override

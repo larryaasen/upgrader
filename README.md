@@ -1,6 +1,5 @@
 # Upgrader
 
-[![Build Status](https://travis-ci.com/larryaasen/upgrader.svg?branch=master)](https://app.travis-ci.com/github/larryaasen/upgrader)
 [![codecov](https://codecov.io/gh/larryaasen/upgrader/branch/master/graph/badge.svg)](https://app.codecov.io/gh/larryaasen/upgrader)
 [![pub package](https://img.shields.io/pub/v/upgrader.svg)](https://pub.dartlang.org/packages/upgrader)
 [![GitHub Stars](https://img.shields.io/github/stars/larryaasen/upgrader.svg)](https://github.com/larryaasen/upgrader/stargazers)
@@ -11,7 +10,7 @@
 
 A Flutter package for prompting users to upgrade when there is a newer version of the app in the store.
 
-## Overview 
+## Overview
 
 When a newer app version is available in the app store, a simple alert prompt or card is
 displayed.
@@ -47,7 +46,8 @@ Tapping the UPDATE NOW button takes the user to the App Store (iOS) or Google Pl
 
 ## Alert Example
 
-Just wrap your home widget in the `UpgradeAlert` widget, and it will handle the rest.
+Just wrap your home widget in the `UpgradeAlert` widget, and it will handle the rest. Make sure `UpgradeAlert`
+is below `MaterialApp` in the widget tree.
 ```dart
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -225,7 +225,7 @@ description field.
 ## Go Router
 
 When using GoRouter (package go_router) with upgrader, you may need to provide
-a navigatorKey to the ```UpgradeAlert``` widget so that the correct route 
+a navigatorKey to the ```UpgradeAlert``` widget so that the correct route
 context is used. Below is part of the code you will need for this. Also,
 checkout the [example/lib/main-gorouter.dart](example/lib/main-gorouter.dart) example for a more complete example.
 
@@ -609,14 +609,10 @@ All [comments](https://github.com/larryaasen/upgrader/issues) and [pull requests
 
 ## Donations / Sponsor
 
-Please sponsor or donate to the creator of `upgrader` on [Flattr](https://flattr.com/@larryaasen) or [Patreon](https://www.patreon.com/larryaasen).
+Please sponsor or donate to the creator of `upgrader` on [Patreon](https://www.patreon.com/larryaasen).
 
 ## Builds
 
-[![Build Status](https://travis-ci.com/larryaasen/upgrader.svg?branch=master)](https://app.travis-ci.com/github/larryaasen/upgrader)
-
 [![Codemagic](https://api.codemagic.io/apps/5ffb7888eb8402dcd1928753/flutter-package/status_badge.svg)](https://codemagic.io/apps/5ffb7888eb8402dcd1928753/flutter-package/latest_build)
-
-[![CircleCI](https://dl.circleci.com/status-badge/img/gh/larryaasen/upgrader/tree/master.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/larryaasen/upgrader/tree/master)
 
 [![GitHub main workflow](https://github.com/larryaasen/upgrader/actions/workflows/main.yml/badge.svg)](https://github.com/larryaasen/upgrader/actions/workflows/main.yml)
