@@ -135,6 +135,7 @@ class UpgraderMessages {
         message =
             'نسخه‌ی جدیدی از {{appName}} موجود است! نسخه‌ی {{currentAppStoreVersion}} در دسترس است ولی شما همچنان از نسخه‌ی {{currentInstalledVersion}} استفاده می‌کنید.';
         break;
+
       case 'fil':
         message =
             'May bagong bersyon ang {{appName}} na pwede nang magamit! Ang bersyong {{currentAppStoreVersion}} ay pwede nang magamit. Ikaw ay kasalukuyang gumagamit ng bersyong {{currentInstalledVersion}}.';
@@ -214,6 +215,10 @@ class UpgraderMessages {
       case 'pl':
         message =
             'Nowa wersja {{appName}} jest dostępna! Wersja {{currentAppStoreVersion}} jest dostępna, Ty masz {{currentInstalledVersion}}.';
+        break;
+      case 'ps':
+        message =
+            'د {{appName}} آپلیکشن  نوې نسخه شتون لري! {{currentAppStoreVersion}} شتون لري، مګر تاسو اوس هم {{currentInstalledVersion}} کاروئ.';
         break;
       case 'ru':
         message =
@@ -340,6 +345,9 @@ class UpgraderMessages {
       case 'pl':
         message = 'IGNORUJ';
         break;
+      case 'ps':
+        message = 'ردکول';
+        break;
       case 'ru':
         message = 'НЕТ';
         break;
@@ -399,6 +407,7 @@ class UpgraderMessages {
       case 'fa':
         message = 'بعدا';
         break;
+
       case 'fil':
         message = 'MAMAYA';
         break;
@@ -459,6 +468,9 @@ class UpgraderMessages {
       case 'pl':
         message = 'PÓŹNIEJ';
         break;
+      case 'ps':
+        message = 'وروسته';
+        break;
       case 'ru':
         message = 'ПОЗЖЕ';
         break;
@@ -514,6 +526,7 @@ class UpgraderMessages {
       case 'fa':
         message = 'بروزرسانی';
         break;
+
       case 'fil':
         message = 'I-UPDATE NA NGAYON';
         break;
@@ -574,6 +587,9 @@ class UpgraderMessages {
       case 'pl':
         message = 'AKTUALIZUJ';
         break;
+      case 'ps':
+        message = 'اوس تازه کړئ';
+        break;
       case 'ru':
         message = 'ОБНОВИТЬ';
         break;
@@ -630,6 +646,7 @@ class UpgraderMessages {
       case 'fa':
         message = 'آیا بروزرسانی می‌کنید؟';
         break;
+
       case 'fil':
         message = 'Gusto mo bang i-update ito ngayon?';
         break;
@@ -689,6 +706,9 @@ class UpgraderMessages {
         break;
       case 'pl':
         message = 'Czy chciałbyś zaktualizować teraz?';
+        break;
+      case 'ps':
+        message = 'آی غواړئ دا اوس تازه کړئ؟';
         break;
       case 'ru':
         message = 'Хотите обновить сейчас?';
@@ -788,6 +808,7 @@ class UpgraderMessages {
       case 'nb':
       case 'nl':
       case 'pl':
+      case 'ps':
       case 'sv':
       case 'ta':
       case 'uk':
@@ -884,6 +905,9 @@ class UpgraderMessages {
         break;
       case 'pl':
         message = 'Czy zaktualizować aplikację?';
+        break;
+      case 'ps':
+        message = 'نوې نسخه';
         break;
       case 'ru':
         message = 'Обновить?';
