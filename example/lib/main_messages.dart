@@ -59,6 +59,7 @@ class MyApp extends StatelessWidget {
         Locale('nl', ''), // Dutch, no country code
         Locale('pt', ''), // Portuguese, no country code
         Locale('pl', ''), // Polish, no country code
+        Locale('ps', ''), // Pashto, no country code
         Locale('ru', ''), // Russian, no country code
         Locale('sv', ''), // Swedish, no country code
         Locale('ta', ''), // Tamil, no country code
@@ -157,6 +158,7 @@ class DemoLocalizationsDelegate
         'nl',
         'pt',
         'pl',
+        'ps',
         'ru',
         'sv',
         'ta',

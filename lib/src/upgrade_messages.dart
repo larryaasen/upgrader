@@ -1,6 +1,4 @@
-/*
- * Copyright (c) 2020-2022 Larry Aasen. All rights reserved.
- */
+// Copyright (c) 2020-2024 Larry Aasen. All rights reserved.
 
 import 'dart:ui';
 
@@ -135,7 +133,6 @@ class UpgraderMessages {
         message =
             'نسخه‌ی جدیدی از {{appName}} موجود است! نسخه‌ی {{currentAppStoreVersion}} در دسترس است ولی شما همچنان از نسخه‌ی {{currentInstalledVersion}} استفاده می‌کنید.';
         break;
-
       case 'fil':
         message =
             'May bagong bersyon ang {{appName}} na pwede nang magamit! Ang bersyong {{currentAppStoreVersion}} ay pwede nang magamit. Ikaw ay kasalukuyang gumagamit ng bersyong {{currentInstalledVersion}}.';
@@ -387,9 +384,6 @@ class UpgraderMessages {
     String message;
     switch (languageCode) {
       case 'ar':
-        //only minor change here, removing the character at the left top of the arabic word (لاحقاً)
-        // before: message = 'لاحقاً';
-        //now:
         message = 'لاحقا';
         break;
       case 'bn':
@@ -407,7 +401,6 @@ class UpgraderMessages {
       case 'fa':
         message = 'بعدا';
         break;
-
       case 'fil':
         message = 'MAMAYA';
         break;
@@ -526,7 +519,6 @@ class UpgraderMessages {
       case 'fa':
         message = 'بروزرسانی';
         break;
-
       case 'fil':
         message = 'I-UPDATE NA NGAYON';
         break;
@@ -646,7 +638,6 @@ class UpgraderMessages {
       case 'fa':
         message = 'آیا بروزرسانی می‌کنید؟';
         break;
-
       case 'fil':
         message = 'Gusto mo bang i-update ito ngayon?';
         break;

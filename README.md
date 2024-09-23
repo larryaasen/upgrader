@@ -401,6 +401,7 @@ Languages supported:
 * Norwegian ('nb')
 * Persian ('fa')
 * Polish ('pl')
+* Pashto ('ps')
 * Portuguese ('pt')
 * Russian ('ru')
 * Spanish ('es')

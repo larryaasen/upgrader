@@ -1,6 +1,7 @@
 ## 11.2.0
 
 - [432] On CupertinoAlertDialog configured CupertinoActionButton isDefaultAction property for the Update button. Thanks to @lukemmtt for the change.
+- Added new language translations for Pashto ('ps'). (thanks to @isshort)
 - Removed old travis.yaml CI file.
 
 ## 11.1.0
