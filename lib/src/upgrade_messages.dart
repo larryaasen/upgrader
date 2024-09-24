@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 /// This allows a value of type T or T? to be treated as a value of type T?.
 ///
 /// We use this so that APIs that have become non-nullable can still be used
-/// with `!` and `?` to support older versions of the API as well.
+/// with `!` and `?` to support older versions of the API as w ell.
 T? ambiguate<T>(T? value) => value;
 
 /// The message identifiers used in upgrader.
@@ -150,8 +150,8 @@ class UpgraderMessages {
             'גרסה חדשה של {{appName}} קיימת! גרסה {{currentAppStoreVersion}} ניתנת להורדה-יש לך גרסה {{currentInstalledVersion}}.';
         break;
       case 'hi':
-        message =
-            '{{app name}} का एक नया संस्करण उपलब्ध है। संस्करण {{currentAppStoreVersion}} अब उपलब्ध है-आपके पास है {{currentInstalledVersion}}.';
+        message = 
+          '{{app name}} का एक नया संस्करण उपलब्ध है। आपके पास संस्करण {{currentInstalledVersion}} है, लेकिन अब {{currentAppStoreVersion}} उपलब्ध है।';
         break;
       case 'ht':
         message =
@@ -295,7 +295,7 @@ class UpgraderMessages {
         message = 'התעלם';
         break;
       case 'hi':
-        message = 'नज़रअंदाज़ करना';
+        message = 'नज़रअंदाज़ करें';
         break;
       case 'ht':
         message = 'INYORE';
@@ -414,7 +414,7 @@ class UpgraderMessages {
         message = 'אחר-כך';
         break;
       case 'hi':
-        message = 'बाद में';
+        message = 'बाद में करें';
         break;
       case 'ht':
         message = 'PITA';
@@ -532,7 +532,7 @@ class UpgraderMessages {
         message = 'עדכן';
         break;
       case 'hi':
-        message = 'अभी अद्यतन करें';
+        message = 'अभी नया संस्करण स्थापित करें';
         break;
       case 'ht':
         message = 'MIZAJOU KOUNYE A';
@@ -651,7 +651,7 @@ class UpgraderMessages {
         message = 'האם תרצה לעדכן עכשיו?';
         break;
       case 'hi':
-        message = 'क्या आप इसे अभी अद्यतन करना चाहेंगे?';
+        message = 'क्या आप इसे अभी नया संस्करण स्थापित करना चाहेंगे?';
         break;
       case 'ht':
         message = 'Èske ou vle mete aplikasyon an ajou kounye a?';
@@ -758,7 +758,7 @@ class UpgraderMessages {
         message = 'חדש בגרסה';
         break;
       case 'hi':
-        message = 'रिहाई टिप्पणी';
+        message = 'नए संस्करण का विवरण';
         break;
       case 'id':
         message = 'Catatan Rilis';
@@ -850,7 +850,7 @@ class UpgraderMessages {
         message = 'לעדכן יישומון?';
         break;
       case 'hi':
-        message = 'अद्यतन ऐप?';
+        message = 'ऐप का नया संस्करण स्थापित करें?';
         break;
       case 'ht':
         message = 'Mete app la ajou?';
