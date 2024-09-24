@@ -150,8 +150,8 @@ class UpgraderMessages {
             'גרסה חדשה של {{appName}} קיימת! גרסה {{currentAppStoreVersion}} ניתנת להורדה-יש לך גרסה {{currentInstalledVersion}}.';
         break;
       case 'hi':
-        message = 
-          '{{app name}} का एक नया संस्करण उपलब्ध है। आपके पास संस्करण {{currentInstalledVersion}} है, लेकिन अब {{currentAppStoreVersion}} उपलब्ध है।';
+        message =
+            '{{app name}} का एक नया संस्करण उपलब्ध है। आपके पास संस्करण {{currentInstalledVersion}} है, लेकिन अब {{currentAppStoreVersion}} उपलब्ध है।';
         break;
       case 'ht':
         message =

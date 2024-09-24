@@ -1,3 +1,7 @@
+## 11.3.0
+
+- [429] Improved the Hindi ('hi') translations. (thanks to @aruhant)
+
 ## 11.2.0
 
 - [432] On CupertinoAlertDialog configured CupertinoActionButton isDefaultAction property for the Update button. Thanks to @lukemmtt for the change.
