@@ -1,6 +1,6 @@
-/*
- * Copyright (c) 2019-2023 Larry Aasen. All rights reserved.
- */
+// Copyright (c) 2024 Larry Aasen. All rights reserved.
+
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:upgrader/upgrader.dart';
@@ -14,16 +14,29 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final _upgrader = Upgrader();
+
+  @override
+  void initState() {
+    Future.delayed(const Duration(seconds: 3), _updateMessages);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Upgrader Card Example',
+      title: 'Upgrader Card Update Example',
       theme: ThemeData(colorScheme: const ColorScheme.light()),
       home: Scaffold(
-        appBar: AppBar(title: const Text('Upgrader Card Example')),
+        appBar: AppBar(title: const Text('Upgrader Card Update Example')),
         body: Container(
           margin: const EdgeInsets.only(left: 12.0, right: 12.0),
           child: SingleChildScrollView(
@@ -31,7 +44,7 @@ class MyApp extends StatelessWidget {
               children: [
                 _simpleCard,
                 _simpleCard,
-                UpgradeCard(),
+                UpgradeCard(upgrader: _upgrader),
                 _simpleCard,
                 _simpleCard,
               ],
@@ -49,4 +62,14 @@ class MyApp extends StatelessWidget {
           child: Center(child: Text('Card')),
         ),
       );
+
+  void _updateMessages() {
+    _upgrader
+        .updateState(_upgrader.state.copyWith(messages: MyUpgraderMessages()));
+  }
+}
+
+class MyUpgraderMessages extends UpgraderMessages {
+  @override
+  String get body => 'The message has been updated.';
 }
