@@ -4,7 +4,9 @@ import 'dart:async';
 
 import 'package:version/version.dart';
 
+import '../model/huawei_app_info/app_info_response.dart';
 import 'appcast.dart';
+import 'huawei_store_search_api.dart';
 import 'itunes_search_api.dart';
 import 'play_store_search_api.dart';
 import 'upgrade_os.dart';
@@ -145,6 +147,120 @@ class UpgraderPlayStore extends UpgraderStore {
     if (state.debugLogging) {
       print('upgrader: UpgraderPlayStore: version info: $versionInfo');
     }
+    return versionInfo;
+  }
+}
+
+class UpgraderHuaweiStore extends UpgraderStore {
+  /// Required parameters for the Huawei Store API: appId, clientId, clientSecret.
+  final String appId;
+  final String clientId;
+  final String clientSecret;
+
+  /// Constructor initializes the necessary parameters for API requests.
+  UpgraderHuaweiStore({
+    required this.appId,
+    required this.clientId,
+    required this.clientSecret,
+  });
+
+  /// Fetches the version info from Huawei AppGallery, processes the data, and returns
+  /// [UpgraderVersionInfo] with version, release notes, minimum supported version, etc.
+  @override
+  Future<UpgraderVersionInfo> getVersionInfo({
+    required UpgraderState state,
+    required Version installedVersion,
+    required String? country,
+    required String? language,
+  }) async {
+    // Return early if packageInfo is not available
+    if (state.packageInfo == null) return UpgraderVersionInfo();
+
+    // Initialize Huawei Store API client
+    final huaweiStore = HuaweiStoreSearchAPI(
+      client: state.client,
+      clientHeaders: state.clientHeaders,
+    );
+    huaweiStore.debugLogging = state.debugLogging;
+
+    // Initialize variables to hold version information, release notes, etc.
+    String? huaweiStoreListingURL;
+    Version? huaweiStoreVersion;
+    bool? isCriticalUpdate;
+    Version? minAppVersion;
+    String? releaseNotes;
+
+    // Fetch app information from Huawei Store by appId
+    final AppInfoResponse? appInfoResponse = await huaweiStore.lookupById(
+      appId: appId,
+      clientId: clientId,
+      clientSecret: clientSecret,
+    );
+
+    // If a valid response is received, process the version details
+    if (appInfoResponse != null && appInfoResponse.ret?.code == 0) {
+      // Parse the app version
+      final version = appInfoResponse.appInfo?.versionNumber;
+      if (version != null) {
+        try {
+          huaweiStoreVersion = Version.parse(version);
+        } catch (e) {
+          if (state.debugLogging) {
+            print(
+                'upgrader: UpgraderHuaweiStore.appStoreVersion "$version" exception: $e');
+          }
+        }
+      }
+
+      // Build the AppGallery listing URL
+      huaweiStoreListingURL ??= huaweiStore.lookupURLById(
+        appId,
+        language: language,
+        country: country,
+      );
+
+      // Extract release notes from the first available language
+      releaseNotes ??= appInfoResponse.languages?[0].newFeatures;
+
+      // Simulate minimum supported app version if not available in app info
+      String appDesc = "${appInfoResponse.languages?[0].appDesc ?? ''} "
+          "[Minimum supported app version: 3.0.1]";
+
+      // Extract and validate the minimum supported app version
+      final mav = huaweiStore.minAppVersion(appDesc);
+      if (mav != null) {
+        try {
+          minAppVersion = Version.parse(mav.toString());
+
+          if (state.debugLogging) {
+            print(
+                'upgrader: UpgraderHuaweiStore.minAppVersion: $minAppVersion');
+          }
+        } catch (e) {
+          if (state.debugLogging) {
+            print('upgrader: UpgraderHuaweiStore.minAppVersion exception: $e');
+          }
+        }
+      }
+    } else {
+      // Log an error if the app info response is null or unsuccessful
+      print('Upgrader Huawei Store response: null or failed');
+    }
+
+    // Construct version information to be returned
+    final versionInfo = UpgraderVersionInfo(
+      installedVersion: installedVersion,
+      appStoreListingURL: huaweiStoreListingURL,
+      appStoreVersion: huaweiStoreVersion,
+      isCriticalUpdate: isCriticalUpdate,
+      minAppVersion: minAppVersion,
+      releaseNotes: releaseNotes,
+    );
+
+    if (state.debugLogging) {
+      print('upgrader: UpgraderHuaweiStore: version info: $versionInfo');
+    }
+
     return versionInfo;
   }
 }
