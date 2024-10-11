@@ -96,6 +96,16 @@ class UpgraderMessages {
     return code;
   }
 
+  String get upgradeAvailable => switch (languageCode) {
+        'da' => 'Ny opdatering tilgængelig!',
+        _ => 'New update available!',
+      };
+
+  String get newInThisVersion => switch (languageCode) {
+        'da' => 'Nyt i denne version',
+        _ => 'New in this version',
+      };
+
   /// The body of the upgrade message. This string supports mustache style
   /// template variables:
   ///   {{appName}}
