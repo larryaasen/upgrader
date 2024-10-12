@@ -1,6 +1,8 @@
 ## 11.3.0
 
 - [429] Improved the Hindi ('hi') translations. (thanks to @aruhant)
+- [456] Fixed Italian ('it') language translations. (thanks to @marcorizza)
+- [459] Allowed for device_info_plus 11.0.0.
 
 ## 11.2.0
 

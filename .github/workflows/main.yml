@@ -15,7 +15,7 @@ on:
 jobs:
   build-and-test:
     runs-on: macos-latest
-    timeout-minutes: 20
+    timeout-minutes: 40
     strategy:
       matrix:
         flutter-version: ['3.24.0', '3.24.3']
