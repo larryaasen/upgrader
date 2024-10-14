@@ -83,7 +83,7 @@ class _UpgradeAnnouncer extends State<UpgradeAnnouncer> {
               content: Builder(
                 builder: (context) => TextButton(
                   onPressed: mounted
-                      ? () => _infoBottomSheet(context, releaseNotes, _upgrader)
+                      ? () => _showBottomSheet(context, releaseNotes, _upgrader)
                       : null,
                   child: Row(
                     children: [
@@ -114,7 +114,7 @@ class _UpgradeAnnouncer extends State<UpgradeAnnouncer> {
     });
   }
 
-  _infoBottomSheet(
+  _showBottomSheet(
       BuildContext context, String? releaseNotes, Upgrader upgrader) {
     showModalBottomSheet(
       backgroundColor: widget.bottomSheetBackgroundColor,
