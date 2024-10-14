@@ -106,6 +106,11 @@ class UpgraderMessages {
         _ => 'New in this version',
       };
 
+  String get noAvailableReleaseNotes => switch (languageCode) {
+        'da' => 'Ingen tilgængelige udgivelsesnoter',
+        _ => 'No available release notes',
+      };
+
   /// The body of the upgrade message. This string supports mustache style
   /// template variables:
   ///   {{appName}}

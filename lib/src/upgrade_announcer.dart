@@ -1,35 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:upgrader/upgrader.dart';
 
+typedef UpgradeAnnouncerBottomSheetBuilder = Widget Function(
+    BuildContext context, VoidCallback goToAppStore, String? releaseNotes);
+
 class UpgradeAnnouncer extends StatefulWidget {
   final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey;
+  final Upgrader? upgrader;
   final Color? backgroundColor;
+  final double bottomSheetHeightFactor;
   final Color? bottomSheetBackgroundColor;
-  final Widget Function(
-          BuildContext context, Upgrader upgrader, String releaseNotes)?
-      bottomSheetBuilder;
-  final TextStyle? titleTextStyle;
+  final UpgradeAnnouncerBottomSheetBuilder? bottomSheetBuilder;
   final TextStyle? bottomSheetTitleTextStyle;
   final TextStyle? bottomSheetReleaseNotesTextStyle;
+  final TextStyle? titleTextStyle;
   final IconData? infoIcon;
   final Color? infoIconColor;
   final IconData? downloadIcon;
   final Color? downloadIconColor;
+  final bool forceShow;
   final Widget child;
 
   const UpgradeAnnouncer({
     super.key,
     required this.scaffoldMessengerKey,
+    this.upgrader,
     this.backgroundColor,
+    this.bottomSheetHeightFactor = .6,
     this.bottomSheetBackgroundColor,
     this.bottomSheetBuilder,
-    this.titleTextStyle,
     this.bottomSheetTitleTextStyle,
     this.bottomSheetReleaseNotesTextStyle,
+    this.titleTextStyle,
     this.infoIcon,
     this.infoIconColor,
     this.downloadIcon,
     this.downloadIconColor,
+    this.forceShow = false,
     required this.child,
   });
 
@@ -38,7 +45,7 @@ class UpgradeAnnouncer extends StatefulWidget {
 }
 
 class _UpgradeAnnouncer extends State<UpgradeAnnouncer> {
-  final _upgrader = Upgrader();
+  late final _upgrader = widget.upgrader ?? Upgrader();
 
   @override
   void initState() {
@@ -63,8 +70,10 @@ class _UpgradeAnnouncer extends State<UpgradeAnnouncer> {
       final installedVersion = versionInfo?.installedVersion;
       final releaseNotes = versionInfo?.releaseNotes;
 
-      if (true) {
-        if (true) {
+      if (versionInfo != null &&
+          appStoreVersion != null &&
+          installedVersion != null) {
+        if (appStoreVersion > installedVersion || widget.forceShow) {
           if (dismissMaterialBanners) {
             widget.scaffoldMessengerKey.currentState?.clearMaterialBanners();
           }
@@ -92,9 +101,9 @@ class _UpgradeAnnouncer extends State<UpgradeAnnouncer> {
               ),
               backgroundColor: widget.backgroundColor ?? Colors.green,
               actions: <Widget>[
-                TextButton(
+                IconButton(
                   onPressed: _upgrader.sendUserToAppStore,
-                  child: Icon(widget.downloadIcon ?? Icons.download,
+                  icon: Icon(widget.downloadIcon ?? Icons.download,
                       color: widget.downloadIconColor ?? Colors.white),
                 ),
               ],
@@ -107,51 +116,53 @@ class _UpgradeAnnouncer extends State<UpgradeAnnouncer> {
 
   _infoBottomSheet(
       BuildContext context, String? releaseNotes, Upgrader upgrader) {
-    if (releaseNotes == null) return;
     showModalBottomSheet(
       backgroundColor: widget.bottomSheetBackgroundColor,
       context: context,
-      enableDrag: false,
+      useSafeArea: true,
+      isScrollControlled: true,
       builder: (BuildContext c) {
         return widget.bottomSheetBuilder?.call(
               context,
-              upgrader,
+              upgrader.sendUserToAppStore,
               releaseNotes,
             ) ??
             ConstrainedBox(
               constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * .5),
+                  maxHeight: MediaQuery.of(context).size.height *
+                      widget.bottomSheetHeightFactor),
               child: Column(
-                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        UpgraderMessages().newInThisVersion,
-                        style: widget.bottomSheetTitleTextStyle ??
-                            const TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600),
-                      ),
-                      IconButton(
-                        onPressed: upgrader.sendUserToAppStore,
-                        icon: Icon(widget.downloadIcon ?? Icons.download,
-                            color: widget.downloadIconColor ?? Colors.white),
-                      )
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 0, right: 20, left: 20, bottom: 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          UpgraderMessages().newInThisVersion,
+                          style: widget.bottomSheetTitleTextStyle ??
+                              const TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.w600),
+                        ),
+                        IconButton(
+                          onPressed: upgrader.sendUserToAppStore,
+                          icon: Icon(widget.downloadIcon ?? Icons.download,
+                              color: widget.downloadIconColor),
+                        )
+                      ],
+                    ),
                   ),
                   Flexible(
                     child: SingleChildScrollView(
+                      padding: const EdgeInsets.only(
+                          top: 0, right: 20, left: 20, bottom: 20),
                       child: Text(
-                        style: widget.bottomSheetTitleTextStyle ??
-                            const TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                            ),
-                        releaseNotes, // TODO: Create translation
+                        style: widget.bottomSheetReleaseNotesTextStyle ??
+                            const TextStyle(fontSize: 14),
+                        releaseNotes ??
+                            UpgraderMessages().noAvailableReleaseNotes,
                       ),
                     ),
                   ),
