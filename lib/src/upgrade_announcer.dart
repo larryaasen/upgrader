@@ -132,6 +132,7 @@ class _UpgradeAnnouncer extends State<UpgradeAnnouncer> {
                   maxHeight: MediaQuery.of(context).size.height *
                       widget.bottomSheetHeightFactor),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
