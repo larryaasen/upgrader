@@ -148,6 +148,12 @@ class Upgrader {
   String? _userIgnoredVersion;
   bool _hasAlerted = false;
   bool _isCriticalUpdate = false;
+  TextStyle? titleTextStyle;
+  TextStyle? messageTextStyle;
+  TextStyle? promptTextStyle;
+  TextStyle? releaseNoteTitleTextStyle;
+  TextStyle? releaseNoteTextStyle;
+  TextStyle? buttonTextStyle;
 
   /// Track the initialization future so that [initialize] can be called multiple times.
   Future<bool>? _futureInit;
@@ -176,6 +182,12 @@ class Upgrader {
     this.countryCode,
     this.languageCode,
     this.minAppVersion,
+    this.titleTextStyle = const TextStyle(),
+    this.messageTextStyle = const TextStyle(),
+    this.promptTextStyle = const TextStyle(),
+    this.releaseNoteTitleTextStyle = const TextStyle(),
+    this.releaseNoteTextStyle = const TextStyle(),
+    this.buttonTextStyle = const TextStyle(),
     this.dialogStyle = UpgradeDialogStyle.material,
     this.cupertinoButtonTextStyle,
     UpgraderOS? upgraderOS,
@@ -634,6 +646,7 @@ class Upgrader {
     return false;
   }
 
+  //Update style for dialog
   Widget _alertDialog(String title, String message, String? releaseNotes,
       BuildContext context, bool cupertino) {
     Widget? notes;
@@ -644,13 +657,16 @@ class Upgrader {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(messages.message(UpgraderMessage.releaseNotes) ?? '',
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
-              Text(releaseNotes),
+              Text(messages.message(UpgraderMessage.releaseNotes) ?? '', style: releaseNoteTitleTextStyle),
+              Text(
+                releaseNotes,
+                style: releaseNoteTextStyle,
+                maxLines: 6, //Reduce number of maxLines from 15 to 6 to minimize scrollable dialog content/
+              ),
             ],
           ));
     }
-    final textTitle = Text(title, key: const Key('upgrader.dialog.title'));
+    final textTitle = Text(title, key: const Key('upgrader.dialog.title'), style: titleTextStyle);
     final content = Container(
         constraints: const BoxConstraints(maxHeight: 400),
         child: SingleChildScrollView(
@@ -658,11 +674,11 @@ class Upgrader {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text(message),
+            Text(message, style: messageTextStyle),
+            if (notes != null) notes,
             Padding(
                 padding: const EdgeInsets.only(top: 15.0),
-                child: Text(messages.message(UpgraderMessage.prompt) ?? '')),
-            if (notes != null) notes,
+                child: Text(messages.message(UpgraderMessage.prompt) ?? '', style: promptTextStyle)),
           ],
         )));
     final actions = <Widget>[
@@ -688,8 +704,8 @@ class Upgrader {
         ? CupertinoDialogAction(
             textStyle: cupertinoButtonTextStyle,
             onPressed: onPressed,
-            child: Text(text ?? ''))
-        : TextButton(onPressed: onPressed, child: Text(text ?? ''));
+            child: Text(text ?? '', style: buttonTextStyle))
+        : TextButton(onPressed: onPressed, child: Text(text ?? '', style: buttonTextStyle));
   }
 
   void onUserIgnored(BuildContext context, bool shouldPop) {
