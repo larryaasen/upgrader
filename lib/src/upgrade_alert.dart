@@ -233,7 +233,7 @@ class UpgradeAlertState extends State<UpgradeAlert> {
     required String? releaseNotes,
     required bool barrierDismissible,
     required UpgraderMessages messages,
-    required Widget Function(
+    Widget Function(
       Key? key,
       String title,
       String message,
