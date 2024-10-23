@@ -21,8 +21,9 @@ void main() {
     await preferences.clear();
     return true;
   });
+
   group("UpgradeAnnouncer", () {
-    testWidgets('Upgrade available always shown; forceShow',
+    testWidgets('Upgrade enforce; always shown; debugEnforceUpgrade',
         (WidgetTester tester) async {
       final client = MockITunesSearchClient.setupMockClient();
 
@@ -48,7 +49,48 @@ void main() {
         home: UpgradeAnnouncer(
           scaffoldMessengerKey: rootScaffoldMessengerKey,
           upgrader: upgrader,
-          forceShow: true,
+          debugEnforceUpgrade: true,
+          child: Scaffold(
+            body: const Placeholder(),
+            appBar: AppBar(title: const Text('Upgrader test')),
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(testWidget);
+      await tester.pumpAndSettle(const Duration(seconds: 1));
+
+      expect(find.text(UpgraderMessages().upgradeAvailable), findsNothing);
+      expect(find.text(UpgraderMessages().upgradeEnforce), findsOneWidget);
+    }, skip: false);
+
+    testWidgets('Upgrade available; always shown; debugUpgrade',
+        (WidgetTester tester) async {
+      final client = MockITunesSearchClient.setupMockClient();
+
+      final upgrader = Upgrader(
+        upgraderOS: MockUpgraderOS(ios: true),
+        client: client,
+        debugLogging: true,
+      );
+
+      upgrader.installPackageInfo(
+          packageInfo: PackageInfo(
+        appName: 'Upgrader',
+        packageName: 'com.larryaasen.upgrader',
+        version: '5.6',
+        buildNumber: '400',
+      ));
+
+      final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
+          GlobalKey<ScaffoldMessengerState>();
+
+      final testWidget = MaterialApp(
+        scaffoldMessengerKey: rootScaffoldMessengerKey,
+        home: UpgradeAnnouncer(
+          scaffoldMessengerKey: rootScaffoldMessengerKey,
+          upgrader: upgrader,
+          debugUpgrade: true,
           child: Scaffold(
             body: const Placeholder(),
             appBar: AppBar(title: const Text('Upgrader test')),
@@ -60,6 +102,7 @@ void main() {
       await tester.pumpAndSettle(const Duration(seconds: 1));
 
       expect(find.text(UpgraderMessages().upgradeAvailable), findsOneWidget);
+      expect(find.text(UpgraderMessages().upgradeEnforce), findsNothing);
     }, skip: false);
 
     testWidgets('No upgrade available', (WidgetTester tester) async {
@@ -98,6 +141,7 @@ void main() {
       await tester.pumpAndSettle(const Duration(seconds: 1));
 
       expect(find.text(UpgraderMessages().upgradeAvailable), findsNothing);
+      expect(find.text(UpgraderMessages().upgradeEnforce), findsNothing);
     }, skip: false);
 
     testWidgets('Upgrade available', (WidgetTester tester) async {
@@ -136,6 +180,7 @@ void main() {
       await tester.pumpAndSettle(const Duration(seconds: 1));
 
       expect(find.text(UpgraderMessages().upgradeAvailable), findsOneWidget);
+      expect(find.text(UpgraderMessages().upgradeEnforce), findsNothing);
 
       expect(
           find.byWidgetPredicate((widget) =>
@@ -211,6 +256,7 @@ void main() {
       await tester.pumpAndSettle(const Duration(seconds: 1));
 
       expect(find.text(UpgraderMessages().upgradeAvailable), findsOneWidget);
+      expect(find.text(UpgraderMessages().upgradeEnforce), findsNothing);
 
       await tester.tap(find.text(UpgraderMessages().upgradeAvailable));
       await tester.pumpAndSettle(const Duration(seconds: 1));
@@ -288,6 +334,7 @@ void main() {
       await tester.pumpAndSettle(const Duration(seconds: 1));
 
       expect(find.text(UpgraderMessages().upgradeAvailable), findsOneWidget);
+      expect(find.text(UpgraderMessages().upgradeEnforce), findsNothing);
 
       expect(
           find.byWidgetPredicate((widget) =>
@@ -380,6 +427,7 @@ void main() {
       await tester.pumpAndSettle(const Duration(seconds: 1));
 
       expect(find.text(UpgraderMessages().upgradeAvailable), findsOneWidget);
+      expect(find.text(UpgraderMessages().upgradeEnforce), findsNothing);
 
       await tester.tap(find.text(UpgraderMessages().upgradeAvailable));
       await tester.pumpAndSettle(const Duration(seconds: 1));
@@ -387,6 +435,225 @@ void main() {
       expect(find.text(UpgraderMessages().newInThisVersion), findsOneWidget);
       expect(find.byIcon(Icons.download), findsNWidgets(2));
       expect(find.text(upgrader.releaseNotes!), findsOneWidget);
+    }, skip: false);
+
+    testWidgets('Upgrade available; no enforce upgrade',
+        (WidgetTester tester) async {
+      final client =
+          MockITunesSearchClient.setupMockClient(description: '[:mav: 5.7]');
+
+      final upgrader = Upgrader(
+        upgraderOS: MockUpgraderOS(ios: true),
+        client: client,
+        debugLogging: true,
+      );
+
+      upgrader.installPackageInfo(
+          packageInfo: PackageInfo(
+        appName: 'Upgrader',
+        packageName: 'com.larryaasen.upgrader',
+        version: '0.9.9',
+        buildNumber: '400',
+      ));
+
+      final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
+          GlobalKey<ScaffoldMessengerState>();
+
+      final testWidget = MaterialApp(
+        scaffoldMessengerKey: rootScaffoldMessengerKey,
+        home: UpgradeAnnouncer(
+          scaffoldMessengerKey: rootScaffoldMessengerKey,
+          upgrader: upgrader,
+          enforceUpgrade: false,
+          child: Scaffold(
+            body: const Placeholder(),
+            appBar: AppBar(title: const Text('Upgrader test')),
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(testWidget);
+      await tester.pumpAndSettle(const Duration(seconds: 3));
+
+      expect(find.text(UpgraderMessages().upgradeEnforce), findsNothing);
+      expect(find.text(UpgraderMessages().upgradeAvailable), findsOneWidget);
+    }, skip: false);
+
+    testWidgets('Upgrade available; enforce upgrade',
+        (WidgetTester tester) async {
+      final client =
+          MockITunesSearchClient.setupMockClient(description: '[:mav: 5.7]');
+
+      final upgrader = Upgrader(
+        upgraderOS: MockUpgraderOS(ios: true),
+        client: client,
+        debugLogging: true,
+      );
+
+      upgrader.installPackageInfo(
+          packageInfo: PackageInfo(
+        appName: 'Upgrader',
+        packageName: 'com.larryaasen.upgrader',
+        version: '0.9.9',
+        buildNumber: '400',
+      ));
+
+      final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
+          GlobalKey<ScaffoldMessengerState>();
+
+      final testWidget = MaterialApp(
+        scaffoldMessengerKey: rootScaffoldMessengerKey,
+        home: UpgradeAnnouncer(
+          scaffoldMessengerKey: rootScaffoldMessengerKey,
+          upgrader: upgrader,
+          enforceUpgrade: true,
+          child: Scaffold(
+            body: const Placeholder(),
+            appBar: AppBar(title: const Text('Upgrader test')),
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(testWidget);
+      await tester.pumpAndSettle(const Duration(seconds: 3));
+
+      expect(find.text(UpgraderMessages().upgradeEnforce), findsOneWidget);
+      expect(find.text(UpgraderMessages().upgradeAvailable), findsNothing);
+    }, skip: false);
+
+    testWidgets('Upgrade available; enforce upgrade; enforceUpgradeBuilder',
+        (WidgetTester tester) async {
+      final client =
+          MockITunesSearchClient.setupMockClient(description: '[:mav: 5.7]');
+
+      final upgrader = Upgrader(
+        upgraderOS: MockUpgraderOS(ios: true),
+        client: client,
+        debugLogging: true,
+      );
+
+      upgrader.installPackageInfo(
+          packageInfo: PackageInfo(
+        appName: 'Upgrader',
+        packageName: 'com.larryaasen.upgrader',
+        version: '0.9.9',
+        buildNumber: '400',
+      ));
+
+      final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
+          GlobalKey<ScaffoldMessengerState>();
+
+      const enforceUpgradeBuilderContainerColor = Colors.teal;
+      const enforceUpgradeBuilderText = 'Testing builder';
+      final testWidget = MaterialApp(
+        scaffoldMessengerKey: rootScaffoldMessengerKey,
+        home: UpgradeAnnouncer(
+          scaffoldMessengerKey: rootScaffoldMessengerKey,
+          enforceUpgradeBuilder: (context, _) => Container(
+            color: enforceUpgradeBuilderContainerColor,
+            child: const Text(enforceUpgradeBuilderText),
+          ),
+          enforceUpgrade: true,
+          upgrader: upgrader,
+          child: Scaffold(
+            body: const Placeholder(),
+            appBar: AppBar(title: const Text('Upgrader test')),
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(testWidget);
+      await tester.pumpAndSettle(const Duration(seconds: 1));
+
+      expect(find.text(UpgraderMessages().upgradeEnforce), findsNothing);
+
+      expect(
+          find.byWidgetPredicate((widget) =>
+              widget is Container &&
+              widget.color == enforceUpgradeBuilderContainerColor),
+          findsOneWidget);
+      expect(find.text(enforceUpgradeBuilderText), findsOneWidget);
+    }, skip: false);
+
+    testWidgets('Upgrade available; enforce upgrade; icons, styles and colors',
+        (WidgetTester tester) async {
+      final client =
+          MockITunesSearchClient.setupMockClient(description: '[:mav: 5.7]');
+
+      final upgrader = Upgrader(
+        upgraderOS: MockUpgraderOS(ios: true),
+        client: client,
+        debugLogging: true,
+      );
+
+      upgrader.installPackageInfo(
+          packageInfo: PackageInfo(
+        appName: 'Upgrader',
+        packageName: 'com.larryaasen.upgrader',
+        version: '0.9.9',
+        buildNumber: '400',
+      ));
+
+      final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
+          GlobalKey<ScaffoldMessengerState>();
+
+      const infoIcon = Icons.add;
+      const infoIconColor = Colors.blue;
+      const downloadIcon = Icons.abc;
+      const downloadIconColor = Colors.yellow;
+      const enforceUpgradeBackgroundColor = Colors.red;
+      const enforceUpgradeTextStyle =
+          TextStyle(color: Colors.amber, fontSize: 20);
+      final testWidget = MaterialApp(
+        scaffoldMessengerKey: rootScaffoldMessengerKey,
+        home: UpgradeAnnouncer(
+          scaffoldMessengerKey: rootScaffoldMessengerKey,
+          infoIcon: infoIcon,
+          infoIconColor: infoIconColor,
+          downloadIcon: downloadIcon,
+          downloadIconColor: downloadIconColor,
+          enforceUpgradeBackgroundColor: enforceUpgradeBackgroundColor,
+          enforceUpgradeTextStyle: enforceUpgradeTextStyle,
+          enforceUpgrade: true,
+          upgrader: upgrader,
+          child: Scaffold(
+            body: const Placeholder(),
+            appBar: AppBar(title: const Text('Upgrader test')),
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(testWidget);
+      await tester.pumpAndSettle(const Duration(seconds: 1));
+
+      expect(find.text(UpgraderMessages().upgradeEnforce), findsOneWidget);
+
+      expect(
+          find.byWidgetPredicate((widget) =>
+              widget is Container &&
+              widget.decoration ==
+                  BoxDecoration(
+                      color: enforceUpgradeBackgroundColor,
+                      borderRadius: BorderRadius.circular(16))),
+          findsOneWidget);
+      expect(
+          find.byWidgetPredicate((widget) =>
+              widget is Icon &&
+              widget.icon == infoIcon &&
+              widget.color == infoIconColor),
+          findsOneWidget);
+      expect(
+          find.byWidgetPredicate((widget) =>
+              widget is Icon &&
+              widget.icon == downloadIcon &&
+              widget.color == downloadIconColor),
+          findsOneWidget);
+      expect(
+          find.byWidgetPredicate((widget) =>
+              widget is Text &&
+              widget.data == UpgraderMessages().upgradeEnforce &&
+              widget.style == enforceUpgradeTextStyle),
+          findsOneWidget);
     }, skip: false);
   });
 }
