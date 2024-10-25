@@ -64,7 +64,7 @@ void main() {
       expect(find.text(UpgraderMessages().upgradeEnforce), findsOneWidget);
     }, skip: false);
 
-    testWidgets('Upgrade available; always shown; debugUpgrade',
+    testWidgets('Upgrade available; always shown; debugAvailableUpgrade',
         (WidgetTester tester) async {
       final client = MockITunesSearchClient.setupMockClient();
 
@@ -90,7 +90,7 @@ void main() {
         home: UpgradeAnnouncer(
           scaffoldMessengerKey: rootScaffoldMessengerKey,
           upgrader: upgrader,
-          debugUpgrade: true,
+          debugAvailableUpgrade: true,
           child: Scaffold(
             body: const Placeholder(),
             appBar: AppBar(title: const Text('Upgrader test')),

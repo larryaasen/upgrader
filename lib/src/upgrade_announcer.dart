@@ -28,7 +28,7 @@ class UpgradeAnnouncer extends StatefulWidget {
   /// [Upgrader.minAppVersion] version
   final bool enforceUpgrade;
   final bool debugEnforceUpgrade;
-  final bool debugUpgrade;
+  final bool debugAvailableUpgrade;
   final Widget child;
 
   const UpgradeAnnouncer({
@@ -51,7 +51,7 @@ class UpgradeAnnouncer extends StatefulWidget {
     this.downloadIconColor,
     this.enforceUpgrade = false,
     this.debugEnforceUpgrade = false,
-    this.debugUpgrade = false,
+    this.debugAvailableUpgrade = false,
     required this.child,
   });
 
@@ -168,7 +168,7 @@ class _UpgradeAnnouncer extends State<UpgradeAnnouncer> {
           appStoreVersion != null &&
           installedVersion != null) {
         if (appStoreVersion > installedVersion ||
-            (widget.debugUpgrade || widget.debugEnforceUpgrade)) {
+            (widget.debugAvailableUpgrade || widget.debugEnforceUpgrade)) {
           if (widget.enforceUpgrade || widget.debugEnforceUpgrade) {
             setState(() {
               _shouldEnforceUpgrade =
