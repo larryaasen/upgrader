@@ -156,6 +156,8 @@ The `Upgrader` class can be customized by setting parameters in the constructor,
 * languageCode: the language code that will override the system locale, which defaults to ```null```
 * messages: optional localized messages used for display in `upgrader`
 * minAppVersion: the minimum app version supported by this app. Earlier versions of this app will be forced to update to the current version. It should be a valid version string like this: ```2.0.13```. Overrides any minimum app version from UpgraderStore. Defaults to ```null```.
+* disableOptionalUpdates: If set to `true`, this flag will disable optional app updates for the current version.
+  When disabled, only mandatory updates (those below minimum app version) will be prompted to the user. Defaults to `false`.
 * storeController: a controller that provides the store details for each platform, defaults to `UpgraderStoreController()`.
 * upgraderDevice: an abstraction of the device_info details which is used for the OS version, defaults to `UpgraderDevice()`.
 * upgraderOS: information on which OS this code is running on, defaults to `UpgraderOS()`.

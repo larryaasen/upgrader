@@ -55,6 +55,7 @@ class Upgrader with WidgetsBindingObserver {
     String? languageCode,
     UpgraderMessages? messages,
     String? minAppVersion,
+    bool disableOptionalUpdates = false,
     UpgraderStoreController? storeController,
     UpgraderDevice? upgraderDevice,
     UpgraderOS? upgraderOS,
@@ -71,6 +72,7 @@ class Upgrader with WidgetsBindingObserver {
           messages: messages,
           minAppVersion:
               parseVersion(minAppVersion, 'minAppVersion', debugLogging),
+          disableOptionalUpdates: disableOptionalUpdates,
           upgraderDevice: upgraderDevice ?? UpgraderDevice(),
           upgraderOS: upgraderOS ?? UpgraderOS(),
         ),
@@ -303,7 +305,7 @@ class Upgrader with WidgetsBindingObserver {
       rv = false;
     } else if (isBlocked) {
       rv = true;
-    } else if (isTooSoon() || alreadyIgnoredThisVersion()) {
+    } else if (state.disableOptionalUpdates || isTooSoon() || alreadyIgnoredThisVersion()) {
       rv = false;
     }
     if (state.debugLogging) {
