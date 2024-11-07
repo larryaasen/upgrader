@@ -236,7 +236,7 @@ class UpgradeAlertState extends State<UpgradeAlert> {
       context: context,
       builder: (BuildContext context) {
         return PopScope(
-          canPop: onCanPop(),
+          canPop: false,
           onPopInvokedWithResult: (didPop, result) {
             if (widget.upgrader.state.debugLogging) {
               print('upgrader: showTheDialog onPopInvoked: $didPop');
