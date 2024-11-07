@@ -203,10 +203,7 @@ class UpgradeAlertState extends State<UpgradeAlert> {
     }
   }
 
-  void popNavigator(BuildContext context) {
-    Navigator.of(context).pop();
-    displayed = false;
-  }
+  void popNavigator(BuildContext context) {}
 
   bool get shouldDisplayReleaseNotes =>
       widget.showReleaseNotes &&
