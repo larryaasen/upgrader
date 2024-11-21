@@ -83,8 +83,10 @@ class HuaweiStoreSearchAPI {
       if (response.statusCode == 200) {
         // Parse and return app info from response
         final jsonResponse = jsonDecode(response.body);
-        print('App info result: ${jsonResponse['ret']}');
-        print('App version: ${jsonResponse['appInfo']["versionNumber"]}');
+        if (debugLogging) {
+          print('App info result: ${jsonResponse['ret']}');
+          print('App version: ${jsonResponse['appInfo']["versionNumber"]}');
+        }
         return AppInfoResponse.fromJson(jsonResponse);
       } else if (response.statusCode == 401 && !hasRetried) {
         // Token expired, attempt refresh and retry once
