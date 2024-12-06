@@ -30,13 +30,14 @@ dependencies:
   shared_preferences: '>=2.1.1 <3.0.0'
 
   # From Flutter Team: A Flutter plugin for launching a URL in the mobile platform.
-  url_launcher: ^6.1.11
+  url_launcher: ^6.3.0
 
   # A dart library for comparing and incrementing version numbers with Semantic Versioning.
   version: ^3.0.2
 
   # A dart library for parsing, traversing, querying, transforming and building XML documents.
   xml: ^6.3.0
+  json_annotation: ^4.9.0
 
 dev_dependencies:
   flutter_test:
@@ -46,5 +47,9 @@ dev_dependencies:
   mockito: ^5.4.3
   flutter_lints: ^4.0.0
   go_router: ^14.2.7
+
+  build_runner: ^2.4.12
+  json_serializable: ^6.8.0
+
 
 flutter:
