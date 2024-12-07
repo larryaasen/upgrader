@@ -141,6 +141,19 @@ class UpgraderOS {
     }
   }
 
+  /// Get the current OS type formatted, such as 'Android', 'iOS', etc.
+  String get currentTypeFormatted {
+    return switch (currentOSType) {
+      UpgraderOSType.android => 'Android',
+      UpgraderOSType.fuchsia => 'Fuchsia',
+      UpgraderOSType.ios => 'iOS',
+      UpgraderOSType.linux => 'Linux',
+      UpgraderOSType.macos => 'macOS',
+      UpgraderOSType.web => 'Web',
+      UpgraderOSType.windows => 'Windows',
+    };
+  }
+
   @override
   String toString() {
     return 'operatingSystem: $operatingSystem, version: $operatingSystemVersion';

@@ -77,9 +77,7 @@ class UpgraderMessages {
         return releaseNotes;
       case UpgraderMessage.title:
         return title;
-      default:
     }
-    return null;
   }
 
   /// Determine the current language code, either from the context, or

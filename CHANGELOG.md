@@ -1,3 +1,8 @@
+## 11.3.1
+
+- Minor syntax change to fix compiler warning.
+- Added new method MockUpgraderOS.currentTypeFormatted to return the OS type pretty formatted.
+
 ## 11.3.0
 
 - [429] Improved the Hindi ('hi') translations. (thanks to @aruhant)

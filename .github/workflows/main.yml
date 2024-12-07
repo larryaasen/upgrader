@@ -21,7 +21,7 @@ jobs:
         flutter-version: ['3.24.0', '3.24.5']
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: subosito/flutter-action@v2
         with:
