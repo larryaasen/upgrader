@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:upgrader/upgrader.dart';
 
 typedef UpgradeAnnouncerBottomSheetBuilder = Widget Function(
-    BuildContext context, VoidCallback goToAppStore, String? releaseNotes);
+    BuildContext context,
+    VoidCallback goToAppStore,
+    Future<String?> releaseNotes);
 typedef UpgradeAnnouncerEnforceUpgradeBuilder = Widget Function(
     BuildContext context, VoidCallback goToAppStore);
 
@@ -13,6 +15,7 @@ class UpgradeAnnouncer extends StatefulWidget {
   final Color? backgroundColor;
   final double bottomSheetHeightFactor;
   final Color? bottomSheetBackgroundColor;
+  final Color? bottomSheetLoadingIndicatorColor;
   final TextStyle? bottomSheetTitleTextStyle;
   final TextStyle? bottomSheetReleaseNotesTextStyle;
   final UpgradeAnnouncerEnforceUpgradeBuilder? enforceUpgradeBuilder;
@@ -39,6 +42,7 @@ class UpgradeAnnouncer extends StatefulWidget {
     this.bottomSheetBuilder,
     this.bottomSheetHeightFactor = .6,
     this.bottomSheetBackgroundColor,
+    this.bottomSheetLoadingIndicatorColor,
     this.bottomSheetTitleTextStyle,
     this.bottomSheetReleaseNotesTextStyle,
     this.enforceUpgradeBuilder,
@@ -54,6 +58,116 @@ class UpgradeAnnouncer extends StatefulWidget {
     this.debugAvailableUpgrade = false,
     required this.child,
   });
+
+  static void showReleaseNotesBottomSheet({
+    required BuildContext context,
+    Upgrader? upgrader,
+    UpgradeAnnouncerBottomSheetBuilder? bottomSheetBuilder,
+    double bottomSheetMaxHeightFactor = 0.6,
+    Color? bottomSheetBackgroundColor,
+    Color? bottomSheetLoadingIndicatorColor,
+    TextStyle? bottomSheetTitleTextStyle,
+    TextStyle? bottomSheetReleaseNotesTextStyle,
+    bool showDownloadIcon = false,
+    IconData? downloadIcon,
+    Color? downloadIconColor,
+  }) async {
+    if (context.mounted) {
+      upgrader = upgrader ?? Upgrader();
+
+      Future<String?> getReleaseNotes(Upgrader upgrader) async {
+        await upgrader.initialize();
+
+        final versionInfo = await upgrader.updateVersionInfo();
+
+        return versionInfo?.releaseNotes;
+      }
+
+      final releaseNotes = getReleaseNotes(upgrader);
+
+      await showModalBottomSheet(
+        backgroundColor: bottomSheetBackgroundColor,
+        context: context,
+        useSafeArea: true,
+        isScrollControlled: true,
+        builder: (BuildContext c) {
+          return FutureBuilder(
+              future: releaseNotes,
+              builder: (context, snapshot) =>
+                  bottomSheetBuilder?.call(
+                    context,
+                    upgrader!.sendUserToAppStore,
+                    releaseNotes,
+                  ) ??
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 400),
+                    child: AnimatedCrossFade(
+                        firstChild: SizedBox(
+                          height: 150,
+                          child: Center(
+                            child: CircularProgressIndicator(
+                                color: bottomSheetLoadingIndicatorColor),
+                          ),
+                        ),
+                        secondChild: ConstrainedBox(
+                          constraints: BoxConstraints(
+                              maxHeight: MediaQuery.of(context).size.height *
+                                  bottomSheetMaxHeightFactor),
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                top: 20, right: 20, left: 20, bottom: 20),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      upgrader!
+                                          .determineMessages(context)
+                                          .newInThisVersion,
+                                      style: bottomSheetTitleTextStyle ??
+                                          const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600),
+                                    ),
+                                    if (showDownloadIcon)
+                                      IconButton(
+                                        onPressed: upgrader.sendUserToAppStore,
+                                        icon: Icon(
+                                            downloadIcon ?? Icons.download,
+                                            color: downloadIconColor),
+                                      )
+                                  ],
+                                ),
+                                Flexible(
+                                  child: SingleChildScrollView(
+                                    child: Text(
+                                      style: bottomSheetReleaseNotesTextStyle ??
+                                          const TextStyle(fontSize: 14),
+                                      snapshot.data ??
+                                          upgrader
+                                              .determineMessages(context)
+                                              .noAvailableReleaseNotes,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        crossFadeState:
+                            snapshot.connectionState == ConnectionState.waiting
+                                ? CrossFadeState.showFirst
+                                : CrossFadeState.showSecond,
+                        duration: const Duration(milliseconds: 500)),
+                  ));
+        },
+      );
+    }
+  }
 
   @override
   State<StatefulWidget> createState() => _UpgradeAnnouncer();
@@ -161,7 +275,6 @@ class _UpgradeAnnouncer extends State<UpgradeAnnouncer> {
       final versionInfo = await _upgrader.updateVersionInfo();
       final appStoreVersion = versionInfo?.appStoreVersion;
       final installedVersion = versionInfo?.installedVersion;
-      final releaseNotes = versionInfo?.releaseNotes;
       final minAppVersion = _upgrader.versionInfo?.minAppVersion;
 
       if (versionInfo != null &&
@@ -177,13 +290,13 @@ class _UpgradeAnnouncer extends State<UpgradeAnnouncer> {
             });
           }
 
-          _showMaterialBanner(dismissMaterialBanners, releaseNotes);
+          _showMaterialBanner(dismissMaterialBanners);
         }
       }
     });
   }
 
-  void _showMaterialBanner(bool dismissMaterialBanners, String? releaseNotes) {
+  void _showMaterialBanner(bool dismissMaterialBanners) {
     if (!_shouldEnforceUpgrade) {
       if (dismissMaterialBanners) {
         widget.scaffoldMessengerKey.currentState?.clearMaterialBanners();
@@ -191,10 +304,29 @@ class _UpgradeAnnouncer extends State<UpgradeAnnouncer> {
 
       widget.scaffoldMessengerKey.currentState?.showMaterialBanner(
         MaterialBanner(
+          dividerColor: Colors.transparent,
+          backgroundColor: widget.backgroundColor ?? Colors.green,
           content: Builder(
             builder: (context) => TextButton(
               onPressed: mounted
-                  ? () => _showBottomSheet(context, releaseNotes, _upgrader)
+                  ? () => UpgradeAnnouncer.showReleaseNotesBottomSheet(
+                        context: context,
+                        upgrader: _upgrader,
+                        bottomSheetBuilder: widget.bottomSheetBuilder,
+                        bottomSheetMaxHeightFactor:
+                            widget.bottomSheetHeightFactor,
+                        bottomSheetBackgroundColor:
+                            widget.bottomSheetBackgroundColor,
+                        bottomSheetLoadingIndicatorColor:
+                            widget.bottomSheetLoadingIndicatorColor,
+                        bottomSheetTitleTextStyle:
+                            widget.bottomSheetTitleTextStyle,
+                        bottomSheetReleaseNotesTextStyle:
+                            widget.bottomSheetReleaseNotesTextStyle,
+                        downloadIcon: widget.downloadIcon,
+                        downloadIconColor: widget.downloadIconColor,
+                        showDownloadIcon: true,
+                      )
                   : null,
               child: Row(
                 children: [
@@ -210,7 +342,6 @@ class _UpgradeAnnouncer extends State<UpgradeAnnouncer> {
               ),
             ),
           ),
-          backgroundColor: widget.backgroundColor ?? Colors.green,
           actions: <Widget>[
             IconButton(
               onPressed: _upgrader.sendUserToAppStore,
@@ -221,65 +352,5 @@ class _UpgradeAnnouncer extends State<UpgradeAnnouncer> {
         ),
       );
     }
-  }
-
-  void _showBottomSheet(
-      BuildContext context, String? releaseNotes, Upgrader upgrader) {
-    showModalBottomSheet(
-      backgroundColor: widget.bottomSheetBackgroundColor,
-      context: context,
-      useSafeArea: true,
-      isScrollControlled: true,
-      builder: (BuildContext c) {
-        return widget.bottomSheetBuilder?.call(
-              context,
-              upgrader.sendUserToAppStore,
-              releaseNotes,
-            ) ??
-            ConstrainedBox(
-              constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height *
-                      widget.bottomSheetHeightFactor),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        top: 0, right: 20, left: 20, bottom: 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          UpgraderMessages().newInThisVersion,
-                          style: widget.bottomSheetTitleTextStyle ??
-                              const TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w600),
-                        ),
-                        IconButton(
-                          onPressed: upgrader.sendUserToAppStore,
-                          icon: Icon(widget.downloadIcon ?? Icons.download,
-                              color: widget.downloadIconColor),
-                        )
-                      ],
-                    ),
-                  ),
-                  Flexible(
-                    child: SingleChildScrollView(
-                      padding: const EdgeInsets.only(
-                          top: 0, right: 20, left: 20, bottom: 20),
-                      child: Text(
-                        style: widget.bottomSheetReleaseNotesTextStyle ??
-                            const TextStyle(fontSize: 14),
-                        releaseNotes ??
-                            UpgraderMessages().noAvailableReleaseNotes,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
-      },
-    );
   }
 }

@@ -6,7 +6,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upgrader/upgrader.dart';
 
-import 'mock_itunes_client.dart';
+import 'mock_play_store_client.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -22,13 +22,13 @@ void main() {
     return true;
   });
 
-  group("UpgradeAnnouncer", () {
+  group("UpgradeAnnouncer with Google Play", () {
     testWidgets('Upgrade enforce; always shown; debugEnforceUpgrade',
         (WidgetTester tester) async {
-      final client = MockITunesSearchClient.setupMockClient();
+      final client = await MockPlayStoreSearchClient.setupMockClient();
 
       final upgrader = Upgrader(
-        upgraderOS: MockUpgraderOS(ios: true),
+        upgraderOS: MockUpgraderOS(android: true),
         client: client,
         debugLogging: true,
       );
@@ -36,8 +36,8 @@ void main() {
       upgrader.installPackageInfo(
           packageInfo: PackageInfo(
         appName: 'Upgrader',
-        packageName: 'com.larryaasen.upgrader',
-        version: '5.6',
+        packageName: 'com.testing.test2',
+        version: '2.0.2',
         buildNumber: '400',
       ));
 
@@ -66,10 +66,10 @@ void main() {
 
     testWidgets('Upgrade available; always shown; debugAvailableUpgrade',
         (WidgetTester tester) async {
-      final client = MockITunesSearchClient.setupMockClient();
+      final client = await MockPlayStoreSearchClient.setupMockClient();
 
       final upgrader = Upgrader(
-        upgraderOS: MockUpgraderOS(ios: true),
+        upgraderOS: MockUpgraderOS(android: true),
         client: client,
         debugLogging: true,
       );
@@ -77,8 +77,8 @@ void main() {
       upgrader.installPackageInfo(
           packageInfo: PackageInfo(
         appName: 'Upgrader',
-        packageName: 'com.larryaasen.upgrader',
-        version: '5.6',
+        packageName: 'com.testing.test2',
+        version: '2.0.2',
         buildNumber: '400',
       ));
 
@@ -106,10 +106,10 @@ void main() {
     }, skip: false);
 
     testWidgets('No upgrade available', (WidgetTester tester) async {
-      final client = MockITunesSearchClient.setupMockClient();
+      final client = await MockPlayStoreSearchClient.setupMockClient();
 
       final upgrader = Upgrader(
-        upgraderOS: MockUpgraderOS(ios: true),
+        upgraderOS: MockUpgraderOS(android: true),
         client: client,
         debugLogging: true,
       );
@@ -117,8 +117,8 @@ void main() {
       upgrader.installPackageInfo(
           packageInfo: PackageInfo(
         appName: 'Upgrader',
-        packageName: 'com.larryaasen.upgrader',
-        version: '5.6',
+        packageName: 'com.testing.test2',
+        version: '2.0.2',
         buildNumber: '400',
       ));
 
@@ -145,10 +145,10 @@ void main() {
     }, skip: false);
 
     testWidgets('Upgrade available', (WidgetTester tester) async {
-      final client = MockITunesSearchClient.setupMockClient();
+      final client = await MockPlayStoreSearchClient.setupMockClient();
 
       final upgrader = Upgrader(
-        upgraderOS: MockUpgraderOS(ios: true),
+        upgraderOS: MockUpgraderOS(android: true),
         client: client,
         debugLogging: true,
       );
@@ -156,8 +156,8 @@ void main() {
       upgrader.installPackageInfo(
           packageInfo: PackageInfo(
         appName: 'Upgrader',
-        packageName: 'com.larryaasen.upgrader',
-        version: '0.9.9',
+        packageName: 'com.testing.test2',
+        version: '2.0.0',
         buildNumber: '400',
       ));
 
@@ -209,10 +209,10 @@ void main() {
 
     testWidgets('Upgrade available; bottomSheetBuilder',
         (WidgetTester tester) async {
-      final client = MockITunesSearchClient.setupMockClient();
+      final client = await MockPlayStoreSearchClient.setupMockClient();
 
       final upgrader = Upgrader(
-        upgraderOS: MockUpgraderOS(ios: true),
+        upgraderOS: MockUpgraderOS(android: true),
         client: client,
         debugLogging: true,
       );
@@ -220,8 +220,8 @@ void main() {
       upgrader.installPackageInfo(
           packageInfo: PackageInfo(
         appName: 'Upgrader',
-        packageName: 'com.larryaasen.upgrader',
-        version: '0.9.9',
+        packageName: 'com.testing.test2',
+        version: '2.0.0',
         buildNumber: '400',
       ));
 
@@ -282,10 +282,10 @@ void main() {
 
     testWidgets('Upgrade available; icons, styles and colors',
         (WidgetTester tester) async {
-      final client = MockITunesSearchClient.setupMockClient();
+      final client = await MockPlayStoreSearchClient.setupMockClient();
 
       final upgrader = Upgrader(
-        upgraderOS: MockUpgraderOS(ios: true),
+        upgraderOS: MockUpgraderOS(android: true),
         client: client,
         debugLogging: true,
       );
@@ -293,8 +293,8 @@ void main() {
       upgrader.installPackageInfo(
           packageInfo: PackageInfo(
         appName: 'Upgrader',
-        packageName: 'com.larryaasen.upgrader',
-        version: '0.9.9',
+        packageName: 'com.testing.test2',
+        version: '2.0.0',
         buildNumber: '400',
       ));
 
@@ -312,7 +312,6 @@ void main() {
       const bottomSheetReleaseNotesTextStyle =
           TextStyle(color: Colors.purple, fontSize: 30);
       const bottomSheetBackgroundColor = Colors.teal;
-      const bottomSheetLoadingIndicatorColor = Colors.amber;
 
       final testWidget = MaterialApp(
         scaffoldMessengerKey: rootScaffoldMessengerKey,
@@ -327,7 +326,6 @@ void main() {
           bottomSheetTitleTextStyle: bottomSheetTitleTextStyle,
           bottomSheetReleaseNotesTextStyle: bottomSheetReleaseNotesTextStyle,
           bottomSheetBackgroundColor: bottomSheetBackgroundColor,
-          bottomSheetLoadingIndicatorColor: bottomSheetLoadingIndicatorColor,
           upgrader: upgrader,
           child: Scaffold(
             body: const Placeholder(),
@@ -394,19 +392,14 @@ void main() {
                 themeData.backgroundColor == bottomSheetBackgroundColor,
           ),
           findsOneWidget);
-      expect(
-          find.byWidgetPredicate((widget) =>
-              widget is CircularProgressIndicator &&
-              widget.color == bottomSheetLoadingIndicatorColor),
-          findsOneWidget);
     }, skip: false);
 
     testWidgets('Upgrade available; release notes in bottom sheet',
         (WidgetTester tester) async {
-      final client = MockITunesSearchClient.setupMockClient();
+      final client = await MockPlayStoreSearchClient.setupMockClient();
 
       final upgrader = Upgrader(
-        upgraderOS: MockUpgraderOS(ios: true),
+        upgraderOS: MockUpgraderOS(android: true),
         client: client,
         debugLogging: true,
       );
@@ -414,8 +407,8 @@ void main() {
       upgrader.installPackageInfo(
           packageInfo: PackageInfo(
         appName: 'Upgrader',
-        packageName: 'com.larryaasen.upgrader',
-        version: '0.9.9',
+        packageName: 'com.testing.test2',
+        version: '2.0.0',
         buildNumber: '400',
       ));
 
@@ -450,11 +443,10 @@ void main() {
 
     testWidgets('Upgrade available; no enforce upgrade',
         (WidgetTester tester) async {
-      final client =
-          MockITunesSearchClient.setupMockClient(description: '[:mav: 5.7]');
+      final client = await MockPlayStoreSearchClient.setupMockClient();
 
       final upgrader = Upgrader(
-        upgraderOS: MockUpgraderOS(ios: true),
+        upgraderOS: MockUpgraderOS(android: true),
         client: client,
         debugLogging: true,
       );
@@ -462,8 +454,8 @@ void main() {
       upgrader.installPackageInfo(
           packageInfo: PackageInfo(
         appName: 'Upgrader',
-        packageName: 'com.larryaasen.upgrader',
-        version: '0.9.9',
+        packageName: 'com.testing.test2',
+        version: '2.0.0',
         buildNumber: '400',
       ));
 
@@ -492,11 +484,10 @@ void main() {
 
     testWidgets('Upgrade available; enforce upgrade',
         (WidgetTester tester) async {
-      final client =
-          MockITunesSearchClient.setupMockClient(description: '[:mav: 5.7]');
+      final client = await MockPlayStoreSearchClient.setupMockClient();
 
       final upgrader = Upgrader(
-        upgraderOS: MockUpgraderOS(ios: true),
+        upgraderOS: MockUpgraderOS(android: true),
         client: client,
         debugLogging: true,
       );
@@ -504,8 +495,8 @@ void main() {
       upgrader.installPackageInfo(
           packageInfo: PackageInfo(
         appName: 'Upgrader',
-        packageName: 'com.larryaasen.upgrader',
-        version: '0.9.9',
+        packageName: 'com.testing.test2',
+        version: '2.0.0',
         buildNumber: '400',
       ));
 
@@ -534,11 +525,10 @@ void main() {
 
     testWidgets('Upgrade available; enforce upgrade; enforceUpgradeBuilder',
         (WidgetTester tester) async {
-      final client =
-          MockITunesSearchClient.setupMockClient(description: '[:mav: 5.7]');
+      final client = await MockPlayStoreSearchClient.setupMockClient();
 
       final upgrader = Upgrader(
-        upgraderOS: MockUpgraderOS(ios: true),
+        upgraderOS: MockUpgraderOS(android: true),
         client: client,
         debugLogging: true,
       );
@@ -546,8 +536,8 @@ void main() {
       upgrader.installPackageInfo(
           packageInfo: PackageInfo(
         appName: 'Upgrader',
-        packageName: 'com.larryaasen.upgrader',
-        version: '0.9.9',
+        packageName: 'com.testing.test2',
+        version: '2.0.0',
         buildNumber: '400',
       ));
 
@@ -588,11 +578,10 @@ void main() {
 
     testWidgets('Upgrade available; enforce upgrade; icons, styles and colors',
         (WidgetTester tester) async {
-      final client =
-          MockITunesSearchClient.setupMockClient(description: '[:mav: 5.7]');
+      final client = await MockPlayStoreSearchClient.setupMockClient();
 
       final upgrader = Upgrader(
-        upgraderOS: MockUpgraderOS(ios: true),
+        upgraderOS: MockUpgraderOS(android: true),
         client: client,
         debugLogging: true,
       );
@@ -600,8 +589,8 @@ void main() {
       upgrader.installPackageInfo(
           packageInfo: PackageInfo(
         appName: 'Upgrader',
-        packageName: 'com.larryaasen.upgrader',
-        version: '0.9.9',
+        packageName: 'com.testing.test2',
+        version: '2.0.0',
         buildNumber: '400',
       ));
 
@@ -669,10 +658,10 @@ void main() {
 
     testWidgets('Show release notes in bottom sheet',
         (WidgetTester tester) async {
-      final client = MockITunesSearchClient.setupMockClient();
+      final client = await MockPlayStoreSearchClient.setupMockClient();
 
       final upgrader = Upgrader(
-        upgraderOS: MockUpgraderOS(ios: true),
+        upgraderOS: MockUpgraderOS(android: true),
         client: client,
         debugLogging: true,
       );
@@ -680,8 +669,8 @@ void main() {
       upgrader.installPackageInfo(
           packageInfo: PackageInfo(
         appName: 'Upgrader',
-        packageName: 'com.larryaasen.upgrader',
-        version: '5.6',
+        packageName: 'com.testing.test2',
+        version: '2.0.2',
         buildNumber: '400',
       ));
 
