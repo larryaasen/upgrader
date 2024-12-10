@@ -91,79 +91,81 @@ class UpgradeAnnouncer extends StatefulWidget {
         useSafeArea: true,
         isScrollControlled: true,
         builder: (BuildContext c) {
-          return FutureBuilder(
-              future: releaseNotes,
-              builder: (context, snapshot) =>
-                  bottomSheetBuilder?.call(
-                    context,
-                    upgrader!.sendUserToAppStore,
-                    releaseNotes,
-                  ) ??
-                  AnimatedContainer(
-                    duration: const Duration(milliseconds: 400),
-                    child: AnimatedCrossFade(
-                        firstChild: SizedBox(
-                          height: 150,
-                          child: Center(
-                            child: CircularProgressIndicator(
-                                color: bottomSheetLoadingIndicatorColor),
-                          ),
-                        ),
-                        secondChild: ConstrainedBox(
-                          constraints: BoxConstraints(
-                              maxHeight: MediaQuery.of(context).size.height *
-                                  bottomSheetMaxHeightFactor),
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                top: 20, right: 20, left: 20, bottom: 20),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+          return bottomSheetBuilder?.call(
+                context,
+                upgrader!.sendUserToAppStore,
+                releaseNotes,
+              ) ??
+              FutureBuilder(
+                  future: releaseNotes,
+                  builder: (context, snapshot) => AnimatedContainer(
+                        duration: const Duration(milliseconds: 400),
+                        child: AnimatedCrossFade(
+                            firstChild: SizedBox(
+                              height: 150,
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                    color: bottomSheetLoadingIndicatorColor),
+                              ),
+                            ),
+                            secondChild: ConstrainedBox(
+                              constraints: BoxConstraints(
+                                  maxHeight:
+                                      MediaQuery.of(context).size.height *
+                                          bottomSheetMaxHeightFactor),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 20, right: 20, left: 20, bottom: 20),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      upgrader!
-                                          .determineMessages(context)
-                                          .newInThisVersion,
-                                      style: bottomSheetTitleTextStyle ??
-                                          const TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w600),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          upgrader!
+                                              .determineMessages(context)
+                                              .newInThisVersion,
+                                          style: bottomSheetTitleTextStyle ??
+                                              const TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w600),
+                                        ),
+                                        if (showDownloadIcon)
+                                          IconButton(
+                                            onPressed:
+                                                upgrader.sendUserToAppStore,
+                                            icon: Icon(
+                                                downloadIcon ?? Icons.download,
+                                                color: downloadIconColor),
+                                          )
+                                      ],
                                     ),
-                                    if (showDownloadIcon)
-                                      IconButton(
-                                        onPressed: upgrader.sendUserToAppStore,
-                                        icon: Icon(
-                                            downloadIcon ?? Icons.download,
-                                            color: downloadIconColor),
-                                      )
+                                    Flexible(
+                                      child: SingleChildScrollView(
+                                        child: Text(
+                                          style:
+                                              bottomSheetReleaseNotesTextStyle ??
+                                                  const TextStyle(fontSize: 14),
+                                          snapshot.data ??
+                                              upgrader
+                                                  .determineMessages(context)
+                                                  .noAvailableReleaseNotes,
+                                        ),
+                                      ),
+                                    ),
                                   ],
                                 ),
-                                Flexible(
-                                  child: SingleChildScrollView(
-                                    child: Text(
-                                      style: bottomSheetReleaseNotesTextStyle ??
-                                          const TextStyle(fontSize: 14),
-                                      snapshot.data ??
-                                          upgrader
-                                              .determineMessages(context)
-                                              .noAvailableReleaseNotes,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
-                        crossFadeState:
-                            snapshot.connectionState == ConnectionState.waiting
+                            crossFadeState: snapshot.connectionState ==
+                                    ConnectionState.waiting
                                 ? CrossFadeState.showFirst
                                 : CrossFadeState.showSecond,
-                        duration: const Duration(milliseconds: 500)),
-                  ));
+                            duration: const Duration(milliseconds: 500)),
+                      ));
         },
       );
     }
