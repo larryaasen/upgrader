@@ -143,6 +143,7 @@ Map _iosInfo({required String baseOS}) {
     'utsname': iosUtsnameMap,
     'systemName': 'systemName',
     'isPhysicalDevice': false,
+    'isiOSAppOnMac': false,
     'systemVersion': baseOS,
     'localizedModel': 'localizedModel',
     'identifierForVendor': 'identifierForVendor',
