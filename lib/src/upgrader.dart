@@ -554,9 +554,13 @@ extension UpgraderExt on Upgrader {
       state.versionInfo?.appStoreListingURL;
 
   String? get currentAppStoreVersion =>
-      state.versionInfo?.appStoreVersion?.toString();
+      state.useBuildNumber
+          ? state.versionInfo?.appStoreDisplayVersion?.toString()
+          : state.versionInfo?.appStoreVersion?.toString();
 
-  String? get currentInstalledVersion => state.packageInfo?.version;
+  String? get currentInstalledVersion => state.useBuildNumber
+      ? "${state.packageInfo?.version}+b${state.packageInfo?.buildNumber}"
+      : state.packageInfo?.version;
 
   String? get releaseNotes => state.versionInfo?.releaseNotes;
 
