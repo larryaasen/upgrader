@@ -51,6 +51,7 @@ class Upgrader with WidgetsBindingObserver {
     bool debugDisplayAlways = false,
     bool debugDisplayOnce = false,
     bool debugLogging = false,
+    bool useBuildNumber = false,
     Duration durationUntilAlertAgain = const Duration(days: 3),
     String? languageCode,
     UpgraderMessages? messages,
@@ -66,6 +67,7 @@ class Upgrader with WidgetsBindingObserver {
           debugDisplayAlways: debugDisplayAlways,
           debugDisplayOnce: debugDisplayOnce,
           debugLogging: debugLogging,
+          useBuildNumber: useBuildNumber,
           durationUntilAlertAgain: durationUntilAlertAgain,
           languageCodeOverride: languageCode,
           messages: messages,
@@ -221,9 +223,16 @@ class Upgrader with WidgetsBindingObserver {
     }
 
     // Determine the installed version of this app.
+    // If the build number is to be used and Appcast Store is used, then use the build number.
     late Version installedVersion;
     try {
-      installedVersion = Version.parse(state.packageInfo!.version);
+      if (state.useBuildNumber
+          && storeController.getUpgraderStore(state.upgraderOS)
+          is UpgraderAppcastStore) {
+        installedVersion = Version.parse(state.packageInfo!.buildNumber);
+      } else {
+        installedVersion = Version.parse(state.packageInfo!.version);
+      }
     } catch (e) {
       if (state.debugLogging) {
         print('upgrader: installedVersion exception: $e');

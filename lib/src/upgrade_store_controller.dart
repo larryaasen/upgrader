@@ -166,6 +166,7 @@ class UpgraderAppcastStore extends UpgraderStore {
       required String? language}) async {
     String? appStoreListingURL;
     Version? appStoreVersion;
+    Version? appStoreDisplayVersion;
     bool? isCriticalUpdate;
     String? releaseNotes;
 
@@ -185,13 +186,19 @@ class UpgraderAppcastStore extends UpgraderStore {
 
     final bestItem = localAppcast.bestItem();
     if (bestItem != null &&
-        bestItem.versionString != null &&
-        bestItem.versionString!.isNotEmpty) {
+        bestItem.versionString?.isNotEmpty == true &&
+        (!state.useBuildNumber || (bestItem.displayVersionString?.isNotEmpty == true))) {
       if (state.debugLogging) {
         print('upgrader: UpgraderAppcastStore best item version: '
             '${bestItem.versionString}');
         print('upgrader: UpgraderAppcastStore critical update item version: '
             '${criticalUpdateItem?.versionString}');
+      }
+      if (state.debugLogging && state.useBuildNumber) {
+        print('upgrader: UpgraderAppcastStore best item display version: '
+            '${bestItem.displayVersionString}');
+        print('upgrader: UpgraderAppcastStore critical update item display version: '
+            '${criticalUpdateItem?.displayVersionString}');
       }
 
       try {
@@ -217,6 +224,17 @@ class UpgraderAppcastStore extends UpgraderStore {
           }
         }
       }
+      if (state.useBuildNumber && bestItem.displayVersionString != null) {
+        try {
+          appStoreDisplayVersion = Version.parse(bestItem.displayVersionString!);
+        } catch (e) {
+          if (state.debugLogging) {
+            print(
+                'upgrader: UpgraderAppcastStore: best item display version could not be parsed: '
+                    '${bestItem.displayVersionString}');
+          }
+        }
+      }
 
       appStoreListingURL = bestItem.fileURL;
       releaseNotes = bestItem.itemDescription;
@@ -226,6 +244,7 @@ class UpgraderAppcastStore extends UpgraderStore {
       installedVersion: installedVersion,
       appStoreListingURL: appStoreListingURL,
       appStoreVersion: appStoreVersion,
+      appStoreDisplayVersion: appStoreDisplayVersion,
       isCriticalUpdate: isCriticalUpdate,
       releaseNotes: releaseNotes,
     );
