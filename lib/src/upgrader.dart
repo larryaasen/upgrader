@@ -152,6 +152,7 @@ class Upgrader with WidgetsBindingObserver {
         print('upgrader: packageInfo packageName: ${packageInfo.packageName}');
         print('upgrader: packageInfo appName: ${packageInfo.appName}');
         print('upgrader: packageInfo version: ${packageInfo.version}');
+        print('upgrader: packageInfo buildNumber: ${packageInfo.buildNumber}');
       }
 
       await updateVersionInfo();
@@ -230,6 +231,9 @@ class Upgrader with WidgetsBindingObserver {
           && storeController.getUpgraderStore(state.upgraderOS)
           is UpgraderAppcastStore) {
         installedVersion = Version.parse(state.packageInfo!.buildNumber);
+        if (state.debugLogging) {
+          print('upgrader: using build number ${state.packageInfo!.buildNumber} as version: ${state.packageInfo!.version}+b${state.packageInfo!.buildNumber}');
+        }
       } else {
         installedVersion = Version.parse(state.packageInfo!.version);
       }
@@ -372,7 +376,13 @@ class Upgrader with WidgetsBindingObserver {
 
   bool isUpdateAvailable() {
     if (state.debugLogging) {
-      print('upgrader: installedVersion: ${state.packageInfo?.version}');
+      if (state.useBuildNumber
+          && storeController.getUpgraderStore(state.upgraderOS)
+          is UpgraderAppcastStore) {
+        print('upgrader: installedVersion: ${state.packageInfo?.version}+b${state.packageInfo?.buildNumber}');
+      } else {
+        print('upgrader: installedVersion: ${state.packageInfo?.version}');
+      }
       print('upgrader: minAppVersion: ${state.minAppVersion}');
     }
     if (versionInfo?.appStoreVersion == null ||
