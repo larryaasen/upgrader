@@ -223,8 +223,7 @@ class UpgraderHuaweiStore extends UpgraderStore {
       releaseNotes ??= appInfoResponse.languages?[0].newFeatures;
 
       // Simulate minimum supported app version if not available in app info
-      String appDesc = "${appInfoResponse.languages?[0].appDesc ?? ''} "
-          "[Minimum supported app version: 3.0.1]";
+      String appDesc = appInfoResponse.languages?[0].appDesc ?? '';
 
       // Extract and validate the minimum supported app version
       final mav = huaweiStore.minAppVersion(appDesc);
