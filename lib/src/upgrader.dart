@@ -392,7 +392,10 @@ class Upgrader with WidgetsBindingObserver {
     }
 
     try {
-      final installedVersion = Version.parse(state.packageInfo!.version);
+      final installedVersion = Version.parse(
+          state.useBuildNumber
+              ? state.packageInfo!.buildNumber
+              : state.packageInfo!.version);
 
       final available = versionInfo!.appStoreVersion! > installedVersion;
       _updateAvailable = available ? versionInfo?.appStoreVersion : null;
