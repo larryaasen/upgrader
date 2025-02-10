@@ -1,3 +1,7 @@
+## 11.3.2
+
+- Added support for Romanian language localization.
+
 ## 11.3.1
 
 - Minor syntax change to fix compiler warning.
