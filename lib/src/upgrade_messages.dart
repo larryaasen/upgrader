@@ -247,6 +247,9 @@ class UpgraderMessages {
         message =
             '{{appName}}有新的版本！您拥有{{currentInstalledVersion}}的版本可更新到{{currentAppStoreVersion}}的版本。';
         break;
+      case 'ro':
+        message = 'O versiune nouă a aplicației {{appName}} este acum disponibilă! Actualizați la versiunea {{currentAppStoreVersion}} – aveți versiunea {{currentInstalledVersion}}.';
+        break;
       case 'en':
       default:
         message =
@@ -367,6 +370,9 @@ class UpgraderMessages {
       case 'zh':
         message = '不理';
         break;
+      case 'ro':
+        message = 'Ignoră';
+        break;
       case 'en':
       default:
         message = 'IGNORE';
@@ -485,6 +491,9 @@ class UpgraderMessages {
         break;
       case 'zh':
         message = '以后';
+      case 'ro':
+        message = 'Amână';
+        break;
       case 'en':
       default:
         message = 'LATER';
@@ -603,6 +612,9 @@ class UpgraderMessages {
         break;
       case 'zh':
         message = '更新';
+        break;
+      case 'ro':
+        message = 'ACTUALIZEAZĂ ACUM';
         break;
       case 'en':
       default:
@@ -723,6 +735,9 @@ class UpgraderMessages {
       case 'zh':
         message = '您现在要更新应用程序吗？';
         break;
+      case 'ro':
+        message = 'Vreți să actualizați acum?';
+        break;
       case 'en':
       default:
         message = 'Would you like to update it now?';
@@ -781,6 +796,9 @@ class UpgraderMessages {
         break;
       case 'tr':
         message = 'Yayın Notları';
+        break;
+      case 'ro':
+        message = 'Detalii despre actualizare';
         break;
 
       case 'bn':
@@ -921,6 +939,9 @@ class UpgraderMessages {
         break;
       case 'zh':
         message = '更新应用程序？';
+        break;
+      case 'ro':
+        message = 'Actualizați aplicația?';
         break;
       case 'en':
       default:
