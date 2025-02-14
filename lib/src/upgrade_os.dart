@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2023 Larry Aasen. All rights reserved.
+ * Copyright (c) 2021-2024 Larry Aasen. All rights reserved.
  */
 
 import "package:os_detect/os_detect.dart" as platform;
