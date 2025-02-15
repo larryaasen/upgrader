@@ -1,6 +1,6 @@
 ## 11.4.0
 
-TBD
+- BREAKING: set the minimum to Dart 3.7.0 and Flutter 3.29.0.
 
 ## 11.3.1
 
