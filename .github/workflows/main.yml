@@ -31,6 +31,9 @@ jobs:
       - name: Get flutter packages
         run: flutter pub get
 
+      - name: Flutter doctor
+        run: flutter doctor --verbose
+
       - name: Analyze
         run: flutter analyze
 
