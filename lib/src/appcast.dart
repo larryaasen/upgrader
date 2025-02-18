@@ -153,7 +153,9 @@ class Appcast {
         final tags = <String>[];
         String? newVersion;
         String? itemVersion;
+        String? itemShortVersion;
         String? enclosureVersion;
+        String? enclosureShortVersion;
 
         itemElement.children.forEach((XmlNode childNode) {
           if (childNode is XmlElement) {
@@ -162,6 +164,8 @@ class Appcast {
               title = childNode.innerText;
             } else if (name == AppcastConstants.ElementDescription) {
               itemDescription = childNode.innerText;
+            } else if (name == AppcastConstants.AttributeShortVersionString) {
+              itemShortVersion = childNode.innerText;
             } else if (name == AppcastConstants.ElementEnclosure) {
               childNode.attributes.forEach((XmlAttribute attribute) {
                 if (attribute.name.toString() ==
@@ -170,6 +174,9 @@ class Appcast {
                 } else if (attribute.name.toString() ==
                     AppcastConstants.AttributeOsType) {
                   osString = attribute.value;
+                } else if (attribute.name.toString() ==
+                    AppcastConstants.AttributeShortVersionString) {
+                  enclosureShortVersion = attribute.value;
                 } else if (attribute.name.toString() ==
                     AppcastConstants.AttributeURL) {
                   fileURL = attribute.value;
@@ -218,6 +225,7 @@ class Appcast {
           tags: tags,
           fileURL: fileURL,
           versionString: newVersion,
+          displayVersionString: itemShortVersion ?? enclosureShortVersion,
         );
         localItems.add(item);
       });
