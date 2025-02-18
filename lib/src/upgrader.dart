@@ -286,7 +286,7 @@ class Upgrader with WidgetsBindingObserver {
     return belowMinAppVersion() || versionInfo?.isCriticalUpdate == true;
   }
 
-  bool shouldDisplayUpgrade() {
+  bool shouldDisplayUpgrade({bool forceUpgrade = false}) {
     final isBlocked = blocked();
 
     if (state.debugLogging) {
@@ -298,6 +298,8 @@ class Upgrader with WidgetsBindingObserver {
 
     bool rv = true;
     if (state.debugDisplayAlways || (state.debugDisplayOnce && !_hasAlerted)) {
+      rv = true;
+    } else if (forceUpgrade) {
       rv = true;
     } else if (!isUpdateAvailable()) {
       rv = false;

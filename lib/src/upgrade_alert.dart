@@ -29,6 +29,7 @@ class UpgradeAlert extends StatefulWidget {
     this.showIgnore = true,
     this.showLater = true,
     this.showReleaseNotes = true,
+    this.forceUpgrade = false,
     this.cupertinoButtonTextStyle,
     this.dialogKey,
     this.navigatorKey,
@@ -67,6 +68,9 @@ class UpgradeAlert extends StatefulWidget {
 
   /// Hide or show release notes (default: true)
   final bool showReleaseNotes;
+
+  /// Force the upgrade dialog to display.
+  final bool forceUpgrade;
 
   /// The text style for the cupertino dialog buttons. Used only for
   /// [UpgradeDialogStyle.cupertino]. Optional.
@@ -132,7 +136,9 @@ class UpgradeAlertState extends State<UpgradeAlert> {
 
   /// Will show the alert dialog when it should be dispalyed.
   void checkVersion({required BuildContext context}) {
-    final shouldDisplay = widget.upgrader.shouldDisplayUpgrade();
+    final shouldDisplay = widget.upgrader.shouldDisplayUpgrade(
+      forceUpgrade: widget.forceUpgrade,
+    );
     if (widget.upgrader.state.debugLogging) {
       print('upgrader: shouldDisplayReleaseNotes: $shouldDisplayReleaseNotes');
     }
