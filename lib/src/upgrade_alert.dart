@@ -117,11 +117,7 @@ class UpgradeAlertState extends State<UpgradeAlert> {
             }
 
             if (!displayed) {
-              final checkContext = widget.navigatorKey != null &&
-                      widget.navigatorKey!.currentContext != null
-                  ? widget.navigatorKey!.currentContext!
-                  : context;
-              checkVersion(context: checkContext);
+              checkVersion(context: context);
             }
           }
         }
@@ -230,10 +226,19 @@ class UpgradeAlertState extends State<UpgradeAlert> {
 
     // Save the date/time as the last time alerted.
     widget.upgrader.saveLastAlerted();
-
+    final checkContext = widget.navigatorKey != null &&
+            widget.navigatorKey!.currentContext != null
+        ? widget.navigatorKey!.currentContext!
+        : context;
+    if (!checkContext.mounted) {
+      if (widget.upgrader.state.debugLogging) {
+        print('upgrader: showTheDialog context is not mounted');
+      }
+      return;
+    }
     showDialog(
       barrierDismissible: barrierDismissible,
-      context: context,
+      context: checkContext,
       builder: (BuildContext context) {
         return PopScope(
           canPop: onCanPop(),
