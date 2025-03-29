@@ -227,7 +227,7 @@ description field.
 When using GoRouter (package go_router) with upgrader, you may need to provide
 a navigatorKey to the ```UpgradeAlert``` widget so that the correct route
 context is used. Below is part of the code you will need for this. Also,
-checkout the [example/lib/main-gorouter.dart](example/lib/main-gorouter.dart) example for a more complete example.
+checkout the [example/lib/main_gorouter.dart](example/lib/main_gorouter.dart) example for a more complete example.
 
 ```dart
   @override
