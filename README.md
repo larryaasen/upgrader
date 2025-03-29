@@ -112,12 +112,12 @@ For [appcast](#appcast)), the release notes are taken from the description field
 ## Customization
 
 The alert can be customized by changing the `DialogTheme` on the `MaterialApp`, or by overriding methods in the `UpgradeAlert` class. See these examples for more details:
-- [example/lib/main-alert-theme.dart](example/lib/main-alert-theme.dart)
-- [example/lib/main-custom-alert.dart](example/lib/main-custom-alert.dart)
+- [example/lib/main_alert_theme.dart](example/lib/main_alert_theme.dart)
+- [example/lib/main_custom_alert.dart](example/lib/main_custom_alert.dart)
 
 The card can be customized by changing the `CardTheme` on the `MaterialApp`, or by overriding methods in the `UpgradeCard` class. See these examples for more details:
-- [example/lib/main-card-theme.dart](example/lib/main-card-theme.dart)
-- [example/lib/main-custom-card.dart](example/lib/main-custom-card.dart)
+- [example/lib/main_card_theme.dart](example/lib/main_card_theme.dart)
+- [example/lib/main_custom_card.dart](example/lib/main_custom_card.dart)
 
 Here are the custom parameters for `UpgradeAlert`:
 
