@@ -99,7 +99,7 @@ class MyUpgradeAlertState extends UpgradeAlertState {
               TextButton(
                 child: const Text('Yes'),
                 onPressed: () {
-                  onUserUpdated(context, !widget.upgrader.blocked());
+                  onUserUpdated(context, widget.barrierDismissible);
                 },
               ),
             ],

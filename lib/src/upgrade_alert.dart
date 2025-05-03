@@ -274,9 +274,9 @@ class UpgradeAlertState extends State<UpgradeAlert> {
                 context,
                 widget.dialogStyle == UpgradeDialogStyle.cupertino,
                 messages,
-                () => onUserIgnored(context, true),
-                () => onUserUpdated(context, true),
-                () => onUserLater(context, true),
+                () => onUserIgnored(context, barrierDismissible),
+                () => onUserUpdated(context, barrierDismissible),
+                () => onUserLater(context, barrierDismissible),
               ) ??
               alertDialog(
                 key,
@@ -351,7 +351,7 @@ class UpgradeAlertState extends State<UpgradeAlert> {
           cupertino: cupertino,
           text: messages.message(UpgraderMessage.buttonTitleIgnore),
           context: context,
-          onPressed: () => onUserIgnored(context, true),
+          onPressed: () => onUserIgnored(context, widget.barrierDismissible),
           isDefaultAction: false,
         ),
       if (showLater)
@@ -359,14 +359,14 @@ class UpgradeAlertState extends State<UpgradeAlert> {
           cupertino: cupertino,
           text: messages.message(UpgraderMessage.buttonTitleLater),
           context: context,
-          onPressed: () => onUserLater(context, true),
+          onPressed: () => onUserLater(context, widget.barrierDismissible),
           isDefaultAction: false,
         ),
       button(
         cupertino: cupertino,
         text: messages.message(UpgraderMessage.buttonTitleUpdate),
         context: context,
-        onPressed: () => onUserUpdated(context, !widget.upgrader.blocked()),
+        onPressed: () => onUserUpdated(context, widget.barrierDismissible),
         isDefaultAction: true,
       ),
     ];
