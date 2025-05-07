@@ -499,7 +499,7 @@ class Upgrader with WidgetsBindingObserver {
   }
 
   /// Launch the app store from the app store listing URL.
-  void sendUserToAppStore() async {
+  Future<void> sendUserToAppStore() async {
     final appStoreListingURL = versionInfo?.appStoreListingURL;
     if (appStoreListingURL == null || appStoreListingURL.isEmpty) {
       if (state.debugLogging) {
