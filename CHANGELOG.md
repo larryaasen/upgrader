@@ -1,6 +1,6 @@
-## 11.4.0
+## 11.3.2
 
-TBD
+- Added Future keyword in return type of sendUserToAppStore(). (thanks to @EArminjon)
 
 ## 11.3.1
 
