@@ -247,6 +247,10 @@ class UpgraderMessages {
         message =
             '{{appName}}有新的版本！您拥有{{currentInstalledVersion}}的版本可更新到{{currentAppStoreVersion}}的版本。';
         break;
+      case 'uz':
+        message =
+        'Yangi {{appName}} versiyasi mavjud! {{currentAppStoreVersion}} versiyasi chiqdi — sizda hozirda {{currentInstalledVersion}} mavjud.';
+        break;
       case 'en':
       default:
         message =
@@ -367,6 +371,9 @@ class UpgraderMessages {
       case 'zh':
         message = '不理';
         break;
+      case 'uz':
+        message = "Yo'q";
+        break;
       case 'en':
       default:
         message = 'IGNORE';
@@ -485,6 +492,8 @@ class UpgraderMessages {
         break;
       case 'zh':
         message = '以后';
+        case 'uz':
+        message = "Keyinroq";
       case 'en':
       default:
         message = 'LATER';
@@ -603,6 +612,9 @@ class UpgraderMessages {
         break;
       case 'zh':
         message = '更新';
+        break;
+      case 'uz':
+        message = "Yangilash";
         break;
       case 'en':
       default:
@@ -723,6 +735,9 @@ class UpgraderMessages {
       case 'zh':
         message = '您现在要更新应用程序吗？';
         break;
+      case 'uz':
+        message = "Hozir yangilashni xohlaysizmi?";
+        break;
       case 'en':
       default:
         message = 'Would you like to update it now?';
@@ -803,6 +818,9 @@ class UpgraderMessages {
       case 'uk':
       case 'vi':
       case 'zh':
+      case 'uz':
+        message = "Yangi talqin ma'lumotlari";
+        break;
       case 'en':
       default:
         message = 'Release Notes';
@@ -921,6 +939,9 @@ class UpgraderMessages {
         break;
       case 'zh':
         message = '更新应用程序？';
+        break;
+      case 'uz':
+        message = "Ilova yangilansinmi?";
         break;
       case 'en':
       default:
