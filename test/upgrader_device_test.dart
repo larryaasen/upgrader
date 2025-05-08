@@ -124,6 +124,8 @@ Map _androidInfo({required String baseOS}) {
     'serialNumber': 'a',
     'isLowRamDevice': false,
     'version': version,
+    'physicalRamSize': 0,
+    'availableRamSize': 0,
   };
   return build;
 }
@@ -147,6 +149,8 @@ Map _iosInfo({required String baseOS}) {
     'systemVersion': baseOS,
     'localizedModel': 'localizedModel',
     'identifierForVendor': 'identifierForVendor',
+    'physicalRamSize': 0,
+    'availableRamSize': 0,
   };
   return info;
 }
