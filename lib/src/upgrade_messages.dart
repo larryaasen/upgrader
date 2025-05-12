@@ -93,6 +93,26 @@ class UpgraderMessages {
     return code;
   }
 
+  String get upgradeAvailable => switch (languageCode) {
+        'da' => 'Ny opdatering tilgængelig!',
+        _ => 'New update available!',
+      };
+
+  String get newInThisVersion => switch (languageCode) {
+        'da' => 'Nyt i denne version',
+        _ => 'New in this version',
+      };
+
+  String get noAvailableReleaseNotes => switch (languageCode) {
+        'da' => 'Ingen tilgængelige udgivelsesnoter',
+        _ => 'No available release notes',
+      };
+
+  String get upgradeEnforce => switch (languageCode) {
+        'da' => 'En opdatering er påkrævet før at du kan benytte app\'en',
+        _ => 'An update is required before you can use the app.',
+      };
+
   /// The body of the upgrade message. This string supports mustache style
   /// template variables:
   ///   {{appName}}
