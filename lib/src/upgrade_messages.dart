@@ -216,7 +216,8 @@ class UpgraderMessages {
             'د {{appName}} آپلیکشن  نوې نسخه شتون لري! {{currentAppStoreVersion}} شتون لري، مګر تاسو اوس هم {{currentInstalledVersion}} کاروئ.';
         break;
       case 'ro':
-        message = 'O versiune nouă a aplicației {{appName}} este acum disponibilă! Actualizați la versiunea {{currentAppStoreVersion}} – aveți versiunea {{currentInstalledVersion}}.';
+        message =
+            'O versiune nouă a aplicației {{appName}} este acum disponibilă! Actualizați la versiunea {{currentAppStoreVersion}} – aveți versiunea {{currentInstalledVersion}}.';
         break;
       case 'ru':
         message =

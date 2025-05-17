@@ -1,10 +1,7 @@
-## Next
-
-- Added support for Romanian language localization.
-
 ## 11.4.0
 
 - Added new language translations for Uzbek ('uz'). (thanks to @Shuhrat-java)
+- Added new language translations for Romanian ('ro'). (thanks to @SK1n)
 
 ## 11.3.2
 

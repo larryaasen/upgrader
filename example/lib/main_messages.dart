@@ -60,6 +60,7 @@ class MyApp extends StatelessWidget {
         Locale('pt', ''), // Portuguese, no country code
         Locale('pl', ''), // Polish, no country code
         Locale('ps', ''), // Pashto, no country code
+        Locale('ro', ''), // Romanian, no country code
         Locale('ru', ''), // Russian, no country code
         Locale('sv', ''), // Swedish, no country code
         Locale('ta', ''), // Tamil, no country code
@@ -160,6 +161,7 @@ class DemoLocalizationsDelegate
         'pt',
         'pl',
         'ps',
+        'ro',
         'ru',
         'sv',
         'ta',
