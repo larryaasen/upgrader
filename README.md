@@ -412,6 +412,7 @@ Languages supported:
 * Ukrainian ('uk')
 * Uzbek ('uz')
 * Vietnamese ('vi')
+* Romanian ('ro')
 
 
 The `upgrader` package can be supplied with additional languages in your code by extending the `UpgraderMessages` class
