@@ -66,6 +66,7 @@ class MyApp extends StatelessWidget {
         Locale('te', ''), // Telugu, no country code
         Locale('tr', ''), // Turkish, no country code
         Locale('uk', ''), // Ukrainian, no country code
+        Locale('uz', ''), // Uzbek, no country code
         Locale('vi', ''), // Vietnamese, no country code
         Locale('zh', ''), // Chinese, no country code
       ],
@@ -165,6 +166,7 @@ class DemoLocalizationsDelegate
         'te',
         'tr',
         'uk',
+        'uz',
         'vi',
         'zh'
       ].contains(locale.languageCode);

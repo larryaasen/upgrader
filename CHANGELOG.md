@@ -2,6 +2,10 @@
 
 - Added support for Romanian language localization.
 
+## 11.4.0
+
+- Added new language translations for Uzbek ('uz'). (thanks to @Shuhrat-java)
+
 ## 11.3.2
 
 - Added Future keyword in return type of sendUserToAppStore(). (thanks to @EArminjon)
