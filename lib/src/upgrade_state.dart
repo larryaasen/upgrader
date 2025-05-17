@@ -23,6 +23,7 @@ class UpgraderState {
     this.languageCodeOverride,
     this.messages,
     this.minAppVersion,
+    this.disableOptionalUpdates = false,
     this.packageInfo,
     required this.upgraderDevice,
     required this.upgraderOS,
@@ -62,6 +63,11 @@ class UpgraderState {
   /// app version from UpgraderStore. Optional.
   final Version? minAppVersion;
 
+  /// If set to `true`, this flag will disable optional app updates for the current version.
+  /// When disabled, only mandatory updates (those below minimum app version) will be
+  /// prompted to the user. Defaults to `false`.
+  final bool disableOptionalUpdates;
+
   /// The app package metadata information.
   final PackageInfo? packageInfo;
 
@@ -87,6 +93,7 @@ class UpgraderState {
     String? languageCodeOverride,
     UpgraderMessages? messages,
     Version? minAppVersion,
+    bool? disableOptionalUpdates,
     PackageInfo? packageInfo,
     UpgraderDevice? upgraderDevice,
     UpgraderOS? upgraderOS,
@@ -104,6 +111,7 @@ class UpgraderState {
       languageCodeOverride: languageCodeOverride ?? this.languageCodeOverride,
       messages: messages ?? this.messages,
       minAppVersion: minAppVersion ?? this.minAppVersion,
+      disableOptionalUpdates: disableOptionalUpdates ?? this.disableOptionalUpdates,
       packageInfo: packageInfo ?? this.packageInfo,
       upgraderDevice: upgraderDevice ?? this.upgraderDevice,
       upgraderOS: upgraderOS ?? this.upgraderOS,
@@ -134,6 +142,7 @@ class UpgraderState {
           languageCodeOverride == true ? null : this.languageCodeOverride,
       messages: messages == true ? null : this.messages,
       minAppVersion: minAppVersion == true ? null : this.minAppVersion,
+      disableOptionalUpdates: disableOptionalUpdates,
       packageInfo: packageInfo == true ? null : this.packageInfo,
       upgraderDevice: upgraderDevice,
       upgraderOS: upgraderOS,
