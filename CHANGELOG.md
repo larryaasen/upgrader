@@ -1,6 +1,10 @@
-## 11.3.2
+## Next
 
 - Added support for Romanian language localization.
+
+## 11.3.2
+
+- Added Future keyword in return type of sendUserToAppStore(). (thanks to @EArminjon)
 
 ## 11.3.1
 

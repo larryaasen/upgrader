@@ -55,8 +55,7 @@ class UpgraderMessages {
   final String languageCode;
 
   /// Provide a [code] to override the system-reported default locale.
-  UpgraderMessages({String? code})
-      : languageCode = (code ?? findLanguageCode()) {
+  UpgraderMessages({String? code}) : languageCode = (code ?? findLanguageCode()) {
     assert(languageCode.isNotEmpty);
   }
 
@@ -168,8 +167,7 @@ class UpgraderMessages {
             'Una nuova versione di {{appName}} è disponibile! La versione {{currentAppStoreVersion}} è ora disponibile, voi avete la {{currentInstalledVersion}}.';
         break;
       case 'ja':
-        message =
-            '現在のバージョンは、{{currentInstalledVersion}}です。{{appName}}の最新バージョン({{currentAppStoreVersion}})があります。';
+        message = '現在のバージョンは、{{currentInstalledVersion}}です。{{appName}}の最新バージョン({{currentAppStoreVersion}})があります。';
         break;
       case 'kk':
         message =
@@ -242,13 +240,16 @@ class UpgraderMessages {
         message =
             'Доступна нова версія додатка {{appName}}! Нова версія: {{currentAppStoreVersion}}, поточна версія: {{currentInstalledVersion}}.';
         break;
+      case 'uz':
+        message =
+            'Yangi {{appName}} talqin mavjud! {{currentAppStoreVersion}} talqin chiqdi — sizda hozirda {{currentInstalledVersion}} talqini mavjud.';
+        break;
       case 'vi':
         message =
             'Đã có phiên bản mới của {{appName}}. Phiên bản {{currentAppStoreVersion}} đã sẵn sàng, bạn đang dùng {{currentInstalledVersion}}.';
         break;
       case 'zh':
-        message =
-            '{{appName}}有新的版本！您拥有{{currentInstalledVersion}}的版本可更新到{{currentAppStoreVersion}}的版本。';
+        message = '{{appName}}有新的版本！您拥有{{currentInstalledVersion}}的版本可更新到{{currentAppStoreVersion}}的版本。';
         break;
       case 'en':
       default:
@@ -366,6 +367,9 @@ class UpgraderMessages {
         break;
       case 'uk':
         message = 'НІ';
+        break;
+      case 'uz':
+        message = "Yo'q";
         break;
       case 'vi':
         message = 'BỎ QUA';
@@ -489,6 +493,8 @@ class UpgraderMessages {
       case 'uk':
         message = 'ПІЗНІШЕ';
         break;
+      case 'uz':
+        message = "Keyinroq";
       case 'vi':
         message = 'ĐỂ SAU';
         break;
@@ -609,6 +615,9 @@ class UpgraderMessages {
         break;
       case 'uk':
         message = 'ОНОВИТИ';
+        break;
+      case 'uz':
+        message = "Yangilash";
         break;
       case 'vi':
         message = 'CẬP NHẬT';
@@ -732,6 +741,9 @@ class UpgraderMessages {
       case 'uk':
         message = 'Бажаєте оновити зараз?';
         break;
+      case 'uz':
+        message = "Hozir yangilashni xohlaysizmi?";
+        break;
       case 'vi':
         message = 'Bạn có muốn cập nhật ứng dụng?';
         break;
@@ -819,6 +831,9 @@ class UpgraderMessages {
       case 'sv':
       case 'ta':
       case 'uk':
+      case 'uz':
+        message = "Yangi talqin ma'lumotlari";
+        break;
       case 'vi':
       case 'zh':
       case 'en':
@@ -936,6 +951,9 @@ class UpgraderMessages {
         break;
       case 'uk':
         message = 'Оновити?';
+        break;
+      case 'uz':
+        message = "Ilova yangilansinmi?";
         break;
       case 'vi':
         message = 'Cập nhật ứng dụng?';
