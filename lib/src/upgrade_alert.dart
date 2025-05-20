@@ -117,7 +117,11 @@ class UpgradeAlertState extends State<UpgradeAlert> {
             }
 
             if (!displayed) {
-              checkVersion(context: context);
+              final checkContext = widget.navigatorKey != null &&
+                      widget.navigatorKey!.currentContext != null
+                  ? widget.navigatorKey!.currentContext!
+                  : context;
+              checkVersion(context: checkContext);
             }
           }
         }

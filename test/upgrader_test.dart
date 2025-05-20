@@ -1168,6 +1168,63 @@ void main() {
     verifyMessages(UpgraderMessages(code: 'vi'), 'vi');
     verifyMessages(UpgraderMessages(code: 'zh'), 'zh');
   }, skip: false);
+
+  /// This test checks that we will still show the upgrade even after the upgrader has been initialized.
+  /// This likely happens when the upgrader outlives the UpgradeAlert/it's parents, and so UpgradeAlert is given a new context
+  testWidgets(
+      'test UpgradeAlert with GoRouter shows upgrade dialog with changed context',
+      (WidgetTester tester) async {
+    final client = await MockPlayStoreSearchClient.setupMockClient();
+    final upgrader = Upgrader(
+        upgraderOS: MockUpgraderOS(android: true),
+        client: client,
+        debugLogging: true);
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.testing.test2',
+            version: '1.0.0',
+            buildNumber: '400'));
+    // Initialize the upgrader
+    await tester.runAsync(() => upgrader.initialize());
+    GoRouter routerConfig = GoRouter(
+      initialLocation: '/page1',
+      routes: [
+        GoRoute(
+          path: '/page1',
+          builder: (BuildContext context, GoRouterState state) => Scaffold(
+              appBar: AppBar(title: const Text('Upgrader GoRouter Example')),
+              body: const Center(child: Text('Checking... page1'))),
+        ),
+      ],
+    );
+
+    final router = MaterialApp.router(
+      title: 'Upgrader GoRouter Example',
+      routerConfig: routerConfig,
+      builder: (context, child) {
+        return UpgradeAlert(
+          upgrader: upgrader,
+          navigatorKey: routerConfig.routerDelegate.navigatorKey,
+          showLater: false,
+          showIgnore: false,
+          child: child,
+        );
+      },
+    );
+
+    await tester.pumpWidget(router);
+
+    // Pump the UI so the upgrade card is displayed
+    await tester.pumpAndSettle();
+    await tester.pumpAndSettle();
+
+    expect(find.text('Upgrader GoRouter Example'), findsOneWidget);
+
+    expect(find.text('Update App?'), findsOneWidget);
+    expect(find.text('UPDATE NOW'), findsOneWidget);
+    expect(find.text('Release Notes'), findsOneWidget);
+  }, skip: false);
 }
 
 void verifyMessages(UpgraderMessages messages, String code) {
