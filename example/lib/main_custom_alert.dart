@@ -63,6 +63,18 @@ class MyUpgradeAlertState extends UpgradeAlertState {
     required String? releaseNotes,
     required bool barrierDismissible,
     required UpgraderMessages messages,
+    Widget Function(
+      Key? key,
+      String title,
+      String message,
+      String? releaseNotes,
+      BuildContext context,
+      bool cupertino,
+      UpgraderMessages messages,
+      Function() onIgnore,
+      Function() onUpdate,
+      Function() onCancel,
+    )? customDialog,
   }) {
     showDialog(
         context: context,
@@ -87,7 +99,7 @@ class MyUpgradeAlertState extends UpgradeAlertState {
               TextButton(
                 child: const Text('Yes'),
                 onPressed: () {
-                  onUserUpdated(context, !widget.upgrader.blocked());
+                  onUserUpdated(context, widget.barrierDismissible);
                 },
               ),
             ],
