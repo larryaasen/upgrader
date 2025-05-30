@@ -4,6 +4,7 @@
 
 export 'src/alert_style_widget.dart';
 export 'src/appcast.dart';
+export 'src/in_app_update.dart';
 export 'src/itunes_search_api.dart';
 export 'src/play_store_search_api.dart';
 export 'src/upgrade_alert.dart';

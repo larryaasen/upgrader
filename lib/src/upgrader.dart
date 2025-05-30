@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info_plus/package_info_plus.dart';
@@ -10,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:version/version.dart';
 
+import 'in_app_update.dart';
 import 'upgrade_device.dart';
 import 'upgrade_messages.dart';
 import 'upgrade_os.dart';
@@ -59,6 +61,7 @@ class Upgrader with WidgetsBindingObserver {
     UpgraderDevice? upgraderDevice,
     UpgraderOS? upgraderOS,
     this.willDisplayUpgrade,
+    this.useInAppUpdate = false,
   })  : _state = UpgraderState(
           client: client ?? http.Client(),
           clientHeaders: clientHeaders,
@@ -88,6 +91,11 @@ class Upgrader with WidgetsBindingObserver {
   /// and false when it should not be displayed. One good use for this callback
   /// is logging metrics for your app.
   WillDisplayUpgradeCallback? willDisplayUpgrade;
+  
+  /// Whether to use the Android in-app update feature instead of the traditional alert dialog.
+  /// This is only used on Android platform and will be ignored on other platforms.
+  /// Default is false.
+  final bool useInAppUpdate;
 
   /// A shared instance of [Upgrader].
   static Upgrader get sharedInstance => _sharedInstance;
@@ -154,6 +162,25 @@ class Upgrader with WidgetsBindingObserver {
 
       await updateVersionInfo();
 
+      // Initialize the in-app update handler if needed
+      if (useInAppUpdate && 
+          !kIsWeb && 
+          defaultTargetPlatform == TargetPlatform.android) {
+        await InAppUpdate.initialize();
+        
+        // Listen for in-app update events
+        InAppUpdate.eventStream.listen((event) {
+          if (state.debugLogging) {
+            print('upgrader: InAppUpdate event: $event');
+          }
+          
+          if (event == InAppUpdateEvent.downloaded) {
+            // Call completeUpdate when flexible update is downloaded
+            InAppUpdate.completeUpdate();
+          }
+        });
+      }
+
       // Add an observer of application events, so that when the app returns
       // from the background, the version info is updated.
       WidgetsBinding.instance.addObserver(this);
@@ -188,6 +215,13 @@ class Upgrader with WidgetsBindingObserver {
   void dispose() {
     // Remove the observer of application events.
     WidgetsBinding.instance.removeObserver(this);
+    
+    // Dispose the in-app update handler if it was initialized
+    if (useInAppUpdate && 
+        !kIsWeb && 
+        defaultTargetPlatform == TargetPlatform.android) {
+      InAppUpdate.dispose();
+    }
   }
 
   /// Handle application events.
@@ -361,7 +395,25 @@ class Upgrader with WidgetsBindingObserver {
     return rv;
   }
 
+  // Track if in-app update is supported and available
+  bool? _isInAppUpdateSupported;
+
   bool isUpdateAvailable() {
+    // When using in-app update on Android, we'll bypass the normal version checking
+    // and let Google Play Services determine if an update is available
+    if (useInAppUpdate && 
+        !kIsWeb && 
+        defaultTargetPlatform == TargetPlatform.android) {
+      if (state.debugLogging) {
+        print('upgrader: using in-app update, bypassing version check');
+      }
+      
+      // For in-app updates, we'll assume an update is available and let
+      // the native implementation determine the actual availability
+      return true;
+    }
+    
+    // Normal version checking for other platforms or when in-app update is disabled
     if (state.debugLogging) {
       print('upgrader: installedVersion: ${state.packageInfo?.version}');
       print('upgrader: minAppVersion: ${state.minAppVersion}');
@@ -498,8 +550,91 @@ class Upgrader with WidgetsBindingObserver {
     return true;
   }
 
-  /// Launch the app store from the app store listing URL.
+  /// Launch the app store from the app store listing URL or use in-app update on Android.
   Future<void> sendUserToAppStore() async {
+    // Use in-app update on Android if enabled 
+    if (useInAppUpdate && 
+        !kIsWeb && 
+        defaultTargetPlatform == TargetPlatform.android) {
+      
+      // We'll check if in-app update is supported by trying to initialize it
+      // This ensures we won't attempt to use it on devices without Play Store
+      if (_isInAppUpdateSupported == null) {
+        if (state.debugLogging) {
+          print('upgrader: Checking if in-app update is supported...');
+        }
+        
+        try {
+          // Try to initialize - this will fail if Play Store isn't available
+          await InAppUpdate.initialize();
+          _isInAppUpdateSupported = true;
+          
+          if (state.debugLogging) {
+            print('upgrader: In-app update is supported');
+          }
+        } catch (e) {
+          _isInAppUpdateSupported = false;
+          if (state.debugLogging) {
+            print('upgrader: In-app update is not supported: $e');
+          }
+        }
+      }
+      
+      // If in-app update isn't supported, fall back to traditional method
+      if (_isInAppUpdateSupported != true) {
+        if (state.debugLogging) {
+          print('upgrader: In-app update not supported, falling back to traditional method');
+        }
+        await _launchAppStore();
+        return;
+      }
+      
+      if (state.debugLogging) {
+        print('upgrader: DIRECTLY TRIGGERING IN-APP UPDATE');
+      }
+      
+      // Get the language code for the update UI
+      final locale = findLocale();
+      final language = state.languageCodeOverride ?? 
+                       findLanguageCode(locale: locale);
+      
+      // Use the immediate update type if the update is critical
+      final immediateUpdate = belowMinAppVersion() || 
+                              versionInfo?.isCriticalUpdate == true;
+      
+      try {
+        // Always make sure the in-app update is initialized
+        await InAppUpdate.initialize();
+        
+        if (state.debugLogging) {
+          print('upgrader: In-app update initialized, checking for update with immediateUpdate=$immediateUpdate');
+        }
+        
+        // Directly trigger the in-app update check
+        // This will show the update UI if an update is available
+        final status = await InAppUpdate.checkForUpdate(
+          immediateUpdate: immediateUpdate,
+          language: language,
+        );
+        
+        if (state.debugLogging) {
+          print('upgrader: In-app update status: $status');
+        }
+      } catch (e) {
+        if (state.debugLogging) {
+          print('upgrader: In-app update failed with error: $e');
+        }
+        // Fallback to traditional method if in-app update fails
+        await _launchAppStore();
+      }
+    } else {
+      // Use the traditional method for iOS and other platforms
+      await _launchAppStore();
+    }
+  }
+  
+  /// Internal method to launch the app store using the traditional URL method
+  Future<void> _launchAppStore() async {
     final appStoreListingURL = versionInfo?.appStoreListingURL;
     if (appStoreListingURL == null || appStoreListingURL.isEmpty) {
       if (state.debugLogging) {
