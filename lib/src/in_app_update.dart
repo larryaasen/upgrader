@@ -17,6 +17,9 @@ class InAppUpdate {
   static final StreamController<InAppUpdateEvent> _eventStreamController =
       StreamController<InAppUpdateEvent>.broadcast();
 
+  /// Stream to listen for update events
+  static Stream<InAppUpdateEvent> get eventStream => _eventStreamController.stream;
+
   static bool initialized = false;
 
   /// Initialize the in-app update handler
@@ -61,7 +64,6 @@ class InAppUpdate {
         _eventStreamController.add(InAppUpdateEvent.installed);
         break;
       case 'onUpdateFailure':
-        final errorCode = call.arguments['errorCode'] as int?;
         _eventStreamController.add(InAppUpdateEvent.failed);
         break;
       default:
