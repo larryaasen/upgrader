@@ -395,7 +395,25 @@ class Upgrader with WidgetsBindingObserver {
     return rv;
   }
 
+  // Track if in-app update is supported and available
+  bool? _isInAppUpdateSupported;
+
   bool isUpdateAvailable() {
+    // When using in-app update on Android, we'll bypass the normal version checking
+    // and let Google Play Services determine if an update is available
+    if (useInAppUpdate && 
+        !kIsWeb && 
+        defaultTargetPlatform == TargetPlatform.android) {
+      if (state.debugLogging) {
+        print('upgrader: using in-app update, bypassing version check');
+      }
+      
+      // For in-app updates, we'll assume an update is available and let
+      // the native implementation determine the actual availability
+      return true;
+    }
+    
+    // Normal version checking for other platforms or when in-app update is disabled
     if (state.debugLogging) {
       print('upgrader: installedVersion: ${state.packageInfo?.version}');
       print('upgrader: minAppVersion: ${state.minAppVersion}');
@@ -534,12 +552,45 @@ class Upgrader with WidgetsBindingObserver {
 
   /// Launch the app store from the app store listing URL or use in-app update on Android.
   Future<void> sendUserToAppStore() async {
-    // Use in-app update on Android if enabled
+    // Use in-app update on Android if enabled 
     if (useInAppUpdate && 
         !kIsWeb && 
         defaultTargetPlatform == TargetPlatform.android) {
+      
+      // We'll check if in-app update is supported by trying to initialize it
+      // This ensures we won't attempt to use it on devices without Play Store
+      if (_isInAppUpdateSupported == null) {
+        if (state.debugLogging) {
+          print('upgrader: Checking if in-app update is supported...');
+        }
+        
+        try {
+          // Try to initialize - this will fail if Play Store isn't available
+          await InAppUpdate.initialize();
+          _isInAppUpdateSupported = true;
+          
+          if (state.debugLogging) {
+            print('upgrader: In-app update is supported');
+          }
+        } catch (e) {
+          _isInAppUpdateSupported = false;
+          if (state.debugLogging) {
+            print('upgrader: In-app update is not supported: $e');
+          }
+        }
+      }
+      
+      // If in-app update isn't supported, fall back to traditional method
+      if (_isInAppUpdateSupported != true) {
+        if (state.debugLogging) {
+          print('upgrader: In-app update not supported, falling back to traditional method');
+        }
+        await _launchAppStore();
+        return;
+      }
+      
       if (state.debugLogging) {
-        print('upgrader: using in-app update');
+        print('upgrader: DIRECTLY TRIGGERING IN-APP UPDATE');
       }
       
       // Get the language code for the update UI
@@ -552,22 +603,26 @@ class Upgrader with WidgetsBindingObserver {
                               versionInfo?.isCriticalUpdate == true;
       
       try {
-        final updateStatus = await InAppUpdate.checkForUpdate(
+        // Always make sure the in-app update is initialized
+        await InAppUpdate.initialize();
+        
+        if (state.debugLogging) {
+          print('upgrader: In-app update initialized, checking for update with immediateUpdate=$immediateUpdate');
+        }
+        
+        // Directly trigger the in-app update check
+        // This will show the update UI if an update is available
+        final status = await InAppUpdate.checkForUpdate(
           immediateUpdate: immediateUpdate,
           language: language,
         );
         
         if (state.debugLogging) {
-          print('upgrader: in-app update status: $updateStatus');
-        }
-        
-        if (!updateStatus.updateAvailable) {
-          // Fallback to traditional method if in-app update is not available
-          await _launchAppStore();
+          print('upgrader: In-app update status: $status');
         }
       } catch (e) {
         if (state.debugLogging) {
-          print('upgrader: in-app update failed: $e');
+          print('upgrader: In-app update failed with error: $e');
         }
         // Fallback to traditional method if in-app update fails
         await _launchAppStore();

@@ -19,7 +19,9 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
 
   final _upgrader = Upgrader(
-      debugLogging: true, durationUntilAlertAgain: const Duration(seconds: 10), useInAppUpdate: true);
+      debugLogging: true, 
+      durationUntilAlertAgain: const Duration(seconds: 10), 
+      useInAppUpdate: true);
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +31,12 @@ class MyApp extends StatelessWidget {
         upgrader: _upgrader,
         child: Scaffold(
           appBar: AppBar(title: const Text('Upgrader Example - Alert In App Update')),
-          body: const Center(child: Text('Checking...')),
+          body: const Center(
+            child: Text('In-app update should trigger automatically\n if an update is available'),
+          ),
         ),
       ),
     );
   }
 }
+

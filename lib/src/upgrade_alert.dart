@@ -3,6 +3,7 @@
  */
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'upgrade_messages.dart';
@@ -132,6 +133,36 @@ class UpgradeAlertState extends State<UpgradeAlert> {
 
   /// Will show the alert dialog when it should be dispalyed.
   void checkVersion({required BuildContext context}) {
+    // For Android with in-app update enabled, directly trigger the in-app update
+    // without showing the traditional dialog
+    if (widget.upgrader.useInAppUpdate && 
+        !kIsWeb && 
+        defaultTargetPlatform == TargetPlatform.android) {
+      if (widget.upgrader.state.debugLogging) {
+        print('upgrader: checkVersion using in-app update on Android');
+      }
+      
+      // Only trigger if we should upgrade
+      if (widget.upgrader.shouldDisplayUpgrade()) {
+        if (!displayed) {
+          displayed = true;
+          
+          // Save the date/time as the last time alerted (like in traditional flow)
+          widget.upgrader.saveLastAlerted();
+          
+          // Directly trigger the in-app update flow
+          Future.delayed(Duration.zero, () {
+            if (widget.upgrader.state.debugLogging) {
+              print('upgrader: triggering in-app update flow');
+            }
+            widget.upgrader.sendUserToAppStore();
+          });
+        }
+      }
+      return;
+    }
+    
+    // Traditional alert dialog for other platforms or when in-app update is disabled
     final shouldDisplay = widget.upgrader.shouldDisplayUpgrade();
     if (widget.upgrader.state.debugLogging) {
       print('upgrader: shouldDisplayReleaseNotes: $shouldDisplayReleaseNotes');

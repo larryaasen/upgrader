@@ -48,3 +48,8 @@ dev_dependencies:
   go_router: ^14.2.7
 
 flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.larryaasen.upgrader
+        pluginClass: UpgraderPlugin
