@@ -23,14 +23,14 @@ will become more likely that users on other app stores need to be nagged about u
 
 ### Platform Support
 
-| Platform | Automatically Supported? | Appcast Supported? |
-| --- | --- | --- |
-| ANDROID | &#9989; Yes | &#9989; Yes |
-| IOS | &#9989; Yes | &#9989; Yes |
-| LINUX | &#10060; No | &#9989; Yes |
-| MACOS | &#10060; No | &#9989; Yes |
-| WEB | &#10060; No | &#9989; Yes |
-| WINDOWS | &#10060; No | &#9989; Yes |
+| Platform | Automatically Supported? | Appcast Supported? | In-App Update Supported? |
+| --- | --- | --- | --- |
+| ANDROID | &#9989; Yes | &#9989; Yes | &#9989; Yes |
+| IOS | &#9989; Yes | &#9989; Yes | &#10060; No |
+| LINUX | &#10060; No | &#9989; Yes | &#10060; No |
+| MACOS | &#10060; No | &#9989; Yes | &#10060; No |
+| WEB | &#10060; No | &#9989; Yes | &#10060; No |
+| WINDOWS | &#10060; No | &#9989; Yes | &#10060; No |
 
 ## Widgets
 The widgets come in two flavors: alert or card. The [UpgradeAlert](#alert-example) widget is used to display the
@@ -43,6 +43,8 @@ Tapping IGNORE prevents the alert from being displayed again for that version.
 Tapping the LATER button just closes the alert allowing the alert to be displayed sometime in the future.
 
 Tapping the UPDATE NOW button takes the user to the App Store (iOS) or Google Play Store (Android) where the user is expected to initiate the update process.
+
+On Android, you can also use the [In-App Update](#in-app-update) feature instead of directing users to the Play Store.
 
 ## Alert Example
 
@@ -109,6 +111,48 @@ available, otherwise the main app description is used.
 On iOS the release notes are taken from the App Store What's New section.
 For [appcast](#appcast)), the release notes are taken from the description field.
 
+## In-App Update
+
+This package supports Android's native [In-App Update](https://developer.android.com/guide/playcore/in-app-updates) feature. This allows you to update your app without leaving the app, using Google Play's built-in update mechanism.
+
+There are two types of in-app updates:
+
+1. **Flexible Update**: The user can continue using the app while the update is being downloaded. After the download is complete, the user is prompted to install the update.
+2. **Immediate Update**: The user is required to update the app immediately and cannot use the app until the update is installed.
+
+To enable in-app updates, set the `useInAppUpdate` parameter to `true` in the `Upgrader` constructor:
+
+```dart
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Upgrader Example',
+      home: UpgradeAlert(
+        upgrader: Upgrader(
+          useInAppUpdate: true, // Enable in-app update on Android
+          // The messages will still be used for iOS
+          messages: UpgraderMessages(code: Localizations.localeOf(context).languageCode),
+        ),
+        child: Scaffold(
+          appBar: AppBar(title: Text('Upgrader Example')),
+          body: Center(child: Text('Checking...')),
+        )),
+    );
+  }
+}
+```
+
+### How it works
+
+- On Android, when `useInAppUpdate` is `true`, the package will use the In-App Update API instead of showing the traditional dialog.
+- If the app requires an immediate update (when below minimum app version or when a critical update is available), it will use the immediate update flow.
+- Otherwise, it will use the flexible update flow.
+- The language of the update UI will use the language specified by the `languageCode` parameter or the system locale.
+- On iOS and other platforms, the traditional upgrade dialog will still be shown (this feature is Android-only).
+
 ## Customization
 
 The alert can be customized by changing the `DialogTheme` on the `MaterialApp`, or by overriding methods in the `UpgradeAlert` class. See these examples for more details:
@@ -159,6 +203,7 @@ The `Upgrader` class can be customized by setting parameters in the constructor,
 * storeController: a controller that provides the store details for each platform, defaults to `UpgraderStoreController()`.
 * upgraderDevice: an abstraction of the device_info details which is used for the OS version, defaults to `UpgraderDevice()`.
 * upgraderOS: information on which OS this code is running on, defaults to `UpgraderOS()`.
+* useInAppUpdate: whether to use the Android in-app update feature instead of the traditional alert dialog, defaults to ```false```.
 * willDisplayUpgrade: called when ```upgrader``` determines that an upgrade may
 or may not be displayed, defaults to ```null```
 

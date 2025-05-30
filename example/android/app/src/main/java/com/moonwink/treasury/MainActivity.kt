@@ -1,4 +1,4 @@
-package com.m
+package com.moonwink.treasury
 
 import io.flutter.embedding.android.FlutterActivity
 
