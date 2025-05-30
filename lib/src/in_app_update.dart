@@ -1,4 +1,7 @@
-// Copyright (c) 2024 Larry Aasen. All rights reserved.
+/*
+  Copyright (c) 2025 Larry Aasen. All rights reserved.
+  Contributions by [MrRoy121 (2025), ].
+*/
 
 import 'dart:async';
 

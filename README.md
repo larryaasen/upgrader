@@ -153,6 +153,28 @@ class MyApp extends StatelessWidget {
 - The language of the update UI will use the language specified by the `languageCode` parameter or the system locale.
 - On iOS and other platforms, the traditional upgrade dialog will still be shown (this feature is Android-only).
 
+### Testing In-App Updates
+
+Testing in-app updates requires special steps, as this feature does not work with normal app installations:
+
+1. **Upload a version of your app to Google Play Console** (Internal Testing, Closed Testing, or Open Testing track)
+2. **Create a newer version** with a higher version code/number
+3. **Use Internal App Sharing**:
+   - In Google Play Console, go to "Setup" > "Internal app sharing"
+   - Upload your APK/AAB with the higher version code
+   - Share the link with testers (including yourself)
+
+Important notes for testing:
+- In-app updates **only work with apps installed from Google Play Store** or via Internal App Sharing
+- The installed app version must be **lower than the update version code**
+- For testing, the device must be signed in with the same Google account that has access to the test app
+- Review Google's official testing guide: https://developer.android.com/guide/playcore/in-app-updates/test
+
+Common issues:
+- Make sure Play Store app is updated on test devices
+- Verify both versions (installed and update) use the same signing key
+- Clear Play Store cache if updates aren't showing up
+
 ## Customization
 
 The alert can be customized by changing the `DialogTheme` on the `MaterialApp`, or by overriding methods in the `UpgradeAlert` class. See these examples for more details:
