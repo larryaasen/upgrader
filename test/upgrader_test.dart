@@ -413,6 +413,98 @@ void main() {
     expect(notCalled, true);
   }, skip: false);
 
+  testWidgets('test UpgradeAlert in CupertinoApp', (WidgetTester tester) async {
+    final client = MockITunesSearchClient.setupMockClient();
+
+    final upgrader =
+        Upgrader(upgraderOS: MockUpgraderOS(ios: true), client: client);
+
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '0.9.9',
+            buildNumber: '400'));
+    upgrader.initialize().then((value) {});
+    await tester.pumpAndSettle();
+
+    expect(upgrader.isUpdateAvailable(), true);
+    expect(upgrader.isTooSoon(), false);
+
+    expect(upgrader.state.messages, isNull);
+    upgrader.updateState(upgrader.state.copyWith(messages: UpgraderMessages()));
+    expect(upgrader.state.messages, isNotNull);
+
+    expect(upgrader.state.messages!.buttonTitleIgnore, 'IGNORE');
+    expect(upgrader.state.messages!.buttonTitleLater, 'LATER');
+    expect(upgrader.state.messages!.buttonTitleUpdate, 'UPDATE NOW');
+
+    upgrader
+        .updateState(upgrader.state.copyWith(messages: MyUpgraderMessages()));
+
+    expect(upgrader.state.messages!.buttonTitleIgnore, 'aaa');
+    expect(upgrader.state.messages!.buttonTitleLater, 'bbb');
+    expect(upgrader.state.messages!.buttonTitleUpdate, 'ccc');
+
+    var called = false;
+    var notCalled = true;
+
+    final upgradeAlert = cupertinoWrapper(
+      UpgradeAlert(
+        upgrader: upgrader,
+        dialogStyle: UpgradeDialogStyle.cupertino,
+        onUpdate: () {
+          called = true;
+          return true;
+        },
+        onIgnore: () {
+          notCalled = false;
+          return true;
+        },
+        onLater: () {
+          notCalled = false;
+          return true;
+        },
+        child: const Center(child: Text('Upgrading')),
+      ),
+    );
+    await tester.pumpWidget(upgradeAlert);
+
+    expect(find.text('Upgrader test'), findsOneWidget);
+    expect(find.text('Upgrading'), findsOneWidget);
+
+    // Pump the UI so the upgrader can display its dialog
+    await tester.pumpAndSettle();
+
+    expect(upgrader.isTooSoon(), true);
+
+    expect(find.text(upgrader.state.messages!.title), findsOneWidget);
+    expect(find.text(upgrader.body(upgrader.state.messages!)), findsOneWidget);
+    expect(find.text(upgrader.state.messages!.releaseNotes), findsOneWidget);
+    expect(find.text(upgrader.releaseNotes!), findsOneWidget);
+    expect(find.text(upgrader.state.messages!.prompt), findsOneWidget);
+    expect(find.byType(CupertinoDialogAction), findsNWidgets(3));
+    expect(
+      find.byWidgetPredicate((widget) => widget is CupertinoDialogAction),
+      findsNWidgets(3),
+    );
+    expect(
+        find.text(upgrader.state.messages!.buttonTitleIgnore), findsOneWidget);
+    expect(
+        find.text(upgrader.state.messages!.buttonTitleLater), findsOneWidget);
+    expect(
+        find.text(upgrader.state.messages!.buttonTitleUpdate), findsOneWidget);
+    expect(find.byKey(const Key('upgrader_alert_dialog')), findsOneWidget);
+
+    await tester.tap(find.text(upgrader.state.messages!.buttonTitleUpdate));
+    await tester.pumpAndSettle();
+    expect(find.text(upgrader.state.messages!.buttonTitleIgnore), findsNothing);
+    expect(find.text(upgrader.state.messages!.buttonTitleLater), findsNothing);
+    expect(find.text(upgrader.state.messages!.buttonTitleUpdate), findsNothing);
+    expect(called, true);
+    expect(notCalled, true);
+  }, skip: false);
+
   testWidgets('test UpgradeAlert ignore', (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
     final upgrader = Upgrader(

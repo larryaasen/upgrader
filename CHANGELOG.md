@@ -1,3 +1,7 @@
+## 11.5.0
+
+- Updated README to include CupertinoApp, and added a widget test for CupertinoApp.
+
 ## 11.5.0-alpha.1
 
 - [489] Fixed issue where null check operator used on a null value by checking the context.mounted before calling showDialog.
