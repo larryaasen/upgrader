@@ -2,7 +2,7 @@
 
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 /// This allows a value of type T or T? to be treated as a value of type T?.
 ///

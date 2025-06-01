@@ -1,3 +1,8 @@
+## 11.5.0-alpha.1
+
+- [489] Fixed issue where null check operator used on a null value by checking the context.mounted before calling showDialog.
+- [482] Will now call showCupertinoDialog instead of showDialog for CupertinoApp.
+
 ## 11.4.0
 
 - Added new language translations for Uzbek ('uz'). (thanks to @Shuhrat-java)

@@ -228,14 +228,21 @@ class UpgradeAlertState extends State<UpgradeAlert> {
       print('upgrader: showTheDialog releaseNotes: $releaseNotes');
     }
 
+    if (!context.mounted) {
+      if (widget.upgrader.state.debugLogging) {
+        print('upgrader: showTheDialog context not mounted - dialog not shown');
+      }
+      return;
+    }
+
     // Save the date/time as the last time alerted.
     widget.upgrader.saveLastAlerted();
 
-    showDialog(
-      barrierDismissible: barrierDismissible,
-      context: context,
-      builder: (BuildContext context) {
-        return PopScope(
+    // Detect if CupertinoApp is in the widget tree
+    final isCupertinoApp =
+        context.findAncestorWidgetOfExactType<CupertinoApp>() != null;
+
+    dialogBuilder(BuildContext context) => PopScope(
           canPop: onCanPop(),
           onPopInvokedWithResult: (didPop, result) {
             if (widget.upgrader.state.debugLogging) {
@@ -252,8 +259,20 @@ class UpgradeAlertState extends State<UpgradeAlert> {
             messages,
           ),
         );
-      },
-    );
+
+    if (isCupertinoApp) {
+      showCupertinoDialog(
+        barrierDismissible: barrierDismissible,
+        context: context,
+        builder: dialogBuilder,
+      );
+    } else {
+      showDialog(
+        barrierDismissible: barrierDismissible,
+        context: context,
+        builder: dialogBuilder,
+      );
+    }
   }
 
   /// Determines if the dialog blocks the current route from being popped.
