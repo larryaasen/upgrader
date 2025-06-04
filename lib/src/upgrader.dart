@@ -4,7 +4,7 @@ import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -324,7 +324,6 @@ class Upgrader with WidgetsBindingObserver {
     final isBlocked = blocked();
 
     if (state.debugLogging) {
-      print('upgrader: blocked: $isBlocked');
       print('upgrader: debugDisplayAlways: ${state.debugDisplayAlways}');
       print('upgrader: debugDisplayOnce: ${state.debugDisplayOnce}');
       print('upgrader: hasAlerted: $_hasAlerted');
@@ -552,6 +551,11 @@ class Upgrader with WidgetsBindingObserver {
 
   /// Launch the app store from the app store listing URL or use in-app update on Android.
   Future<void> sendUserToAppStore() async {
+    if (state.debugLogging) {
+      print('upgrader: ENTERING sendUserToAppStore');
+      print('upgrader: sendUserToAppStore --> state.upgraderOS.runtimeType: ${state.upgraderOS.runtimeType}');
+      print('upgrader: sendUserToAppStore --> state.upgraderOS.isAndroid: ${state.upgraderOS.isAndroid}');
+    }
     // Use in-app update on Android if enabled 
     if (useInAppUpdate && 
         !kIsWeb && 
