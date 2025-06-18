@@ -1,9 +1,8 @@
-## Next
-
-- [500] Fixed the Hindi ('hi) translations issue with the app name in the body message.
-
 ## 11.5.0
 
+- [482] Will now call showCupertinoDialog instead of showDialog for CupertinoApp.
+- [489] Fixed issue where null check operator used on a null value by checking the context.mounted before calling showDialog.
+- [500] Fixed the Hindi ('hi) translations issue with the app name in the body message.
 - Updated README to include CupertinoApp, and added a widget test for CupertinoApp.
 
 ## 11.5.0-alpha.1
