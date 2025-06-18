@@ -1,3 +1,7 @@
+## Next
+
+- [500] Fixed the Hindi ('hi) translations issue with the app name in the body message.
+
 ## 11.5.0
 
 - Updated README to include CupertinoApp, and added a widget test for CupertinoApp.
