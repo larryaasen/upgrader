@@ -5,6 +5,7 @@ import 'package:version/version.dart';
 class UpgraderVersionInfo {
   final String? appStoreListingURL;
   final Version? appStoreVersion;
+  final Version? appStoreDisplayVersion;
   final Version? installedVersion;
   final bool? isCriticalUpdate;
   final Version? minAppVersion;
@@ -13,6 +14,7 @@ class UpgraderVersionInfo {
   UpgraderVersionInfo({
     this.appStoreListingURL,
     this.appStoreVersion,
+    this.appStoreDisplayVersion,
     this.installedVersion,
     this.isCriticalUpdate,
     this.minAppVersion,
@@ -23,6 +25,7 @@ class UpgraderVersionInfo {
   String toString() {
     return 'appStoreListingURL: $appStoreListingURL, '
         'appStoreVersion: $appStoreVersion, '
+        'appStoreDisplayVersion: $appStoreDisplayVersion, '
         'installedVersion: $installedVersion, '
         'isCriticalUpdate: $isCriticalUpdate, '
         'minAppVersion: $minAppVersion, '

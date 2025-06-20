@@ -49,6 +49,7 @@ void main() {
     UpgraderVersionInfo versionInfo = UpgraderVersionInfo(
       appStoreListingURL: null,
       appStoreVersion: null,
+      appStoreDisplayVersion: null,
       installedVersion: null,
       isCriticalUpdate: null,
       minAppVersion: null,
@@ -60,7 +61,7 @@ void main() {
     expect(
         result,
         equals(
-            'appStoreListingURL: null, appStoreVersion: null, installedVersion: null, isCriticalUpdate: null, minAppVersion: null, releaseNotes: null'));
+            'appStoreListingURL: null, appStoreVersion: null, appStoreDisplayVersion: null, installedVersion: null, isCriticalUpdate: null, minAppVersion: null, releaseNotes: null'));
   });
   test('create_instance_with_one_parameter_null', () {
     Version appStoreVersion = Version.parse('1.0.0');
