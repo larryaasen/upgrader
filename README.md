@@ -312,6 +312,31 @@ check out the [example/lib/main_gorouter.dart](example/lib/main_gorouter.dart) e
   }
 ```
 
+## Using CupertinoApp
+
+When an app is using ```CupertinoApp``` instead of `MaterialApp`, you can now use the `UpgradeAlert` widget
+without errors. Using the `UpgradeCard` widget does not work with `CupertinoApp` because it uses the material
+`Card` widget.
+
+Example:
+```dart
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoApp(
+      title: 'Upgrader Example',
+      home: CupertinoPageScaffold(
+        navigationBar: const CupertinoNavigationBar(
+          middle: Text('Upgrader CupertinoApp Example'),
+        ),
+        child: UpgradeAlert(
+          dialogStyle: UpgradeDialogStyle.cupertino,
+          child: const Center(child: Text('Checking...')),
+        ),
+      ),
+    );
+  }
+```
+
 ## Android Back Button
 
 When using the ```UpgradeAlert``` widget, the Android back button will not
@@ -546,11 +571,11 @@ help you customize the `upgrader` experience for your app. Check these out.
 | --- | --- | --- |
 | main.dart | main_alert_again.dart | main_alert_theme.dart |
 | main_appcast.dart | main_card.dart | main_card_theme.dart |
-| main_cupertino.dart | main_custom_alert.dart | main_custom_card.dart |
-| main_dialog_key.dart | main_driver.dart | main_gorouter.dart |
-| main_localized_rtl.dart | main_macos.dart | main_messages.dart |
-| main_min_app_version.dart | main_multiple.dart | main_stateful.dart |
-| main_subclass.dart |  |  |
+| main_card_updated.dart | main_cupertino.dart | main_cupertinoapp.dart |
+| main_custom_alert.dart | main_custom_card.dart | main_dialog_key.dart |
+| main_driver.dart | main_gorouter.dart | main_localized_rtl.dart |
+| main_macos.dart | main_messages.dart | main_min_app_version.dart |
+| main_multiple.dart | main_stateful.dart | main_subclass.dart |
 
 ## Tapping UPDATE NOW button issue on Android
 
