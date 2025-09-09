@@ -193,7 +193,7 @@ extension ITunesResults on ITunesSearchAPI {
   String? description(Map response) {
     String? value;
     try {
-      value = response['results'][0]['description'];
+      value = response['results'][0]['releaseNotes'];
     } catch (e) {
       if (debugLogging) {
         print('upgrader.ITunesResults.description: $e');

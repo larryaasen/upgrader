@@ -117,7 +117,7 @@ extension PlayStoreResults on PlayStoreSearchAPI {
   /// Return field description from Redesigned Play Store results.
   String? redesignedDescription(Document response) {
     try {
-      final sectionElements = response.getElementsByClassName('bARER');
+      final sectionElements = response.querySelectorAll('[itemprop="description"]');
       final descriptionElement = sectionElements.last;
       final description = descriptionElement.text;
       return description;
