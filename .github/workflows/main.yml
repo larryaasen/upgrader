@@ -18,7 +18,7 @@ jobs:
     timeout-minutes: 40
     strategy:
       matrix:
-        flutter-version: ['3.24.0', '3.27.0', '3.29.0', '3.29.3']
+        flutter-version: ['3.24.0', '3.27.0', '3.29.0', '3.29.3', '3.35.3']
 
     steps:
       - uses: actions/checkout@v4

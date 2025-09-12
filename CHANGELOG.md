@@ -1,3 +1,8 @@
+## 11.5.1
+
+- [510] Updated device_info_plus to support 12.0.0 with updated constraint <13.0.0.
+- [511] Updated package_info_plus to support 9.0.0 with updated constraint <10.0.0.
+
 ## 11.5.0
 
 - [482] Will now call showCupertinoDialog instead of showDialog for CupertinoApp.
