@@ -50,7 +50,7 @@ class MyUpgradeAlertState extends UpgradeAlertState {
       UpgraderMessages messages) {
     return Theme(
       data: ThemeData(
-        dialogTheme: const DialogTheme(
+        dialogTheme: const DialogThemeData(
           titleTextStyle: TextStyle(color: Colors.red, fontSize: 48),
           contentTextStyle: TextStyle(color: Colors.green, fontSize: 18),
         ),

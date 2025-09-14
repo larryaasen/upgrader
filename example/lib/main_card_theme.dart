@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   final dark = ThemeData.dark(useMaterial3: true);
 
   final light = ThemeData(
-    cardTheme: const CardTheme(color: Colors.greenAccent),
+    cardTheme: const CardThemeData(color: Colors.greenAccent),
     // Change the text buttons.
     textButtonTheme: const TextButtonThemeData(
       style: ButtonStyle(
