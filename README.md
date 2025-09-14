@@ -178,7 +178,7 @@ different store. Here is an example of using an Appcast on iOS.
 final upgrader = Upgrader(
   storeController: UpgraderStoreController(
     onAndroid: () => UpgraderPlayStore(),
-    oniOS: () => UpgraderAppcastStore(appcastURL: appcastURL, osVersion: ),
+    oniOS: () => UpgraderAppcastStore(appcastURL: appcastURL, osVersion: osVersion),
   ),
 );
 ```
@@ -334,7 +334,7 @@ static const appcastURL =
     'https://raw.githubusercontent.com/larryaasen/upgrader/main/test/testappcast.xml';
 final upgrader = Upgrader(
   storeController: UpgraderStoreController(
-    onAndroid: () => UpgraderAppcastStore(appcastURL: appcastURL),
+    onAndroid: () => UpgraderAppcastStore(appcastURL: appcastURL, osVersion: osVersion),
   ),
 );
 

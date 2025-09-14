@@ -2,6 +2,7 @@
 
 - Removed the use of device_info_plus to reduce the number of dependencies used by this package.
 - Renamed master branch to main.
+- The minimum Flutter version supported is now 3.27.0.
 
 ## 11.5.1
 
