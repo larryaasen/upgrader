@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:upgrader/upgrader.dart';
+import 'package:version/version.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,10 +17,11 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
 
   static const appcastURL =
-      'https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast_macos.xml';
+      'https://raw.githubusercontent.com/larryaasen/upgrader/main/test/testappcast_macos.xml';
   final upgrader = Upgrader(
     storeController: UpgraderStoreController(
-        onMacOS: () => UpgraderAppcastStore(appcastURL: appcastURL)),
+        onMacOS: () => UpgraderAppcastStore(
+            appcastURL: appcastURL, osVersion: Version(0, 0, 0))),
     debugLogging: true,
   );
 

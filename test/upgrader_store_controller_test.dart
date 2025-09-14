@@ -21,7 +21,6 @@ void main() {
         version: installedVersion.toString(),
         buildNumber: '42',
       ),
-      upgraderDevice: MockUpgraderDevice(),
       upgraderOS: MockUpgraderOS(ios: true),
     );
 
@@ -54,7 +53,6 @@ void main() {
         version: installedVersion.toString(),
         buildNumber: '42',
       ),
-      upgraderDevice: MockUpgraderDevice(),
       upgraderOS: MockUpgraderOS(android: true),
     );
 
@@ -92,7 +90,6 @@ void main() {
         version: installedVersion.toString(),
         buildNumber: '42',
       ),
-      upgraderDevice: MockUpgraderDevice(),
       upgraderOS: MockUpgraderOS(android: true),
     );
 
@@ -100,9 +97,9 @@ void main() {
     final fakeAppcast = FakeAppcast();
 
     final upgraderAppcastStore = UpgraderAppcastStore(
-      appcastURL: appcastURL,
-      appcast: fakeAppcast,
-    );
+        appcastURL: appcastURL,
+        appcast: fakeAppcast,
+        osVersion: Version(0, 0, 0));
 
     // Act
     final versionInfo = await upgraderAppcastStore.getVersionInfo(

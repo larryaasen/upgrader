@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:version/version.dart';
 
-import 'upgrade_device.dart';
 import 'upgrade_messages.dart';
 import 'upgrade_os.dart';
 import 'upgrader_version_info.dart';
@@ -24,7 +23,6 @@ class UpgraderState {
     this.messages,
     this.minAppVersion,
     this.packageInfo,
-    required this.upgraderDevice,
     required this.upgraderOS,
     this.versionInfo,
   });
@@ -65,9 +63,6 @@ class UpgraderState {
   /// The app package metadata information.
   final PackageInfo? packageInfo;
 
-  /// Provide [UpgraderDevice] that ca be replaced during testing.
-  final UpgraderDevice upgraderDevice;
-
   /// Provides information on which OS this code is running on, and can be
   /// replaced during testing.
   final UpgraderOS upgraderOS;
@@ -88,7 +83,6 @@ class UpgraderState {
     UpgraderMessages? messages,
     Version? minAppVersion,
     PackageInfo? packageInfo,
-    UpgraderDevice? upgraderDevice,
     UpgraderOS? upgraderOS,
     UpgraderVersionInfo? versionInfo,
   }) {
@@ -105,7 +99,6 @@ class UpgraderState {
       messages: messages ?? this.messages,
       minAppVersion: minAppVersion ?? this.minAppVersion,
       packageInfo: packageInfo ?? this.packageInfo,
-      upgraderDevice: upgraderDevice ?? this.upgraderDevice,
       upgraderOS: upgraderOS ?? this.upgraderOS,
       versionInfo: versionInfo ?? this.versionInfo,
     );
@@ -135,7 +128,6 @@ class UpgraderState {
       messages: messages == true ? null : this.messages,
       minAppVersion: minAppVersion == true ? null : this.minAppVersion,
       packageInfo: packageInfo == true ? null : this.packageInfo,
-      upgraderDevice: upgraderDevice,
       upgraderOS: upgraderOS,
       versionInfo: versionInfo == true ? null : this.versionInfo,
     );

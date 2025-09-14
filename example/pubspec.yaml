@@ -13,12 +13,14 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
+  device_info_plus: ^11.0.0
   go_router: ^7.1.1
   http: ^1.2.2
   path: ^1.9.0
 
   upgrader:
     path: ../
+  version: ^3.0.2
 
 dev_dependencies:
   flutter_driver:

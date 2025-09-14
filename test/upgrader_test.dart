@@ -859,9 +859,9 @@ void main() {
       debugLogging: true,
       storeController: UpgraderStoreController(
         oniOS: () => UpgraderAppcastStore(
-          appcastURL: 'https://sparkle-project.org/test/testappcast.xml',
-          appcast: fakeAppcast,
-        ),
+            appcastURL: 'https://sparkle-project.org/test/testappcast.xml',
+            appcast: fakeAppcast,
+            osVersion: Version(0, 0, 0)),
       ),
     )..installPackageInfo(
         packageInfo: PackageInfo(
@@ -887,9 +887,9 @@ void main() {
       storeController: UpgraderStoreController(
         oniOS: () => UpgraderAppcastStore(
           appcastURL: 'https://sparkle-project.org/test/testappcast.xml',
+          osVersion: Version(0, 0, 0),
         ),
       ),
-      upgraderDevice: MockUpgraderDevice(),
     )..installPackageInfo(
         packageInfo: PackageInfo(
           appName: 'Upgrader',
@@ -910,13 +910,13 @@ void main() {
     final upgrader = Upgrader(
       client: mockClient,
       upgraderOS: upgraderOS,
-      upgraderDevice: MockUpgraderDevice(),
       debugLogging: true,
       storeController: UpgraderStoreController(
         onAndroid: () => UpgraderAppcastStore(
-          appcastURL: 'https://sparkle-project.org/test/testappcast.xml',
-          // client: mockClient,
-        ),
+            appcastURL: 'https://sparkle-project.org/test/testappcast.xml',
+            osVersion: Version(0, 0, 0)
+            // client: mockClient,
+            ),
       ),
     )..installPackageInfo(
         packageInfo: PackageInfo(
@@ -958,11 +958,12 @@ void main() {
     final upgrader = Upgrader(
       client: mockClient,
       upgraderOS: upgraderOS,
-      upgraderDevice: MockUpgraderDevice(),
       debugLogging: true,
       storeController: UpgraderStoreController(
         oniOS: () => UpgraderAppcastStore(
-            appcastURL: 'https://sparkle-project.org/test/testappcast.xml'),
+          appcastURL: 'https://sparkle-project.org/test/testappcast.xml',
+          osVersion: Version(0, 0, 0),
+        ),
       ),
     )..installPackageInfo(
         packageInfo: PackageInfo(
@@ -1036,7 +1037,6 @@ void main() {
     test('should respect debugDisplayAlways property', () async {
       final client = MockITunesSearchClient.setupMockClient();
       final upgrader = Upgrader(
-          upgraderDevice: MockUpgraderDevice(),
           upgraderOS: MockUpgraderOS(ios: true),
           client: client,
           debugLogging: true);

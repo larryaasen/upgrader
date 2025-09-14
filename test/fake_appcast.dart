@@ -5,7 +5,7 @@ import 'dart:io';
 
 import 'package:mockito/mockito.dart';
 import 'package:upgrader/src/appcast.dart';
-import 'package:upgrader/src/upgrade_device.dart';
+import 'package:version/version.dart';
 
 import 'appcast_test.dart';
 
@@ -56,9 +56,6 @@ class FakeAppcast extends Fake implements TestAppcast {
     return [AppcastItem()];
   }
 
-  @override
-  UpgraderDevice get upgraderDevice => MockUpgraderDevice();
-
   // AppcastConfiguration config =
   //     AppcastConfiguration(url: 'http://some.fakewebsite.com', supportedOS: [
   //   'android',
@@ -74,5 +71,5 @@ class FakeAppcast extends Fake implements TestAppcast {
   List<AppcastItem>? items = [];
 
   @override
-  String? osVersionString = '';
+  Version osVersion = Version(0, 0, 0);
 }

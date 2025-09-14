@@ -2,7 +2,7 @@ include: package:flutter_lints/flutter.yaml
 
 analyzer:
   exclude:
-    - 'example/**' # This line excludes the entire example directory
+    # - 'example/**' # This line excludes the entire example directory
 
 linter:
   rules:

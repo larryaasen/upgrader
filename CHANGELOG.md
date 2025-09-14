@@ -1,3 +1,8 @@
+## 12.0.0
+
+- Removed the use of device_info_plus to reduce the number of dependencies used by this package.
+- Renamed master branch to main.
+
 ## 11.5.1
 
 - [510] Updated device_info_plus to support 12.0.0 with updated constraint <13.0.0.

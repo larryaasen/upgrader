@@ -1,6 +1,6 @@
 # Upgrader
 
-[![codecov](https://codecov.io/gh/larryaasen/upgrader/branch/master/graph/badge.svg)](https://app.codecov.io/gh/larryaasen/upgrader)
+[![codecov](https://codecov.io/gh/larryaasen/upgrader/branch/main/graph/badge.svg)](https://app.codecov.io/gh/larryaasen/upgrader)
 [![pub package](https://img.shields.io/pub/v/upgrader.svg)](https://pub.dartlang.org/packages/upgrader)
 [![GitHub Stars](https://img.shields.io/github/stars/larryaasen/upgrader.svg)](https://github.com/larryaasen/upgrader/stargazers)
 <a href="https://www.buymeacoffee.com/larryaasen">
@@ -178,7 +178,7 @@ different store. Here is an example of using an Appcast on iOS.
 final upgrader = Upgrader(
   storeController: UpgraderStoreController(
     onAndroid: () => UpgraderPlayStore(),
-    oniOS: () => UpgraderAppcastStore(appcastURL: appcastURL),
+    oniOS: () => UpgraderAppcastStore(appcastURL: appcastURL, osVersion: ),
   ),
 );
 ```
@@ -331,7 +331,7 @@ Flutter package, is used by `upgrader` to download app details from an appcast.
 This is an Appcast example for Android.
 ```dart
 static const appcastURL =
-    'https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast.xml';
+    'https://raw.githubusercontent.com/larryaasen/upgrader/main/test/testappcast.xml';
 final upgrader = Upgrader(
   storeController: UpgraderStoreController(
     onAndroid: () => UpgraderAppcastStore(appcastURL: appcastURL),
@@ -371,7 +371,7 @@ Widget build(BuildContext context) {
 ### Appcast Class
 ```dart
 final appcast = Appcast();
-final items = await appcast.parseAppcastItemsFromUri('https://raw.githubusercontent.com/larryaasen/upgrader/master/test/testappcast.xml');
+final items = await appcast.parseAppcastItemsFromUri('https://raw.githubusercontent.com/larryaasen/upgrader/main/test/testappcast.xml');
 final bestItem = appcast.bestItem();
 ```
 
@@ -497,7 +497,7 @@ be compliant with Semantic Versioning.
 
 ## Examples
 
-There are [plenty of examples](https://github.com/larryaasen/upgrader/tree/master/example/lib) that cover various different situations that may
+There are [plenty of examples](https://github.com/larryaasen/upgrader/tree/main/example/lib) that cover various different situations that may
 help you customize the `upgrader` experience for your app. Check these out.
 
 |  |  |  |

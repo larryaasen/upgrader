@@ -1,7 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
 /*
- * Copyright (c) 2018-2023 Larry Aasen. All rights reserved.
+ * Copyright (c) 2018-2025 Larry Aasen. All rights reserved.
  */
 
 import 'dart:convert' show utf8;
@@ -11,7 +11,6 @@ import 'package:version/version.dart';
 import 'package:xml/xml.dart';
 
 import 'upgrade_os.dart';
-import 'upgrade_device.dart';
 
 /// The [Appcast] class is used to download an Appcast, based on the Sparkle
 /// framework by Andy Matuschak.
@@ -28,22 +27,19 @@ class Appcast {
   /// Provide [UpgraderOS] that can be replaced during testing.
   final UpgraderOS upgraderOS;
 
-  /// Provide [UpgraderDevice] that ca be replaced during testing.
-  final UpgraderDevice upgraderDevice;
+  /// The operating system version.
+  final Version osVersion;
 
-  Appcast({
-    http.Client? client,
-    this.clientHeaders,
-    UpgraderOS? upgraderOS,
-    UpgraderDevice? upgraderDevice,
-  })  : client = client ?? http.Client(),
-        upgraderOS = upgraderOS ?? UpgraderOS(),
-        upgraderDevice = upgraderDevice ?? UpgraderDevice();
+  Appcast(
+      {http.Client? client,
+      this.clientHeaders,
+      UpgraderOS? upgraderOS,
+      required this.osVersion})
+      : client = client ?? http.Client(),
+        upgraderOS = upgraderOS ?? UpgraderOS();
 
   /// The items in the Appcast.
   List<AppcastItem>? items;
-
-  String? osVersionString;
 
   /// Returns the latest critical item in the Appcast.
   AppcastItem? bestCriticalItem() {
@@ -54,8 +50,7 @@ class Appcast {
     AppcastItem? bestItem;
     items!.forEach((AppcastItem item) {
       if (item.hostSupportsItem(
-              osVersion: osVersionString,
-              currentPlatform: upgraderOS.current) &&
+              osVersion: osVersion, currentPlatform: upgraderOS.current) &&
           item.isCriticalUpdate) {
         if (bestItem == null) {
           bestItem = item;
@@ -85,7 +80,7 @@ class Appcast {
     AppcastItem? bestItem;
     items!.forEach((AppcastItem item) {
       if (item.hostSupportsItem(
-          osVersion: osVersionString, currentPlatform: upgraderOS.current)) {
+          osVersion: osVersion, currentPlatform: upgraderOS.current)) {
         if (bestItem == null) {
           bestItem = item;
         } else {
@@ -120,7 +115,6 @@ class Appcast {
 
   /// Parse the Appcast from XML string.
   Future<List<AppcastItem>?> parseAppcastItems(String contents) async {
-    osVersionString = await upgraderDevice.getOsVersionString(upgraderOS);
     return parseItemsFromXMLString(contents);
   }
 
@@ -269,7 +263,8 @@ class AppcastItem {
       : tags!.contains(AppcastConstants.ElementCriticalUpdate);
 
   /// Does the host support this item? If so is [osVersion] supported?
-  bool hostSupportsItem({String? osVersion, required String currentPlatform}) {
+  bool hostSupportsItem(
+      {required Version osVersion, required String currentPlatform}) {
     assert(currentPlatform.isNotEmpty);
     bool supported = true;
     if (osString != null && osString!.isNotEmpty) {
@@ -278,18 +273,11 @@ class AppcastItem {
       supported = platformEnum.toLowerCase() == currentPlatform.toLowerCase();
     }
 
-    if (supported && osVersion != null && osVersion.isNotEmpty) {
-      Version osVersionValue;
-      try {
-        osVersionValue = Version.parse(osVersion);
-      } catch (e) {
-        print('upgrader: hostSupportsItem invalid osVersion: $e');
-        return false;
-      }
+    if (supported) {
       if (maximumSystemVersion != null) {
         try {
           final maxVersion = Version.parse(maximumSystemVersion!);
-          if (osVersionValue > maxVersion) {
+          if (osVersion > maxVersion) {
             supported = false;
           }
         } on Exception catch (e) {
@@ -299,7 +287,7 @@ class AppcastItem {
       if (supported && minimumSystemVersion != null) {
         try {
           final minVersion = Version.parse(minimumSystemVersion!);
-          if (osVersionValue < minVersion) {
+          if (osVersion < minVersion) {
             supported = false;
           }
         } on Exception catch (e) {
