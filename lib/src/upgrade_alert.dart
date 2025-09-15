@@ -26,6 +26,7 @@ class UpgradeAlert extends StatefulWidget {
     this.onLater,
     this.onUpdate,
     this.shouldPopScope,
+    this.showPrompt = true,
     this.showIgnore = true,
     this.showLater = true,
     this.showReleaseNotes = true,
@@ -58,6 +59,9 @@ class UpgradeAlert extends StatefulWidget {
 
   /// Called to determine if the dialog blocks the current route from being popped.
   final BoolCallback? shouldPopScope;
+
+  /// Hide or show Prompt label on dialog (default: true)
+  final bool showPrompt;
 
   /// Hide or show Ignore button on dialog (default: true)
   final bool showIgnore;
@@ -332,9 +336,11 @@ class UpgradeAlertState extends State<UpgradeAlert> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text(message),
-            Padding(
+            if (widget.showPrompt)
+              Padding(
                 padding: const EdgeInsets.only(top: 15.0),
-                child: Text(messages.message(UpgraderMessage.prompt) ?? '')),
+                child: Text(messages.message(UpgraderMessage.prompt) ?? ''),
+              ),
             if (notes != null) notes,
           ],
         )));

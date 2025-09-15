@@ -128,6 +128,7 @@ Here are the custom parameters for `UpgradeAlert`:
 * onLater: called when the later button is tapped, defaults to ```null```
 * onUpdate: called when the update button is tapped, defaults to ```null```
 * shouldPopScope: called to determine if the dialog blocks the current route from being popped, which defaults to ```null```
+* showPrompt: hide or show Prompt label on dialog, which defaults to ```true```
 * showIgnore: hide or show Ignore button, which defaults to ```true```
 * showLater: hide or show Later button, which defaults to ```true```
 * showReleaseNotes: hide or show release notes, which defaults to ```true```
@@ -140,6 +141,7 @@ Here are the custom parameters for `UpgradeCard`:
 * onLater: called when the later button is tapped, defaults to ```null```
 * onUpdate: called when the update button is tapped, defaults to ```null```
 * overflow: How visual overflow should be handled, defaults to ```null```
+* showPrompt: hide or show Prompt label on dialog, which defaults to ```true```
 * showIgnore: hide or show Ignore button, which defaults to ```true```
 * showLater: hide or show Later button, which defaults to ```true```
 * showReleaseNotes: hide or show release notes, which defaults to ```true```

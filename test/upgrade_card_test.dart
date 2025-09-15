@@ -196,4 +196,65 @@ void main() {
     expect(notCalled, true);
     expect(find.text(upgrader.state.messages!.buttonTitleLater), findsNothing);
   }, skip: false);
+
+  testWidgets(
+    'test UpgradeCard prompt message is visible',
+    (WidgetTester tester) async {
+      final upgrader = Upgrader(
+        debugDisplayAlways: true,
+        upgraderOS: MockUpgraderOS(ios: true),
+      )
+        ..installPackageInfo(
+          packageInfo: PackageInfo(
+              appName: 'Upgrader',
+              packageName: 'com.larryaasen.upgrader',
+              version: '0.9.9',
+              buildNumber: '400'),
+        )
+        ..initialize();
+
+      await tester.pumpAndSettle();
+      await tester.pumpWidget(wrapper(UpgradeCard(upgrader: upgrader)));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.text(UpgraderMessages().message(UpgraderMessage.prompt)!),
+        findsOneWidget,
+      );
+    },
+  );
+
+  testWidgets(
+    'test UpgradeCard prompt message is not visible',
+    (WidgetTester tester) async {
+      final upgrader = Upgrader(
+        debugDisplayAlways: true,
+        upgraderOS: MockUpgraderOS(ios: true),
+      )
+        ..installPackageInfo(
+          packageInfo: PackageInfo(
+              appName: 'Upgrader',
+              packageName: 'com.larryaasen.upgrader',
+              version: '0.9.9',
+              buildNumber: '400'),
+        )
+        ..initialize();
+
+      await tester.pumpAndSettle();
+      await tester.pumpWidget(
+        wrapper(
+          UpgradeCard(
+            upgrader: upgrader,
+            showPrompt: false,
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(
+        find.text(UpgraderMessages().message(UpgraderMessage.prompt)!),
+        findsNothing,
+      );
+    },
+  );
 }
