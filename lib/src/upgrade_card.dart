@@ -25,6 +25,7 @@ class UpgradeCard extends StatefulWidget {
     this.onLater,
     this.onUpdate,
     this.overflow = TextOverflow.ellipsis,
+    this.showPrompt = true,
     this.showIgnore = true,
     this.showLater = true,
     this.showReleaseNotes = true,
@@ -54,6 +55,9 @@ class UpgradeCard extends StatefulWidget {
 
   /// How visual overflow should be handled.
   final TextOverflow? overflow;
+
+  /// Hide or show Prompt label on dialog (default: true)
+  final bool showPrompt;
 
   /// Hide or show Ignore button on dialog (default: true)
   final bool showIgnore;
@@ -153,9 +157,11 @@ class UpgradeCardState extends State<UpgradeCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(message),
-            Padding(
+            if (widget.showPrompt)
+              Padding(
                 padding: const EdgeInsets.only(top: 15.0),
-                child: Text(appMessages.message(UpgraderMessage.prompt) ?? '')),
+                child: Text(appMessages.message(UpgraderMessage.prompt) ?? ''),
+              ),
             if (notes != null) notes,
           ],
         ),
