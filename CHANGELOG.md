@@ -1,3 +1,7 @@
+## 12.1.0
+
+- Added the showPrompt parameter to UpgradeAlert and UpgradeCard to hide the display of the prompt. (thanks to @EArminjon)
+
 ## 12.0.0
 
 - Removed the use of device_info_plus to reduce the number of dependencies used by this package.
