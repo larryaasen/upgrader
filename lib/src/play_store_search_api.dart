@@ -279,14 +279,82 @@ extension PlayStoreResults on PlayStoreSearchAPI {
       final storeVersion = versionElement.substring(
           storeVersionStartIndex, storeVersionEndIndex);
 
-      // storeVersion might be: 'Varies with device', which is not a valid version.
-      version = Version.parse(storeVersion).toString();
+      if (debugLogging) {
+        print('upgrader: PlayStoreResults.redesignedVersion: extracted storeVersion="$storeVersion"');
+      }
+
+      // storeVersion might be empty, null, or 'Varies with device', which is not a valid version.
+      // Validate before parsing
+      if (storeVersion.isEmpty) {
+        if (debugLogging) {
+          print('upgrader: PlayStoreResults.redesignedVersion: storeVersion is empty, trying alternative method');
+        }
+        version = _parseVersionAlternative(response, debugLogging);
+      } else {
+        // Try to parse the version string
+        try {
+          version = Version.parse(storeVersion).toString();
+          if (debugLogging) {
+            print('upgrader: PlayStoreResults.redesignedVersion: successfully parsed version="$version"');
+          }
+        } on FormatException catch (e) {
+          if (debugLogging) {
+            print('upgrader: PlayStoreResults.redesignedVersion: invalid version format "$storeVersion": $e, trying alternative method');
+          }
+          // If version parsing failed, try alternative pattern
+          version = _parseVersionAlternative(response, debugLogging);
+        }
+      }
     } catch (e) {
       if (debugLogging) {
-        print('upgrader: PlayStoreResults.redesignedVersion exception: $e');
+        print('upgrader: PlayStoreResults.redesignedVersion exception: $e, trying alternative method');
       }
+      // If the main parsing failed, try alternative pattern
+      version = _parseVersionAlternative(response, debugLogging);
     }
 
     return version;
+  }
+
+  /// Alternative version parsing for regional Play Store pages (e.g., Korean)
+  ///
+  /// Searches for version patterns in the HTML using multiple strategies
+  String? _parseVersionAlternative(Document response, bool debugLogging) {
+    try {
+      final scripts = response.getElementsByTagName("script");
+
+      // Try to find version pattern: "1.x.x" or "x.x.x"
+      final versionRegex = RegExp(r'"(\d+\.\d+\.\d+)"');
+
+      for (var script in scripts) {
+        final matches = versionRegex.allMatches(script.text);
+        for (var match in matches) {
+          final potentialVersion = match.group(1);
+          if (potentialVersion != null) {
+            try {
+              // Validate it's a proper version
+              final parsed = Version.parse(potentialVersion);
+              if (debugLogging) {
+                print('upgrader: PlayStoreResults._parseVersionAlternative: found version="$potentialVersion"');
+              }
+              return parsed.toString();
+            } catch (e) {
+              // Not a valid version, continue searching
+              continue;
+            }
+          }
+        }
+      }
+
+      if (debugLogging) {
+        print('upgrader: PlayStoreResults._parseVersionAlternative: no valid version found');
+      }
+      return null;
+    } catch (e) {
+      if (debugLogging) {
+        print('upgrader: PlayStoreResults._parseVersionAlternative exception: $e');
+      }
+      return null;
+    }
   }
 }
