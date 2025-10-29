@@ -279,14 +279,112 @@ extension PlayStoreResults on PlayStoreSearchAPI {
       final storeVersion = versionElement.substring(
           storeVersionStartIndex, storeVersionEndIndex);
 
-      // storeVersion might be: 'Varies with device', which is not a valid version.
-      version = Version.parse(storeVersion).toString();
+      if (debugLogging) {
+        print('upgrader: PlayStoreResults.redesignedVersion: extracted storeVersion="$storeVersion"');
+      }
+
+      // storeVersion might be empty, null, or 'Varies with device', which is not a valid version.
+      // Validate before parsing
+      if (storeVersion.isEmpty) {
+        return null;
+      }
+
+      // Try to parse the version string
+      try {
+        version = Version.parse(storeVersion).toString();
+        if (debugLogging) {
+          print('upgrader: PlayStoreResults.redesignedVersion: successfully parsed version="$version"');
+        }
+      } on FormatException catch (e) {
+        if (debugLogging) {
+          print('upgrader: PlayStoreResults.redesignedVersion: invalid version format "$storeVersion": $e');
+        }
+        // If version parsing failed, try alternative pattern (for regional pages)
+        version = _parseVersionAlternative(response, debugLogging);
+      }
     } catch (e) {
       if (debugLogging) {
         print('upgrader: PlayStoreResults.redesignedVersion exception: $e');
       }
+      // If the main parsing failed, try alternative pattern (for regional pages)
+      version = _parseVersionAlternative(response, debugLogging);
     }
 
     return version;
+  }
+
+  /// Alternative version parsing for regional Play Store pages (e.g., Korean, Bengali)
+  ///
+  /// When the main parsing method fails on regional pages, this method tries multiple
+  /// fallback patterns to extract version information from the Play Store JSON data.
+  ///
+  /// Patterns tried:
+  /// 1. JSON key pattern: "XXX":[[["version" where XXX is a numeric key (common: 140-145)
+  String? _parseVersionAlternative(Document response, bool debugLogging) {
+    try {
+      final scripts = response.getElementsByTagName("script");
+
+      // Pattern 1: Try common JSON data keys where version info appears (140-145)
+      // These keys represent version data in Play Store's internal structure
+      /*
+       * The keys 140-145 were determined by inspecting the Play Store's page source and
+       * network responses. In the Play Store's internal JSON data structure, the version
+       * information for an app is often found under numeric keys in this range.
+       * These keys are not documented by Google and may change if the Play Store's
+       * internal structure changes. If version extraction fails in the future,
+       * maintainers should re-examine the Play Store's page source or network traffic
+       * to identify the new keys where version information is stored, and update this
+       * list accordingly.
+       */
+      for (var key in [140, 141, 142, 143, 144, 145]) {
+        final pattern = '"$key":[[["';
+        const patternEndOfString = '"';
+
+        final versionElements = scripts.where(
+            (element) => element.text.contains(pattern));
+
+        if (versionElements.isNotEmpty) {
+          final versionElement = versionElements.first.text;
+          final versionStartIndex =
+              versionElement.indexOf(pattern) + pattern.length;
+
+          if (versionStartIndex >= pattern.length) {
+            final versionEndIndex = versionStartIndex +
+                versionElement
+                    .substring(versionStartIndex)
+                    .indexOf(patternEndOfString);
+
+            if (versionEndIndex > versionStartIndex) {
+              final storeVersion =
+                  versionElement.substring(versionStartIndex, versionEndIndex);
+
+              if (storeVersion.isNotEmpty) {
+                // Try to parse the version string
+                try {
+                  final parsed = Version.parse(storeVersion);
+                  if (debugLogging) {
+                    print('upgrader: PlayStoreResults._parseVersionAlternative: found version="$storeVersion" with key=$key');
+                  }
+                  return parsed.toString();
+                } on FormatException {
+                  // This key didn't have a valid version, try next key
+                  continue;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      if (debugLogging) {
+        print('upgrader: PlayStoreResults._parseVersionAlternative: no valid version found in common patterns');
+      }
+      return null;
+    } catch (e) {
+      if (debugLogging) {
+        print('upgrader: PlayStoreResults._parseVersionAlternative exception: $e');
+      }
+      return null;
+    }
   }
 }
