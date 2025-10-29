@@ -326,6 +326,16 @@ extension PlayStoreResults on PlayStoreSearchAPI {
 
       // Pattern 1: Try common JSON data keys where version info appears (140-145)
       // These keys represent version data in Play Store's internal structure
+      /*
+       * The keys 140-145 were determined by inspecting the Play Store's page source and
+       * network responses. In the Play Store's internal JSON data structure, the version
+       * information for an app is often found under numeric keys in this range.
+       * These keys are not documented by Google and may change if the Play Store's
+       * internal structure changes. If version extraction fails in the future,
+       * maintainers should re-examine the Play Store's page source or network traffic
+       * to identify the new keys where version information is stored, and update this
+       * list accordingly.
+       */
       for (var key in [140, 141, 142, 143, 144, 145]) {
         final pattern = '"$key":[[["';
         const patternEndOfString = '"';
