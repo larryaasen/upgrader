@@ -1,3 +1,7 @@
+## 12.2.0
+
+- [521] [522] Added fallback version parsing for regional Play Store pages. (thanks to youngkiu)
+
 ## 12.1.0
 
 - Added the showPrompt parameter to UpgradeAlert and UpgradeCard to hide the display of the prompt. (thanks to @EArminjon)

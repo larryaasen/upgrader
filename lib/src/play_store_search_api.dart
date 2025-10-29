@@ -280,7 +280,8 @@ extension PlayStoreResults on PlayStoreSearchAPI {
           storeVersionStartIndex, storeVersionEndIndex);
 
       if (debugLogging) {
-        print('upgrader: PlayStoreResults.redesignedVersion: extracted storeVersion="$storeVersion"');
+        print(
+            'upgrader: PlayStoreResults.redesignedVersion: extracted storeVersion="$storeVersion"');
       }
 
       // storeVersion might be empty, null, or 'Varies with device', which is not a valid version.
@@ -293,11 +294,13 @@ extension PlayStoreResults on PlayStoreSearchAPI {
       try {
         version = Version.parse(storeVersion).toString();
         if (debugLogging) {
-          print('upgrader: PlayStoreResults.redesignedVersion: successfully parsed version="$version"');
+          print(
+              'upgrader: PlayStoreResults.redesignedVersion: successfully parsed version="$version"');
         }
       } on FormatException catch (e) {
         if (debugLogging) {
-          print('upgrader: PlayStoreResults.redesignedVersion: invalid version format "$storeVersion": $e');
+          print(
+              'upgrader: PlayStoreResults.redesignedVersion: invalid version format "$storeVersion": $e');
         }
         // If version parsing failed, try alternative pattern (for regional pages)
         version = _parseVersionAlternative(response, debugLogging);
@@ -340,8 +343,8 @@ extension PlayStoreResults on PlayStoreSearchAPI {
         final pattern = '"$key":[[["';
         const patternEndOfString = '"';
 
-        final versionElements = scripts.where(
-            (element) => element.text.contains(pattern));
+        final versionElements =
+            scripts.where((element) => element.text.contains(pattern));
 
         if (versionElements.isNotEmpty) {
           final versionElement = versionElements.first.text;
@@ -363,7 +366,8 @@ extension PlayStoreResults on PlayStoreSearchAPI {
                 try {
                   final parsed = Version.parse(storeVersion);
                   if (debugLogging) {
-                    print('upgrader: PlayStoreResults._parseVersionAlternative: found version="$storeVersion" with key=$key');
+                    print(
+                        'upgrader: PlayStoreResults._parseVersionAlternative: found version="$storeVersion" with key=$key');
                   }
                   return parsed.toString();
                 } on FormatException {
@@ -377,12 +381,14 @@ extension PlayStoreResults on PlayStoreSearchAPI {
       }
 
       if (debugLogging) {
-        print('upgrader: PlayStoreResults._parseVersionAlternative: no valid version found in common patterns');
+        print(
+            'upgrader: PlayStoreResults._parseVersionAlternative: no valid version found in common patterns');
       }
       return null;
     } catch (e) {
       if (debugLogging) {
-        print('upgrader: PlayStoreResults._parseVersionAlternative exception: $e');
+        print(
+            'upgrader: PlayStoreResults._parseVersionAlternative exception: $e');
       }
       return null;
     }
