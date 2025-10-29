@@ -286,9 +286,6 @@ extension PlayStoreResults on PlayStoreSearchAPI {
       // storeVersion might be empty, null, or 'Varies with device', which is not a valid version.
       // Validate before parsing
       if (storeVersion.isEmpty) {
-        if (debugLogging) {
-          print('upgrader: PlayStoreResults.redesignedVersion: storeVersion is empty');
-        }
         return null;
       }
 
