@@ -750,7 +750,7 @@ void main() {
     expect(upgrader.state.versionInfo?.minAppVersion.toString(), '4.5.6');
   }, skip: false);
 
-  testWidgets('test upgrader store version android',
+  testWidgets('test upgrader store version android with bracket pattern',
       (WidgetTester tester) async {
     final client = await MockPlayStoreSearchClient.setupMockClient(
       verifyHeaders: {'header1': 'value1'},
@@ -772,7 +772,8 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(upgrader.belowMinAppVersion(), isFalse);
-    expect(upgrader.state.versionInfo?.appStoreVersion, isNull);
+    // Version 1.19.2 is extracted using bracket pattern ]]],"X.Y.Z"
+    expect(upgrader.state.versionInfo?.appStoreVersion, Version.parse('1.19.2'));
   }, skip: false);
 
   testWidgets('test upgrader minAppVersion description ios',

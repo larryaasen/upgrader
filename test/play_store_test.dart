@@ -152,7 +152,7 @@ void main() {
     expect(await playStore.lookupById('com.not.a.valid.application'), isNull);
   }, skip: false);
 
-  test('testing lookupById with invalid version', () async {
+  test('testing lookupById with bracket pattern version', () async {
     final client = await MockPlayStoreSearchClient.setupMockClient();
     final playStore = PlayStoreSearchAPI(client: client);
 
@@ -162,7 +162,8 @@ void main() {
 
     expect(
         playStore.releaseNotes(response!), 'Minor updates and improvements.');
-    expect(playStore.version(response), isNull);
+    // Version 1.19.2 is extracted using bracket pattern ]]],"X.Y.Z"
+    expect(playStore.version(response), '1.19.2');
   }, skip: false);
 
   test('testing release notes', () async {
@@ -207,14 +208,15 @@ void main() {
     expect(playStore.description(response)?.length, greaterThan(10));
   }, skip: false);
 
-  test('testing invalid store version', () async {
+  test('testing store version with bracket pattern', () async {
     final client = await MockPlayStoreSearchClient.setupMockClient();
     final playStore = PlayStoreSearchAPI(client: client);
 
     final response = await playStore.lookupById('com.testing.test6');
     expect(response, isNotNull);
     expect(response, isInstanceOf<Document>());
-    expect(playStore.version(response!), isNull);
+    // Version 1.19.2 is extracted using bracket pattern ]]],"X.Y.Z"
+    expect(playStore.version(response!), '1.19.2');
   }, skip: false);
 
   /// Helper method
