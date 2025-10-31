@@ -1,6 +1,10 @@
+## 12.3.0
+
+- [525] [520] Added fallback version parsing for regional Play Store pages. (thanks to @youngkiu)
+
 ## 12.2.0
 
-- [521] [522] Added fallback version parsing for regional Play Store pages. (thanks to youngkiu)
+- [521] [522] Added fallback version parsing for regional Play Store pages. (thanks to @youngkiu)
 
 ## 12.1.0
 

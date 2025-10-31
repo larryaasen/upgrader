@@ -773,7 +773,8 @@ void main() {
 
     expect(upgrader.belowMinAppVersion(), isFalse);
     // Version 1.19.2 is extracted using bracket pattern ]]],"X.Y.Z"
-    expect(upgrader.state.versionInfo?.appStoreVersion, Version.parse('1.19.2'));
+    expect(
+        upgrader.state.versionInfo?.appStoreVersion, Version.parse('1.19.2'));
   }, skip: false);
 
   testWidgets('test upgrader minAppVersion description ios',

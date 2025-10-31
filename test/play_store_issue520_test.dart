@@ -22,8 +22,7 @@ void main() {
     final exists = testFile.existsSync();
 
     if (!exists) {
-      print(
-          'Test file not found: test/test_play_store_page_issue520.txt');
+      print('Test file not found: test/test_play_store_page_issue520.txt');
       return;
     }
 
@@ -52,8 +51,7 @@ void main() {
     final exists = testFile.existsSync();
 
     if (!exists) {
-      print(
-          'Test file not found: test/test_play_store_page_issue520.txt');
+      print('Test file not found: test/test_play_store_page_issue520.txt');
       return;
     }
 
@@ -74,12 +72,10 @@ void main() {
             'redesignedVersion should extract "1.0.11", not "Shopping" or other non-version strings');
   }, skip: false);
 
-  test('version parsing should not return null for valid Egypt page',
-      () async {
+  test('version parsing should not return null for valid Egypt page', () async {
     final testFile = File('test/test_play_store_page_issue520.txt');
     if (!testFile.existsSync()) {
-      print(
-          'Test file not found: test/test_play_store_page_issue520.txt');
+      print('Test file not found: test/test_play_store_page_issue520.txt');
       return;
     }
 
