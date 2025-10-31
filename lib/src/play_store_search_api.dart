@@ -316,13 +316,14 @@ extension PlayStoreResults on PlayStoreSearchAPI {
     return version;
   }
 
-  /// Alternative version parsing for regional Play Store pages (e.g., Korean, Bengali)
+  /// Alternative version parsing for regional Play Store pages (e.g., Korean, Bengali, Egypt)
   ///
   /// When the main parsing method fails on regional pages, this method tries multiple
   /// fallback patterns to extract version information from the Play Store JSON data.
   ///
   /// Patterns tried:
   /// 1. JSON key pattern: "XXX":[[["version" where XXX is a numeric key (common: 140-145)
+  /// 2. Bracket pattern: ]]],"version" which appears in some regional variants
   String? _parseVersionAlternative(Document response, bool debugLogging) {
     try {
       final scripts = response.getElementsByTagName("script");
@@ -374,6 +375,35 @@ extension PlayStoreResults on PlayStoreSearchAPI {
                   // This key didn't have a valid version, try next key
                   continue;
                 }
+              }
+            }
+          }
+        }
+      }
+
+      // Pattern 2: Try bracket pattern ]]]," which appears in some Play Store variants
+      // This pattern is found in certain regional pages (e.g., Egypt) where the version
+      // is stored as ]]],"X.Y.Z",null,null...
+      const bracketPattern = ']]],"';
+      final regExp = RegExp(r'\]\]\],"(\d+\.\d+\.\d+)"');
+
+      for (var script in scripts) {
+        final scriptText = script.text;
+        if (scriptText.contains(bracketPattern)) {
+          final matches = regExp.allMatches(scriptText);
+          for (var match in matches) {
+            final storeVersion = match.group(1);
+            if (storeVersion != null && storeVersion.isNotEmpty) {
+              try {
+                final parsed = Version.parse(storeVersion);
+                if (debugLogging) {
+                  print(
+                      'upgrader: PlayStoreResults._parseVersionAlternative: found version="$storeVersion" with bracket pattern');
+                }
+                return parsed.toString();
+              } on FormatException {
+                // Not a valid version, try next match
+                continue;
               }
             }
           }
