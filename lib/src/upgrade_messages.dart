@@ -798,6 +798,9 @@ class UpgraderMessages {
       case 'ja':
         message = 'リリースノート';
         break;
+      case 'ko':
+        message = '릴리즈 노트';
+        break;
       case 'ku':
         message = 'تیبینەکانی وەشان';
         break;
@@ -825,7 +828,6 @@ class UpgraderMessages {
       case 'hu':
       case 'kk':
       case 'km':
-      case 'ko':
       case 'lt':
       case 'mn':
       case 'nb':

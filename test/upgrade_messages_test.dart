@@ -55,6 +55,19 @@ void main() {
     expect(messages.title, '¿Actualizar la aplicación?');
   });
 
+  testWidgets('test UpgraderMessages ko', (WidgetTester tester) async {
+    final messages = UpgraderMessages(code: 'ko');
+    expect(messages, isNotNull);
+    expect(messages.body,
+        '{{appName}}이 새 버전으로 업데이트되었습니다! 최신 버전 {{currentAppStoreVersion}}으로 업그레이드 가능합니다 - 현재 버전 {{currentInstalledVersion}}.');
+    expect(messages.buttonTitleIgnore, '무시');
+    expect(messages.buttonTitleLater, '나중에');
+    expect(messages.buttonTitleUpdate, '지금 업데이트');
+    expect(messages.prompt, '지금 업데이트를 시작하시겠습니까?');
+    expect(messages.releaseNotes, '릴리즈 노트');
+    expect(messages.title, '앱을 업데이트하시겠습니까?');
+  });
+
   test('test UpgraderMessages unknown language code', () {
     final bb = UpgraderMessages(code: 'bb'); // unknown language code
     final en = UpgraderMessages(code: 'en'); // English language code
