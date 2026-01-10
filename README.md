@@ -398,7 +398,7 @@ UpgradeAlert(Upgrader(messages: MyUpgraderMessages()));
 
 ## Language localization
 
-The strings displayed in `upgrader` are already localized in 37 languages. New languages will be
+The strings displayed in `upgrader` are already localized in 39 languages. New languages will be
 supported in the future with minor updates. It also supports right to left languages.
 
 Languages supported:
@@ -408,6 +408,7 @@ Languages supported:
 * Chinese ('zh')
 * Danish ('da')
 * Dutch ('nl')
+* Estonian ('et')
 * Filipino ('fil')
 * French ('fr')
 * German ('de')
@@ -433,7 +434,7 @@ Languages supported:
 * Romanian ('ro')
 * Russian ('ru')
 * Spanish ('es')
-* Slovenian('si')
+* Slovenian ('si')
 * Swedish ('sv')
 * Tamil ('ta')
 * Telugu ('te')

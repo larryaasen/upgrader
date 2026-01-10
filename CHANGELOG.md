@@ -1,6 +1,7 @@
 ## 12.4.0
 
-* Added new language translation for Slovenian ('si').
+* Added new language translation for Estonian ('et'). (thanks to @sisalik1)
+* Added new language translation for Slovenian ('si'). (thanks to @AlanJereb)
 
 ## 12.3.0
 

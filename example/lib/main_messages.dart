@@ -38,6 +38,7 @@ class MyApp extends StatelessWidget {
         Locale('bn', ''), // Bengali, no country code
         Locale('da', ''), // Danish, no country code
         Locale('es', ''), // Spanish, no country code
+        Locale('et', ''), // Estonian, no country code
         Locale('fa', ''), // Persian, no country code
         Locale('fil', ''), // Filipino, no country code
         Locale('fr', ''), // French, no country code
@@ -141,6 +142,7 @@ class DemoLocalizationsDelegate
         'bn',
         'da',
         'es',
+        'et',
         'fa',
         'fil',
         'fr',

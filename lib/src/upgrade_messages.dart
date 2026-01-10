@@ -127,6 +127,10 @@ class UpgraderMessages {
         message =
             '¡Una nueva versión de {{appName}} está disponible! La versión {{currentAppStoreVersion}} ya está disponible-usted tiene {{currentInstalledVersion}}.';
         break;
+      case 'et':
+        message =
+            'Rakenduse {{appName}} uus versioon on saadaval! Versioon {{currentAppStoreVersion}} on nüüd saadaval - sul on hetkel {{currentInstalledVersion}}.';
+        break;
       case 'fa':
         message =
             'نسخه‌ی جدیدی از {{appName}} موجود است! نسخه‌ی {{currentAppStoreVersion}} در دسترس است ولی شما همچنان از نسخه‌ی {{currentInstalledVersion}} استفاده می‌کنید.';
@@ -289,6 +293,9 @@ class UpgraderMessages {
       case 'es':
         message = 'IGNORAR';
         break;
+      case 'et':
+        message = 'IGNOREERI';
+        break;
       case 'fa':
         message = 'ردکردن';
         break;
@@ -417,6 +424,9 @@ class UpgraderMessages {
       case 'es':
         message = 'MÁS TARDE';
         break;
+      case 'et':
+        message = 'HILJEM';
+        break;
       case 'fa':
         message = 'بعدا';
         break;
@@ -542,6 +552,9 @@ class UpgraderMessages {
         break;
       case 'es':
         message = 'ACTUALIZAR';
+        break;
+      case 'et':
+        message = 'UUENDA KOHE';
         break;
       case 'fa':
         message = 'بروزرسانی';
@@ -671,6 +684,9 @@ class UpgraderMessages {
       case 'es':
         message = '¿Le gustaría actualizar ahora?';
         break;
+      case 'et':
+        message = 'Kas soovid kohe uuendada?';
+        break;
       case 'fa':
         message = 'آیا بروزرسانی می‌کنید؟';
         break;
@@ -796,6 +812,9 @@ class UpgraderMessages {
       case 'es':
         message = 'Notas De Lanzamiento';
         break;
+      case 'et':
+        message = 'Avaldamise märkmed';
+        break;
       case 'fr':
         message = 'Notes de version';
         break;
@@ -887,6 +906,9 @@ class UpgraderMessages {
         break;
       case 'es':
         message = '¿Actualizar la aplicación?';
+        break;
+      case 'et':
+        message = 'Uuenda rakendust?';
         break;
       case 'fa':
         message = 'نسخه‌ی جدید';
