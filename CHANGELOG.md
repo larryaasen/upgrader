@@ -1,3 +1,7 @@
+## 12.4.0
+
+* Added new language translation for Slovenian ('si').
+
 ## 12.3.0
 
 - [525] [520] Added fallback version parsing for regional Play Store pages. (thanks to @youngkiu)

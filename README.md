@@ -433,6 +433,7 @@ Languages supported:
 * Romanian ('ro')
 * Russian ('ru')
 * Spanish ('es')
+* Slovenian('si')
 * Swedish ('sv')
 * Tamil ('ta')
 * Telugu ('te')

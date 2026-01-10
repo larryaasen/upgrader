@@ -223,6 +223,10 @@ class UpgraderMessages {
         message =
             'Доступна новая версия приложения {{appName}}! Новая версия: {{currentAppStoreVersion}}, текущая версия: {{currentInstalledVersion}}.';
         break;
+      case 'si':
+        message =
+            'Na voljo je nova verzija {{appName}}!\nNameščena verzija: {{currentInstalledVersion}}\nVerzija v trgovini: {{currentAppStoreVersion}}.';
+        break;
       case 'sv':
         message =
             'En ny version av {{appName}} är tillgänglig! Version {{currentAppStoreVersion}} är tillgänglig - du har {{currentInstalledVersion}}.';
@@ -357,6 +361,9 @@ class UpgraderMessages {
       case 'ru':
         message = 'НЕТ';
         break;
+      case 'si':
+        message = 'Prekliči';
+        break;
       case 'sv':
         message = 'AVBRYT';
         break;
@@ -482,6 +489,9 @@ class UpgraderMessages {
       case 'ru':
         message = 'ПОЗЖЕ';
         break;
+      case 'si':
+        message = 'Pozneje';
+        break;
       case 'sv':
         message = 'SENARE';
         break;
@@ -604,6 +614,9 @@ class UpgraderMessages {
         break;
       case 'ru':
         message = 'ОБНОВИТЬ';
+        break;
+      case 'si':
+        message = 'Posodobi';
         break;
       case 'sv':
         message = 'UPPDATERA NU';
@@ -730,6 +743,9 @@ class UpgraderMessages {
       case 'ru':
         message = 'Хотите обновить сейчас?';
         break;
+      case 'si':
+        message = 'Želiš posodobiti sedaj?';
+        break;
       case 'sv':
         message = 'Vill du uppdatera nu?';
         break;
@@ -809,6 +825,9 @@ class UpgraderMessages {
         break;
       case 'ru':
         message = 'Информация о выпуске';
+        break;
+      case 'si':
+        message = 'Posodobitve';
         break;
       case 'te':
         message = 'విడుదల గమనికలు';
@@ -940,6 +959,9 @@ class UpgraderMessages {
         break;
       case 'ru':
         message = 'Обновить?';
+        break;
+      case 'si':
+        message = 'Posodobi aplikacijo?';
         break;
       case 'sv':
         message = 'Uppdatera App?';
