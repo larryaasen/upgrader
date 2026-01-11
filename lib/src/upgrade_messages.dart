@@ -169,7 +169,7 @@ class UpgraderMessages {
         break;
       case 'it':
         message =
-            'Una nuova versione di {{appName}} è disponibile! La versione {{currentAppStoreVersion}} è ora disponibile, voi avete la {{currentInstalledVersion}}.';
+            'È disponibile un nuovo aggiornamento per {{appName}}! La versione {{currentAppStoreVersion}} è disponibile. Tu stai usando la {{currentInstalledVersion}}.';
         break;
       case 'ja':
         message =
@@ -455,7 +455,7 @@ class UpgraderMessages {
         message = 'NANTI';
         break;
       case 'it':
-        message = 'DOPO';
+        message = 'PIÙ TARDI';
         break;
       case 'ja':
         message = '後で通知';
@@ -715,7 +715,7 @@ class UpgraderMessages {
         message = 'Apakah Anda ingin memperbaruinya sekarang?';
         break;
       case 'it':
-        message = 'Vorresti aggiornare ora?';
+        message = 'Vuoi aggiornare l\'applicazione?';
         break;
       case 'ja':
         message = '今すぐアップデートしますか?';
