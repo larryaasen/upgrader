@@ -227,7 +227,7 @@ class UpgraderMessages {
         message =
             'Доступна новая версия приложения {{appName}}! Новая версия: {{currentAppStoreVersion}}, текущая версия: {{currentInstalledVersion}}.';
         break;
-      case 'si':
+      case 'sl':
         message =
             'Na voljo je nova verzija {{appName}}!\nNameščena verzija: {{currentInstalledVersion}}\nVerzija v trgovini: {{currentAppStoreVersion}}.';
         break;
@@ -368,7 +368,7 @@ class UpgraderMessages {
       case 'ru':
         message = 'НЕТ';
         break;
-      case 'si':
+      case 'sl':
         message = 'Prekliči';
         break;
       case 'sv':
@@ -499,7 +499,7 @@ class UpgraderMessages {
       case 'ru':
         message = 'ПОЗЖЕ';
         break;
-      case 'si':
+      case 'sl':
         message = 'Pozneje';
         break;
       case 'sv':
@@ -628,7 +628,7 @@ class UpgraderMessages {
       case 'ru':
         message = 'ОБНОВИТЬ';
         break;
-      case 'si':
+      case 'sl':
         message = 'Posodobi';
         break;
       case 'sv':
@@ -759,7 +759,7 @@ class UpgraderMessages {
       case 'ru':
         message = 'Хотите обновить сейчас?';
         break;
-      case 'si':
+      case 'sl':
         message = 'Želiš posodobiti sedaj?';
         break;
       case 'sv':
@@ -848,7 +848,7 @@ class UpgraderMessages {
       case 'ru':
         message = 'Информация о выпуске';
         break;
-      case 'si':
+      case 'sl':
         message = 'Posodobitve';
         break;
       case 'te':
@@ -984,7 +984,7 @@ class UpgraderMessages {
       case 'ru':
         message = 'Обновить?';
         break;
-      case 'si':
+      case 'sl':
         message = 'Posodobi aplikacijo?';
         break;
       case 'sv':

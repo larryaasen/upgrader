@@ -450,7 +450,7 @@ Languages supported:
 * Romanian ('ro')
 * Russian ('ru')
 * Spanish ('es')
-* Slovenian ('si')
+* Slovenian ('sl')
 * Swedish ('sv')
 * Tamil ('ta')
 * Telugu ('te')
