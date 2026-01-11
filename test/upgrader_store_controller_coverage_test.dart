@@ -73,23 +73,4 @@ void main() {
       expect(info.appStoreVersion, isNull);
     });
   });
-
-  group('UpgraderPlayStore', () {
-    test('getVersionInfo handles invalid version string with debugLogging',
-        () async {
-      final store = UpgraderPlayStore();
-      final client = MockClient((request) async {
-        // PlayStoreSearchAPI uses a different parsing logic often scraping
-        // But let's assume it returns something that PlayStoreSearchAPI.version extracts
-        // Actually PlayStoreSearchAPI usually scrapes HTML.
-        // But if I can just return something that prompts an error.
-        return http.Response('', 404); // returns null response
-      });
-      // PlayStoreSearchAPI logic is complex.
-      // Lines 110-112 in upgrade_store_controller.dart is catch(e) around Version.parse(version).
-      // So I need PlayStoreSearchAPI.version(response) to return a string that conflicts with Version.parse.
-
-      // I'll skip PlayStore for now as it requires complex HTML mocking to get a "version" that is invalid.
-    });
-  });
 }
