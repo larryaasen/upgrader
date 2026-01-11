@@ -1,7 +1,10 @@
 ## 12.4.0
 
-* Added new language translation for Estonian ('et'). (thanks to @sisalik1)
-* Added new language translation for Slovenian ('si'). (thanks to @AlanJereb)
+- Added new language translation for Estonian ('et'). (thanks to @sisalik1)
+- Added new language translation for Slovenian ('si'). (thanks to @AlanJereb)
+- [526] incorporated the suggestion of adding context to UpgraderMessages(). (thanks to @defuncart)
+- [530] Updated Italian upgrade messages for clarity. (thanks to @Samplasion)
+- [533] Fixed Korean translation for release notes. (thanks to @junsuk5)
 
 ## 12.3.0
 
