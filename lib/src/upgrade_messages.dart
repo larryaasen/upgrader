@@ -857,6 +857,9 @@ class UpgraderMessages {
       case 'tr':
         message = 'Yayın Notları';
         break;
+      case 'uz':
+        message = "Chiqarilgan eslatmalar";
+        break;
 
       case 'bn':
       case 'el':
@@ -875,9 +878,6 @@ class UpgraderMessages {
       case 'sv':
       case 'ta':
       case 'uk':
-      case 'uz':
-        message = "Yangi talqin ma'lumotlari";
-        break;
       case 'vi':
       case 'zh':
       case 'en':

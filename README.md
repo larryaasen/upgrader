@@ -26,6 +26,7 @@ will become more likely that users on other app stores need to be nagged about u
 | Platform | Automatically Supported? | Appcast Supported? |
 | --- | --- | --- |
 | ANDROID | &#9989; Yes | &#9989; Yes |
+| FUCHSIA | &#10060; No | &#9989; Yes |
 | IOS | &#9989; Yes | &#9989; Yes |
 | LINUX | &#10060; No | &#9989; Yes |
 | MACOS | &#10060; No | &#9989; Yes |
