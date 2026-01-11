@@ -32,6 +32,8 @@ will become more likely that users on other app stores need to be nagged about u
 | WEB | &#10060; No | &#9989; Yes |
 | WINDOWS | &#10060; No | &#9989; Yes |
 
+**Note:** This package relies on scraping public Play Store pages for Android. It does *not* use the native Android In-App Updates API or Huawei AppGallery API.
+
 ## Widgets
 The widgets come in two flavors: alert or card. The [UpgradeAlert](#alert-example) widget is used to display the
 popup alert prompt, and the [UpgradeCard](#card-example) widget is used to display the inline material design card.
@@ -377,6 +379,19 @@ final items = await appcast.parseAppcastItemsFromUri('https://raw.githubusercont
 final bestItem = appcast.bestItem();
 ```
 
+### Appcast Critical Update
+You can force an update (hiding the Ignore and Later buttons) by adding the `sparkle:criticalUpdate` tag to the item in your Appcast XML.
+
+```xml
+<item>
+    <title>Version 1.15.0</title>
+    <sparkle:tags>
+        <sparkle:criticalUpdate />
+    </sparkle:tags>
+    ...
+</item>
+```
+
 ## Customizing the strings
 
 The strings displayed in `upgrader` can be customzied by extending the `UpgraderMessages` class
@@ -499,6 +514,8 @@ digit (MAJOR), it converts it to a 3 digit version: MAJOR.0.0, and for versions 
 only use 2 digits (MAJOR.MINOR), it converts it to a 3 digit version: MAJOR.MINOR.0, to
 be compliant with Semantic Versioning.
 
+**Important:** The version string in your store listing (Google Play / App Store) *must* be a valid semantic version (e.g. `1.2.3` or `1.2.3+4`). Formats like `1.2.3(4)` are not valid and will cause a `FormatException`.
+
 ## Examples
 
 There are [plenty of examples](https://github.com/larryaasen/upgrader/tree/main/example/lib) that cover various different situations that may
@@ -514,7 +531,14 @@ help you customize the `upgrader` experience for your app. Check these out.
 | main_macos.dart | main_messages.dart | main_min_app_version.dart |
 | main_multiple.dart | main_stateful.dart | main_subclass.dart |
 
-## Tapping UPDATE NOW button issue on Android
+## Troubleshooting
+
+### Updates not showing?
+1. **Google Play Closed/Internal Testing:** This package relies on scraping the *public* store page. If your app is in a Closed or Internal testing track, the page is not public, and `upgrader` cannot see the version. Use an **Appcast** for testing these pre-production builds.
+2. **Cache/Ignored:** If you previously tapped "Ignore" or "Later", the alert will be suppressed. You can reset this state by calling `await Upgrader.clearSavedSettings();` during development only.
+3. **Debug Mode:** By default, logs are hidden. Enable `debugLogging: true` in the `Upgrader` constructor to see exactly what the package is parsing.
+
+### Tapping UPDATE NOW button issue on Android
 
 Seeing an error similar to this on Android after tapping the UPDATE NOW button?
 ```
