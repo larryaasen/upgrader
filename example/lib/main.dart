@@ -19,10 +19,6 @@ void main() async {
   runApp(const MyApp());
 }
 
-final Upgrader upgrader = Upgrader(
-  debugLogging: true,
-);
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -31,7 +27,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Upgrader Example',
       home: UpgradeAlert(
-        upgrader: upgrader,
         child: Scaffold(
           appBar: AppBar(title: const Text('Upgrader Example')),
           body: const Center(child: Text('Checking...')),
