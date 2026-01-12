@@ -1,3 +1,6 @@
+## 12.5.0
+- Fixed Slovenian ISO 639-1 code to ('sl')
+
 ## 12.4.0
 
 - Added new language translation for Estonian ('et'). (thanks to @sisalik1)
