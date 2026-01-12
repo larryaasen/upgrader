@@ -1,5 +1,6 @@
 ## 12.5.0
-- Fixed Slovenian ISO 639-1 code to ('sl')
+
+- Fixed Slovenian ISO 639-1 code to ('sl'). (thanks to @AlanJereb)
 
 ## 12.4.0
 
