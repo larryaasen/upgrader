@@ -13,19 +13,13 @@ import 'upgrader_version_info.dart';
 
 abstract class UpgraderStore {
   Future<UpgraderVersionInfo> getVersionInfo(
-      {required UpgraderState state,
-      required Version installedVersion,
-      required String? country,
-      required String? language});
+      {required UpgraderState state, required Version installedVersion, required String? country, required String? language});
 }
 
 class UpgraderAppStore extends UpgraderStore {
   @override
   Future<UpgraderVersionInfo> getVersionInfo(
-      {required UpgraderState state,
-      required Version installedVersion,
-      required String? country,
-      required String? language}) async {
+      {required UpgraderState state, required Version installedVersion, required String? country, required String? language}) async {
     if (state.packageInfo == null) return UpgraderVersionInfo();
 
     String? appStoreListingURL;
@@ -38,20 +32,17 @@ class UpgraderAppStore extends UpgraderStore {
     iTunes.debugLogging = state.debugLogging;
     iTunes.client = state.client;
     iTunes.clientHeaders = state.clientHeaders;
-    final response = await (iTunes.lookupByBundleId(
-        state.packageInfo!.packageName,
-        country: country,
-        language: language));
+    final response = await (iTunes.lookupByBundleId(state.packageInfo!.packageName, country: country, language: language));
 
     if (response != null) {
       final version = iTunes.version(response);
       if (version != null) {
         try {
-          appStoreVersion = Version.parse(version);
+          final String versionString = version.replaceFirst(RegExp(r'^iOS\s+'), '');
+          appStoreVersion = Version.parse(versionString);
         } catch (e) {
           if (state.debugLogging) {
-            print(
-                'upgrader: UpgraderAppStore.appStoreVersion "$version" exception: $e');
+            print('upgrader: UpgraderAppStore.appStoreVersion "$version" exception: $e');
           }
         }
       }
@@ -83,14 +74,10 @@ class UpgraderAppStore extends UpgraderStore {
 class UpgraderPlayStore extends UpgraderStore {
   @override
   Future<UpgraderVersionInfo> getVersionInfo(
-      {required UpgraderState state,
-      required Version installedVersion,
-      required String? country,
-      required String? language}) async {
+      {required UpgraderState state, required Version installedVersion, required String? country, required String? language}) async {
     if (state.packageInfo == null) return UpgraderVersionInfo();
     final id = state.packageInfo!.packageName;
-    final playStore = PlayStoreSearchAPI(
-        client: state.client, clientHeaders: state.clientHeaders);
+    final playStore = PlayStoreSearchAPI(client: state.client, clientHeaders: state.clientHeaders);
     playStore.debugLogging = state.debugLogging;
 
     String? appStoreListingURL;
@@ -99,8 +86,7 @@ class UpgraderPlayStore extends UpgraderStore {
     Version? minAppVersion;
     String? releaseNotes;
 
-    final response =
-        await playStore.lookupById(id, country: country, language: language);
+    final response = await playStore.lookupById(id, country: country, language: language);
     if (response != null) {
       final version = playStore.version(response);
       if (version != null) {
@@ -108,14 +94,12 @@ class UpgraderPlayStore extends UpgraderStore {
           appStoreVersion = Version.parse(version);
         } catch (e) {
           if (state.debugLogging) {
-            print(
-                'upgrader: UpgraderPlayStore.appStoreVersion "$version" exception: $e');
+            print('upgrader: UpgraderPlayStore.appStoreVersion "$version" exception: $e');
           }
         }
       }
 
-      appStoreListingURL ??=
-          playStore.lookupURLById(id, language: language, country: country);
+      appStoreListingURL ??= playStore.lookupURLById(id, language: language, country: country);
       releaseNotes ??= playStore.releaseNotes(response);
       final mav = playStore.minAppVersion(response);
       if (mav != null) {
@@ -164,21 +148,14 @@ class UpgraderAppcastStore extends UpgraderStore {
 
   @override
   Future<UpgraderVersionInfo> getVersionInfo(
-      {required UpgraderState state,
-      required Version installedVersion,
-      required String? country,
-      required String? language}) async {
+      {required UpgraderState state, required Version installedVersion, required String? country, required String? language}) async {
     String? appStoreListingURL;
     Version? appStoreVersion;
     bool? isCriticalUpdate;
     String? releaseNotes;
 
-    final localAppcast = appcast ??
-        Appcast(
-            client: state.client,
-            clientHeaders: state.clientHeaders,
-            upgraderOS: state.upgraderOS,
-            osVersion: osVersion);
+    final localAppcast =
+        appcast ?? Appcast(client: state.client, clientHeaders: state.clientHeaders, upgraderOS: state.upgraderOS, osVersion: osVersion);
     await localAppcast.parseAppcastItemsFromUri(appcastURL);
     if (state.debugLogging) {
       var count = localAppcast.items == null ? 0 : localAppcast.items!.length;
@@ -188,9 +165,7 @@ class UpgraderAppcastStore extends UpgraderStore {
     final criticalVersion = criticalUpdateItem?.versionString ?? '';
 
     final bestItem = localAppcast.bestItem();
-    if (bestItem != null &&
-        bestItem.versionString != null &&
-        bestItem.versionString!.isNotEmpty) {
+    if (bestItem != null && bestItem.versionString != null && bestItem.versionString!.isNotEmpty) {
       if (state.debugLogging) {
         print('upgrader: UpgraderAppcastStore best item version: '
             '${bestItem.versionString}');
@@ -199,14 +174,12 @@ class UpgraderAppcastStore extends UpgraderStore {
       }
 
       try {
-        if (criticalVersion.isNotEmpty &&
-            installedVersion < Version.parse(criticalVersion)) {
+        if (criticalVersion.isNotEmpty && installedVersion < Version.parse(criticalVersion)) {
           isCriticalUpdate = true;
         }
       } catch (e) {
         if (state.debugLogging) {
-          print(
-              'upgrader: UpgraderAppcastStore: getVersionInfo could not parse version info $e');
+          print('upgrader: UpgraderAppcastStore: getVersionInfo could not parse version info $e');
         }
       }
 
@@ -215,8 +188,7 @@ class UpgraderAppcastStore extends UpgraderStore {
           appStoreVersion = Version.parse(bestItem.versionString!);
         } catch (e) {
           if (state.debugLogging) {
-            print(
-                'upgrader: UpgraderAppcastStore: best item version could not be parsed: '
+            print('upgrader: UpgraderAppcastStore: best item version could not be parsed: '
                 '${bestItem.versionString}');
           }
         }
