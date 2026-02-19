@@ -10,8 +10,15 @@ import 'upgrade_state.dart';
 import 'upgrader.dart';
 
 /// A widget to display the upgrade card.
+///
+/// This widget handles the logic of checking for a newer version of the app
+/// and displaying a card to the user if an update is available.
+///
 /// The only reason this is a [StatefulWidget] and not a [StatelessWidget] is that
-/// the widget needs to rebulid after one of the buttons have been tapped.
+/// the widget needs to rebuild after one of the buttons have been tapped.
+///
+/// It uses the [Upgrader] controller to determine if an upgrade should be displayed.
+///
 /// Override the [createState] method to provide a custom class
 /// with overridden methods.
 class UpgradeCard extends StatefulWidget {
@@ -31,7 +38,7 @@ class UpgradeCard extends StatefulWidget {
     this.showReleaseNotes = true,
   }) : upgrader = upgrader ?? Upgrader.sharedInstance;
 
-  /// The upgraders used to configure the upgrade dialog.
+  /// The [Upgrader] controller used to configure the upgrade dialog.
   final Upgrader upgrader;
 
   /// The empty space that surrounds the card.
@@ -56,16 +63,16 @@ class UpgradeCard extends StatefulWidget {
   /// How visual overflow should be handled.
   final TextOverflow? overflow;
 
-  /// Hide or show Prompt label on dialog (default: true)
+  /// Whether to show the prompt label on the card (default: true).
   final bool showPrompt;
 
-  /// Hide or show Ignore button on dialog (default: true)
+  /// Whether to show the ignore button on the card (default: true).
   final bool showIgnore;
 
-  /// Hide or show Later button on dialog (default: true)
+  /// Whether to show the later button on the card (default: true).
   final bool showLater;
 
-  /// Hide or show release notes (default: true)
+  /// Whether to show release notes (default: true).
   final bool showReleaseNotes;
 
   @override
@@ -110,7 +117,7 @@ class UpgradeCardState extends State<UpgradeCard> {
         });
   }
 
-  /// Build the UpgradeCard widget.
+  /// Builds the UpgradeCard widget.
   Widget buildUpgradeCard(BuildContext context, Key? key) {
     final appMessages = widget.upgrader.determineMessages(context);
     final title = appMessages.message(UpgraderMessage.title);
@@ -170,8 +177,10 @@ class UpgradeCardState extends State<UpgradeCard> {
     );
   }
 
+  /// Force the widget to rebuild.
   void forceRebuild() => setState(() {});
 
+  /// Builds the action buttons for the card.
   List<Widget> actions(UpgraderMessages appMessages) {
     final isBlocked = widget.upgrader.blocked();
     final showIgnore = isBlocked ? false : widget.showIgnore;
@@ -211,10 +220,12 @@ class UpgradeCardState extends State<UpgradeCard> {
     ];
   }
 
+  /// Whether the release notes should be displayed.
   bool get shouldDisplayReleaseNotes =>
       widget.showReleaseNotes &&
       (widget.upgrader.releaseNotes?.isNotEmpty ?? false);
 
+  /// Called when the user taps the ignore button.
   void onUserIgnored() {
     if (widget.upgrader.state.debugLogging) {
       print('upgrader: button tapped: ignore');
@@ -230,6 +241,7 @@ class UpgradeCardState extends State<UpgradeCard> {
     forceRebuild();
   }
 
+  /// Called when the user taps the later button.
   void onUserLater() {
     if (widget.upgrader.state.debugLogging) {
       print('upgrader: button tapped: later');
@@ -241,6 +253,7 @@ class UpgradeCardState extends State<UpgradeCard> {
     forceRebuild();
   }
 
+  /// Called when the user taps the update now button.
   void onUserUpdated() {
     if (widget.upgrader.state.debugLogging) {
       print('upgrader: button tapped: update now');
@@ -255,4 +268,3 @@ class UpgradeCardState extends State<UpgradeCard> {
 
     forceRebuild();
   }
-}
