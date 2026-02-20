@@ -139,11 +139,11 @@ Here are the custom parameters for `UpgradeAlert`:
 Here are the custom parameters for `UpgradeCard`:
 
 * margin: The empty space that surrounds the card, defaults to ```null```
-* maxLines: An optional maximum number of lines for the text to span, wrapping if necessary, defaults to ```null```
+* maxLines: An optional maximum number of lines for the text to span, wrapping if necessary, defaults to ```15```
 * onIgnore: called when the ignore button is tapped, defaults to ```null```
 * onLater: called when the later button is tapped, defaults to ```null```
 * onUpdate: called when the update button is tapped, defaults to ```null```
-* overflow: How visual overflow should be handled, defaults to ```null```
+* overflow: How visual overflow should be handled, defaults to ```TextOverflow.ellipsis```
 * showPrompt: hide or show Prompt label on dialog, which defaults to ```true```
 * showIgnore: hide or show Ignore button, which defaults to ```true```
 * showLater: hide or show Later button, which defaults to ```true```
