@@ -51,7 +51,6 @@ class UpgradeAlert extends StatefulWidget {
   final BoolCallback? onIgnore;
 
   /// Called when the later button is tapped or otherwise activated.
-  /// Return false when the default behavior should not execute.
   final BoolCallback? onLater;
 
   /// Called when the update button is tapped or otherwise activated.
