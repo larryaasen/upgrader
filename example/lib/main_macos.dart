@@ -19,8 +19,8 @@ class MyApp extends StatelessWidget {
       'https://raw.githubusercontent.com/larryaasen/upgrader/main/test/testappcast_macos.xml';
   final upgrader = Upgrader(
     storeController: UpgraderStoreController(
-        onMacOS: () => UpgraderAppcastStore(
-            appcastURL: appcastURL, osVersion: '0.0.0')),
+        onMacOS: () =>
+            UpgraderAppcastStore(appcastURL: appcastURL, osVersion: '0.0.0')),
     debugLogging: true,
   );
 

@@ -182,7 +182,8 @@ class UpgraderAppcastStore extends UpgraderStore {
     } catch (e) {
       parsedOsVersion = Version(0, 0, 0);
       if (state.debugLogging) {
-        print('upgrader: UpgraderAppcastStore: could not parse osVersion "$osVersion": $e');
+        print(
+            'upgrader: UpgraderAppcastStore: could not parse osVersion "$osVersion": $e');
       }
     }
 

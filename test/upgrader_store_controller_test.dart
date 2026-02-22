@@ -97,9 +97,7 @@ void main() {
     final fakeAppcast = FakeAppcast();
 
     final upgraderAppcastStore = UpgraderAppcastStore(
-        appcastURL: appcastURL,
-        appcast: fakeAppcast,
-        osVersion: '0.0.0');
+        appcastURL: appcastURL, appcast: fakeAppcast, osVersion: '0.0.0');
 
     // Act
     final versionInfo = await upgraderAppcastStore.getVersionInfo(
@@ -136,8 +134,8 @@ void main() {
     final fakeAppcast = FakeAppcast();
 
     // osVersion omitted (null) — should default to Version(0, 0, 0) internally.
-    final upgraderAppcastStore = UpgraderAppcastStore(
-        appcastURL: appcastURL, appcast: fakeAppcast);
+    final upgraderAppcastStore =
+        UpgraderAppcastStore(appcastURL: appcastURL, appcast: fakeAppcast);
 
     // Act
     final versionInfo = await upgraderAppcastStore.getVersionInfo(

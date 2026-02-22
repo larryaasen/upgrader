@@ -1,5 +1,7 @@
-## Next
+## 13.0.0
 
+- Fixed [515]: Remove version package exposure from UpgraderAppcastStore.
+- Fixed [470]: Option to suppress optional updates.
 - Improved documentation.
 
 ## 12.5.0
