@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart' show SynchronousFuture;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:upgrader/upgrader.dart';
-import 'package:version/version.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -84,7 +83,7 @@ class DemoApp extends StatelessWidget {
   final upgrader = Upgrader(
     storeController: UpgraderStoreController(
         onAndroid: () => UpgraderAppcastStore(
-            appcastURL: appcastURL, osVersion: Version(0, 0, 0))),
+            appcastURL: appcastURL, osVersion: '0.0.0')),
     debugLogging: true,
     messages: MyUpgraderMessages(code: 'es'),
   );

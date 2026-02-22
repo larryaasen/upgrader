@@ -863,7 +863,7 @@ void main() {
         oniOS: () => UpgraderAppcastStore(
             appcastURL: 'https://sparkle-project.org/test/testappcast.xml',
             appcast: fakeAppcast,
-            osVersion: Version(0, 0, 0)),
+            osVersion: '0.0.0'),
       ),
     )..installPackageInfo(
         packageInfo: PackageInfo(
@@ -889,7 +889,7 @@ void main() {
       storeController: UpgraderStoreController(
         oniOS: () => UpgraderAppcastStore(
           appcastURL: 'https://sparkle-project.org/test/testappcast.xml',
-          osVersion: Version(0, 0, 0),
+          osVersion: '0.0.0',
         ),
       ),
     )..installPackageInfo(
@@ -916,7 +916,7 @@ void main() {
       storeController: UpgraderStoreController(
         onAndroid: () => UpgraderAppcastStore(
             appcastURL: 'https://sparkle-project.org/test/testappcast.xml',
-            osVersion: Version(0, 0, 0)
+            osVersion: '0.0.0'
             // client: mockClient,
             ),
       ),
@@ -964,7 +964,7 @@ void main() {
       storeController: UpgraderStoreController(
         oniOS: () => UpgraderAppcastStore(
           appcastURL: 'https://sparkle-project.org/test/testappcast.xml',
-          osVersion: Version(0, 0, 0),
+          osVersion: '0.0.0',
         ),
       ),
     )..installPackageInfo(
@@ -1140,6 +1140,52 @@ void main() {
       final shouldDisplayUpgrade = upgrader.shouldDisplayUpgrade();
 
       expect(shouldDisplayUpgrade, isTrue);
+    }, skip: false);
+
+    test('showOnlyMandatoryUpdates suppresses optional updates', () async {
+      final upgrader = Upgrader(
+        debugLogging: true,
+        upgraderOS: MockUpgraderOS(ios: true),
+        client: MockITunesSearchClient.setupMockClient(),
+        showOnlyMandatoryUpdates: true,
+      )..installPackageInfo(
+          packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '2.0.0',
+            buildNumber: '42',
+          ),
+        );
+
+      await upgrader.initialize();
+
+      // Update is available (5.6.0 > 2.0.0) but not mandatory — should NOT display.
+      expect(upgrader.isUpdateAvailable(), isTrue);
+      expect(upgrader.blocked(), isFalse);
+      expect(upgrader.shouldDisplayUpgrade(), isFalse);
+    }, skip: false);
+
+    test('showOnlyMandatoryUpdates still shows mandatory updates', () async {
+      final upgrader = Upgrader(
+        debugLogging: true,
+        upgraderOS: MockUpgraderOS(ios: true),
+        client: MockITunesSearchClient.setupMockClient(),
+        showOnlyMandatoryUpdates: true,
+        minAppVersion: '3.0.0',
+      )..installPackageInfo(
+          packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '2.0.0',
+            buildNumber: '42',
+          ),
+        );
+
+      await upgrader.initialize();
+
+      // Installed version 2.0.0 < minAppVersion 3.0.0 — should display.
+      expect(upgrader.belowMinAppVersion(), isTrue);
+      expect(upgrader.shouldDisplayUpgrade(), isTrue);
     }, skip: false);
 
     test('packageInfo is empty', () async {
