@@ -339,7 +339,7 @@ The class [UpgraderAppcastStore](lib/src/upgrade_store_controller.dart), in this
 Flutter package, is used by `upgrader` to download app details from an appcast.
 
 ### Appcast Example
-This is an Appcast example for Android.
+This is an Appcast example for Android and iOS.
 ```dart
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -358,6 +358,7 @@ class MyApp extends StatelessWidget {
   static final upgrader = Upgrader(
     storeController: UpgraderStoreController(
       onAndroid: () => UpgraderAppcastStore(appcastURL: appcastURL, osVersion: Version(0, 0, 0)),
+      oniOS: () => UpgraderAppcastStore(appcastURL: appcastURL, osVersion: Version(0, 0, 0)),
     ),
   );
 
