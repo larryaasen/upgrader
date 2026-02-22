@@ -70,6 +70,9 @@ class Upgrader with WidgetsBindingObserver {
   ///   older version will be forced to update. Should be a valid version string
   ///   such as `"2.0.13"`. Overrides any minimum version from [UpgraderStore].
   ///   Defaults to `null`.
+  /// - [showOnlyMandatoryUpdates]: When `true`, the upgrade prompt is only
+  ///   shown when the installed version is below the minimum supported version
+  ///   (a mandatory update). Optional updates are suppressed. Defaults to `false`.
   /// - [storeController]: A controller that provides store details for each
   ///   platform. Defaults to `UpgraderStoreController()`.
   /// - [upgraderOS]: Information about the OS this code is running on.
@@ -87,6 +90,7 @@ class Upgrader with WidgetsBindingObserver {
     String? languageCode,
     UpgraderMessages? messages,
     String? minAppVersion,
+    bool showOnlyMandatoryUpdates = false,
     UpgraderStoreController? storeController,
     UpgraderOS? upgraderOS,
     this.willDisplayUpgrade,
@@ -102,6 +106,7 @@ class Upgrader with WidgetsBindingObserver {
           messages: messages,
           minAppVersion:
               parseVersion(minAppVersion, 'minAppVersion', debugLogging),
+          showOnlyMandatoryUpdates: showOnlyMandatoryUpdates,
           upgraderOS: upgraderOS ?? UpgraderOS(),
         ),
         storeController = storeController ?? UpgraderStoreController() {
@@ -339,6 +344,8 @@ class Upgrader with WidgetsBindingObserver {
       rv = false;
     } else if (isBlocked) {
       rv = true;
+    } else if (state.showOnlyMandatoryUpdates) {
+      rv = false;
     } else if (isTooSoon() || alreadyIgnoredThisVersion()) {
       rv = false;
     }

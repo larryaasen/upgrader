@@ -99,7 +99,7 @@ void main() {
     final upgraderAppcastStore = UpgraderAppcastStore(
         appcastURL: appcastURL,
         appcast: fakeAppcast,
-        osVersion: Version(0, 0, 0));
+        osVersion: '0.0.0');
 
     // Act
     final versionInfo = await upgraderAppcastStore.getVersionInfo(
@@ -110,6 +110,44 @@ void main() {
     );
 
     // Assert
+    expect(
+        versionInfo.appStoreListingURL, equals('http://some.fakewebsite.com'));
+    expect(versionInfo.appStoreVersion, equals(Version.parse('1.0.0')));
+    expect(versionInfo.installedVersion, installedVersion);
+    expect(versionInfo.isCriticalUpdate, isNull);
+    expect(versionInfo.releaseNotes, isNull);
+  });
+
+  test('UpgraderAppcastStore accepts null osVersion', () async {
+    final installedVersion = Version.parse('1.9.6');
+    final state = UpgraderState(
+      debugLogging: true,
+      client: await MockPlayStoreSearchClient.setupMockClient(),
+      packageInfo: PackageInfo(
+        appName: 'Upgrader',
+        packageName: 'com.kotoko.express',
+        version: installedVersion.toString(),
+        buildNumber: '42',
+      ),
+      upgraderOS: MockUpgraderOS(android: true),
+    );
+
+    const appcastURL = 'https://sparkle-project.org/test/testappcast.xml';
+    final fakeAppcast = FakeAppcast();
+
+    // osVersion omitted (null) — should default to Version(0, 0, 0) internally.
+    final upgraderAppcastStore = UpgraderAppcastStore(
+        appcastURL: appcastURL, appcast: fakeAppcast);
+
+    // Act
+    final versionInfo = await upgraderAppcastStore.getVersionInfo(
+      state: state,
+      installedVersion: installedVersion,
+      country: 'US',
+      language: 'en',
+    );
+
+    // Assert — same result as when osVersion is explicitly '0.0.0'.
     expect(
         versionInfo.appStoreListingURL, equals('http://some.fakewebsite.com'));
     expect(versionInfo.appStoreVersion, equals(Version.parse('1.0.0')));
