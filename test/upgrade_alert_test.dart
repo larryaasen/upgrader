@@ -74,6 +74,10 @@ void main() {
   testWidgets(
     'test UpgradeAlert stays above a later pushed route',
     (WidgetTester tester) async {
+      final delayDuration = 2;
+      final laterTitle =
+          UpgraderMessages().message(UpgraderMessage.buttonTitleLater)!;
+
       var laterTapped = false;
       final upgrader = Upgrader(
         debugDisplayAlways: true,
@@ -96,20 +100,28 @@ void main() {
               laterTapped = true;
               return true;
             },
-            child: child ?? const SizedBox.shrink(),
+            child: child,
           ),
-          home: const _DelayedPushScreen(),
+          home: _SplashScreen(
+            Duration(seconds: delayDuration),
+          ),
         ),
       );
+      await tester.pump(Duration(seconds: delayDuration - 1));
       await tester.pumpAndSettle();
 
-      expect(find.text('home'), findsOneWidget);
+      expect(find.byType(_SplashScreen), findsOneWidget);
+      expect(find.byType(_HomeScreen), findsNothing);
+      expect(find.text(laterTitle), findsOneWidget,
+          reason: 'UpgradeAlert should be visible before the route is pushed');
 
-      await tester.tap(
-        find.text(
-          UpgraderMessages().message(UpgraderMessage.buttonTitleLater)!,
-        ),
-      );
+      await tester.pump(Duration(seconds: delayDuration));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(_HomeScreen), findsOneWidget);
+      expect(find.byType(_SplashScreen), findsNothing);
+
+      await tester.tap(find.text(laterTitle));
       await tester.pumpAndSettle();
 
       expect(laterTapped, true);
@@ -117,28 +129,22 @@ void main() {
   );
 }
 
-class _DelayedPushScreen extends StatefulWidget {
-  const _DelayedPushScreen();
+class _SplashScreen extends StatefulWidget {
+  final Duration delay;
+  const _SplashScreen(this.delay);
 
   @override
-  State<_DelayedPushScreen> createState() => _DelayedPushScreenState();
+  State<_SplashScreen> createState() => _SplashScreenState();
 }
 
-class _DelayedPushScreenState extends State<_DelayedPushScreen> {
+class _SplashScreenState extends State<_SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(milliseconds: 100), () {
-      if (!mounted) {
-        return;
-      }
+    Future.delayed(widget.delay, () {
       Navigator.of(context).push(
         MaterialPageRoute<void>(
-          builder: (context) => const Scaffold(
-            body: Center(
-              child: Text('home'),
-            ),
-          ),
+          builder: (context) => const _HomeScreen(),
         ),
       );
     });
@@ -149,6 +155,19 @@ class _DelayedPushScreenState extends State<_DelayedPushScreen> {
     return const Scaffold(
       body: Center(
         child: Text('splash'),
+      ),
+    );
+  }
+}
+
+class _HomeScreen extends StatelessWidget {
+  const _HomeScreen();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(
+        child: Text('home'),
       ),
     );
   }
