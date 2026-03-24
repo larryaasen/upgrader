@@ -237,7 +237,7 @@ class UpgradeAlertState extends State<UpgradeAlert> {
 
   void popNavigator(BuildContext context) {
     Navigator.of(context).pop();
-    if (mounted) setState(() {});
+    displayed = false;
   }
 
   bool get shouldDisplayReleaseNotes =>
