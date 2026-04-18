@@ -1,3 +1,7 @@
+## 13.1.0
+
+- [547] Updated package_info_plus version range to <11.0.0.
+
 ## 13.0.0
 
 - [542] Added minimumUpdateVersion parsing for Appcast XML. (thanks to @FaresHossamAmin)
