@@ -302,6 +302,9 @@ On Android, the `upgrader` package uses the system locale to determine the count
 ## Android Language Code
 
 Android description and release notes language default to `en`.
+Set `languageCode` on `Upgrader` to request the Google Play Store listing,
+description, and release notes in that language when a localized store page is
+available.
 
 ## Limitations
 These widgets work on both Android and iOS. When running on Android the Google

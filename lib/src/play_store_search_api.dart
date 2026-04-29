@@ -170,6 +170,13 @@ extension PlayStoreResults on PlayStoreSearchAPI {
   /// release notes, the main app description is used.
   String? releaseNotes(Document response) {
     try {
+      final releaseNotes = releaseNotesFromDescriptions(
+        response.querySelectorAll('[itemprop="description"]'),
+      );
+      if (releaseNotes != null) {
+        return releaseNotes;
+      }
+
       final sectionElements = response.getElementsByClassName('W4P4ne');
       final releaseNotesElement = sectionElements.firstWhere(
           (elm) => elm.querySelector('.wSaTQd')!.text == 'What\'s New',
@@ -192,12 +199,9 @@ extension PlayStoreResults on PlayStoreSearchAPI {
   /// release notes, the main app description is used.
   String? redesignedReleaseNotes(Document response) {
     try {
-      final sectionElements =
-          response.querySelectorAll('[itemprop="description"]');
-
-      final rawReleaseNotes = sectionElements.last;
-      final releaseNotes = multilineReleaseNotes(rawReleaseNotes);
-      return releaseNotes;
+      return releaseNotesFromDescriptions(
+        response.querySelectorAll('[itemprop="description"]'),
+      );
     } catch (e) {
       if (debugLogging) {
         print(
@@ -205,6 +209,11 @@ extension PlayStoreResults on PlayStoreSearchAPI {
       }
     }
     return null;
+  }
+
+  String? releaseNotesFromDescriptions(Iterable<Element> descriptionElements) {
+    if (descriptionElements.isEmpty) return null;
+    return multilineReleaseNotes(descriptionElements.last);
   }
 
   String? multilineReleaseNotes(Element rawReleaseNotes) {
