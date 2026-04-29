@@ -170,11 +170,11 @@ extension PlayStoreResults on PlayStoreSearchAPI {
   /// release notes, the main app description is used.
   String? releaseNotes(Document response) {
     try {
-      final releaseNotes = releaseNotesFromDescriptions(
+      final descriptionReleaseNotes = releaseNotesFromDescriptions(
         response.querySelectorAll('[itemprop="description"]'),
       );
-      if (releaseNotes != null) {
-        return releaseNotes;
+      if (descriptionReleaseNotes != null) {
+        return descriptionReleaseNotes;
       }
 
       final sectionElements = response.getElementsByClassName('W4P4ne');
