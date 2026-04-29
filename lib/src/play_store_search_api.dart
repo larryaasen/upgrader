@@ -211,6 +211,9 @@ extension PlayStoreResults on PlayStoreSearchAPI {
     return null;
   }
 
+  /// Returns release notes from the last available Play Store description
+  /// element, which is the localized "What's New" content when present and the
+  /// main app description otherwise.
   String? releaseNotesFromDescriptions(Iterable<Element> descriptionElements) {
     if (descriptionElements.isEmpty) return null;
     return multilineReleaseNotes(descriptionElements.last);

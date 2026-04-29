@@ -226,7 +226,8 @@ void main() {
     return Document.html(html);
   }
 
-  /// Helper method
+  /// Helper method to generate a mock Play Store response containing both
+  /// description and release notes sections.
   Document resReleaseNotes(
       {required String sectionTitle,
       required String description,
