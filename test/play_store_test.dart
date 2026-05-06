@@ -226,6 +226,28 @@ void main() {
     return Document.html(html);
   }
 
+  /// Helper method to generate a mock Play Store response containing both
+  /// description and release notes sections.
+  Document resReleaseNotes(
+      {required String sectionTitle,
+      required String description,
+      required String releaseNotes}) {
+    final html = '''
+<div class="W4P4ne">
+  <div class="PHBdkd">
+    <div class="DWPxHb" itemprop="description">$description</div>
+  </div>
+</div>
+<div class="W4P4ne">
+  <div class="wSaTQd"><h2 class="Rm6Gwb">$sectionTitle</h2></div>
+  <div class="PHBdkd">
+    <div class="DWPxHb" itemprop="description">$releaseNotes</div>
+  </div>
+</div>
+''';
+    return Document.html(html);
+  }
+
   test('testing minAppVersion', () async {
     expect(pmav(resDesc('test [:mav: 1.2.3]')), '1.2.3');
     expect(pmav(resDesc('test [:mav:1.2.3]')), '1.2.3');
@@ -251,6 +273,18 @@ void main() {
             tagRES:
                 r'\[\Minimum supported app version\:[\s]*(?<version>[^\s]+)[\s]*\]'),
         '4.5.6+1');
+  });
+
+  test('testing release notes with localized classic Play Store heading',
+      () async {
+    final playStore = PlayStoreSearchAPI();
+    final response = resReleaseNotes(
+      sectionTitle: 'Что нового',
+      description: 'English description fallback.',
+      releaseNotes: 'Русские примечания к выпуску.',
+    );
+
+    expect(playStore.releaseNotes(response), 'Русские примечания к выпуску.');
   });
 
   test('testing special characters', () async {
