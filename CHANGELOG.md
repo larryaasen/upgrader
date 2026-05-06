@@ -1,3 +1,7 @@
+## 13.2.0
+
+- [544] Will use localized Google Play release notes instead of always falling back to English.
+
 ## 13.1.0
 
 - [547] Updated package_info_plus version range to <11.0.0.
