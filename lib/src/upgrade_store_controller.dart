@@ -163,7 +163,9 @@ class UpgraderAppcastStore extends UpgraderStore {
   /// When `null` or unparseable, defaults to `Version(0, 0, 0)`.
   final String? osVersion;
 
-  AppcastItem? bestItem;
+  AppcastItem? _bestItem;
+
+  AppcastItem? get bestItem => _bestItem;
 
   @override
   Future<UpgraderVersionInfo> getVersionInfo(
@@ -204,11 +206,12 @@ class UpgraderAppcastStore extends UpgraderStore {
     final criticalUpdateItem = localAppcast.bestCriticalItem();
     final criticalVersion = criticalUpdateItem?.versionString ?? '';
 
+    _bestItem = null;
     final bestItem = localAppcast.bestItem();
     if (bestItem != null &&
         bestItem.versionString != null &&
         bestItem.versionString!.isNotEmpty) {
-      this.bestItem = bestItem;
+      _bestItem = bestItem;
 
       if (state.debugLogging) {
         print('upgrader: UpgraderAppcastStore best item version: '
