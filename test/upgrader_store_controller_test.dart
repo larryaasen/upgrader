@@ -153,4 +153,36 @@ void main() {
     expect(versionInfo.isCriticalUpdate, isNull);
     expect(versionInfo.releaseNotes, isNull);
   });
+
+  test('UpgraderAppcastStore has bestItem after getVersionInfo', () async {
+    final installedVersion = Version.parse('1.9.6');
+    final state = UpgraderState(
+      debugLogging: true,
+      client: await MockPlayStoreSearchClient.setupMockClient(),
+      packageInfo: PackageInfo(
+        appName: 'Upgrader',
+        packageName: 'com.kotoko.express',
+        version: installedVersion.toString(),
+        buildNumber: '42',
+      ),
+      upgraderOS: MockUpgraderOS(android: true),
+    );
+
+    const appcastURL = 'https://sparkle-project.org/test/testappcast.xml';
+    final fakeAppcast = FakeAppcast();
+
+    final upgraderAppcastStore = UpgraderAppcastStore(
+        appcastURL: appcastURL, appcast: fakeAppcast, osVersion: '0.0.0');
+
+    // Act
+    await upgraderAppcastStore.getVersionInfo(
+      state: state,
+      installedVersion: installedVersion,
+      country: 'US',
+      language: 'en',
+    );
+
+    // Assert
+    expect(upgraderAppcastStore.bestItem, isNotNull);
+  });
 }
