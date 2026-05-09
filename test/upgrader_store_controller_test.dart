@@ -172,7 +172,10 @@ void main() {
     final fakeAppcast = FakeAppcast();
 
     final upgraderAppcastStore = UpgraderAppcastStore(
-        appcastURL: appcastURL, appcast: fakeAppcast, osVersion: '0.0.0');
+      appcastURL: appcastURL,
+      appcast: fakeAppcast,
+      osVersion: '0.0.0',
+    );
 
     // Act
     await upgraderAppcastStore.getVersionInfo(

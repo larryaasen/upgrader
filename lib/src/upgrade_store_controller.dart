@@ -165,6 +165,11 @@ class UpgraderAppcastStore extends UpgraderStore {
 
   AppcastItem? _bestItem;
 
+  /// The best matching appcast item from the most recent [getVersionInfo] call.
+  ///
+  /// This value is intended to be read only after awaiting [getVersionInfo].
+  /// It is `null` before any lookup has completed or when no suitable appcast
+  /// item is found for the current version check.
   AppcastItem? get bestItem => _bestItem;
 
   @override

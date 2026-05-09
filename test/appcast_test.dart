@@ -374,7 +374,7 @@ void validateItems(List<AppcastItem> items, Appcast appcast) {
   expect(items[5].minimumSystemVersion, isNull);
   expect(items[5].minimumUpdateVersion, isNull);
   expect(items[5].versionString, equals('7.0.0'));
-  expect(items[5].osString, 'iOS');
+  expect(items[5].osString, equals('iOS'));
 
   final bestItem = appcast.bestItem()!;
   expect(bestItem, isNotNull);
