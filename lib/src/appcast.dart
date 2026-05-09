@@ -148,6 +148,7 @@ class Appcast {
         String? itemDescription;
         String? dateString;
         String? fileURL;
+        String? edSignature;
         String? maximumSystemVersion;
         String? minimumSystemVersion;
         String? minimumUpdateVersion;
@@ -176,6 +177,9 @@ class Appcast {
                 } else if (attribute.name.toString() ==
                     AppcastConstants.AttributeURL) {
                   fileURL = attribute.value;
+                } else if (attribute.name.toString() ==
+                    AppcastConstants.AttributeEDSignature) {
+                  edSignature = attribute.value;
                 }
               });
             } else if (name == AppcastConstants.ElementMaximumSystemVersion) {
@@ -224,6 +228,7 @@ class Appcast {
           releaseNotesURL: releaseNotesLink,
           tags: tags,
           fileURL: fileURL,
+          edSignature: edSignature,
           versionString: newVersion,
         );
         localItems.add(item);
@@ -247,6 +252,7 @@ class AppcastItem {
   final String? maximumSystemVersion;
   final String? minimumUpdateVersion;
   final String? fileURL;
+  final String? edSignature;
   final int? contentLength;
   final String? versionString;
   final String? osString;
@@ -263,6 +269,7 @@ class AppcastItem {
     this.maximumSystemVersion,
     this.minimumUpdateVersion,
     this.fileURL,
+    this.edSignature,
     this.contentLength,
     this.versionString,
     this.osString,

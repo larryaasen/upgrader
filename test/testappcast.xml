@@ -50,5 +50,11 @@
         <sparkle:version>6.0.0</sparkle:version>
         <sparkle:minimumUpdateVersion>1.9.0</sparkle:minimumUpdateVersion>
     </item>
+    <!-- A release with edSignature -->
+    <item>
+        <title>Version 7.0</title>
+        <sparkle:version>7.0.0</sparkle:version>
+        <enclosure url="http://localhost:1337/Sparkle_Test_App.zip" sparkle:edSignature="ify59pDIuduaZcLnLvQjGqNQIAqi4dVgeA3L/e7I7xaqn9pVdiVZH7Na3v+Gp4ElAKJfX4Pfq8cgElfXmZc4Cg==" sparkle:version="4.0" sparkle:os="iOS" />
+    </item>
   </channel>
 </rss>
