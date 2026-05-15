@@ -367,8 +367,12 @@ void validateItems(List<AppcastItem> items, Appcast appcast) {
   expect(items[5].title, equals('Version 7.0'));
   expect(items[5].itemDescription, isNull);
   expect(items[5].dateString, isNull);
-  expect(items[5].fileURL, equals('http://localhost:1337/Sparkle_Test_App.zip'));
-  expect(items[5].edSignature, equals('ify59pDIuduaZcLnLvQjGqNQIAqi4dVgeA3L/e7I7xaqn9pVdiVZH7Na3v+Gp4ElAKJfX4Pfq8cgElfXmZc4Cg=='));
+  expect(
+      items[5].fileURL, equals('http://localhost:1337/Sparkle_Test_App.zip'));
+  expect(
+      items[5].edSignature,
+      equals(
+          'ify59pDIuduaZcLnLvQjGqNQIAqi4dVgeA3L/e7I7xaqn9pVdiVZH7Na3v+Gp4ElAKJfX4Pfq8cgElfXmZc4Cg=='));
   expect(items[5].isCriticalUpdate, equals(false));
   expect(items[5].maximumSystemVersion, isNull);
   expect(items[5].minimumSystemVersion, isNull);

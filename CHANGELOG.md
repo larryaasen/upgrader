@@ -1,3 +1,7 @@
+## 13.3.0
+
+- [549] Added edSignature parsing from Appcast XML and made bestItem accessible. (thanks to falt008)
+
 ## 13.2.0
 
 - [544] Will use localized Google Play release notes instead of always falling back to English.
