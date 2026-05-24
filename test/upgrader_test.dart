@@ -1035,7 +1035,8 @@ void main() {
     expect(upgrader2.state.durationUntilAlertAgain, const Duration(days: 10));
   }, skip: false);
 
-  test('isTooSoon returns false when app store version is newer than last alerted version',
+  test(
+      'isTooSoon returns false when app store version is newer than last alerted version',
       () async {
     // Simulate that the user was last alerted about version 1.0.1 recently.
     await preferences.setString('lastVersionAlerted', '1.0.1');
@@ -1066,7 +1067,8 @@ void main() {
     expect(upgrader.isTooSoon(), false);
   }, skip: false);
 
-  test('isTooSoon returns true when app store version matches last alerted version',
+  test(
+      'isTooSoon returns true when app store version matches last alerted version',
       () async {
     // Simulate that the user was last alerted about version 1.0.1 recently.
     await preferences.setString('lastVersionAlerted', '1.0.1');

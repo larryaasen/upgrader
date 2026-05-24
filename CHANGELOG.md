@@ -1,6 +1,6 @@
 ## 13.4.0
 
-- Changed isTooSoon to reset when a newer app store version is available.
+- [551] [550] Changed `isTooSoon` to reset when a newer app store version is available.
 
 ## 13.3.0
 
