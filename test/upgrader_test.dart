@@ -1035,6 +1035,68 @@ void main() {
     expect(upgrader2.state.durationUntilAlertAgain, const Duration(days: 10));
   }, skip: false);
 
+  test('isTooSoon returns false when app store version is newer than last alerted version',
+      () async {
+    // Simulate that the user was last alerted about version 1.0.1 recently.
+    await preferences.setString('lastVersionAlerted', '1.0.1');
+    await preferences.setString('lastTimeAlerted',
+        DateTime.now().subtract(const Duration(hours: 1)).toString());
+
+    final upgrader = Upgrader(
+      upgraderOS: MockUpgraderOS(ios: true),
+      client: MockITunesSearchClient.setupMockClient(),
+      debugLogging: true,
+    )..installPackageInfo(
+        packageInfo: PackageInfo(
+          appName: 'Upgrader',
+          packageName: 'com.larryaasen.upgrader',
+          version: '1.0.0',
+          buildNumber: '1',
+        ),
+      );
+
+    await upgrader.initialize();
+
+    // Simulate app store now has version 1.0.2 (newer than the alerted 1.0.1).
+    upgrader.updateState(upgrader.state.copyWith(
+        versionInfo: UpgraderVersionInfo(appStoreVersion: Version(1, 0, 2))));
+
+    // isTooSoon should be false because the available version is different
+    // from the version that was last alerted (1.0.1 -> 1.0.2).
+    expect(upgrader.isTooSoon(), false);
+  }, skip: false);
+
+  test('isTooSoon returns true when app store version matches last alerted version',
+      () async {
+    // Simulate that the user was last alerted about version 1.0.1 recently.
+    await preferences.setString('lastVersionAlerted', '1.0.1');
+    await preferences.setString('lastTimeAlerted',
+        DateTime.now().subtract(const Duration(hours: 1)).toString());
+
+    final upgrader = Upgrader(
+      upgraderOS: MockUpgraderOS(ios: true),
+      client: MockITunesSearchClient.setupMockClient(),
+      debugLogging: true,
+    )..installPackageInfo(
+        packageInfo: PackageInfo(
+          appName: 'Upgrader',
+          packageName: 'com.larryaasen.upgrader',
+          version: '1.0.0',
+          buildNumber: '1',
+        ),
+      );
+
+    await upgrader.initialize();
+
+    // Simulate app store still has version 1.0.1 (same as the alerted version).
+    upgrader.updateState(upgrader.state.copyWith(
+        versionInfo: UpgraderVersionInfo(appStoreVersion: Version(1, 0, 1))));
+
+    // isTooSoon should be true because the version hasn't changed and it was
+    // alerted only 1 hour ago (within the 3-day durationUntilAlertAgain).
+    expect(upgrader.isTooSoon(), true);
+  }, skip: false);
+
   group('shouldDisplayUpgrade', () {
     test('should respect debugDisplayAlways property', () async {
       final client = MockITunesSearchClient.setupMockClient();
