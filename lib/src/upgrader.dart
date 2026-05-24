@@ -387,6 +387,14 @@ class Upgrader with WidgetsBindingObserver {
       return false;
     }
 
+    // If the current app store version is different from the last version
+    // alerted, it is not too soon to alert again.
+    if (_lastVersionAlerted != null &&
+        versionInfo?.appStoreVersion != null &&
+        _lastVersionAlerted != versionInfo?.appStoreVersion) {
+      return false;
+    }
+
     final lastAlertedDuration = DateTime.now().difference(_lastTimeAlerted!);
     final rv = lastAlertedDuration < state.durationUntilAlertAgain;
     if (rv && state.debugLogging) {
