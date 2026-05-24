@@ -1,3 +1,7 @@
+## 13.4.0
+
+- Changed isTooSoon to reset when a newer app store version is available.
+
 ## 13.3.0
 
 - [549] Added edSignature parsing from Appcast XML and made bestItem accessible. (thanks to falt008)
