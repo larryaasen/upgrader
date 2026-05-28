@@ -1,3 +1,7 @@
+## 13.5.0
+
+- Updated the xml dependency constraint from `^6.3.0` to `>=6.3.0 <8.0.0` to support stable xml 7.0.0.
+
 ## 13.4.0
 
 - [551] [550] Changed `isTooSoon` to reset when a newer app store version is available.
@@ -126,9 +130,9 @@ Allowed for device_info_plus 10.0.0 and package_info_plus 6.0.0.
 
 ## 10.0.0
 
-This major update changes the structure of how the internal state is maintained and how access to app stores is provided. The API has not changed for the standard use cases. However, the way in which Appcast is used has changed slightly.
+This major update changes the structure of how the internal state is maintained and how access to app stores is provided. The API has not changed for the standard use cases. However, the way in which the current version, current app store version, and upgrade prompt state are coordinated has been reworked.
 
-This update also makes it easier to extend upgrader to support more app stores without changing upgrader. This will come into play when used on Linux and Windows, or when supporting alternate app stores on Android.
+This update also makes it easier to extend upgrader to support more app stores without changing upgrader. This will come into play when used on Linux and Windows, or when supporting alternate app stores.
 
 ## 10.0.0-alpha.3
 
@@ -137,9 +141,9 @@ This update also makes it easier to extend upgrader to support more app stores w
 
 ### 10.0.0
 
-This major update changes the structure of how the internal state is maintained and how access to app stores is provided. The API has not changed for the standard use cases. However, the way in which Appcast is used has changed slightly.
+This major update changes the structure of how the internal state is maintained and how access to app stores is provided. The API has not changed for the standard use cases. However, the way in which the current version, current app store version, and upgrade prompt state are coordinated has been reworked.
 
-This update also makes it easier to extend upgrader to support more app stores without changing upgrader. This will come into play when used on Linux and Windows, or when supporting alternate app stores on Android.
+This update also makes it easier to extend upgrader to support more app stores without changing upgrader. This will come into play when used on Linux and Windows, or when supporting alternate app stores.
 
 ### Changes in 10.0.0
 - Implemented [UpgraderState] that is used internally to replace evaluation ready.
@@ -151,9 +155,9 @@ This update also makes it easier to extend upgrader to support more app stores w
 
 (README file and documentation updates)
 
-This major update changes the structure of how the internal state is maintained and how access to app stores is provided. The API has not changed for the standard use cases. However, the way in which Appcast is used has changed slightly.
+This major update changes the structure of how the internal state is maintained and how access to app stores is provided. The API has not changed for the standard use cases. However, the way in which the current version, current app store version, and upgrade prompt state are coordinated has been reworked.
 
-This update also makes it easier to extend upgrader to support more app stores without changing upgrader. This will come into play when used on Linux and Windows, or when supporting alternate app stores on Android.
+This update also makes it easier to extend upgrader to support more app stores without changing upgrader. This will come into play when used on Linux and Windows, or when supporting alternate app stores.
 
 ### Changes in 10.0.0
 - Implemented [UpgraderState] that is used internally to replace evaluation ready.
@@ -197,7 +201,7 @@ renamed the private methods to make them public. Added and improved example code
 ## 8.4.0
 
 - [356] Fixed centering issue with Cupertino style UpgradeAlert dialog.
-- [357] [359] Updated the package_info_plus dependency to '>=4.0.1 <6.0.0'. Thanks to [@Zazo032](https://github.com/Zazo032) for this update.
+- [357] Updated the package_info_plus dependency to '>=4.0.1 <6.0.0'. Thanks to [@Zazo032](https://github.com/Zazo032) for this update.
 
 ## 8.3.0
 
@@ -650,7 +654,7 @@ the dialog, use ```shouldPopScope``` and return true.
 * BREAKING CHANGE - Migrated to null safety.
 * Upgraded these packages to null safety: device_info, http, package_info, shared_preferences, url_launcher, xml, mockito, pedantic, version.
 * Removed reference to unused package flutter_device_locale.
-* Skipped many of the unit tests because they could not be quickly resolved of failures. Will send a pre-release version out quickly before testing is completed so that others can use this, and then continue working on the failed tests before release.
+* Skipped many of the unit tests because they could not be quickly resolved of failures. Will send a pre-release version out quickly before testing is completed so that others can use this, and then resolve the test issues.
 
 ## 2.8.2
 
@@ -744,7 +748,7 @@ the US. The country code can be overriden with the optional `countryCode` parame
 ## 2.0.0
 
 * Major enhancements!
-* This update provides language localization in English and Spanish using the new class UpgraderMessage, with the ability to add additional languages, and customize strings. Support for Spanish is included and will work without code changes.
+* This update provides language localization in English and Spanish using the new class UpgraderMessage, with the ability to add additional languages, and customize strings. Support for Spanish is included.
 * A few parameters were removed, and if used, will be a breaking change. Most use of this update will not require code changes.
 * Five parameters removed: buttonTitleIgnore, buttonTitleLater, buttonTitleUpdate, prompt, title.
 * All parameters that were removed are now contained in the messages parameter.
@@ -798,7 +802,7 @@ Maintenance issues and suggestions section.
 
 ## 0.8.0
 
-* Added support to ITunesSearchAPI for the country query string parameter. Improved example, and added a few new iTunes tests. Minor updates based on Health suggestions from pub.dev, utilizing pedantic.
+* Added support to ITunesSearchAPI for the country query string parameter. Improved example, and added a few new iTunes tests. Minor updates based on Health suggestions from pub.dev, utilizing pedantic package and slight code cleanup.
 
 ## 0.7.0
 
@@ -819,7 +823,7 @@ defaults to debug logging on, and added command line app to evaluate the iTunes 
 
 ## 0.5.0
 
-* **Breaking change**. Migrate from the deprecated original Android Support Library to AndroidX. This shouldn't result in any functional changes, but it requires any Android apps using this plugin to also migrate if they're using the original support library.
+* **Breaking change**. Migrate from the deprecated original Android Support Library to AndroidX. This shouldn't result in any functional changes, but it requires any Android apps using this plugin to also be migrated to AndroidX.
 
 ## 0.4.3
 
