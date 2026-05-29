@@ -1,3 +1,7 @@
+## 13.5.0
+
+- Updated the xml dependency constraint from `^6.3.0` to `>=6.3.0 <8.0.0` to support stable xml 7.0.0.
+
 ## 13.4.0
 
 - [551] [550] Changed `isTooSoon` to reset when a newer app store version is available.

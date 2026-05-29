@@ -33,7 +33,7 @@ dependencies:
   version: ^3.0.2
 
   # A dart library for parsing, traversing, querying, transforming and building XML documents.
-  xml: ^6.3.0
+  xml: '>=6.3.0 <8.0.0'
 
 dev_dependencies:
   flutter_test:
