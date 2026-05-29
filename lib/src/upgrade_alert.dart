@@ -96,6 +96,8 @@ class UpgradeAlert extends StatefulWidget {
 class UpgradeAlertState extends State<UpgradeAlert> {
   /// Is the alert dialog being displayed right now?
   bool displayed = false;
+  final GlobalKey<NavigatorState> _dialogNavigatorKey =
+      GlobalKey<NavigatorState>();
 
   @override
   void initState() {
@@ -132,7 +134,30 @@ class UpgradeAlertState extends State<UpgradeAlert> {
             }
           }
         }
-        return widget.child ?? const SizedBox.shrink();
+        return Stack(
+          children: [
+            widget.child ?? const SizedBox.shrink(),
+            Positioned.fill(
+              child: Offstage(
+                offstage: !displayed,
+                child: HeroControllerScope.none(
+                  child: Navigator(
+                    key: _dialogNavigatorKey,
+                    onGenerateRoute: (settings) => PageRouteBuilder<void>(
+                      settings: settings,
+                      opaque: false,
+                      barrierColor: Colors.transparent,
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          const SizedBox.shrink(),
+                      transitionDuration: Duration.zero,
+                      reverseTransitionDuration: Duration.zero,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
       },
     );
   }
@@ -211,8 +236,10 @@ class UpgradeAlertState extends State<UpgradeAlert> {
   }
 
   void popNavigator(BuildContext context) {
+    setState(() {
+      displayed = false;
+    });
     Navigator.of(context).pop();
-    displayed = false;
   }
 
   bool get shouldDisplayReleaseNotes =>
@@ -248,6 +275,7 @@ class UpgradeAlertState extends State<UpgradeAlert> {
     // Detect if CupertinoApp is in the widget tree
     final isCupertinoApp =
         context.findAncestorWidgetOfExactType<CupertinoApp>() != null;
+    final dialogContext = _dialogNavigatorKey.currentContext ?? context;
 
     dialogBuilder(BuildContext context) => PopScope(
           canPop: onCanPop(),
@@ -270,13 +298,15 @@ class UpgradeAlertState extends State<UpgradeAlert> {
     if (isCupertinoApp) {
       showCupertinoDialog(
         barrierDismissible: barrierDismissible,
-        context: context,
+        context: dialogContext,
+        useRootNavigator: false,
         builder: dialogBuilder,
       );
     } else {
       showDialog(
         barrierDismissible: barrierDismissible,
-        context: context,
+        context: dialogContext,
+        useRootNavigator: false,
         builder: dialogBuilder,
       );
     }
