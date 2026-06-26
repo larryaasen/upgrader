@@ -659,6 +659,122 @@ void main() {
     expect(called, true);
   });
 
+  testWidgets('onCanPop returns true when barrierDismissible true and shouldPopScope not set',
+      (WidgetTester tester) async {
+    final client = MockITunesSearchClient.setupMockClient();
+    final upgrader = Upgrader(
+        upgraderOS: MockUpgraderOS(ios: true), client: client);
+
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '5.6.0',
+            buildNumber: '400'));
+    upgrader.initialize().then((value) {});
+    await tester.pumpAndSettle();
+
+    final upgradeAlert = wrapper(
+      UpgradeAlert(
+        upgrader: upgrader,
+        barrierDismissible: true,
+        child: const Center(child: Text('Upgrading')),
+      ),
+    );
+    await tester.pumpWidget(upgradeAlert);
+    await tester.pumpAndSettle();
+
+    final state = tester.state<UpgradeAlertState>(find.byType(UpgradeAlert));
+    expect(state.onCanPop(), true);
+  });
+
+  testWidgets('onCanPop returns false when barrierDismissible false and shouldPopScope not set',
+      (WidgetTester tester) async {
+    final client = MockITunesSearchClient.setupMockClient();
+    final upgrader = Upgrader(
+        upgraderOS: MockUpgraderOS(ios: true), client: client);
+
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '5.6.0',
+            buildNumber: '400'));
+    upgrader.initialize().then((value) {});
+    await tester.pumpAndSettle();
+
+    final upgradeAlert = wrapper(
+      UpgradeAlert(
+        upgrader: upgrader,
+        child: const Center(child: Text('Upgrading')),
+      ),
+    );
+    await tester.pumpWidget(upgradeAlert);
+    await tester.pumpAndSettle();
+
+    final state = tester.state<UpgradeAlertState>(find.byType(UpgradeAlert));
+    expect(state.onCanPop(), false);
+  });
+
+  testWidgets('onCanPop returns false when barrierDismissible true but shouldPopScope returns false',
+      (WidgetTester tester) async {
+    final client = MockITunesSearchClient.setupMockClient();
+    final upgrader = Upgrader(
+        upgraderOS: MockUpgraderOS(ios: true), client: client);
+
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '5.6.0',
+            buildNumber: '400'));
+    upgrader.initialize().then((value) {});
+    await tester.pumpAndSettle();
+
+    final upgradeAlert = wrapper(
+      UpgradeAlert(
+        upgrader: upgrader,
+        barrierDismissible: true,
+        shouldPopScope: () => false,
+        child: const Center(child: Text('Upgrading')),
+      ),
+    );
+    await tester.pumpWidget(upgradeAlert);
+    await tester.pumpAndSettle();
+
+    final state = tester.state<UpgradeAlertState>(find.byType(UpgradeAlert));
+    expect(state.onCanPop(), false);
+  });
+
+  testWidgets('onCanPop returns true when barrierDismissible false but shouldPopScope returns true',
+      (WidgetTester tester) async {
+    final client = MockITunesSearchClient.setupMockClient();
+    final upgrader = Upgrader(
+        upgraderOS: MockUpgraderOS(ios: true), client: client);
+
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '5.6.0',
+            buildNumber: '400'));
+    upgrader.initialize().then((value) {});
+    await tester.pumpAndSettle();
+
+    final upgradeAlert = wrapper(
+      UpgradeAlert(
+        upgrader: upgrader,
+        shouldPopScope: () => true,
+        child: const Center(child: Text('Upgrading')),
+      ),
+    );
+    await tester.pumpWidget(upgradeAlert);
+    await tester.pumpAndSettle();
+
+    final state = tester.state<UpgradeAlertState>(find.byType(UpgradeAlert));
+    expect(state.onCanPop(), true);
+  });
+
   testWidgets('test UpgradeAlert no update', (WidgetTester tester) async {
     expect(Upgrader.sharedInstance.isTooSoon(), false);
 
