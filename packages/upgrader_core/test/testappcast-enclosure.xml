@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0"
+  xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
+  <channel>
+    <title>Releases</title>
+    <item>
+      <title>Enclosure Release</title>
+      <enclosure sparkle:version="2.1.1" sparkle:os="android"/>
+
+      <!-- multi enclosures not supported -->
+      <enclosure sparkle:version="2.2.1" sparkle:os="ios"/>
+    </item>
+  </channel>
+</rss>
