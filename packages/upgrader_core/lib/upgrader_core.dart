@@ -1,0 +1,10 @@
+export 'src/appcast.dart';
+export 'src/itunes_search_api.dart';
+export 'src/play_store_search_api.dart';
+export 'src/upgrade_platform.dart';
+export 'src/upgrade_state.dart';
+export 'src/upgrade_store_controller.dart';
+export 'src/upgrader_engine.dart';
+export 'src/upgrader_interfaces.dart';
+export 'src/upgrader_package_info.dart';
+export 'src/upgrader_version_info.dart';

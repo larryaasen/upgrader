@@ -1,0 +1,29 @@
+name: upgrader
+description: Flutter package for prompting users to upgrade when there is a newer version of the app in the store.
+version: 13.5.0
+homepage: https://github.com/larryaasen/upgrader
+
+environment:
+  sdk: '>=3.5.0 <4.0.0'
+  flutter: ">=3.27.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: '>=0.13.6 <2.0.0'
+  os_detect: ^2.0.1
+  package_info_plus: '>=4.0.1 <11.0.0'
+  shared_preferences: '>=2.1.1 <3.0.0'
+  upgrader_core:
+    path: ../upgrader_core
+  url_launcher: ^6.1.11
+  version: ^3.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints:
+  go_router: ^14.2.7
+  mockito: ^5.4.3
+
+flutter:

@@ -1,10 +1,5 @@
 # Upgrader
 
-This repository is now a monorepo containing:
-
-- `packages/upgrader` — the Flutter package with widgets and platform integrations
-- `packages/upgrader_core` — the Dart-only core engine and store lookup package
-
 [![codecov](https://codecov.io/gh/larryaasen/upgrader/branch/main/graph/badge.svg)](https://app.codecov.io/gh/larryaasen/upgrader)
 [![pub package](https://img.shields.io/pub/v/upgrader.svg)](https://pub.dartlang.org/packages/upgrader)
 [![GitHub Stars](https://img.shields.io/github/stars/larryaasen/upgrader.svg)](https://github.com/larryaasen/upgrader/stargazers)
