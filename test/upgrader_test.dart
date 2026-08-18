@@ -661,11 +661,12 @@ void main() {
     expect(called, true);
   });
 
-  testWidgets('onCanPop returns true when barrierDismissible true and shouldPopScope not set',
+  testWidgets(
+      'onCanPop returns true when barrierDismissible true and shouldPopScope not set',
       (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
-    final upgrader = Upgrader(
-        upgraderOS: MockUpgraderOS(ios: true), client: client);
+    final upgrader =
+        Upgrader(upgraderOS: MockUpgraderOS(ios: true), client: client);
 
     upgrader.installPackageInfo(
         packageInfo: PackageInfo(
@@ -690,11 +691,12 @@ void main() {
     expect(state.onCanPop(), true);
   });
 
-  testWidgets('onCanPop returns false when barrierDismissible false and shouldPopScope not set',
+  testWidgets(
+      'onCanPop returns false when barrierDismissible false and shouldPopScope not set',
       (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
-    final upgrader = Upgrader(
-        upgraderOS: MockUpgraderOS(ios: true), client: client);
+    final upgrader =
+        Upgrader(upgraderOS: MockUpgraderOS(ios: true), client: client);
 
     upgrader.installPackageInfo(
         packageInfo: PackageInfo(
@@ -718,11 +720,12 @@ void main() {
     expect(state.onCanPop(), false);
   });
 
-  testWidgets('onCanPop returns false when barrierDismissible true but shouldPopScope returns false',
+  testWidgets(
+      'onCanPop returns false when barrierDismissible true but shouldPopScope returns false',
       (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
-    final upgrader = Upgrader(
-        upgraderOS: MockUpgraderOS(ios: true), client: client);
+    final upgrader =
+        Upgrader(upgraderOS: MockUpgraderOS(ios: true), client: client);
 
     upgrader.installPackageInfo(
         packageInfo: PackageInfo(
@@ -748,11 +751,12 @@ void main() {
     expect(state.onCanPop(), false);
   });
 
-  testWidgets('onCanPop returns true when barrierDismissible false but shouldPopScope returns true',
+  testWidgets(
+      'onCanPop returns true when barrierDismissible false but shouldPopScope returns true',
       (WidgetTester tester) async {
     final client = MockITunesSearchClient.setupMockClient();
-    final upgrader = Upgrader(
-        upgraderOS: MockUpgraderOS(ios: true), client: client);
+    final upgrader =
+        Upgrader(upgraderOS: MockUpgraderOS(ios: true), client: client);
 
     upgrader.installPackageInfo(
         packageInfo: PackageInfo(
