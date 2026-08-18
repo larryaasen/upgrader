@@ -51,11 +51,12 @@ void main() {
         verifyHeaders: {'header1': 'value1'});
     final playStore = PlayStoreSearchAPI(
         client: client, clientHeaders: {'header1': 'value1'});
-    expect(() async => await playStore.lookupById(''), throwsAssertionError);
+    expect(() async => await playStore.lookupById(''),
+        throwsA(isA<AssertionError>()));
 
     final response = await playStore.lookupById('com.kotoko.express');
     expect(response, isNotNull);
-    expect(response, isInstanceOf<Document>());
+    expect(response, isA<Document>());
 
     expect(
         playStore.releaseNotes(response!), 'Minor updates and improvements.');
@@ -65,7 +66,7 @@ void main() {
 
     final document1 = await playStore.lookupById('com.testing.test4');
     expect(document1, isNotNull);
-    expect(document1, isInstanceOf<Document>());
+    expect(document1, isA<Document>());
 
     final document2 =
         await playStore.lookupById('com.testing.test4', country: 'JP');
@@ -78,7 +79,7 @@ void main() {
   test('testing lookupURLById', () async {
     final client = await MockPlayStoreSearchClient.setupMockClient();
     final playStore = PlayStoreSearchAPI(client: client);
-    expect(() => playStore.lookupURLById(''), throwsAssertionError);
+    expect(() => playStore.lookupURLById(''), throwsA(isA<AssertionError>()));
     expect(
         playStore.lookupURLById('com.testing.test1')!.startsWith(
             'https://play.google.com/store/apps/details?id=com.testing.test1&gl=US&hl=en&_cb=17'),
@@ -114,7 +115,7 @@ void main() {
 
     final response = await playStore.lookupById('com.testing.test4');
     expect(response, isNotNull);
-    expect(response, isInstanceOf<Document>());
+    expect(response, isA<Document>());
 
     expect(
         playStore.releaseNotes(response!), 'Minor updates and improvements.');
@@ -137,7 +138,7 @@ void main() {
 
     final response = await playStore.lookupById('com.testing.test8');
     expect(response, isNotNull);
-    expect(response, isInstanceOf<Document>());
+    expect(response, isA<Document>());
 
     expect(
         playStore.releaseNotes(response!), 'Minor updates and improvements.');
@@ -158,7 +159,7 @@ void main() {
 
     final response = await playStore.lookupById('com.testing.test7');
     expect(response, isNotNull);
-    expect(response, isInstanceOf<Document>());
+    expect(response, isA<Document>());
 
     expect(
         playStore.releaseNotes(response!), 'Minor updates and improvements.');
@@ -172,7 +173,7 @@ void main() {
 
     final response = await playStore.lookupById('com.testing.test2');
     expect(response, isNotNull);
-    expect(response, isInstanceOf<Document>());
+    expect(response, isA<Document>());
 
     expect(
         playStore.releaseNotes(response!), 'Minor updates and improvements.');
@@ -186,7 +187,7 @@ void main() {
 
     final response = await playStore.lookupById('com.testing.test3');
     expect(response, isNotNull);
-    expect(response, isInstanceOf<Document>());
+    expect(response, isA<Document>());
 
     expect(playStore.releaseNotes(response!),
         'Minor updates and improvements.\nAgain.\nAgain.');
@@ -200,7 +201,7 @@ void main() {
 
     final response = await playStore.lookupById('com.testing.test5');
     expect(response, isNotNull);
-    expect(response, isInstanceOf<Document>());
+    expect(response, isA<Document>());
 
     expect(playStore.releaseNotes(response!),
         'Minor updates and improvements.\nAgain.\nAgain.');
@@ -214,7 +215,7 @@ void main() {
 
     final response = await playStore.lookupById('com.testing.test6');
     expect(response, isNotNull);
-    expect(response, isInstanceOf<Document>());
+    expect(response, isA<Document>());
     // Version 1.19.2 is extracted using bracket pattern ]]],"X.Y.Z"
     expect(playStore.version(response!), '1.19.2');
   }, skip: false);

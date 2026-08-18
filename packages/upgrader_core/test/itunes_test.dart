@@ -52,7 +52,7 @@ void main() {
 
     final response =
         await iTunes.lookupByBundleId('com.google.Maps', useCacheBuster: false);
-    expect(response, isInstanceOf<Map>());
+    expect(response, isA<Map>());
     final results = response!['results'];
     expect(results, isNotNull);
     expect(results.length, 1);
@@ -82,7 +82,7 @@ void main() {
 
     final response =
         await iTunes.lookupById('585027354', useCacheBuster: false);
-    expect(response, isInstanceOf<Map>());
+    expect(response, isA<Map>());
     final results = response!['results'];
     expect(results, isNotNull);
     expect(results.length, 1);
@@ -105,7 +105,7 @@ void main() {
 
     final response = await iTunes.lookupById('585027354',
         country: 'FR', useCacheBuster: false);
-    expect(response, isInstanceOf<Map>());
+    expect(response, isA<Map>());
     final results = response!['results'];
     expect(results, isNotNull);
     expect(results.length, 1);

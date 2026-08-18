@@ -2,10 +2,6 @@
 
 name: platforms
 
-defaults:
-  run:
-    working-directory: example
-
 on:
   workflow_dispatch:
 
@@ -14,7 +10,7 @@ jobs:
     strategy:
       matrix:
         runs-on-name: ['windows-latest']
-        flutter-version: ['3.16.0']
+        flutter-version: ['3.27.4']
 
     runs-on: ${{ matrix.runs-on-name }}
 
@@ -26,15 +22,17 @@ jobs:
           flutter-version: '${{ matrix.flutter-version }}'
           channel: 'stable'
 
+      # Resolves every package in the workspace in a single shared resolution.
       - name: Get flutter packages
         run: flutter pub get
 
       - name: Run the driver test
-        run: 	cd example; flutter drive --target=test/driver_test/driver.dart --driver=test/driver_test/driver_test.dart
+        working-directory: packages/upgrader/example
+        run: flutter drive --target=test/driver_test/driver.dart --driver=test/driver_test/driver_test.dart
 
       - name: Upload Screenshots to Artifacts
         if: ${{ always() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-platform-${{ matrix.runs-on-name }}-${{ matrix.flutter-version }}
-          path: example/test/driver_test/screenshots/*
+          path: packages/upgrader/example/test/driver_test/screenshots/*

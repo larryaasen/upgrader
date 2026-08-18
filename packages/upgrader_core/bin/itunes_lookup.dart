@@ -9,7 +9,7 @@
   $  dart itunes_lookup.dart bundleid=com.google.Maps
  */
 
-import 'package:upgrader_core/src/itunes_search_api.dart';
+import 'package:upgrader_core/upgrader_core.dart';
 
 void main(List<String> arguments) async {
   const defaultLookupBundleId = 'com.google.Maps';

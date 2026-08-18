@@ -6,6 +6,8 @@ import 'package:version/version.dart';
 import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 
+import 'test_support.dart';
+
 void main() {
   group('UpgraderStoreController', () {
     test('getUpgraderStore returns correct store for each OS', () {

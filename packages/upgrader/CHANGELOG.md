@@ -1,3 +1,29 @@
+## 14.0.0
+
+- Split the repository into a Dart workspace with two packages: `upgrader` (Flutter) and
+  `upgrader_core` (Dart-only).
+- Moved the store lookup, version evaluation, and prompt decision rules into the new
+  `upgrader_core` package, which `upgrader` now depends on.
+- `Upgrader` is now a Flutter-facing facade over `UpgraderEngine` from `upgrader_core`.
+- Re-exported the commonly used core APIs from `package:upgrader/upgrader.dart`, so most
+  apps need no import changes.
+
+### Breaking changes
+
+- `Appcast`, `AppcastItem`, `ITunesSearchAPI`, `PlayStoreSearchAPI`, `UpgraderStore`,
+  `UpgraderStoreController`, and `UpgraderVersionInfo` now live in `upgrader_core`. They are
+  still re-exported by `package:upgrader/upgrader.dart`, but code that imported them from a
+  `package:upgrader/src/...` path directly must be updated.
+- `UpgraderStore.getVersionInfo` now receives an `UpgraderState` from `upgrader_core`, whose
+  platform is described by `UpgraderPlatform` (`state.upgraderPlatform`) rather than
+  `UpgraderOS` (`state.upgraderOS`). Custom `UpgraderStore` subclasses must be updated.
+  `UpgraderOS` remains available in the Flutter package, and
+  `UpgraderOS.toCorePlatform()` converts between them.
+- Projects consuming this repository from source must now use the workspace layout under
+  `packages/`.
+
+Subclassing `Upgrader` and overriding `UpgraderMessages` continue to work unchanged.
+
 ## 13.5.0
 
 - Updated the xml dependency constraint from `^6.3.0` to `>=6.3.0 <8.0.0` to support stable xml 7.0.0.

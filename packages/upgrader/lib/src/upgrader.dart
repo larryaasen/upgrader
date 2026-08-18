@@ -7,20 +7,93 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upgrader_core/upgrader_core.dart' as core;
 import 'package:url_launcher/url_launcher.dart';
-import 'package:version/version.dart';
 
 import 'upgrade_messages.dart';
 import 'upgrade_os.dart';
 import 'upgrade_state.dart';
 
+/// Signature of callbacks that have no arguments and return bool.
 typedef BoolCallback = bool Function();
+
+/// Signature of callbacks that have a bool argument and no return.
 typedef VoidBoolCallback = void Function(bool value);
+
+/// Signature of callback for willDisplayUpgrade. Includes display,
+/// installedVersion, and versionInfo.
 typedef WillDisplayUpgradeCallback = core.WillDisplayUpgradeCallback;
 
+/// Creates a shared instance of [Upgrader].
 Upgrader _sharedInstance = Upgrader();
 
+/// An upgrade controller that maintains a [state] that is used to
+/// trigger an alert or other UI to evaluate upgrading criteria.
+///
+/// Instantiate an [Upgrader] object and pass it to [UpgradeAlert] or
+/// [UpgradeCard] to enable upgrade prompting. A shared instance is available
+/// via [Upgrader.sharedInstance].
+///
+/// This class is a Flutter-facing facade over the Dart-only
+/// [core.UpgraderEngine], which owns the store lookup and prompt decision
+/// rules.
+///
+/// See also:
+///
+///  * [UpgraderMessages], the default localized messages used for display.
+///  * [UpgraderState], the [Upgrader] state.
 class Upgrader with WidgetsBindingObserver {
+  /// Creates an upgrade controller that maintains a [state] that is used to
+  /// trigger an alert or other UI to evaluate upgrading criteria.
+  ///
+  /// This is a redirecting generative constructor (rather than a factory) so
+  /// that [Upgrader] remains subclassable via `super(...)`. Redirecting to the
+  /// private constructor builds the state exactly once, so the Flutter state
+  /// and the core engine state cannot diverge, and only a single
+  /// [http.Client] is created when one is not supplied.
+  ///
+  /// Parameters:
+  /// - [appInfoProvider]: Provides the app package metadata. Defaults to a
+  ///   provider backed by `package_info_plus`.
+  /// - [checkOnResume]: When `true`, the version info is retrieved from the
+  ///   store each time the app is resumed from the background. When `false`,
+  ///   the version info is only retrieved during [initialize], which means no
+  ///   network requests are made when the app is resumed. Defaults to `true`.
+  /// - [client]: An HTTP client used to retrieve version information from the
+  ///   store. Defaults to `http.Client()`. Can be replaced for mock testing.
+  /// - [clientHeaders]: Optional HTTP headers used by [client]. Defaults to `null`.
+  /// - [countryCode]: A country code that overrides the system locale when
+  ///   looking up the app in the store. Defaults to `null`.
+  /// - [debugDisplayAlways]: When `true`, always forces the upgrade prompt to
+  ///   display regardless of whether an upgrade is available. Defaults to `false`.
+  /// - [debugDisplayOnce]: When `true`, displays the upgrade prompt at least
+  ///   once per session. Defaults to `false`.
+  /// - [debugLogging]: When `true`, prints diagnostic log statements. Defaults
+  ///   to `false`.
+  /// - [durationUntilAlertAgain]: How long to wait before alerting the user
+  ///   again after a previous alert. Defaults to 3 days.
+  /// - [languageCode]: A language code that overrides the system locale when
+  ///   retrieving localized messages. Defaults to `null`.
+  /// - [messages]: Optional localized messages used for display. When `null`,
+  ///   messages are determined from the app locale.
+  /// - [minAppVersion]: The minimum app version supported. Users running an
+  ///   older version will be forced to update. Should be a valid version string
+  ///   such as `"2.0.13"`. Overrides any minimum version from
+  ///   [core.UpgraderStore]. Defaults to `null`.
+  /// - [preferencesStore]: Persists the ignored version and last alerted
+  ///   timestamps. Defaults to a store backed by `shared_preferences`.
+  /// - [showOnlyMandatoryUpdates]: When `true`, the upgrade prompt is only
+  ///   shown when the installed version is below the minimum supported version
+  ///   (a mandatory update). Optional updates are suppressed. Defaults to `false`.
+  /// - [storeController]: A controller that provides store details for each
+  ///   platform. Defaults to `UpgraderStoreController()`.
+  /// - [storeLauncher]: Opens the app store listing. Defaults to a launcher
+  ///   backed by `url_launcher`.
+  /// - [upgraderOS]: Information about the OS this code is running on.
+  ///   Defaults to `UpgraderOS()`.
+  /// - [willDisplayUpgrade]: An optional callback invoked each time [Upgrader]
+  ///   determines whether to show or hide the upgrade prompt. Defaults to `null`.
   Upgrader({
+    core.UpgraderAppInfoProvider? appInfoProvider,
+    bool checkOnResume = true,
     http.Client? client,
     Map<String, String>? clientHeaders,
     String? countryCode,
@@ -31,33 +104,15 @@ class Upgrader with WidgetsBindingObserver {
     String? languageCode,
     UpgraderMessages? messages,
     String? minAppVersion,
+    core.UpgraderPreferencesStore? preferencesStore,
     bool showOnlyMandatoryUpdates = false,
     core.UpgraderStoreController? storeController,
+    core.UpgraderStoreLauncher? storeLauncher,
     UpgraderOS? upgraderOS,
     WillDisplayUpgradeCallback? willDisplayUpgrade,
-    core.UpgraderAppInfoProvider? appInfoProvider,
-    core.UpgraderPreferencesStore? preferencesStore,
-    core.UpgraderStoreLauncher? storeLauncher,
-  })  : _state = UpgraderState(
-          client: client ?? http.Client(),
-          clientHeaders: clientHeaders,
-          countryCodeOverride: countryCode,
-          debugDisplayAlways: debugDisplayAlways,
-          debugDisplayOnce: debugDisplayOnce,
-          debugLogging: debugLogging,
-          durationUntilAlertAgain: durationUntilAlertAgain,
-          languageCodeOverride: languageCode,
-          messages: messages,
-          minAppVersion:
-              core.UpgraderEngine.parseVersion(minAppVersion, 'minAppVersion', debugLogging),
-          showOnlyMandatoryUpdates: showOnlyMandatoryUpdates,
-          upgraderOS: upgraderOS ?? UpgraderOS(),
-        ),
-        _appInfoProvider = appInfoProvider ?? const _PackageInfoAppInfoProvider(),
-        _preferencesStore = preferencesStore,
-        _storeLauncher = storeLauncher,
-        _coreEngine = core.UpgraderEngine(
+  }) : this._(
           state: UpgraderState(
+            checkOnResume: checkOnResume,
             client: client ?? http.Client(),
             clientHeaders: clientHeaders,
             countryCodeOverride: countryCode,
@@ -66,11 +121,33 @@ class Upgrader with WidgetsBindingObserver {
             debugLogging: debugLogging,
             durationUntilAlertAgain: durationUntilAlertAgain,
             languageCodeOverride: languageCode,
-            minAppVersion:
-                core.UpgraderEngine.parseVersion(minAppVersion, 'minAppVersion', debugLogging),
+            messages: messages,
+            minAppVersion: core.UpgraderEngine.parseVersion(
+                minAppVersion, 'minAppVersion', debugLogging),
             showOnlyMandatoryUpdates: showOnlyMandatoryUpdates,
             upgraderOS: upgraderOS ?? UpgraderOS(),
-          ).toCoreState(),
+          ),
+          appInfoProvider:
+              appInfoProvider ?? const _PackageInfoAppInfoProvider(),
+          preferencesStore: preferencesStore,
+          storeLauncher: storeLauncher,
+          storeController: storeController,
+          willDisplayUpgrade: willDisplayUpgrade,
+        );
+
+  Upgrader._({
+    required UpgraderState state,
+    required core.UpgraderAppInfoProvider appInfoProvider,
+    required core.UpgraderPreferencesStore? preferencesStore,
+    required core.UpgraderStoreLauncher? storeLauncher,
+    required core.UpgraderStoreController? storeController,
+    required WillDisplayUpgradeCallback? willDisplayUpgrade,
+  })  : _state = state,
+        _appInfoProvider = appInfoProvider,
+        _preferencesStore = preferencesStore,
+        _storeLauncher = storeLauncher,
+        _coreEngine = core.UpgraderEngine(
+          state: state.toCoreState(),
           storeController: storeController,
           willDisplayUpgrade: willDisplayUpgrade,
         ) {
@@ -128,9 +205,14 @@ class Upgrader with WidgetsBindingObserver {
       }
 
       if (_initCalled) {
+        assert(false, 'This should never happen.');
         return true;
       }
       _initCalled = true;
+      // Mark initialized before the awaits below so that [verifyInit] succeeds
+      // while initialization is still in flight, matching the behavior prior
+      // to the core engine extraction.
+      _coreEngine.markInitialized();
 
       await getSavedPrefs();
 
@@ -159,8 +241,12 @@ class Upgrader with WidgetsBindingObserver {
       }
 
       await updateVersionInfo();
+
+      // Add an observer of application events, so that when the app returns
+      // from the background, the version info is updated when [checkOnResume]
+      // is true.
       WidgetsBinding.instance.addObserver(this);
-      _coreEngine.markInitialized();
+
       return true;
     });
 
@@ -185,10 +271,23 @@ class Upgrader with WidgetsBindingObserver {
     WidgetsBinding.instance.removeObserver(this);
   }
 
+  /// Handle application events.
   @override
-  Future<void> didChangeAppLifecycleState(AppLifecycleState lifecycleState) async {
+  Future<void> didChangeAppLifecycleState(
+      // ignore: avoid_renaming_method_parameters
+      // Named [lifecycleState] rather than `state` so it does not shadow the
+      // [state] getter on this class.
+      AppLifecycleState lifecycleState) async {
     super.didChangeAppLifecycleState(lifecycleState);
+
+    // When app has resumed from background.
     if (lifecycleState == AppLifecycleState.resumed) {
+      if (!state.checkOnResume) {
+        if (state.debugLogging) {
+          print('upgrader: checkOnResume is false, not updating version info');
+        }
+        return;
+      }
       await updateVersionInfo();
     }
   }

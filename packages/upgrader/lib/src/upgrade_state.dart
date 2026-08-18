@@ -9,6 +9,7 @@ import 'upgrader_version_info.dart';
 
 class UpgraderState {
   UpgraderState({
+    this.checkOnResume = true,
     required this.client,
     this.clientHeaders,
     this.countryCodeOverride,
@@ -25,6 +26,9 @@ class UpgraderState {
     this.versionInfo,
   });
 
+  /// When `true`, the version info is retrieved from the store each time the
+  /// app is resumed from the background.
+  final bool checkOnResume;
   final http.Client client;
   final Map<String, String>? clientHeaders;
   final String? countryCodeOverride;
@@ -41,6 +45,7 @@ class UpgraderState {
   final UpgraderVersionInfo? versionInfo;
 
   UpgraderState copyWith({
+    bool? checkOnResume,
     http.Client? client,
     Map<String, String>? clientHeaders,
     String? countryCodeOverride,
@@ -57,6 +62,7 @@ class UpgraderState {
     UpgraderVersionInfo? versionInfo,
   }) {
     return UpgraderState(
+      checkOnResume: checkOnResume ?? this.checkOnResume,
       client: client ?? this.client,
       clientHeaders: clientHeaders ?? this.clientHeaders,
       countryCodeOverride: countryCodeOverride ?? this.countryCodeOverride,
@@ -85,6 +91,7 @@ class UpgraderState {
     bool? versionInfo,
   }) {
     return UpgraderState(
+      checkOnResume: checkOnResume,
       client: client,
       clientHeaders: clientHeaders,
       countryCodeOverride:
@@ -106,6 +113,7 @@ class UpgraderState {
 
   core.UpgraderState toCoreState() {
     return core.UpgraderState(
+      checkOnResume: checkOnResume,
       client: client,
       clientHeaders: clientHeaders,
       countryCodeOverride: countryCodeOverride,

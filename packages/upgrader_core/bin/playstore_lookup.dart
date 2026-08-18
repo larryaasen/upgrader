@@ -7,7 +7,7 @@
   $  dart playstore_lookup.dart id=com.google.android.apps.mapslite country=US
  */
 
-import 'package:upgrader_core/src/play_store_search_api.dart';
+import 'package:upgrader_core/upgrader_core.dart';
 
 void main(List<String> arguments) async {
   var lookupId = 'com.google.android.apps.mapslite';

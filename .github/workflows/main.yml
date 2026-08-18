@@ -18,7 +18,7 @@ jobs:
     timeout-minutes: 30
     strategy:
       matrix:
-        flutter-version: ['3.44.4', '3.41.9', '3.27.4', '3.29.3', '3.32.8', '3.35.7', '3.38.10']
+        flutter-version: ['3.47.0', '3.44.9', '3.41.9', '3.27.4', '3.29.3', '3.32.8', '3.35.7', '3.38.10']
 
     steps:
       - uses: actions/checkout@v4
@@ -31,23 +31,32 @@ jobs:
       - name: Flutter doctor
         run: flutter doctor --verbose
 
+      # Resolves every package in the workspace (upgrader, upgrader_core, and
+      # the example) in a single shared resolution.
       - name: Get flutter packages
         run: flutter pub get
 
+      # Analyzes the whole workspace from the root.
       - name: Analyze
         run: flutter analyze
 
-      - name: Run unit and widget tests
+      - name: Run upgrader_core unit tests
+        working-directory: packages/upgrader_core
+        run: dart test
+
+      - name: Run upgrader unit and widget tests
+        working-directory: packages/upgrader
         run: flutter test --coverage --coverage-path=lcov.info
 
       - name: Upload test coverage to codecov.io
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: lcov.info
+          files: packages/upgrader/lcov.info
 
       - name: Boot the simulator
-        run: 	xcrun simctl boot 'iPhone 17'
+        run: xcrun simctl boot 'iPhone 17'
 
       - name: Run the driver test
-        run: 	cd example; flutter drive --target=test/driver_test/driver.dart --driver=test/driver_test/driver_test.dart
+        working-directory: packages/upgrader/example
+        run: flutter drive --target=test/driver_test/driver.dart --driver=test/driver_test/driver_test.dart

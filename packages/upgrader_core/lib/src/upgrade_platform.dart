@@ -12,10 +12,15 @@ class UpgraderPlatform {
   const UpgraderPlatform({
     required this.currentOSType,
     String? current,
-  }) : current = current ?? _defaultCurrent(currentOSType);
+  }) : _current = current;
 
-  final String current;
+  final String? _current;
   final UpgraderOSType currentOSType;
+
+  /// The current platform name, such as `'android'` or `'ios'`.
+  ///
+  /// Defaults to the lowercase name of [currentOSType] when not provided.
+  String get current => _current ?? _defaultCurrent(currentOSType);
 
   String get currentPlatform => current;
 

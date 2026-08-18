@@ -1,12 +1,17 @@
 # Upgrader
 
-This repository is now a monorepo containing:
+This repository is a Dart workspace (monorepo) containing:
 
 - `packages/upgrader` — the Flutter package with widgets and platform integrations
 - `packages/upgrader_core` — the Dart-only core engine and store lookup package
+- `packages/upgrader/example` — the example app
+
+See [Repository layout, versioning, and releasing](#repository-layout-versioning-and-releasing)
+for how the two packages are versioned and published.
 
 [![codecov](https://codecov.io/gh/larryaasen/upgrader/branch/main/graph/badge.svg)](https://app.codecov.io/gh/larryaasen/upgrader)
 [![pub package](https://img.shields.io/pub/v/upgrader.svg)](https://pub.dartlang.org/packages/upgrader)
+[![pub package](https://img.shields.io/pub/v/upgrader_core.svg?label=upgrader_core)](https://pub.dartlang.org/packages/upgrader_core)
 [![GitHub Stars](https://img.shields.io/github/stars/larryaasen/upgrader.svg)](https://github.com/larryaasen/upgrader/stargazers)
 <a href="https://www.buymeacoffee.com/larryaasen">
   <img alt="Buy me a coffee" src="https://img.shields.io/badge/Donate-Buy%20Me%20A%20Coffee-yellow.svg">
@@ -162,6 +167,7 @@ Here are the custom parameters for `UpgradeCard`:
 
 The `Upgrader` class can be customized by setting parameters in the constructor, and passing it
 
+* checkOnResume: check the store for a new version each time the app is resumed from the background, which defaults to ```true```. Set to ```false``` to only check when `upgrader` is initialized, which avoids a network request on every resume.
 * client: an HTTP Client that can be replaced for mock testing, defaults to `http.Client()`.
 * clientHeaders: Provide the HTTP headers used by `client`, which defaults to ```null```
 * countryCode: the country code that will override the system locale, which defaults to ```null```
@@ -545,9 +551,69 @@ be compliant with Semantic Versioning.
 
 **Important:** The version string in your store listing (Google Play / App Store) *must* be a valid semantic version (e.g. `1.2.3` or `1.2.3+4`). Formats like `1.2.3(4)` are not valid and will cause a `FormatException`.
 
+## Repository layout, versioning, and releasing
+
+As of 14.0.0 this repository is a [Dart workspace](https://dart.dev/tools/pub/workspaces) with
+two published packages:
+
+| Package | Published as | Contents |
+| --- | --- | --- |
+| `packages/upgrader` | [`upgrader`](https://pub.dev/packages/upgrader) | Flutter widgets, lifecycle observation, locale detection, message resolution, and the plugin-backed implementations (`package_info_plus`, `shared_preferences`, `url_launcher`). |
+| `packages/upgrader_core` | [`upgrader_core`](https://pub.dev/packages/upgrader_core) | Dart-only: store lookup and parsing, version evaluation, and the prompt decision rules. No Flutter dependency. |
+
+`packages/upgrader/example` is a third workspace member but is never published.
+
+A single `flutter pub get` at the repository root resolves all three together. Within the
+workspace, `upgrader` resolves `upgrader_core` from `packages/upgrader_core`, so local
+development, tests, and CI never depend on the published version.
+
+### Versioning policy
+
+The two packages **share a major version, and are allowed to drift on minor and patch.**
+
+- The major version is always in lockstep: `upgrader 14.x` is always designed against
+  `upgrader_core 14.x`.
+- A breaking change in *either* package bumps the major version of *both*, and both are
+  released together — even if one of them has no other changes.
+- A change confined to one package bumps only that package's minor or patch version. A
+  Flutter-only fix does not force a no-op release of `upgrader_core`, and a core-only fix does
+  not force a no-op release of `upgrader`.
+- `upgrader` depends on `upgrader_core: ^<lowest version it actually needs>`. When `upgrader`
+  starts using a newly added core API, raise that lower bound in the same release.
+
+Rationale: the shared major version makes the compatible pairing obvious at a glance, with no
+lookup table to maintain. Allowing minor and patch to drift avoids publishing meaningless
+identical releases of one package every time the other gets a fix.
+
+Two alternatives were considered and rejected:
+
+- **Strict lockstep** (both packages always at the identical version) is simpler to explain,
+  but forces a no-op release of one package for every fix in the other, which clutters the
+  release history of both.
+- **Fully independent versions** avoids no-op releases entirely, but makes the compatible
+  pairing invisible — users and maintainers would need a compatibility table to answer
+  "which `upgrader_core` goes with `upgrader 15.2.0`?"
+
+Because the version line is shared, `packages/upgrader_core/CHANGELOG.md` retains the
+`upgrader` history from before the 14.0.0 split.
+
+### Publishing order
+
+`upgrader` depends on `upgrader_core` by version rather than by path, so **`upgrader_core` must
+be published first.** Publishing `upgrader` first would produce a release that no one can
+resolve, because its `upgrader_core` constraint would point at a version that does not exist
+on pub.dev yet.
+
+1. `cd packages/upgrader_core && dart pub publish`
+2. Wait for the new version to be live on pub.dev.
+3. `cd packages/upgrader && flutter pub publish`
+
+Step 1 can be skipped only when `upgrader_core` has not changed and the existing constraint in
+`packages/upgrader/pubspec.yaml` already resolves against a published version.
+
 ## Examples
 
-There are [plenty of examples](https://github.com/larryaasen/upgrader/tree/main/example/lib) that cover various different situations that may
+There are [plenty of examples](https://github.com/larryaasen/upgrader/tree/main/packages/upgrader/example/lib) that cover various different situations that may
 help you customize the `upgrader` experience for your app. Check these out.
 
 |  |  |  |

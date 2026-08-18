@@ -1,3 +1,17 @@
+## 14.0.0
+
+- Initial release of `upgrader_core`, the Dart-only core extracted from the `upgrader`
+  Flutter package. Versioning is kept in lockstep with `upgrader`.
+- Provides `UpgraderEngine`, which owns version evaluation and the prompt decision rules.
+- Provides the store lookup and parsing APIs: `ITunesSearchAPI`, `PlayStoreSearchAPI`,
+  `Appcast`, `UpgraderAppStore`, `UpgraderPlayStore`, `UpgraderAppcastStore`, and
+  `UpgraderStoreController`.
+- Provides plain Dart models and interfaces so the engine has no Flutter dependency:
+  `UpgraderState`, `UpgraderPackageInfo`, `UpgraderVersionInfo`, `UpgraderPlatform`,
+  `UpgraderAppInfoProvider`, `UpgraderPreferencesStore`, and `UpgraderStoreLauncher`.
+
+The entries below are the shared history from the `upgrader` package prior to the split.
+
 ## 13.5.0
 
 - Updated the xml dependency constraint from `^6.3.0` to `>=6.3.0 <8.0.0` to support stable xml 7.0.0.
