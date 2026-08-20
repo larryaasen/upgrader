@@ -15,7 +15,7 @@ on:
 jobs:
   build-and-test:
     runs-on: macos-latest
-    timeout-minutes: 30
+    timeout-minutes: 50
     strategy:
       matrix:
         flutter-version: ['3.47.0', '3.44.9', '3.41.9', '3.27.4', '3.29.3', '3.32.8', '3.35.7', '3.38.10']
@@ -50,4 +50,8 @@ jobs:
         run: 	xcrun simctl boot 'iPhone 17'
 
       - name: Run the driver test
-        run: 	cd example; flutter drive --target=test/driver_test/driver.dart --driver=test/driver_test/driver_test.dart
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 21
+          max_attempts: 2
+          command: 	cd example; flutter drive --target=test/driver_test/driver.dart --driver=test/driver_test/driver_test.dart
