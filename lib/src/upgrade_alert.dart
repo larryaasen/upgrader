@@ -96,6 +96,7 @@ class UpgradeAlert extends StatefulWidget {
 class UpgradeAlertState extends State<UpgradeAlert> {
   /// Is the alert dialog being displayed right now?
   bool displayed = false;
+  bool _useDialogNavigator = false;
   final GlobalKey<NavigatorState> _dialogNavigatorKey =
       GlobalKey<NavigatorState>();
 
@@ -111,6 +112,9 @@ class UpgradeAlertState extends State<UpgradeAlert> {
     if (widget.upgrader.state.debugLogging) {
       print('upgrader: build UpgradeAlert');
     }
+
+    final hasNavigatorAncestor = Navigator.maybeOf(context) != null;
+    _useDialogNavigator = widget.child != null && !hasNavigatorAncestor;
 
     return StreamBuilder(
       initialData: widget.upgrader.state,
@@ -135,7 +139,7 @@ class UpgradeAlertState extends State<UpgradeAlert> {
           }
         }
         final child = widget.child ?? const SizedBox.shrink();
-        if (widget.child == null || !displayed) {
+        if (!_useDialogNavigator || !displayed) {
           return child;
         }
 
@@ -276,7 +280,10 @@ class UpgradeAlertState extends State<UpgradeAlert> {
     // Detect if CupertinoApp is in the widget tree
     final isCupertinoApp =
         context.findAncestorWidgetOfExactType<CupertinoApp>() != null;
-    final dialogContext = _dialogNavigatorKey.currentContext ?? context;
+    final useDialogNavigator =
+        _useDialogNavigator && _dialogNavigatorKey.currentContext != null;
+    final dialogContext =
+        useDialogNavigator ? _dialogNavigatorKey.currentContext! : context;
 
     dialogBuilder(BuildContext context) => PopScope(
           canPop: onCanPop(),
@@ -300,14 +307,14 @@ class UpgradeAlertState extends State<UpgradeAlert> {
       showCupertinoDialog(
         barrierDismissible: barrierDismissible,
         context: dialogContext,
-        useRootNavigator: false,
+        useRootNavigator: !useDialogNavigator,
         builder: dialogBuilder,
       );
     } else {
       showDialog(
         barrierDismissible: barrierDismissible,
         context: dialogContext,
-        useRootNavigator: false,
+        useRootNavigator: !useDialogNavigator,
         builder: dialogBuilder,
       );
     }

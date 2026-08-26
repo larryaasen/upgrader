@@ -72,6 +72,54 @@ void main() {
   );
 
   testWidgets(
+    'test UpgradeAlert in Scaffold body blocks the app bar',
+    (WidgetTester tester) async {
+      var appBarTaps = 0;
+      final upgrader = Upgrader(
+        debugDisplayAlways: true,
+        upgraderOS: MockUpgraderOS(ios: true),
+      )
+        ..installPackageInfo(
+          packageInfo: PackageInfo(
+              appName: 'Upgrader',
+              packageName: 'com.larryaasen.upgrader',
+              version: '0.9.9',
+              buildNumber: '400'),
+        )
+        ..initialize();
+
+      await tester.pumpAndSettle();
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            appBar: AppBar(
+              actions: [
+                IconButton(
+                  onPressed: () => appBarTaps++,
+                  icon: const Icon(Icons.add),
+                ),
+              ],
+            ),
+            body: UpgradeAlert(
+              upgrader: upgrader,
+              child: const SizedBox.expand(),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byType(AlertDialog), findsOneWidget);
+
+      await tester.tap(find.byIcon(Icons.add), warnIfMissed: false);
+      await tester.pump();
+
+      expect(appBarTaps, 0);
+      expect(find.byType(AlertDialog), findsOneWidget);
+    },
+  );
+
+  testWidgets(
     'test UpgradeAlert stays above a later pushed route',
     (WidgetTester tester) async {
       final delayDuration = 2;
