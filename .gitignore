@@ -18,3 +18,4 @@ coverage
 example/test/driver_test/screenshots
 .qodo
 ios/Flutter/ephemeral/
+flutter_native_integration.env
