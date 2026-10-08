@@ -49,6 +49,10 @@ class Upgrader with WidgetsBindingObserver {
   /// trigger an alert or other UI to evaluate upgrading criteria.
   ///
   /// Parameters:
+  /// - [checkOnResume]: When `true`, the version info is retrieved from the
+  ///   store each time the app is resumed from the background. When `false`,
+  ///   the version info is only retrieved during [initialize], which means no
+  ///   network requests are made when the app is resumed. Defaults to `true`.
   /// - [client]: An HTTP client used to retrieve version information from the
   ///   store. Defaults to `http.Client()`. Can be replaced for mock testing.
   /// - [clientHeaders]: Optional HTTP headers used by [client]. Defaults to `null`.
@@ -80,6 +84,7 @@ class Upgrader with WidgetsBindingObserver {
   /// - [willDisplayUpgrade]: An optional callback invoked each time [Upgrader]
   ///   determines whether to show or hide the upgrade prompt. Defaults to `null`.
   Upgrader({
+    bool checkOnResume = true,
     http.Client? client,
     Map<String, String>? clientHeaders,
     String? countryCode,
@@ -95,6 +100,7 @@ class Upgrader with WidgetsBindingObserver {
     UpgraderOS? upgraderOS,
     this.willDisplayUpgrade,
   })  : _state = UpgraderState(
+          checkOnResume: checkOnResume,
           client: client ?? http.Client(),
           clientHeaders: clientHeaders,
           countryCodeOverride: countryCode,
@@ -196,7 +202,8 @@ class Upgrader with WidgetsBindingObserver {
       await updateVersionInfo();
 
       // Add an observer of application events, so that when the app returns
-      // from the background, the version info is updated.
+      // from the background, the version info is updated when [checkOnResume]
+      // is true.
       WidgetsBinding.instance.addObserver(this);
 
       return true;
@@ -239,6 +246,12 @@ class Upgrader with WidgetsBindingObserver {
 
     // When app has resumed from background.
     if (lifecycleState == AppLifecycleState.resumed) {
+      if (!state.checkOnResume) {
+        if (state.debugLogging) {
+          print('upgrader: checkOnResume is false, not updating version info');
+        }
+        return;
+      }
       await updateVersionInfo();
     }
   }
@@ -384,6 +397,14 @@ class Upgrader with WidgetsBindingObserver {
 
   bool isTooSoon() {
     if (_lastTimeAlerted == null) {
+      return false;
+    }
+
+    // If the current app store version is different from the last version
+    // alerted, it is not too soon to alert again.
+    if (_lastVersionAlerted != null &&
+        versionInfo?.appStoreVersion != null &&
+        _lastVersionAlerted != versionInfo?.appStoreVersion) {
       return false;
     }
 

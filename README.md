@@ -157,6 +157,7 @@ Here are the custom parameters for `UpgradeCard`:
 
 The `Upgrader` class can be customized by setting parameters in the constructor, and passing it
 
+* checkOnResume: check the store for a new version each time the app is resumed from the background, which defaults to ```true```. Set to ```false``` to only check when `upgrader` is initialized, which avoids a network request on every resume.
 * client: an HTTP Client that can be replaced for mock testing, defaults to `http.Client()`.
 * clientHeaders: Provide the HTTP headers used by `client`, which defaults to ```null```
 * countryCode: the country code that will override the system locale, which defaults to ```null```
@@ -302,6 +303,9 @@ On Android, the `upgrader` package uses the system locale to determine the count
 ## Android Language Code
 
 Android description and release notes language default to `en`.
+Set `languageCode` on `Upgrader` to request the Google Play Store listing,
+description, and release notes in that language when a localized store page is
+available.
 
 ## Limitations
 These widgets work on both Android and iOS. When running on Android the Google

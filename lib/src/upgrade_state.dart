@@ -13,6 +13,7 @@ class UpgraderState {
   /// Creates an [Upgrader] state.
   UpgraderState({
     required this.client,
+    this.checkOnResume = true,
     this.clientHeaders,
     this.countryCodeOverride,
     this.debugDisplayAlways = false,
@@ -27,6 +28,12 @@ class UpgraderState {
     required this.upgraderOS,
     this.versionInfo,
   });
+
+  /// When `true`, the latest version info is retrieved from the store each
+  /// time the app is resumed from the background. When `false`, the version
+  /// info is only retrieved when [Upgrader] is initialized, or when
+  /// [Upgrader.updateVersionInfo] is called directly.
+  final bool checkOnResume;
 
   /// Provide an HTTP Client that can be replaced during testing.
   final http.Client client;
@@ -78,6 +85,7 @@ class UpgraderState {
 
   /// Creates a new state object by copying existing data and modifying selected fields.
   UpgraderState copyWith({
+    bool? checkOnResume,
     http.Client? client,
     Map<String, String>? clientHeaders,
     String? countryCodeOverride,
@@ -94,6 +102,7 @@ class UpgraderState {
     UpgraderVersionInfo? versionInfo,
   }) {
     return UpgraderState(
+      checkOnResume: checkOnResume ?? this.checkOnResume,
       client: client ?? this.client,
       clientHeaders: clientHeaders ?? this.clientHeaders,
       countryCodeOverride: countryCodeOverride ?? this.countryCodeOverride,
@@ -124,6 +133,7 @@ class UpgraderState {
     bool? versionInfo,
   }) {
     return UpgraderState(
+      checkOnResume: checkOnResume,
       client: client,
       clientHeaders: clientHeaders,
       countryCodeOverride:

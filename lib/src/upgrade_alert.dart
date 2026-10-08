@@ -321,7 +321,7 @@ class UpgradeAlertState extends State<UpgradeAlert> {
   }
 
   /// Determines if the dialog blocks the current route from being popped.
-  /// Will return the result from [shouldPopScope] if it is not null, otherwise it will return false.
+  /// Will return the result from [shouldPopScope] if it is not null, otherwise it will return [UpgradeAlert.barrierDismissible].
   bool onCanPop() {
     if (widget.upgrader.state.debugLogging) {
       print('upgrader: onCanPop called');
@@ -334,7 +334,7 @@ class UpgradeAlertState extends State<UpgradeAlert> {
       return should;
     }
 
-    return false;
+    return widget.barrierDismissible;
   }
 
   Widget alertDialog(

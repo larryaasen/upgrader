@@ -6,7 +6,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
+import 'package:http/http.dart' as http;
 import 'package:http/src/client.dart';
+import 'package:http/testing.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upgrader/upgrader.dart';
@@ -659,6 +661,126 @@ void main() {
     expect(called, true);
   });
 
+  testWidgets(
+      'onCanPop returns true when barrierDismissible true and shouldPopScope not set',
+      (WidgetTester tester) async {
+    final client = MockITunesSearchClient.setupMockClient();
+    final upgrader =
+        Upgrader(upgraderOS: MockUpgraderOS(ios: true), client: client);
+
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '5.6.0',
+            buildNumber: '400'));
+    upgrader.initialize().then((value) {});
+    await tester.pumpAndSettle();
+
+    final upgradeAlert = wrapper(
+      UpgradeAlert(
+        upgrader: upgrader,
+        barrierDismissible: true,
+        child: const Center(child: Text('Upgrading')),
+      ),
+    );
+    await tester.pumpWidget(upgradeAlert);
+    await tester.pumpAndSettle();
+
+    final state = tester.state<UpgradeAlertState>(find.byType(UpgradeAlert));
+    expect(state.onCanPop(), true);
+  });
+
+  testWidgets(
+      'onCanPop returns false when barrierDismissible false and shouldPopScope not set',
+      (WidgetTester tester) async {
+    final client = MockITunesSearchClient.setupMockClient();
+    final upgrader =
+        Upgrader(upgraderOS: MockUpgraderOS(ios: true), client: client);
+
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '5.6.0',
+            buildNumber: '400'));
+    upgrader.initialize().then((value) {});
+    await tester.pumpAndSettle();
+
+    final upgradeAlert = wrapper(
+      UpgradeAlert(
+        upgrader: upgrader,
+        child: const Center(child: Text('Upgrading')),
+      ),
+    );
+    await tester.pumpWidget(upgradeAlert);
+    await tester.pumpAndSettle();
+
+    final state = tester.state<UpgradeAlertState>(find.byType(UpgradeAlert));
+    expect(state.onCanPop(), false);
+  });
+
+  testWidgets(
+      'onCanPop returns false when barrierDismissible true but shouldPopScope returns false',
+      (WidgetTester tester) async {
+    final client = MockITunesSearchClient.setupMockClient();
+    final upgrader =
+        Upgrader(upgraderOS: MockUpgraderOS(ios: true), client: client);
+
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '5.6.0',
+            buildNumber: '400'));
+    upgrader.initialize().then((value) {});
+    await tester.pumpAndSettle();
+
+    final upgradeAlert = wrapper(
+      UpgradeAlert(
+        upgrader: upgrader,
+        barrierDismissible: true,
+        shouldPopScope: () => false,
+        child: const Center(child: Text('Upgrading')),
+      ),
+    );
+    await tester.pumpWidget(upgradeAlert);
+    await tester.pumpAndSettle();
+
+    final state = tester.state<UpgradeAlertState>(find.byType(UpgradeAlert));
+    expect(state.onCanPop(), false);
+  });
+
+  testWidgets(
+      'onCanPop returns true when barrierDismissible false but shouldPopScope returns true',
+      (WidgetTester tester) async {
+    final client = MockITunesSearchClient.setupMockClient();
+    final upgrader =
+        Upgrader(upgraderOS: MockUpgraderOS(ios: true), client: client);
+
+    upgrader.installPackageInfo(
+        packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '5.6.0',
+            buildNumber: '400'));
+    upgrader.initialize().then((value) {});
+    await tester.pumpAndSettle();
+
+    final upgradeAlert = wrapper(
+      UpgradeAlert(
+        upgrader: upgrader,
+        shouldPopScope: () => true,
+        child: const Center(child: Text('Upgrading')),
+      ),
+    );
+    await tester.pumpWidget(upgradeAlert);
+    await tester.pumpAndSettle();
+
+    final state = tester.state<UpgradeAlertState>(find.byType(UpgradeAlert));
+    expect(state.onCanPop(), true);
+  });
+
   testWidgets('test UpgradeAlert no update', (WidgetTester tester) async {
     expect(Upgrader.sharedInstance.isTooSoon(), false);
 
@@ -1035,6 +1157,70 @@ void main() {
     expect(upgrader2.state.durationUntilAlertAgain, const Duration(days: 10));
   }, skip: false);
 
+  test(
+      'isTooSoon returns false when app store version is newer than last alerted version',
+      () async {
+    // Simulate that the user was last alerted about version 1.0.1 recently.
+    await preferences.setString('lastVersionAlerted', '1.0.1');
+    await preferences.setString('lastTimeAlerted',
+        DateTime.now().subtract(const Duration(hours: 1)).toString());
+
+    final upgrader = Upgrader(
+      upgraderOS: MockUpgraderOS(ios: true),
+      client: MockITunesSearchClient.setupMockClient(),
+      debugLogging: true,
+    )..installPackageInfo(
+        packageInfo: PackageInfo(
+          appName: 'Upgrader',
+          packageName: 'com.larryaasen.upgrader',
+          version: '1.0.0',
+          buildNumber: '1',
+        ),
+      );
+
+    await upgrader.initialize();
+
+    // Simulate app store now has version 1.0.2 (newer than the alerted 1.0.1).
+    upgrader.updateState(upgrader.state.copyWith(
+        versionInfo: UpgraderVersionInfo(appStoreVersion: Version(1, 0, 2))));
+
+    // isTooSoon should be false because the available version is different
+    // from the version that was last alerted (1.0.1 -> 1.0.2).
+    expect(upgrader.isTooSoon(), false);
+  }, skip: false);
+
+  test(
+      'isTooSoon returns true when app store version matches last alerted version',
+      () async {
+    // Simulate that the user was last alerted about version 1.0.1 recently.
+    await preferences.setString('lastVersionAlerted', '1.0.1');
+    await preferences.setString('lastTimeAlerted',
+        DateTime.now().subtract(const Duration(hours: 1)).toString());
+
+    final upgrader = Upgrader(
+      upgraderOS: MockUpgraderOS(ios: true),
+      client: MockITunesSearchClient.setupMockClient(),
+      debugLogging: true,
+    )..installPackageInfo(
+        packageInfo: PackageInfo(
+          appName: 'Upgrader',
+          packageName: 'com.larryaasen.upgrader',
+          version: '1.0.0',
+          buildNumber: '1',
+        ),
+      );
+
+    await upgrader.initialize();
+
+    // Simulate app store still has version 1.0.1 (same as the alerted version).
+    upgrader.updateState(upgrader.state.copyWith(
+        versionInfo: UpgraderVersionInfo(appStoreVersion: Version(1, 0, 1))));
+
+    // isTooSoon should be true because the version hasn't changed and it was
+    // alerted only 1 hour ago (within the 3-day durationUntilAlertAgain).
+    expect(upgrader.isTooSoon(), true);
+  }, skip: false);
+
   group('shouldDisplayUpgrade', () {
     test('should respect debugDisplayAlways property', () async {
       final client = MockITunesSearchClient.setupMockClient();
@@ -1185,6 +1371,72 @@ void main() {
 
       // Installed version 2.0.0 < minAppVersion 3.0.0 — should display.
       expect(upgrader.belowMinAppVersion(), isTrue);
+      expect(upgrader.shouldDisplayUpgrade(), isTrue);
+    }, skip: false);
+
+    test('checkOnResume defaults to true and updates on resume', () async {
+      var requestCount = 0;
+      final upgrader = Upgrader(
+        debugLogging: true,
+        upgraderOS: MockUpgraderOS(ios: true),
+        client: MockClient((request) async {
+          requestCount++;
+          return http.Response(
+              '{"results": [{"version": "5.6", "bundleId": "com.larryaasen.upgrader"}]}',
+              200);
+        }),
+      )..installPackageInfo(
+          packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '2.0.0',
+            buildNumber: '42',
+          ),
+        );
+
+      expect(upgrader.state.checkOnResume, isTrue);
+
+      await upgrader.initialize();
+      final countAfterInit = requestCount;
+
+      await upgrader.didChangeAppLifecycleState(AppLifecycleState.resumed);
+      expect(requestCount, countAfterInit + 1);
+    }, skip: false);
+
+    test('checkOnResume false does not update on resume', () async {
+      var requestCount = 0;
+      final upgrader = Upgrader(
+        checkOnResume: false,
+        debugLogging: true,
+        upgraderOS: MockUpgraderOS(ios: true),
+        client: MockClient((request) async {
+          requestCount++;
+          return http.Response(
+              '{"results": [{"version": "5.6", "bundleId": "com.larryaasen.upgrader"}]}',
+              200);
+        }),
+      )..installPackageInfo(
+          packageInfo: PackageInfo(
+            appName: 'Upgrader',
+            packageName: 'com.larryaasen.upgrader',
+            version: '2.0.0',
+            buildNumber: '42',
+          ),
+        );
+
+      expect(upgrader.state.checkOnResume, isFalse);
+
+      await upgrader.initialize();
+      final countAfterInit = requestCount;
+
+      // Resuming from the background makes no additional network request, and
+      // the version info from initialize() is still available.
+      await upgrader.didChangeAppLifecycleState(AppLifecycleState.resumed);
+      await upgrader.didChangeAppLifecycleState(AppLifecycleState.paused);
+      await upgrader.didChangeAppLifecycleState(AppLifecycleState.resumed);
+      expect(requestCount, countAfterInit);
+
+      expect(upgrader.currentAppStoreVersion, '5.6.0');
       expect(upgrader.shouldDisplayUpgrade(), isTrue);
     }, skip: false);
 
