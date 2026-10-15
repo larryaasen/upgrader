@@ -236,10 +236,11 @@ description field.
 
 ## Go Router
 
-When using GoRouter (package go_router) with upgrader, you may need to provide
-a navigatorKey to the ```UpgradeAlert``` widget so that the correct route
-context is used. Below is part of the code you will need for this. Also,
-check out the [example/lib/main_gorouter.dart](example/lib/main_gorouter.dart) example for a more complete example.
+When using GoRouter (package go_router) with upgrader, wrap the app with
+```UpgradeAlert``` in the `builder` of `MaterialApp.router`. The dialog is shown
+above the whole app, so it stays visible when GoRouter navigates to another
+page, and no `navigatorKey` is needed. Below is part of the code you will need
+for this. Also, check out the [example/lib/main_gorouter.dart](example/lib/main_gorouter.dart) example for a more complete example.
 
 ```dart
   @override
@@ -249,7 +250,6 @@ check out the [example/lib/main_gorouter.dart](example/lib/main_gorouter.dart) e
       routerConfig: routerConfig,
       builder: (context, child) {
         return UpgradeAlert(
-          navigatorKey: routerConfig.routerDelegate.navigatorKey,
           child: child ?? const Text('child'),
         );
       },

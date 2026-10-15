@@ -79,9 +79,14 @@ class UpgradeAlert extends StatefulWidget {
   /// The [Key] assigned to the dialog when it is shown. Optional.
   final GlobalKey? dialogKey;
 
-  /// A [GlobalKey] for the [NavigatorState] used when showing the upgrade dialog.
-  /// Provide this when using the Router architecture (e.g. with [RouterDelegate])
-  /// so that the correct context is used for navigation.
+  /// Usually not needed.
+  ///
+  /// In `MaterialApp.builder`, the dialog is shown above the whole app, so you
+  /// don't need this key.
+  ///
+  /// Pass the app's navigator key only when [UpgradeAlert] wraps the whole app
+  /// (outside `MaterialApp`) or has no [child]. The dialog is then shown on that
+  /// navigator.
   final GlobalKey<NavigatorState>? navigatorKey;
 
   /// The [child] widget displayed behind the upgrade dialog. If null, a
@@ -93,14 +98,135 @@ class UpgradeAlert extends StatefulWidget {
 }
 
 /// The [UpgradeAlert] widget state.
-class UpgradeAlertState extends State<UpgradeAlert> {
+class UpgradeAlertState extends State<UpgradeAlert>
+    with WidgetsBindingObserver {
   /// Is the alert dialog being displayed right now?
   bool displayed = false;
+  bool _useDialogNavigator = false;
+  final _dialogNavigatorVisible = ValueNotifier<bool>(false);
+  final GlobalKey<NavigatorState> _dialogNavigatorKey =
+      GlobalKey<NavigatorState>();
+  final GlobalKey _appKey = GlobalKey();
+  late final _dialogNavigatorObserver = _DialogNavigatorObserver(
+    onPush: _onDialogRoutePushed,
+    onRemove: _onDialogRouteRemoved,
+  );
+  late final _appPopEntry = _ForwardingPopEntry(_popDialogNavigator);
+  ModalRoute<dynamic>? _appPopEntryRoute;
 
   @override
   void initState() {
     super.initState();
+    // Registered here so it runs before a descendant Router's back dispatcher.
+    WidgetsBinding.instance.addObserver(this);
     widget.upgrader.initialize();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _detachAppPopEntry();
+    _appPopEntry.dispose();
+    _dialogNavigatorVisible.dispose();
+    super.dispose();
+  }
+
+  /// Forwards system back to the private dialog navigator.
+  @override
+  Future<bool> didPopRoute() async {
+    if (!_hasDialogRoute) {
+      return false;
+    }
+    await _popDialogNavigator();
+    // Consume back even when the dialog refuses to pop, so it never reaches the app.
+    return true;
+  }
+
+  bool get _hasDialogRoute =>
+      _dialogNavigatorKey.currentState?.canPop() ?? false;
+
+  Future<void> _popDialogNavigator() async {
+    if (widget.upgrader.state.debugLogging) {
+      print('upgrader: back forwarded to the dialog navigator');
+    }
+    await _dialogNavigatorKey.currentState?.maybePop();
+  }
+
+  void _onDialogRoutePushed() {
+    if (_hasDialogRoute) {
+      _attachAppPopEntry();
+    }
+  }
+
+  void _onDialogRouteRemoved(Route<dynamic> route) {
+    if (_hasDialogRoute) {
+      return;
+    }
+    _detachAppPopEntry();
+    final exited = route is TransitionRoute ? route.completed : Future.value();
+    exited.whenComplete(() {
+      if (mounted && !_hasDialogRoute) {
+        _dialogNavigatorVisible.value = false;
+      }
+    });
+  }
+
+  /// Stops back from popping the app's page under the dialog.
+  void _attachAppPopEntry() {
+    final route = _appTopRoute();
+    final previous = _appPopEntryRoute;
+    if (route == previous) {
+      return;
+    }
+    // Set before (un)registering: it notifies the listener that calls this again.
+    _appPopEntryRoute = route;
+    previous?.unregisterPopEntry(_appPopEntry);
+    route?.registerPopEntry(_appPopEntry);
+  }
+
+  void _detachAppPopEntry() {
+    final route = _appPopEntryRoute;
+    _appPopEntryRoute = null;
+    route?.unregisterPopEntry(_appPopEntry);
+  }
+
+  ModalRoute<dynamic>? _appTopRoute() {
+    final navigator = widget.navigatorKey?.currentState ?? _findAppNavigator();
+    Route<dynamic>? top;
+    // NavigatorState has no public top route; a predicate that matches first pops nothing.
+    navigator?.popUntil((route) {
+      top = route;
+      return true;
+    });
+    return top is ModalRoute ? top as ModalRoute<dynamic> : null;
+  }
+
+  NavigatorState? _findAppNavigator() {
+    NavigatorState? found;
+    void visit(Element element) {
+      if (found != null) return;
+      if (element is StatefulElement && element.state is NavigatorState) {
+        found = element.state as NavigatorState;
+        return;
+      }
+      element.visitChildren(visit);
+    }
+
+    _appKey.currentContext?.visitChildElements(visit);
+    return found;
+  }
+
+  /// Returns the context the dialog should be shown from, mounting the private
+  /// dialog navigator first when it is used.
+  Future<BuildContext> _dialogContext(BuildContext fallback) async {
+    if (!_useDialogNavigator) {
+      return fallback;
+    }
+    _dialogNavigatorVisible.value = true;
+    if (_dialogNavigatorKey.currentContext == null) {
+      await WidgetsBinding.instance.endOfFrame;
+    }
+    return _dialogNavigatorKey.currentContext ?? fallback;
   }
 
   /// Describes the part of the user interface represented by this widget.
@@ -110,7 +236,13 @@ class UpgradeAlertState extends State<UpgradeAlert> {
       print('upgrader: build UpgradeAlert');
     }
 
-    return StreamBuilder(
+    // Above the app's navigator (e.g. MaterialApp.builder) later routes would
+    // cover the dialog, so it is shown on a private navigator stacked on top.
+    _useDialogNavigator = widget.child != null &&
+        Navigator.maybeOf(context) == null &&
+        Localizations.maybeLocaleOf(context) != null;
+
+    final alert = StreamBuilder(
       initialData: widget.upgrader.state,
       stream: widget.upgrader.stateStream,
       builder: (BuildContext context, AsyncSnapshot<UpgraderState> snapshot) {
@@ -135,6 +267,50 @@ class UpgradeAlertState extends State<UpgradeAlert> {
         return widget.child ?? const SizedBox.shrink();
       },
     );
+
+    if (!_useDialogNavigator) {
+      return alert;
+    }
+
+    return Stack(
+      fit: StackFit.passthrough,
+      children: [
+        NotificationListener<NavigationNotification>(
+          onNotification: (_) {
+            if (_hasDialogRoute) {
+              _attachAppPopEntry();
+            }
+            return false;
+          },
+          child: KeyedSubtree(key: _appKey, child: alert),
+        ),
+        Positioned.fill(
+          child: ValueListenableBuilder<bool>(
+            valueListenable: _dialogNavigatorVisible,
+            builder: (context, visible, navigator) =>
+                visible ? navigator! : const SizedBox.shrink(),
+            child: NotificationListener<NavigationNotification>(
+              // Drop its "can't pop", or Android back would close the app.
+              onNotification: (notification) => !notification.canHandlePop,
+              child: HeroControllerScope.none(
+                child: Navigator(
+                  key: _dialogNavigatorKey,
+                  observers: [_dialogNavigatorObserver],
+                  onGenerateRoute: (settings) => PageRouteBuilder<void>(
+                    settings: settings,
+                    opaque: false,
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        const SizedBox.shrink(),
+                    transitionDuration: Duration.zero,
+                    reverseTransitionDuration: Duration.zero,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   /// Will show the alert dialog when it should be dispalyed.
@@ -147,11 +323,14 @@ class UpgradeAlertState extends State<UpgradeAlert> {
       displayed = true;
       final appMessages = widget.upgrader.determineMessages(context);
 
-      Future.delayed(Duration.zero, () {
+      Future.delayed(Duration.zero, () async {
+        // ignore: use_build_context_synchronously
+        final dialogContext = await _dialogContext(context);
+        if (!mounted) return;
         showTheDialog(
           key: widget.dialogKey ?? const Key('upgrader_alert_dialog'),
           // ignore: use_build_context_synchronously
-          context: context,
+          context: dialogContext,
           title: appMessages.message(UpgraderMessage.title),
           message: widget.upgrader.body(appMessages),
           releaseNotes:
@@ -159,6 +338,10 @@ class UpgradeAlertState extends State<UpgradeAlert> {
           barrierDismissible: widget.barrierDismissible,
           messages: appMessages,
         );
+        // An override may show nothing, which must not leave the barrier up.
+        if (_useDialogNavigator && !_hasDialogRoute) {
+          _dialogNavigatorVisible.value = false;
+        }
       });
     }
   }
@@ -211,8 +394,8 @@ class UpgradeAlertState extends State<UpgradeAlert> {
   }
 
   void popNavigator(BuildContext context) {
-    Navigator.of(context).pop();
     displayed = false;
+    Navigator.of(context).pop();
   }
 
   bool get shouldDisplayReleaseNotes =>
@@ -395,4 +578,41 @@ class UpgradeAlertState extends State<UpgradeAlert> {
             child: Text(text ?? ''))
         : TextButton(onPressed: onPressed, child: Text(text ?? ''));
   }
+}
+
+class _DialogNavigatorObserver extends NavigatorObserver {
+  _DialogNavigatorObserver({required this.onPush, required this.onRemove});
+
+  final VoidCallback onPush;
+  final void Function(Route<dynamic> route) onRemove;
+
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) => onPush();
+
+  @override
+  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) =>
+      onRemove(route);
+
+  @override
+  void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) =>
+      onRemove(route);
+}
+
+/// Blocks a pop on the route it is registered with and reports it instead.
+class _ForwardingPopEntry extends PopEntry<Object?> {
+  _ForwardingPopEntry(this.onBlockedPop);
+
+  final VoidCallback onBlockedPop;
+
+  @override
+  final ValueNotifier<bool> canPopNotifier = ValueNotifier<bool>(false);
+
+  @override
+  void onPopInvokedWithResult(bool didPop, Object? result) {
+    if (!didPop) {
+      onBlockedPop();
+    }
+  }
+
+  void dispose() => canPopNotifier.dispose();
 }
