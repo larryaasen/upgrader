@@ -2,8 +2,8 @@
  * Copyright (c) 2021-2024 Larry Aasen. All rights reserved.
  */
 
-import "package:os_detect/os_detect.dart" as platform;
 import 'package:flutter/foundation.dart';
+import 'package:platform/platform.dart';
 
 enum UpgraderOSType {
   android,
@@ -63,7 +63,7 @@ class UpgraderOS {
   /// The target operating system.
   String get operatingSystem {
     try {
-      return platform.operatingSystem;
+      return NativePlatform.current!.operatingSystem;
     } catch (e) {
       return '';
     }
@@ -72,7 +72,7 @@ class UpgraderOS {
   /// A string representing the version of the operating system or platform.
   String get operatingSystemVersion {
     try {
-      return platform.operatingSystemVersion;
+      return NativePlatform.current!.operatingSystemVersion;
     } catch (e) {
       return '';
     }
@@ -81,7 +81,7 @@ class UpgraderOS {
   /// Whether the operating system is a version of Android.
   bool get isAndroid {
     try {
-      return platform.isAndroid;
+      return Platform.current.isAndroid;
     } catch (e) {
       return false;
     }
@@ -90,7 +90,7 @@ class UpgraderOS {
   /// Whether the operating system is a version of Fuchsia.
   bool get isFuchsia {
     try {
-      return platform.isFuchsia;
+      return Platform.current.isFuchsia;
     } catch (e) {
       return false;
     }
@@ -99,7 +99,7 @@ class UpgraderOS {
   /// Whether the operating system is a version of iOS.
   bool get isIOS {
     try {
-      return platform.isIOS;
+      return Platform.current.isIOS;
     } catch (e) {
       return false;
     }
@@ -108,7 +108,7 @@ class UpgraderOS {
   /// Whether the operating system is a version of Linux.
   bool get isLinux {
     try {
-      return platform.isLinux;
+      return Platform.current.isLinux;
     } catch (e) {
       return false;
     }
@@ -117,7 +117,7 @@ class UpgraderOS {
   /// Whether the operating system is a version of macOS.
   bool get isMacOS {
     try {
-      return platform.isMacOS;
+      return Platform.current.isMacOS;
     } catch (e) {
       return false;
     }
@@ -135,7 +135,7 @@ class UpgraderOS {
   /// Whether the operating system is a version of Windows.
   bool get isWindows {
     try {
-      return platform.isWindows;
+      return Platform.current.isWindows;
     } catch (e) {
       return false;
     }
