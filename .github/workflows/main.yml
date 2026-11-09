@@ -40,6 +40,9 @@ jobs:
       - name: Run unit and widget tests
         run: flutter test --coverage --coverage-path=lcov.info
 
+      - name: Run browser tests
+        run: flutter test --platform chrome test/upgrader_os_web_test.dart
+
       - name: Upload test coverage to codecov.io
         uses: codecov/codecov-action@v3
         with:
