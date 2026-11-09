@@ -4,13 +4,17 @@ on:
   pull_request:
     types: [review_requested, opened, synchronize]
     paths-ignore:
-      - '.github/workflows/platforms.yml'
+      - CHANGELOG.md
+      - LICENSE
+      - README.md
 
   push:
     branches:
       - '*'
     paths-ignore:
-      - '.github/workflows/platforms.yml'
+      - CHANGELOG.md
+      - LICENSE
+      - README.md
 
 jobs:
   build-and-test:
