@@ -1,3 +1,7 @@
+## 13.8.0
+
+- [560] Replaced the discontinued `os_detect` dependency with built-in platform detection, keeping support for Flutter 3.27.0 and Dart 3.5.0. (thanks to @mit-mit and @Ezor)
+
 ## 13.7.0
 
 - [457][553] Fixed barrierDismissible being ignored in UpgradeAlert. (thanks to @mem-5514-tahara)
