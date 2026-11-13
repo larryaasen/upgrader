@@ -1,6 +1,6 @@
 // Copyright (c) 2023 Larry Aasen. All rights reserved.
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:upgrader/upgrader.dart';
 
 void main() async {
@@ -28,28 +28,29 @@ class _MyAppState extends State<MyApp> {
     final scaffold = Scaffold(
       appBar: AppBar(title: const Text('Upgrader Driver App')),
       body: Center(
-          child: Column(
-        children: [
-          const SizedBox(height: 32.0),
-          ElevatedButton(
-            onPressed: () async {
-              await Upgrader.clearSavedSettings();
-              _upgrader = Upgrader(debugLogging: true);
-              setState(() => _testState = 1);
-            },
-            child: const Text('Dialog Alert'),
-          ),
-          const SizedBox(height: 16.0),
-          ElevatedButton(
-            onPressed: () async {
-              await Upgrader.clearSavedSettings();
-              _upgrader = Upgrader(debugLogging: true);
-              setState(() => _testState = 2);
-            },
-            child: const Text('Dialog Alert - Cupertino'),
-          ),
-        ],
-      )),
+        child: Column(
+          children: [
+            const SizedBox(height: 32.0),
+            ElevatedButton(
+              onPressed: () async {
+                await Upgrader.clearSavedSettings();
+                _upgrader = Upgrader(debugLogging: true);
+                setState(() => _testState = 1);
+              },
+              child: const Text('Dialog Alert'),
+            ),
+            const SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: () async {
+                await Upgrader.clearSavedSettings();
+                _upgrader = Upgrader(debugLogging: true);
+                setState(() => _testState = 2);
+              },
+              child: const Text('Dialog Alert - Cupertino'),
+            ),
+          ],
+        ),
+      ),
     );
 
     late Widget content;
@@ -59,21 +60,22 @@ class _MyAppState extends State<MyApp> {
         break;
       case 1:
         content = UpgradeAlert(
-            key: const Key('ua_1'), upgrader: _upgrader, child: scaffold);
+          key: const Key('ua_1'),
+          upgrader: _upgrader,
+          child: scaffold,
+        );
         break;
       case 2:
         content = UpgradeAlert(
-            key: const Key('ua_2'),
-            upgrader: _upgrader,
-            dialogStyle: UpgradeDialogStyle.cupertino,
-            child: scaffold);
+          key: const Key('ua_2'),
+          upgrader: _upgrader,
+          dialogStyle: UpgradeDialogStyle.cupertino,
+          child: scaffold,
+        );
         break;
       default:
     }
 
-    return MaterialApp(
-      title: 'Upgrader Driver App',
-      home: content,
-    );
+    return MaterialApp(title: 'Upgrader Driver App', home: content);
   }
 }

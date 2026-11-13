@@ -1,6 +1,6 @@
 // Copyright (c) 2023 Larry Aasen. All rights reserved.
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:upgrader/upgrader.dart';
 
 void main() async {
@@ -40,12 +40,8 @@ class MyApp extends StatelessWidget {
   }
 
   Widget get _simpleCard => const Card(
-        child: SizedBox(
-          width: 200,
-          height: 50,
-          child: Center(child: Text('Card')),
-        ),
-      );
+    child: SizedBox(width: 200, height: 50, child: Center(child: Text('Card'))),
+  );
 }
 
 class MyUpgradeCard extends UpgradeCard {
@@ -68,7 +64,8 @@ class MyUpgradeCardState extends UpgradeCardState {
         actions: [
           TextButton(
             child: Text(
-                appMessages.message(UpgraderMessage.buttonTitleUpdate) ?? ''),
+              appMessages.message(UpgraderMessage.buttonTitleUpdate) ?? '',
+            ),
             onPressed: () {
               widget.upgrader.saveLastAlerted();
               onUserUpdated();

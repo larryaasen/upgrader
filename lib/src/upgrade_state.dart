@@ -136,14 +136,16 @@ class UpgraderState {
       checkOnResume: checkOnResume,
       client: client,
       clientHeaders: clientHeaders,
-      countryCodeOverride:
-          countryCodeOverride == true ? null : this.countryCodeOverride,
+      countryCodeOverride: countryCodeOverride == true
+          ? null
+          : this.countryCodeOverride,
       debugDisplayAlways: debugDisplayAlways,
       debugDisplayOnce: debugDisplayOnce,
       debugLogging: debugLogging,
       durationUntilAlertAgain: durationUntilAlertAgain,
-      languageCodeOverride:
-          languageCodeOverride == true ? null : this.languageCodeOverride,
+      languageCodeOverride: languageCodeOverride == true
+          ? null
+          : this.languageCodeOverride,
       messages: messages == true ? null : this.messages,
       minAppVersion: minAppVersion == true ? null : this.minAppVersion,
       packageInfo: packageInfo == true ? null : this.packageInfo,

@@ -18,7 +18,9 @@ void main() {
   ///   https://github.com/sparkle-project/Sparkle/blob/master/Tests/SUAppcastTest.swift
   test('testing Appcast defaults', () async {
     final appcast = Appcast(
-        upgraderOS: MockUpgraderOS(android: true), osVersion: Version(0, 0, 0));
+      upgraderOS: MockUpgraderOS(android: true),
+      osVersion: Version(0, 0, 0),
+    );
     expect(appcast.bestItem(), isNull);
     expect(appcast.osVersion, Version(0, 0, 0));
     expect(appcast.items, isNull);
@@ -45,60 +47,78 @@ void main() {
       osVersion: Version(0, 0, 0),
     );
     final items = await appcast.parseAppcastItemsFromUri(
-        'https://sparkle-project.org/test/testappcast.xml');
+      'https://sparkle-project.org/test/testappcast.xml',
+    );
     validateItems(items!, appcast);
   }, skip: false);
 
-  test('Appcast will prioritize critical version even with lower version',
-      () async {
-    final appcast = TestAppcast(
-      upgraderOS: MockUpgraderOS(android: true),
-      osVersion: Version(0, 0, 0),
-    );
+  test(
+    'Appcast will prioritize critical version even with lower version',
+    () async {
+      final appcast = TestAppcast(
+        upgraderOS: MockUpgraderOS(android: true),
+        osVersion: Version(0, 0, 0),
+      );
 
-    final testFile =
-        await getTestFile(filePath: 'test/testappcast_critical.xml');
+      final testFile = await getTestFile(
+        filePath: 'test/testappcast_critical.xml',
+      );
 
-    await appcast.parseAppcastItemsFromFile(testFile);
+      await appcast.parseAppcastItemsFromFile(testFile);
 
-    final bestCriticalItem = appcast.bestCriticalItem();
+      final bestCriticalItem = appcast.bestCriticalItem();
 
-    expect(
-      bestCriticalItem?.versionString == "3.0.0",
-      equals(true),
-    );
+      expect(bestCriticalItem?.versionString == "3.0.0", equals(true));
 
-    expect(bestCriticalItem?.tags?.contains("sparkle:criticalUpdate"),
-        equals(true));
-  }, skip: false);
+      expect(
+        bestCriticalItem?.tags?.contains("sparkle:criticalUpdate"),
+        equals(true),
+      );
+    },
+    skip: false,
+  );
 
   test('testing Appcast host', () async {
     final item = AppcastItem();
 
     expect(
-        item.hostSupportsItem(
-            osVersion: Version(0, 0, 0), currentPlatform: 'android'),
-        equals(true));
+      item.hostSupportsItem(
+        osVersion: Version(0, 0, 0),
+        currentPlatform: 'android',
+      ),
+      equals(true),
+    );
 
     expect(
-        item.hostSupportsItem(
-            osVersion: Version(99, 99, 99), currentPlatform: 'android'),
-        equals(true));
+      item.hostSupportsItem(
+        osVersion: Version(99, 99, 99),
+        currentPlatform: 'android',
+      ),
+      equals(true),
+    );
 
     expect(
-        item.hostSupportsItem(
-            osVersion: Version(0, 0, 1), currentPlatform: 'android'),
-        equals(true));
+      item.hostSupportsItem(
+        osVersion: Version(0, 0, 1),
+        currentPlatform: 'android',
+      ),
+      equals(true),
+    );
 
     expect(
-        item.hostSupportsItem(
-            osVersion: Version(0, 0, 1), currentPlatform: 'android'),
-        equals(true));
+      item.hostSupportsItem(
+        osVersion: Version(0, 0, 1),
+        currentPlatform: 'android',
+      ),
+      equals(true),
+    );
   });
 
   test('Appcast multi Android', () async {
     final appcast = TestAppcast(
-        upgraderOS: MockUpgraderOS(android: true), osVersion: Version(0, 0, 0));
+      upgraderOS: MockUpgraderOS(android: true),
+      osVersion: Version(0, 0, 0),
+    );
     var testFile = await getTestFile(filePath: 'test/testappcastmulti.xml');
     await appcast.parseAppcastItemsFromFile(testFile);
 
@@ -109,7 +129,9 @@ void main() {
 
   test('Appcast multi Fuchsia', () async {
     final appcast = TestAppcast(
-        upgraderOS: MockUpgraderOS(fuchsia: true), osVersion: Version(0, 0, 0));
+      upgraderOS: MockUpgraderOS(fuchsia: true),
+      osVersion: Version(0, 0, 0),
+    );
     var testFile = await getTestFile(filePath: 'test/testappcastmulti.xml');
     await appcast.parseAppcastItemsFromFile(testFile);
 
@@ -120,7 +142,9 @@ void main() {
 
   test('Appcast multi iOS', () async {
     final appcast = TestAppcast(
-        upgraderOS: MockUpgraderOS(ios: true), osVersion: Version(0, 0, 0));
+      upgraderOS: MockUpgraderOS(ios: true),
+      osVersion: Version(0, 0, 0),
+    );
     var testFile = await getTestFile(filePath: 'test/testappcastmulti.xml');
     await appcast.parseAppcastItemsFromFile(testFile);
 
@@ -131,7 +155,9 @@ void main() {
 
   test('Appcast multi Linux', () async {
     final appcast = TestAppcast(
-        upgraderOS: MockUpgraderOS(linux: true), osVersion: Version(0, 0, 0));
+      upgraderOS: MockUpgraderOS(linux: true),
+      osVersion: Version(0, 0, 0),
+    );
     var testFile = await getTestFile(filePath: 'test/testappcastmulti.xml');
     await appcast.parseAppcastItemsFromFile(testFile);
 
@@ -142,7 +168,9 @@ void main() {
 
   test('Appcast multi macOS', () async {
     final appcast = TestAppcast(
-        upgraderOS: MockUpgraderOS(macos: true), osVersion: Version(0, 0, 0));
+      upgraderOS: MockUpgraderOS(macos: true),
+      osVersion: Version(0, 0, 0),
+    );
     var testFile = await getTestFile(filePath: 'test/testappcastmulti.xml');
     await appcast.parseAppcastItemsFromFile(testFile);
 
@@ -155,7 +183,9 @@ void main() {
   /// test is skipped.
   test('Appcast multi Windows', () async {
     final appcast = TestAppcast(
-        upgraderOS: MockUpgraderOS(windows: true), osVersion: Version(0, 0, 0));
+      upgraderOS: MockUpgraderOS(windows: true),
+      osVersion: Version(0, 0, 0),
+    );
     var testFile = await getTestFile(filePath: 'test/testappcastmulti.xml');
     await appcast.parseAppcastItemsFromFile(testFile);
 
@@ -166,7 +196,9 @@ void main() {
 
   test('Appcast multi Web', () async {
     final appcast = TestAppcast(
-        upgraderOS: MockUpgraderOS(web: true), osVersion: Version(0, 0, 0));
+      upgraderOS: MockUpgraderOS(web: true),
+      osVersion: Version(0, 0, 0),
+    );
     var testFile = await getTestFile(filePath: 'test/testappcastmulti.xml');
     await appcast.parseAppcastItemsFromFile(testFile);
 
@@ -272,9 +304,12 @@ void main() {
 
   test('Appcast multi multi enclosure', () async {
     final appcast = TestAppcast(
-        upgraderOS: MockUpgraderOS(android: true), osVersion: Version(0, 0, 0));
-    var testFile =
-        await getTestFile(filePath: 'test/testappcast-enclosure.xml');
+      upgraderOS: MockUpgraderOS(android: true),
+      osVersion: Version(0, 0, 0),
+    );
+    var testFile = await getTestFile(
+      filePath: 'test/testappcast-enclosure.xml',
+    );
     await appcast.parseAppcastItemsFromFile(testFile);
 
     final bestItem = appcast.bestItem();
@@ -289,49 +324,67 @@ void validateItems(List<AppcastItem> items, Appcast appcast) {
   expect(items[0].itemDescription, equals('desc Версия'));
   expect(items[0].dateString, equals('Sat, 26 Jul 2014 15:20:11 +0000'));
   expect(
-      items[0].fileURL, equals('http://localhost:1337/Sparkle_Test_App.zip'));
+    items[0].fileURL,
+    equals('http://localhost:1337/Sparkle_Test_App.zip'),
+  );
   expect(items[0].isCriticalUpdate, equals(true));
   expect(items[0].maximumSystemVersion, isNull);
   expect(items[0].minimumSystemVersion, isNull);
   expect(items[0].versionString, equals('2.0'));
   expect(
-      items[0].hostSupportsItem(
-          osVersion: Version(0, 0, 1), currentPlatform: 'android'),
-      equals(true));
+    items[0].hostSupportsItem(
+      osVersion: Version(0, 0, 1),
+      currentPlatform: 'android',
+    ),
+    equals(true),
+  );
   expect(items[0].osString, isNull);
 
   expect(items[1].title, equals('Version 3.0'));
   expect(items[1].itemDescription, equals('Minor updates and improvements.'));
   expect(items[1].dateString, equals(null));
   expect(
-      items[1].fileURL, equals('http://localhost:1337/Sparkle_Test_App.zip'));
+    items[1].fileURL,
+    equals('http://localhost:1337/Sparkle_Test_App.zip'),
+  );
   expect(items[1].isCriticalUpdate, equals(false));
   expect(items[1].maximumSystemVersion, isNull);
   expect(items[1].minimumSystemVersion, isNull);
   expect(items[1].versionString, equals('3.0'));
   expect(
-      items[1].hostSupportsItem(
-          osVersion: Version(0, 0, 1), currentPlatform: 'android'),
-      equals(true));
+    items[1].hostSupportsItem(
+      osVersion: Version(0, 0, 1),
+      currentPlatform: 'android',
+    ),
+    equals(true),
+  );
   expect(items[1].osString, equals('android'));
 
   expect(items[2].title, equals('Version 4.0'));
   expect(items[2].itemDescription, equals('Minor updates and improvements.'));
   expect(items[2].dateString, 'Sat, 26 Jul 2014 15:20:13 +0000');
   expect(
-      items[2].fileURL, equals('http://localhost:1337/Sparkle_Test_App.zip'));
+    items[2].fileURL,
+    equals('http://localhost:1337/Sparkle_Test_App.zip'),
+  );
   expect(items[2].isCriticalUpdate, equals(false));
   expect(items[2].maximumSystemVersion, isNull);
   expect(items[2].minimumSystemVersion, equals('17.0.0'));
   expect(items[2].versionString, equals('4.0'));
   expect(
-      items[2].hostSupportsItem(
-          osVersion: Version(0, 0, 1), currentPlatform: 'android'),
-      equals(false));
+    items[2].hostSupportsItem(
+      osVersion: Version(0, 0, 1),
+      currentPlatform: 'android',
+    ),
+    equals(false),
+  );
   expect(
-      items[2].hostSupportsItem(
-          osVersion: Version(17, 0, 1), currentPlatform: 'iOS'),
-      equals(true));
+    items[2].hostSupportsItem(
+      osVersion: Version(17, 0, 1),
+      currentPlatform: 'iOS',
+    ),
+    equals(true),
+  );
   expect(items[2].osString, equals('iOS'));
 
   expect(items[3].title, equals('Version 5.0'));
@@ -344,13 +397,19 @@ void validateItems(List<AppcastItem> items, Appcast appcast) {
   expect(items[3].minimumUpdateVersion, isNull);
   expect(items[3].versionString, equals('5.0'));
   expect(
-      items[3].hostSupportsItem(
-          osVersion: Version(0, 0, 1), currentPlatform: 'android'),
-      equals(true));
+    items[3].hostSupportsItem(
+      osVersion: Version(0, 0, 1),
+      currentPlatform: 'android',
+    ),
+    equals(true),
+  );
   expect(
-      items[3].hostSupportsItem(
-          osVersion: Version(2, 0, 1), currentPlatform: 'android'),
-      equals(false));
+    items[3].hostSupportsItem(
+      osVersion: Version(2, 0, 1),
+      currentPlatform: 'android',
+    ),
+    equals(false),
+  );
   expect(items[3].osString, isNull);
 
   expect(items[4].title, equals('Version 6.0'));
@@ -368,11 +427,15 @@ void validateItems(List<AppcastItem> items, Appcast appcast) {
   expect(items[5].itemDescription, isNull);
   expect(items[5].dateString, isNull);
   expect(
-      items[5].fileURL, equals('http://localhost:1337/Sparkle_Test_App.zip'));
+    items[5].fileURL,
+    equals('http://localhost:1337/Sparkle_Test_App.zip'),
+  );
   expect(
-      items[5].edSignature,
-      equals(
-          'ify59pDIuduaZcLnLvQjGqNQIAqi4dVgeA3L/e7I7xaqn9pVdiVZH7Na3v+Gp4ElAKJfX4Pfq8cgElfXmZc4Cg=='));
+    items[5].edSignature,
+    equals(
+      'ify59pDIuduaZcLnLvQjGqNQIAqi4dVgeA3L/e7I7xaqn9pVdiVZH7Na3v+Gp4ElAKJfX4Pfq8cgElfXmZc4Cg==',
+    ),
+  );
   expect(items[5].isCriticalUpdate, equals(false));
   expect(items[5].maximumSystemVersion, isNull);
   expect(items[5].minimumSystemVersion, isNull);
@@ -384,9 +447,12 @@ void validateItems(List<AppcastItem> items, Appcast appcast) {
   expect(bestItem, isNotNull);
   expect(bestItem.versionString, equals('6.0.0'));
   expect(
-      bestItem.hostSupportsItem(
-          osVersion: Version(0, 0, 1), currentPlatform: 'android'),
-      equals(true));
+    bestItem.hostSupportsItem(
+      osVersion: Version(0, 0, 1),
+      currentPlatform: 'android',
+    ),
+    equals(true),
+  );
   expect(bestItem.osString, isNull);
 }
 
@@ -417,11 +483,12 @@ http.Client setupMockClient({String filePath = 'test/testappcast.xml'}) {
 }
 
 class TestAppcast extends Appcast {
-  TestAppcast(
-      {super.client,
-      super.upgraderOS,
-      required super.osVersion,
-      super.currentAppVersion});
+  TestAppcast({
+    super.client,
+    super.upgraderOS,
+    required super.osVersion,
+    super.currentAppVersion,
+  });
 
   /// Load the Appcast from [file].
   Future<List<AppcastItem>?> parseAppcastItemsFromFile(File file) async {

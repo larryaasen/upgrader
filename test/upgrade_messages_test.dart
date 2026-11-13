@@ -2,7 +2,7 @@
  * Copyright (c) 2020 Larry Aasen. All rights reserved.
  */
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:upgrader/upgrader.dart';
 
@@ -28,11 +28,7 @@ void main() {
           expect(code, 'en');
           expectationMet = true;
           return MaterialApp(
-            home: Material(
-              child: Center(
-                child: widget,
-              ),
-            ),
+            home: Material(child: Center(child: widget)),
           );
         },
       ),
@@ -45,8 +41,10 @@ void main() {
   testWidgets('test UpgraderMessages es', (WidgetTester tester) async {
     final messages = UpgraderMessages(code: 'es');
     expect(messages, isNotNull);
-    expect(messages.body,
-        '¡Una nueva versión de {{appName}} está disponible! La versión {{currentAppStoreVersion}} ya está disponible-usted tiene {{currentInstalledVersion}}.');
+    expect(
+      messages.body,
+      '¡Una nueva versión de {{appName}} está disponible! La versión {{currentAppStoreVersion}} ya está disponible-usted tiene {{currentInstalledVersion}}.',
+    );
     expect(messages.buttonTitleIgnore, 'IGNORAR');
     expect(messages.buttonTitleLater, 'MÁS TARDE');
     expect(messages.buttonTitleUpdate, 'ACTUALIZAR');
@@ -58,8 +56,10 @@ void main() {
   testWidgets('test UpgraderMessages ko', (WidgetTester tester) async {
     final messages = UpgraderMessages(code: 'ko');
     expect(messages, isNotNull);
-    expect(messages.body,
-        '{{appName}}이 새 버전으로 업데이트되었습니다! 최신 버전 {{currentAppStoreVersion}}으로 업그레이드 가능합니다 - 현재 버전 {{currentInstalledVersion}}.');
+    expect(
+      messages.body,
+      '{{appName}}이 새 버전으로 업데이트되었습니다! 최신 버전 {{currentAppStoreVersion}}으로 업그레이드 가능합니다 - 현재 버전 {{currentInstalledVersion}}.',
+    );
     expect(messages.buttonTitleIgnore, '무시');
     expect(messages.buttonTitleLater, '나중에');
     expect(messages.buttonTitleUpdate, '지금 업데이트');
@@ -73,17 +73,29 @@ void main() {
     final en = UpgraderMessages(code: 'en'); // English language code
 
     expect(bb.message(UpgraderMessage.body), en.message(UpgraderMessage.body));
-    expect(bb.message(UpgraderMessage.buttonTitleIgnore),
-        en.message(UpgraderMessage.buttonTitleIgnore));
-    expect(bb.message(UpgraderMessage.buttonTitleLater),
-        en.message(UpgraderMessage.buttonTitleLater));
-    expect(bb.message(UpgraderMessage.buttonTitleUpdate),
-        en.message(UpgraderMessage.buttonTitleUpdate));
     expect(
-        bb.message(UpgraderMessage.prompt), en.message(UpgraderMessage.prompt));
-    expect(bb.message(UpgraderMessage.releaseNotes),
-        en.message(UpgraderMessage.releaseNotes));
+      bb.message(UpgraderMessage.buttonTitleIgnore),
+      en.message(UpgraderMessage.buttonTitleIgnore),
+    );
     expect(
-        bb.message(UpgraderMessage.title), en.message(UpgraderMessage.title));
+      bb.message(UpgraderMessage.buttonTitleLater),
+      en.message(UpgraderMessage.buttonTitleLater),
+    );
+    expect(
+      bb.message(UpgraderMessage.buttonTitleUpdate),
+      en.message(UpgraderMessage.buttonTitleUpdate),
+    );
+    expect(
+      bb.message(UpgraderMessage.prompt),
+      en.message(UpgraderMessage.prompt),
+    );
+    expect(
+      bb.message(UpgraderMessage.releaseNotes),
+      en.message(UpgraderMessage.releaseNotes),
+    );
+    expect(
+      bb.message(UpgraderMessage.title),
+      en.message(UpgraderMessage.title),
+    );
   });
 }

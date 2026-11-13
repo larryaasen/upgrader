@@ -1,6 +1,6 @@
 // Copyright (c) 2024 Larry Aasen. All rights reserved.
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:upgrader/upgrader.dart';
 
 void main() async {
@@ -16,7 +16,9 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
 
   final _upgrader = Upgrader(
-      debugLogging: true, durationUntilAlertAgain: const Duration(seconds: 10));
+    debugLogging: true,
+    durationUntilAlertAgain: const Duration(seconds: 10),
+  );
 
   @override
   Widget build(BuildContext context) {

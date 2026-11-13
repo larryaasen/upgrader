@@ -1,6 +1,6 @@
 // Copyright (c) 2025 Larry Aasen. All rights reserved.
 
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:upgrader/upgrader.dart';
 
 void main() async {

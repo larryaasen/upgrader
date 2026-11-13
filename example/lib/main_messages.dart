@@ -2,9 +2,12 @@
  * Copyright (c) 2020-2023 Larry Aasen. All rights reserved.
  */
 
+import 'package:cupertino_ui/cupertino_ui.dart'
+    show GlobalCupertinoLocalizations;
 import 'package:flutter/foundation.dart' show SynchronousFuture;
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart'
+    show GlobalWidgetsLocalizations;
+import 'package:material_ui/material_ui.dart';
 import 'package:upgrader/upgrader.dart';
 
 void main() async {
@@ -82,8 +85,9 @@ class DemoApp extends StatelessWidget {
       'https://raw.githubusercontent.com/larryaasen/upgrader/main/test/testappcast.xml';
   final upgrader = Upgrader(
     storeController: UpgraderStoreController(
-        onAndroid: () =>
-            UpgraderAppcastStore(appcastURL: appcastURL, osVersion: '0.0.0')),
+      onAndroid: () =>
+          UpgraderAppcastStore(appcastURL: appcastURL, osVersion: '0.0.0'),
+    ),
     debugLogging: true,
     messages: MyUpgraderMessages(code: 'es'),
   );
@@ -93,11 +97,12 @@ class DemoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text(DemoLocalizations.of(context).title)),
-        body: UpgradeAlert(
-          upgrader: upgrader,
-          child: Center(child: Text(DemoLocalizations.of(context).checking)),
-        ));
+      appBar: AppBar(title: Text(DemoLocalizations.of(context).title)),
+      body: UpgradeAlert(
+        upgrader: upgrader,
+        child: Center(child: Text(DemoLocalizations.of(context).checking)),
+      ),
+    );
   }
 }
 
@@ -111,14 +116,8 @@ class DemoLocalizations {
   }
 
   static final Map<String, Map<String, String>> _localizedValues = {
-    'en': {
-      'checking': 'Checking...',
-      'title': 'Upgrader Localization Example',
-    },
-    'es': {
-      'checking': 'Comprobando...',
-      'title': 'Ejemplo Upgrader',
-    },
+    'en': {'checking': 'Checking...', 'title': 'Upgrader Localization Example'},
+    'es': {'checking': 'Comprobando...', 'title': 'Ejemplo Upgrader'},
   };
 
   String get checking {
@@ -136,47 +135,47 @@ class DemoLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) => [
-        'en',
-        'ar',
-        'bn',
-        'da',
-        'es',
-        'et',
-        'fa',
-        'fil',
-        'fr',
-        'de',
-        'el',
-        'he',
-        'hi',
-        'ht',
-        'hu',
-        'id',
-        'it',
-        'ja',
-        'kk',
-        'km',
-        'ko',
-        'ku',
-        'lt',
-        'mn',
-        'nb',
-        'nl',
-        'pt',
-        'pl',
-        'ps',
-        'ro',
-        'ru',
-        'sl',
-        'sv',
-        'ta',
-        'te',
-        'tr',
-        'uk',
-        'uz',
-        'vi',
-        'zh'
-      ].contains(locale.languageCode);
+    'en',
+    'ar',
+    'bn',
+    'da',
+    'es',
+    'et',
+    'fa',
+    'fil',
+    'fr',
+    'de',
+    'el',
+    'he',
+    'hi',
+    'ht',
+    'hu',
+    'id',
+    'it',
+    'ja',
+    'kk',
+    'km',
+    'ko',
+    'ku',
+    'lt',
+    'mn',
+    'nb',
+    'nl',
+    'pt',
+    'pl',
+    'ps',
+    'ro',
+    'ru',
+    'sl',
+    'sv',
+    'ta',
+    'te',
+    'tr',
+    'uk',
+    'uz',
+    'vi',
+    'zh',
+  ].contains(locale.languageCode);
 
   @override
   Future<DemoLocalizations> load(Locale locale) {

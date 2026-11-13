@@ -3,7 +3,7 @@
  */
 
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:http/http.dart' as http;
 import 'package:upgrader/upgrader.dart';
 
@@ -41,11 +41,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Upgrader Example',
       home: Scaffold(
-          appBar: AppBar(title: const Text('Upgrader Appcast Example')),
-          body: UpgradeAlert(
-            upgrader: upgrader,
-            child: const Center(child: Text('Checking...')),
-          )),
+        appBar: AppBar(title: const Text('Upgrader Appcast Example')),
+        body: UpgradeAlert(
+          upgrader: upgrader,
+          child: const Center(child: Text('Checking...')),
+        ),
+      ),
     );
   }
 }

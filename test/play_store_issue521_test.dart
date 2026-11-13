@@ -32,9 +32,12 @@ void main() {
 
     // FIXED: Issue #521 has been fixed! Now it successfully parses regional pages
     // Using alternative pattern "141":[[["1.5.1" for regional Play Store pages
-    expect(version, equals('1.5.1'),
-        reason:
-            'FIXED #521: Version parsing now works for regional Play Store pages using alternative pattern');
+    expect(
+      version,
+      equals('1.5.1'),
+      reason:
+          'FIXED #521: Version parsing now works for regional Play Store pages using alternative pattern',
+    );
   }, skip: false);
 
   test('testing redesignedVersion for issue #521', () async {
@@ -59,9 +62,12 @@ void main() {
 
     // FIXED: Now successfully parses regional pages using alternative pattern
     // Falls back to "141":[[["1.5.1" pattern when main pattern fails
-    expect(version, equals('1.5.1'),
-        reason:
-            'FIXED #521: redesignedVersion now handles regional Play Store pages correctly');
+    expect(
+      version,
+      equals('1.5.1'),
+      reason:
+          'FIXED #521: redesignedVersion now handles regional Play Store pages correctly',
+    );
   }, skip: false);
 
   test('FormatException issue #521 is now fixed', () async {
@@ -85,8 +91,11 @@ void main() {
     final version = playStore.version(document);
 
     // FIXED: Now returns the actual version instead of null
-    expect(version, equals('1.5.1'),
-        reason:
-            'FIXED #521: Version parsing now works correctly for regional Play Store pages');
+    expect(
+      version,
+      equals('1.5.1'),
+      reason:
+          'FIXED #521: Version parsing now works correctly for regional Play Store pages',
+    );
   }, skip: false);
 }

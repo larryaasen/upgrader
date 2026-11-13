@@ -56,7 +56,7 @@ class UpgraderMessages {
 
   /// Provide a [code] to override the system-reported default locale.
   UpgraderMessages({String? code, BuildContext? context})
-      : languageCode = (code ?? findLanguageCode(context: context)) {
+    : languageCode = (code ?? findLanguageCode(context: context)) {
     assert(languageCode.isNotEmpty);
   }
 

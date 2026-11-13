@@ -69,9 +69,11 @@ void main() {
     // Assert
     expect(versionInfo.appStoreListingURL, isNotNull);
     expect(
-        versionInfo.appStoreListingURL!.startsWith(
-            'https://play.google.com/store/apps/details?id=com.kotoko.express&gl=US&hl=en&_cb='),
-        isTrue);
+      versionInfo.appStoreListingURL!.startsWith(
+        'https://play.google.com/store/apps/details?id=com.kotoko.express&gl=US&hl=en&_cb=',
+      ),
+      isTrue,
+    );
     expect(versionInfo.appStoreVersion, Version(1, 23, 0));
     expect(versionInfo.installedVersion, equals(installedVersion));
     expect(versionInfo.isCriticalUpdate, isNull);
@@ -97,7 +99,10 @@ void main() {
     final fakeAppcast = FakeAppcast();
 
     final upgraderAppcastStore = UpgraderAppcastStore(
-        appcastURL: appcastURL, appcast: fakeAppcast, osVersion: '0.0.0');
+      appcastURL: appcastURL,
+      appcast: fakeAppcast,
+      osVersion: '0.0.0',
+    );
 
     // Act
     final versionInfo = await upgraderAppcastStore.getVersionInfo(
@@ -109,7 +114,9 @@ void main() {
 
     // Assert
     expect(
-        versionInfo.appStoreListingURL, equals('http://some.fakewebsite.com'));
+      versionInfo.appStoreListingURL,
+      equals('http://some.fakewebsite.com'),
+    );
     expect(versionInfo.appStoreVersion, equals(Version.parse('1.0.0')));
     expect(versionInfo.installedVersion, installedVersion);
     expect(versionInfo.isCriticalUpdate, isNull);
@@ -134,8 +141,10 @@ void main() {
     final fakeAppcast = FakeAppcast();
 
     // osVersion omitted (null) — should default to Version(0, 0, 0) internally.
-    final upgraderAppcastStore =
-        UpgraderAppcastStore(appcastURL: appcastURL, appcast: fakeAppcast);
+    final upgraderAppcastStore = UpgraderAppcastStore(
+      appcastURL: appcastURL,
+      appcast: fakeAppcast,
+    );
 
     // Act
     final versionInfo = await upgraderAppcastStore.getVersionInfo(
@@ -147,7 +156,9 @@ void main() {
 
     // Assert — same result as when osVersion is explicitly '0.0.0'.
     expect(
-        versionInfo.appStoreListingURL, equals('http://some.fakewebsite.com'));
+      versionInfo.appStoreListingURL,
+      equals('http://some.fakewebsite.com'),
+    );
     expect(versionInfo.appStoreVersion, equals(Version.parse('1.0.0')));
     expect(versionInfo.installedVersion, installedVersion);
     expect(versionInfo.isCriticalUpdate, isNull);

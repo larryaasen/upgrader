@@ -11,7 +11,9 @@ void main() {
       final upgraderOS = UpgraderOS();
       expect(upgraderOS.operatingSystem, upgraderOS.operatingSystem);
       expect(
-          upgraderOS.operatingSystemVersion, upgraderOS.operatingSystemVersion);
+        upgraderOS.operatingSystemVersion,
+        upgraderOS.operatingSystemVersion,
+      );
       expect(upgraderOS.isAndroid, upgraderOS.isAndroid);
       expect(upgraderOS.isFuchsia, upgraderOS.isFuchsia);
       expect(upgraderOS.isIOS, upgraderOS.isIOS);
@@ -143,15 +145,21 @@ void main() {
     test('MockUpgraderOS currentOSType', () async {
       expect(MockUpgraderOS().currentOSType, UpgraderOSType.android);
       expect(
-          MockUpgraderOS(android: true).currentOSType, UpgraderOSType.android);
+        MockUpgraderOS(android: true).currentOSType,
+        UpgraderOSType.android,
+      );
       expect(
-          MockUpgraderOS(fuchsia: true).currentOSType, UpgraderOSType.fuchsia);
+        MockUpgraderOS(fuchsia: true).currentOSType,
+        UpgraderOSType.fuchsia,
+      );
       expect(MockUpgraderOS(ios: true).currentOSType, UpgraderOSType.ios);
       expect(MockUpgraderOS(linux: true).currentOSType, UpgraderOSType.linux);
       expect(MockUpgraderOS(macos: true).currentOSType, UpgraderOSType.macos);
       expect(MockUpgraderOS(web: true).currentOSType, UpgraderOSType.web);
       expect(
-          MockUpgraderOS(windows: true).currentOSType, UpgraderOSType.windows);
+        MockUpgraderOS(windows: true).currentOSType,
+        UpgraderOSType.windows,
+      );
     });
   });
 }

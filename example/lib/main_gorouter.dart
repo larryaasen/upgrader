@@ -1,6 +1,6 @@
 // Copyright (c) 2023 Larry Aasen. All rights reserved.
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:upgrader/upgrader.dart';
 
@@ -17,13 +17,15 @@ final routerConfig = GoRouter(
   initialLocation: '/page2',
   routes: [
     GoRoute(
-        path: '/page1',
-        builder: (BuildContext context, GoRouterState state) =>
-            const HomeScreen('page1')),
+      path: '/page1',
+      builder: (BuildContext context, GoRouterState state) =>
+          const HomeScreen('page1'),
+    ),
     GoRoute(
-        path: '/page2',
-        builder: (BuildContext context, GoRouterState state) =>
-            const HomeScreen('page2')),
+      path: '/page2',
+      builder: (BuildContext context, GoRouterState state) =>
+          const HomeScreen('page2'),
+    ),
   ],
 );
 
