@@ -2,7 +2,7 @@
 
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:upgrader/upgrader.dart';
 
 final dialogKey = GlobalKey(debugLabel: 'gloabl_upgrader_alert_dialog');
@@ -29,11 +29,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Upgrader Example',
       home: UpgradeAlert(
-          dialogKey: dialogKey,
-          child: Scaffold(
-            appBar: AppBar(title: const Text('Upgrader Example')),
-            body: const Center(child: Text('Checking...')),
-          )),
+        dialogKey: dialogKey,
+        child: Scaffold(
+          appBar: AppBar(title: const Text('Upgrader Example')),
+          body: const Center(child: Text('Checking...')),
+        ),
+      ),
     );
   }
 }

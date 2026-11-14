@@ -1,6 +1,6 @@
 // Copyright (c) 2024 Larry Aasen. All rights reserved.
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:upgrader/upgrader.dart';
 
 void main() async {
@@ -41,13 +41,14 @@ class MyUpgradeAlert extends UpgradeAlert {
 class MyUpgradeAlertState extends UpgradeAlertState {
   @override
   Widget alertDialog(
-      Key? key,
-      String title,
-      String message,
-      String? releaseNotes,
-      BuildContext context,
-      bool cupertino,
-      UpgraderMessages messages) {
+    Key? key,
+    String title,
+    String message,
+    String? releaseNotes,
+    BuildContext context,
+    bool cupertino,
+    UpgraderMessages messages,
+  ) {
     return Theme(
       data: ThemeData(
         dialogTheme: const DialogThemeData(
@@ -62,7 +63,14 @@ class MyUpgradeAlertState extends UpgradeAlertState {
         ),
       ),
       child: super.alertDialog(
-          key, title, message, releaseNotes, context, cupertino, messages),
+        key,
+        title,
+        message,
+        releaseNotes,
+        context,
+        cupertino,
+        messages,
+      ),
     );
   }
 }

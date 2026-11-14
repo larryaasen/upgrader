@@ -1,6 +1,6 @@
 // Copyright (c) 2023 Larry Aasen. All rights reserved.
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:upgrader/upgrader.dart';
 
 void main() async {
@@ -19,8 +19,9 @@ class MyApp extends StatelessWidget {
       'https://raw.githubusercontent.com/larryaasen/upgrader/main/test/testappcast_macos.xml';
   final upgrader = Upgrader(
     storeController: UpgraderStoreController(
-        onMacOS: () =>
-            UpgraderAppcastStore(appcastURL: appcastURL, osVersion: '0.0.0')),
+      onMacOS: () =>
+          UpgraderAppcastStore(appcastURL: appcastURL, osVersion: '0.0.0'),
+    ),
     debugLogging: true,
   );
 
@@ -29,11 +30,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Upgrader Example',
       home: UpgradeAlert(
-          upgrader: upgrader,
-          child: Scaffold(
-            appBar: AppBar(title: const Text('Upgrader Example')),
-            body: const Center(child: Text('Checking...')),
-          )),
+        upgrader: upgrader,
+        child: Scaffold(
+          appBar: AppBar(title: const Text('Upgrader Example')),
+          body: const Center(child: Text('Checking...')),
+        ),
+      ),
     );
   }
 }

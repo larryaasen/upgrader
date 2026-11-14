@@ -1,6 +1,6 @@
 // Copyright (c) 2023 Larry Aasen. All rights reserved.
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:upgrader/upgrader.dart';
 
 void main() async {
@@ -22,11 +22,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Upgrader Example',
       home: MyUpgradeAlert(
-          upgrader: upgrader,
-          child: Scaffold(
-            appBar: AppBar(title: const Text('Upgrader Custom Alert Example')),
-            body: const Center(child: Text('Checking...')),
-          )),
+        upgrader: upgrader,
+        child: Scaffold(
+          appBar: AppBar(title: const Text('Upgrader Custom Alert Example')),
+          body: const Center(child: Text('Checking...')),
+        ),
+      ),
     );
   }
 }
@@ -65,33 +66,32 @@ class MyUpgradeAlertState extends UpgradeAlertState {
     required UpgraderMessages messages,
   }) {
     showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            key: key,
-            title: const Text('Update?'),
-            content: const SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  Text('Would you like to update?'),
-                ],
-              ),
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          key: key,
+          title: const Text('Update?'),
+          content: const SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[Text('Would you like to update?')],
             ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('No'),
-                onPressed: () {
-                  onUserIgnored(context, true);
-                },
-              ),
-              TextButton(
-                child: const Text('Yes'),
-                onPressed: () {
-                  onUserUpdated(context, !widget.upgrader.blocked());
-                },
-              ),
-            ],
-          );
-        });
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('No'),
+              onPressed: () {
+                onUserIgnored(context, true);
+              },
+            ),
+            TextButton(
+              child: const Text('Yes'),
+              onPressed: () {
+                onUserUpdated(context, !widget.upgrader.blocked());
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

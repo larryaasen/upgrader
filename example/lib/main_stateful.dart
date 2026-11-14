@@ -2,7 +2,7 @@
  * Copyright (c) 2023 Larry Aasen. All rights reserved.
  */
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:upgrader/upgrader.dart';
 
 void main() async {
@@ -35,10 +35,11 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Upgrader StatefulWidget Example',
       home: UpgradeAlert(
-          child: Scaffold(
-        appBar: AppBar(title: const Text('Upgrader StatefulWidget Example')),
-        body: const Center(child: Text('Checking...')),
-      )),
+        child: Scaffold(
+          appBar: AppBar(title: const Text('Upgrader StatefulWidget Example')),
+          body: const Center(child: Text('Checking...')),
+        ),
+      ),
     );
   }
 }

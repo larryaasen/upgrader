@@ -10,18 +10,24 @@ import 'package:version/version.dart';
 import 'mock_play_store_client.dart';
 
 /// Helper method
-String? pmav(Document response,
-    {String tagRES = r'\[\:mav\:[\s]*(?<version>[^\s]+)[\s]*\]'}) {
-  final mav =
-      PlayStoreSearchAPI().minAppVersion(response, tagRegExpSource: tagRES);
+String? pmav(
+  Document response, {
+  String tagRES = r'\[\:mav\:[\s]*(?<version>[^\s]+)[\s]*\]',
+}) {
+  final mav = PlayStoreSearchAPI().minAppVersion(
+    response,
+    tagRegExpSource: tagRES,
+  );
   return mav?.toString();
 }
 
 void main() {
   test('testing version assumptions', () async {
     expect(() => Version.parse(''), throwsA(isA<FormatException>()));
-    expect(() => Version.parse('Varies with device'),
-        throwsA(isA<FormatException>()));
+    expect(
+      () => Version.parse('Varies with device'),
+      throwsA(isA<FormatException>()),
+    );
 
     expect(Version.parse('1.2.3').toString(), '1.2.3');
     expect(Version.parse('1.2.3+1').toString(), '1.2.3+1');
@@ -41,16 +47,21 @@ void main() {
     expect(playStore.playStorePrefixURL.length, greaterThan(0));
 
     expect(
-        playStore.lookupURLById('com.kotoko.express'),
-        startsWith(
-            'https://play.google.com/store/apps/details?id=com.kotoko.express&gl=US&hl=en&_cb='));
+      playStore.lookupURLById('com.kotoko.express'),
+      startsWith(
+        'https://play.google.com/store/apps/details?id=com.kotoko.express&gl=US&hl=en&_cb=',
+      ),
+    );
   }, skip: false);
 
   test('testing lookupById', () async {
     final client = await MockPlayStoreSearchClient.setupMockClient(
-        verifyHeaders: {'header1': 'value1'});
+      verifyHeaders: {'header1': 'value1'},
+    );
     final playStore = PlayStoreSearchAPI(
-        client: client, clientHeaders: {'header1': 'value1'});
+      client: client,
+      clientHeaders: {'header1': 'value1'},
+    );
     expect(() async => await playStore.lookupById(''), throwsAssertionError);
 
     final response = await playStore.lookupById('com.kotoko.express');
@@ -58,7 +69,9 @@ void main() {
     expect(response, isInstanceOf<Document>());
 
     expect(
-        playStore.releaseNotes(response!), 'Minor updates and improvements.');
+      playStore.releaseNotes(response!),
+      'Minor updates and improvements.',
+    );
     expect(playStore.version(response), '1.23.0');
 
     expect(await playStore.lookupById('com.not.a.valid.application'), isNull);
@@ -67,11 +80,15 @@ void main() {
     expect(document1, isNotNull);
     expect(document1, isInstanceOf<Document>());
 
-    final document2 =
-        await playStore.lookupById('com.testing.test4', country: 'JP');
+    final document2 = await playStore.lookupById(
+      'com.testing.test4',
+      country: 'JP',
+    );
     expect(document2, isNull);
-    final document3 =
-        await playStore.lookupById('com.testing.test4', useCacheBuster: false);
+    final document3 = await playStore.lookupById(
+      'com.testing.test4',
+      useCacheBuster: false,
+    );
     expect(document3, isNotNull);
   }, skip: false);
 
@@ -80,32 +97,57 @@ void main() {
     final playStore = PlayStoreSearchAPI(client: client);
     expect(() => playStore.lookupURLById(''), throwsAssertionError);
     expect(
-        playStore.lookupURLById('com.testing.test1')!.startsWith(
-            'https://play.google.com/store/apps/details?id=com.testing.test1&gl=US&hl=en&_cb=17'),
-        equals(true));
+      playStore
+          .lookupURLById('com.testing.test1')!
+          .startsWith(
+            'https://play.google.com/store/apps/details?id=com.testing.test1&gl=US&hl=en&_cb=17',
+          ),
+      equals(true),
+    );
     expect(
-        playStore.lookupURLById('com.testing.test1', country: null)!.startsWith(
-            'https://play.google.com/store/apps/details?id=com.testing.test1&hl=en&_cb=17'),
-        equals(true));
+      playStore
+          .lookupURLById('com.testing.test1', country: null)!
+          .startsWith(
+            'https://play.google.com/store/apps/details?id=com.testing.test1&hl=en&_cb=17',
+          ),
+      equals(true),
+    );
     expect(
-        playStore.lookupURLById('com.testing.test1', country: '')!.startsWith(
-            'https://play.google.com/store/apps/details?id=com.testing.test1&hl=en&_cb=17'),
-        equals(true));
+      playStore
+          .lookupURLById('com.testing.test1', country: '')!
+          .startsWith(
+            'https://play.google.com/store/apps/details?id=com.testing.test1&hl=en&_cb=17',
+          ),
+      equals(true),
+    );
     expect(
-        playStore.lookupURLById('com.testing.test1', country: 'IN')!.startsWith(
-            'https://play.google.com/store/apps/details?id=com.testing.test1&gl=IN&hl=en&_cb=17'),
-        equals(true));
+      playStore
+          .lookupURLById('com.testing.test1', country: 'IN')!
+          .startsWith(
+            'https://play.google.com/store/apps/details?id=com.testing.test1&gl=IN&hl=en&_cb=17',
+          ),
+      equals(true),
+    );
     expect(
-        playStore.lookupURLById('com.testing.test1', language: 'es')!.startsWith(
-            'https://play.google.com/store/apps/details?id=com.testing.test1&gl=US&hl=es&_cb=17'),
-        equals(true));
+      playStore
+          .lookupURLById('com.testing.test1', language: 'es')!
+          .startsWith(
+            'https://play.google.com/store/apps/details?id=com.testing.test1&gl=US&hl=es&_cb=17',
+          ),
+      equals(true),
+    );
     expect(
-        playStore
-            .lookupURLById('com.testing.test1',
-                country: 'IN', useCacheBuster: false)!
-            .startsWith(
-                'https://play.google.com/store/apps/details?id=com.testing.test1&gl=IN&hl=en'),
-        equals(true));
+      playStore
+          .lookupURLById(
+            'com.testing.test1',
+            country: 'IN',
+            useCacheBuster: false,
+          )!
+          .startsWith(
+            'https://play.google.com/store/apps/details?id=com.testing.test1&gl=IN&hl=en',
+          ),
+      equals(true),
+    );
   }, skip: false);
 
   test('testing lookupById with redesignedVersion', () async {
@@ -117,40 +159,52 @@ void main() {
     expect(response, isInstanceOf<Document>());
 
     expect(
-        playStore.releaseNotes(response!), 'Minor updates and improvements.');
+      playStore.releaseNotes(response!),
+      'Minor updates and improvements.',
+    );
     expect(playStore.version(response), '2.3.0');
     expect(playStore.description(response)?.length, greaterThan(10));
     expect(
-        pmav(response,
-            tagRES:
-                r'\[\Minimum supported app version\:[\s]*(?<version>[^\s]+)[\s]*\]'),
-        '2.0.0');
+      pmav(
+        response,
+        tagRES:
+            r'\[\Minimum supported app version\:[\s]*(?<version>[^\s]+)[\s]*\]',
+      ),
+      '2.0.0',
+    );
 
     expect(await playStore.lookupById('com.not.a.valid.application'), isNull);
   }, skip: false);
 
   test(
-      'testing lookupById with redesignedVersion title with special characters',
-      () async {
-    final client = await MockPlayStoreSearchClient.setupMockClient();
-    final playStore = PlayStoreSearchAPI(client: client);
+    'testing lookupById with redesignedVersion title with special characters',
+    () async {
+      final client = await MockPlayStoreSearchClient.setupMockClient();
+      final playStore = PlayStoreSearchAPI(client: client);
 
-    final response = await playStore.lookupById('com.testing.test8');
-    expect(response, isNotNull);
-    expect(response, isInstanceOf<Document>());
+      final response = await playStore.lookupById('com.testing.test8');
+      expect(response, isNotNull);
+      expect(response, isInstanceOf<Document>());
 
-    expect(
-        playStore.releaseNotes(response!), 'Minor updates and improvements.');
-    expect(playStore.version(response), '2.3.0');
-    expect(playStore.description(response)?.length, greaterThan(10));
-    expect(
-        pmav(response,
-            tagRES:
-                r'\[\Minimum supported app version\:[\s]*(?<version>[^\s]+)[\s]*\]'),
-        '2.0.0');
+      expect(
+        playStore.releaseNotes(response!),
+        'Minor updates and improvements.',
+      );
+      expect(playStore.version(response), '2.3.0');
+      expect(playStore.description(response)?.length, greaterThan(10));
+      expect(
+        pmav(
+          response,
+          tagRES:
+              r'\[\Minimum supported app version\:[\s]*(?<version>[^\s]+)[\s]*\]',
+        ),
+        '2.0.0',
+      );
 
-    expect(await playStore.lookupById('com.not.a.valid.application'), isNull);
-  }, skip: false);
+      expect(await playStore.lookupById('com.not.a.valid.application'), isNull);
+    },
+    skip: false,
+  );
 
   test('testing lookupById with bracket pattern version', () async {
     final client = await MockPlayStoreSearchClient.setupMockClient();
@@ -161,7 +215,9 @@ void main() {
     expect(response, isInstanceOf<Document>());
 
     expect(
-        playStore.releaseNotes(response!), 'Minor updates and improvements.');
+      playStore.releaseNotes(response!),
+      'Minor updates and improvements.',
+    );
     // Version 1.19.2 is extracted using bracket pattern ]]],"X.Y.Z"
     expect(playStore.version(response), '1.19.2');
   }, skip: false);
@@ -175,7 +231,9 @@ void main() {
     expect(response, isInstanceOf<Document>());
 
     expect(
-        playStore.releaseNotes(response!), 'Minor updates and improvements.');
+      playStore.releaseNotes(response!),
+      'Minor updates and improvements.',
+    );
     expect(playStore.version(response), '2.0.2');
     expect(playStore.description(response)?.length, greaterThan(10));
   }, skip: false);
@@ -188,8 +246,10 @@ void main() {
     expect(response, isNotNull);
     expect(response, isInstanceOf<Document>());
 
-    expect(playStore.releaseNotes(response!),
-        'Minor updates and improvements.\nAgain.\nAgain.');
+    expect(
+      playStore.releaseNotes(response!),
+      'Minor updates and improvements.\nAgain.\nAgain.',
+    );
     expect(playStore.version(response), '2.0.2');
     expect(playStore.description(response)?.length, greaterThan(10));
   }, skip: false);
@@ -202,8 +262,10 @@ void main() {
     expect(response, isNotNull);
     expect(response, isInstanceOf<Document>());
 
-    expect(playStore.releaseNotes(response!),
-        'Minor updates and improvements.\nAgain.\nAgain.');
+    expect(
+      playStore.releaseNotes(response!),
+      'Minor updates and improvements.\nAgain.\nAgain.',
+    );
     expect(playStore.version(response), '2.0.2');
     expect(playStore.description(response)?.length, greaterThan(10));
   }, skip: false);
@@ -228,11 +290,13 @@ void main() {
 
   /// Helper method to generate a mock Play Store response containing both
   /// description and release notes sections.
-  Document resReleaseNotes(
-      {required String sectionTitle,
-      required String description,
-      required String releaseNotes}) {
-    final html = '''
+  Document resReleaseNotes({
+    required String sectionTitle,
+    required String description,
+    required String releaseNotes,
+  }) {
+    final html =
+        '''
 <div class="W4P4ne">
   <div class="PHBdkd">
     <div class="DWPxHb" itemprop="description">$description</div>
@@ -265,27 +329,35 @@ void main() {
     expect(pmav(resDesc('test [:mav: 1.2.3]'), tagRES: 'ddd'), isNull);
     expect(pmav(resDesc('test [:mav: a.b.c]')), isNull);
     expect(
-        pmav(resDesc('test [:ddd: 1.2.3]'),
-            tagRES: r'\[\:ddd\:[\s]*(?<version>[^\s]+)[\s]*\]'),
-        '1.2.3');
-    expect(
-        pmav(resDesc('test [Minimum supported app version: 4.5.6+1]'),
-            tagRES:
-                r'\[\Minimum supported app version\:[\s]*(?<version>[^\s]+)[\s]*\]'),
-        '4.5.6+1');
-  });
-
-  test('testing release notes with localized classic Play Store heading',
-      () async {
-    final playStore = PlayStoreSearchAPI();
-    final response = resReleaseNotes(
-      sectionTitle: 'Что нового',
-      description: 'English description fallback.',
-      releaseNotes: 'Русские примечания к выпуску.',
+      pmav(
+        resDesc('test [:ddd: 1.2.3]'),
+        tagRES: r'\[\:ddd\:[\s]*(?<version>[^\s]+)[\s]*\]',
+      ),
+      '1.2.3',
     );
-
-    expect(playStore.releaseNotes(response), 'Русские примечания к выпуску.');
+    expect(
+      pmav(
+        resDesc('test [Minimum supported app version: 4.5.6+1]'),
+        tagRES:
+            r'\[\Minimum supported app version\:[\s]*(?<version>[^\s]+)[\s]*\]',
+      ),
+      '4.5.6+1',
+    );
   });
+
+  test(
+    'testing release notes with localized classic Play Store heading',
+    () async {
+      final playStore = PlayStoreSearchAPI();
+      final response = resReleaseNotes(
+        sectionTitle: 'Что нового',
+        description: 'English description fallback.',
+        releaseNotes: 'Русские примечания к выпуску.',
+      );
+
+      expect(playStore.releaseNotes(response), 'Русские примечания к выпуску.');
+    },
+  );
 
   test('testing special characters', () async {
     const msg = 'McDonald\u0027s';

@@ -1,6 +1,6 @@
 // Copyright (c) 2023 Larry Aasen. All rights reserved.
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:upgrader/upgrader.dart';
 
 void main() async {
@@ -20,10 +20,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Upgrader Example - Multiple',
       home: UpgradeAlert(
-          child: Scaffold(
-        appBar: AppBar(title: const Text('Upgrader Example - Multiple')),
-        body: Center(child: UpgradeAlert(child: const Text('Checking...'))),
-      )),
+        child: Scaffold(
+          appBar: AppBar(title: const Text('Upgrader Example - Multiple')),
+          body: Center(child: UpgradeAlert(child: const Text('Checking...'))),
+        ),
+      ),
     );
   }
 }

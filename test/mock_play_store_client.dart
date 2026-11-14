@@ -23,8 +23,9 @@ final _filenames = {
 // Create a MockClient using the Mock class provided by the Mockito package.
 // We will create a new instances of this class in each test.
 class MockPlayStoreSearchClient {
-  static Future<http.Client> setupMockClient(
-      {Map<String, String>? verifyHeaders}) async {
+  static Future<http.Client> setupMockClient({
+    Map<String, String>? verifyHeaders,
+  }) async {
     final client = MockClient((http.Request request) async {
       var url = request.url.toString();
 
@@ -44,9 +45,13 @@ class MockPlayStoreSearchClient {
               PlayStoreSearchAPI().lookupURLById(id, useCacheBuster: false)) {
             final testPage = await getTestPage(filename);
             final contents = testPage.readAsStringSync();
-            return http.Response(contents, 200, headers: {
-              HttpHeaders.contentTypeHeader: 'text/html; charset=utf-8',
-            });
+            return http.Response(
+              contents,
+              200,
+              headers: {
+                HttpHeaders.contentTypeHeader: 'text/html; charset=utf-8',
+              },
+            );
           }
         }
       }

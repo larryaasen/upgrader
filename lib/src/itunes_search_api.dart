@@ -31,26 +31,32 @@ class ITunesSearchAPI {
   /// Example: look up Google Maps iOS App:
   /// ```lookupURLByBundleId('com.google.Maps');```
   /// ```lookupURLByBundleId('com.google.Maps', country: 'FR');```
-  Future<Map?> lookupByBundleId(String bundleId,
-      {String? country = 'US',
-      String? language = 'en',
-      bool useCacheBuster = true}) async {
+  Future<Map?> lookupByBundleId(
+    String bundleId, {
+    String? country = 'US',
+    String? language = 'en',
+    bool useCacheBuster = true,
+  }) async {
     assert(bundleId.isNotEmpty);
     if (bundleId.isEmpty) {
       return null;
     }
 
-    final url = lookupURLByBundleId(bundleId,
-        country: country ?? '',
-        language: language ?? '',
-        useCacheBuster: useCacheBuster)!;
+    final url = lookupURLByBundleId(
+      bundleId,
+      country: country ?? '',
+      language: language ?? '',
+      useCacheBuster: useCacheBuster,
+    )!;
     if (debugLogging) {
       print('upgrader: download: $url');
     }
 
     try {
-      final response =
-          await client!.get(Uri.parse(url), headers: clientHeaders);
+      final response = await client!.get(
+        Uri.parse(url),
+        headers: clientHeaders,
+      );
       if (debugLogging) {
         print('upgrader: response statusCode: ${response.statusCode}');
       }
@@ -69,20 +75,28 @@ class ITunesSearchAPI {
   /// Example: look up Google Maps iOS App:
   /// ```lookupURLById('585027354');```
   /// ```lookupURLById('585027354', country: 'FR');```
-  Future<Map?> lookupById(String id,
-      {String country = 'US', bool useCacheBuster = true}) async {
+  Future<Map?> lookupById(
+    String id, {
+    String country = 'US',
+    bool useCacheBuster = true,
+  }) async {
     if (id.isEmpty) {
       return null;
     }
 
-    final url =
-        lookupURLById(id, country: country, useCacheBuster: useCacheBuster)!;
+    final url = lookupURLById(
+      id,
+      country: country,
+      useCacheBuster: useCacheBuster,
+    )!;
     if (debugLogging) {
       print('upgrader: download: $url');
     }
     try {
-      final response =
-          await client!.get(Uri.parse(url), headers: clientHeaders);
+      final response = await client!.get(
+        Uri.parse(url),
+        headers: clientHeaders,
+      );
       final decodedResults = _decodeResults(response.body);
       return decodedResults;
     } catch (e) {
@@ -97,10 +111,12 @@ class ITunesSearchAPI {
   /// Example: look up Google Maps iOS App:
   /// ```lookupURLByBundleId('com.google.Maps');```
   /// ```lookupURLByBundleId('com.google.Maps', country: 'FR');```
-  String? lookupURLByBundleId(String bundleId,
-      {String country = 'US',
-      String language = 'en',
-      bool useCacheBuster = true}) {
+  String? lookupURLByBundleId(
+    String bundleId, {
+    String country = 'US',
+    String language = 'en',
+    bool useCacheBuster = true,
+  }) {
     if (bundleId.isEmpty) {
       return null;
     }
@@ -108,7 +124,7 @@ class ITunesSearchAPI {
     return lookupURLByQSP({
       'bundleId': bundleId,
       'country': country.toUpperCase(),
-      'lang': language
+      'lang': language,
     }, useCacheBuster: useCacheBuster);
   }
 
@@ -116,19 +132,26 @@ class ITunesSearchAPI {
   /// Example: look up Jack Johnson by iTunes ID: ```lookupURLById('909253');```
   /// Example: look up Google Maps iOS App: ```lookupURLById('585027354');```
   /// Example: look up Google Maps iOS App: ```lookupURLById('585027354', country: 'FR');```
-  String? lookupURLById(String id,
-      {String country = 'US', bool useCacheBuster = true}) {
+  String? lookupURLById(
+    String id, {
+    String country = 'US',
+    bool useCacheBuster = true,
+  }) {
     if (id.isEmpty) {
       return null;
     }
 
-    return lookupURLByQSP({'id': id, 'country': country.toUpperCase()},
-        useCacheBuster: useCacheBuster);
+    return lookupURLByQSP({
+      'id': id,
+      'country': country.toUpperCase(),
+    }, useCacheBuster: useCacheBuster);
   }
 
   /// Look up URL by QSP.
-  String? lookupURLByQSP(Map<String, String?> qsp,
-      {bool useCacheBuster = true}) {
+  String? lookupURLByQSP(
+    Map<String, String?> qsp, {
+    bool useCacheBuster = true,
+  }) {
     if (qsp.isEmpty) {
       return null;
     }
@@ -151,7 +174,8 @@ class ITunesSearchAPI {
         if (resultCount == 0) {
           if (debugLogging) {
             print(
-                'upgrader.ITunesSearchAPI: results are empty: $decodedResults');
+              'upgrader.ITunesSearchAPI: results are empty: $decodedResults',
+            );
           }
           return null;
         }
@@ -223,7 +247,8 @@ extension ITunesResults on ITunesSearchAPI {
           } on Exception catch (e) {
             if (debugLogging) {
               print(
-                  'upgrader: ITunesResults.minAppVersion: $tagName error: $e');
+                'upgrader: ITunesResults.minAppVersion: $tagName error: $e',
+              );
             }
           }
         }

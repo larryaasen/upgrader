@@ -1,7 +1,10 @@
 // Copyright (c) 2023 Larry Aasen. All rights reserved.
 
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:cupertino_ui/cupertino_ui.dart'
+    show GlobalCupertinoLocalizations;
+import 'package:flutter_localizations/flutter_localizations.dart'
+    show GlobalWidgetsLocalizations;
+import 'package:material_ui/material_ui.dart';
 import 'package:upgrader/upgrader.dart';
 
 void main() async {
@@ -31,10 +34,11 @@ class MyApp extends StatelessWidget {
       ],
       title: 'Upgrader Left to Right Example',
       home: UpgradeAlert(
-          child: Scaffold(
-        appBar: AppBar(title: const Text('Upgrader Left to Right Example')),
-        body: const Center(child: Text('Checking...')),
-      )),
+        child: Scaffold(
+          appBar: AppBar(title: const Text('Upgrader Left to Right Example')),
+          body: const Center(child: Text('Checking...')),
+        ),
+      ),
     );
   }
 }

@@ -6,17 +6,10 @@ import 'package:flutter/foundation.dart';
 
 import 'os/os_stub.dart'
     if (dart.library.io) 'os/os_io.dart'
-    if (dart.library.js_interop) 'os/os_web.dart' as platform;
+    if (dart.library.js_interop) 'os/os_web.dart'
+    as platform;
 
-enum UpgraderOSType {
-  android,
-  fuchsia,
-  ios,
-  linux,
-  macos,
-  web,
-  windows,
-}
+enum UpgraderOSType { android, fuchsia, ios, linux, macos, web, windows }
 
 /// A class that indicates which OS this code is running on.
 class UpgraderOS {
@@ -28,18 +21,18 @@ class UpgraderOS {
     _current = isAndroid
         ? 'android'
         : isFuchsia
-            ? 'fuchsia'
-            : isIOS
-                ? 'ios'
-                : isLinux
-                    ? 'linux'
-                    : isMacOS
-                        ? 'macos'
-                        : isWeb
-                            ? 'web'
-                            : isWindows
-                                ? 'windows'
-                                : '';
+        ? 'fuchsia'
+        : isIOS
+        ? 'ios'
+        : isLinux
+        ? 'linux'
+        : isMacOS
+        ? 'macos'
+        : isWeb
+        ? 'web'
+        : isWindows
+        ? 'windows'
+        : '';
     return _current ?? '';
   }
 
@@ -48,18 +41,18 @@ class UpgraderOS {
     _currentOSType = isAndroid
         ? UpgraderOSType.android
         : isFuchsia
-            ? UpgraderOSType.fuchsia
-            : isIOS
-                ? UpgraderOSType.ios
-                : isLinux
-                    ? UpgraderOSType.linux
-                    : isMacOS
-                        ? UpgraderOSType.macos
-                        : isWeb
-                            ? UpgraderOSType.web
-                            : isWindows
-                                ? UpgraderOSType.windows
-                                : UpgraderOSType.android;
+        ? UpgraderOSType.fuchsia
+        : isIOS
+        ? UpgraderOSType.ios
+        : isLinux
+        ? UpgraderOSType.linux
+        : isMacOS
+        ? UpgraderOSType.macos
+        : isWeb
+        ? UpgraderOSType.web
+        : isWindows
+        ? UpgraderOSType.windows
+        : UpgraderOSType.android;
     return _currentOSType ?? UpgraderOSType.android;
   }
 

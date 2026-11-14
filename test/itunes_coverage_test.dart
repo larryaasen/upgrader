@@ -6,17 +6,19 @@ import 'package:http/testing.dart';
 import 'package:http/http.dart' as http;
 
 void main() {
-  test('ITunesSearchAPI lookupByBundleId exception with debugLogging',
-      () async {
-    final iTunes = ITunesSearchAPI();
-    iTunes.debugLogging = true;
-    iTunes.client = MockClient((request) async {
-      throw Exception('Mock error');
-    });
+  test(
+    'ITunesSearchAPI lookupByBundleId exception with debugLogging',
+    () async {
+      final iTunes = ITunesSearchAPI();
+      iTunes.debugLogging = true;
+      iTunes.client = MockClient((request) async {
+        throw Exception('Mock error');
+      });
 
-    final response = await iTunes.lookupByBundleId('com.test.app');
-    expect(response, isNull);
-  });
+      final response = await iTunes.lookupByBundleId('com.test.app');
+      expect(response, isNull);
+    },
+  );
 
   test('ITunesSearchAPI lookupById exception with debugLogging', () async {
     final iTunes = ITunesSearchAPI();
@@ -61,18 +63,20 @@ void main() {
     expect(iTunes.minAppVersion(malformedResponse), isNull);
   });
 
-  test('ITunesResults minAppVersion invalid version string with debugLogging',
-      () {
-    final iTunes = ITunesSearchAPI();
-    iTunes.debugLogging = true;
-    final Map response = {
-      'results': [
-        {'description': '[:mav: invalid-version]'}
-      ]
-    };
+  test(
+    'ITunesResults minAppVersion invalid version string with debugLogging',
+    () {
+      final iTunes = ITunesSearchAPI();
+      iTunes.debugLogging = true;
+      final Map response = {
+        'results': [
+          {'description': '[:mav: invalid-version]'},
+        ],
+      };
 
-    expect(iTunes.minAppVersion(response), isNull);
-  });
+      expect(iTunes.minAppVersion(response), isNull);
+    },
+  );
 
   test('ITunesSearchAPI lookup debug logging', () async {
     final iTunes = ITunesSearchAPI();

@@ -2,7 +2,7 @@
  * Copyright (c) 2021 Larry Aasen. All rights reserved.
  */
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class AlertStyleWidget extends StatelessWidget {
   /// The (optional) content of the dialog is displayed in the center of the
@@ -45,33 +45,41 @@ class AlertStyleWidget extends StatelessWidget {
     final children = <Widget>[];
     const semanticLabel = 'semanticLabel';
     const EdgeInsetsGeometry? titlePadding = null;
-    const EdgeInsetsGeometry contentPadding =
-        EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 24.0);
+    const EdgeInsetsGeometry contentPadding = EdgeInsets.fromLTRB(
+      24.0,
+      20.0,
+      24.0,
+      24.0,
+    );
 
     var label = semanticLabel;
 
     if (title != null) {
-      children.add(Padding(
-        padding:
-            titlePadding ?? const EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 0.0),
-        child: DefaultTextStyle(
-          style: Theme.of(context).textTheme.titleLarge!,
-          child: Semantics(namesRoute: true, child: title),
+      children.add(
+        Padding(
+          padding:
+              titlePadding ?? const EdgeInsets.fromLTRB(24.0, 24.0, 24.0, 0.0),
+          child: DefaultTextStyle(
+            style: Theme.of(context).textTheme.titleLarge!,
+            child: Semantics(namesRoute: true, child: title),
+          ),
         ),
-      ));
+      );
     } else {
       label = 'Alert';
     }
 
-    children.add(Flexible(
-      child: Padding(
-        padding: contentPadding,
-        child: DefaultTextStyle(
-          style: Theme.of(context).textTheme.titleMedium!,
-          child: content,
+    children.add(
+      Flexible(
+        child: Padding(
+          padding: contentPadding,
+          child: DefaultTextStyle(
+            style: Theme.of(context).textTheme.titleMedium!,
+            child: content,
+          ),
         ),
       ),
-    ));
+    );
 
     children.add(OverflowBar(children: actions));
 

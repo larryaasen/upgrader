@@ -15,62 +15,74 @@ import 'package:html/parser.dart';
 import 'package:upgrader/upgrader.dart';
 
 void main() {
-  test('Egypt Play Store page version parsing should not extract "Shopping"',
-      () async {
-    // Load the Egypt Play Store HTML that causes the issue
-    final testFile = File('test/test_play_store_page_issue520.txt');
-    final exists = testFile.existsSync();
+  test(
+    'Egypt Play Store page version parsing should not extract "Shopping"',
+    () async {
+      // Load the Egypt Play Store HTML that causes the issue
+      final testFile = File('test/test_play_store_page_issue520.txt');
+      final exists = testFile.existsSync();
 
-    if (!exists) {
-      print('Test file not found: test/test_play_store_page_issue520.txt');
-      return;
-    }
+      if (!exists) {
+        print('Test file not found: test/test_play_store_page_issue520.txt');
+        return;
+      }
 
-    final contents = testFile.readAsStringSync();
-    final document = parse(contents);
+      final contents = testFile.readAsStringSync();
+      final document = parse(contents);
 
-    final playStore = PlayStoreSearchAPI();
-    playStore.debugLogging = true;
+      final playStore = PlayStoreSearchAPI();
+      playStore.debugLogging = true;
 
-    // Try to parse version from Egypt Play Store page
-    final version = playStore.version(document);
+      // Try to parse version from Egypt Play Store page
+      final version = playStore.version(document);
 
-    print('Parsed version: $version');
+      print('Parsed version: $version');
 
-    // The actual version in the Play Store page is "1.0.11"
-    // The bug currently extracts "Shopping" which fails Version.parse()
-    // resulting in null
-    expect(version, equals('1.0.11'),
+      // The actual version in the Play Store page is "1.0.11"
+      // The bug currently extracts "Shopping" which fails Version.parse()
+      // resulting in null
+      expect(
+        version,
+        equals('1.0.11'),
         reason:
-            'Should correctly parse version "1.0.11" from Egypt Play Store page, not extract "Shopping"');
-  }, skip: false);
+            'Should correctly parse version "1.0.11" from Egypt Play Store page, not extract "Shopping"',
+      );
+    },
+    skip: false,
+  );
 
-  test('redesignedVersion should handle Egypt Play Store page correctly',
-      () async {
-    final testFile = File('test/test_play_store_page_issue520.txt');
-    final exists = testFile.existsSync();
+  test(
+    'redesignedVersion should handle Egypt Play Store page correctly',
+    () async {
+      final testFile = File('test/test_play_store_page_issue520.txt');
+      final exists = testFile.existsSync();
 
-    if (!exists) {
-      print('Test file not found: test/test_play_store_page_issue520.txt');
-      return;
-    }
+      if (!exists) {
+        print('Test file not found: test/test_play_store_page_issue520.txt');
+        return;
+      }
 
-    final contents = testFile.readAsStringSync();
-    final document = parse(contents);
+      final contents = testFile.readAsStringSync();
+      final document = parse(contents);
 
-    final playStore = PlayStoreSearchAPI();
-    playStore.debugLogging = true;
+      final playStore = PlayStoreSearchAPI();
+      playStore.debugLogging = true;
 
-    // Directly test the redesignedVersion method
-    final version = playStore.redesignedVersion(document);
+      // Directly test the redesignedVersion method
+      final version = playStore.redesignedVersion(document);
 
-    print('Redesigned version: $version');
+      print('Redesigned version: $version');
 
-    // Should extract the correct version, not "Shopping"
-    expect(version, equals('1.0.11'),
+      // Should extract the correct version, not "Shopping"
+      expect(
+        version,
+        equals('1.0.11'),
         reason:
-            'redesignedVersion should extract "1.0.11", not "Shopping" or other non-version strings');
-  }, skip: false);
+            'redesignedVersion should extract "1.0.11", not "Shopping" or other non-version strings',
+      );
+    },
+    skip: false,
+  );
 
   test('version parsing should not return null for valid Egypt page', () async {
     final testFile = File('test/test_play_store_page_issue520.txt');
@@ -88,12 +100,18 @@ void main() {
     final version = playStore.version(document);
 
     // Version should not be null when a valid version exists in the page
-    expect(version, isNotNull,
-        reason:
-            'Version should not be null for Egypt Play Store page with valid version data');
+    expect(
+      version,
+      isNotNull,
+      reason:
+          'Version should not be null for Egypt Play Store page with valid version data',
+    );
 
     // And it should be a valid version format
-    expect(version, matches(RegExp(r'^\d+\.\d+\.\d+$')),
-        reason: 'Version should match semantic version format X.Y.Z');
+    expect(
+      version,
+      matches(RegExp(r'^\d+\.\d+\.\d+$')),
+      reason: 'Version should match semantic version format X.Y.Z',
+    );
   }, skip: false);
 }

@@ -2,7 +2,7 @@
  * Copyright (c) 2021-2024 Larry Aasen. All rights reserved.
  */
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import 'alert_style_widget.dart';
 import 'upgrade_messages.dart';
@@ -89,26 +89,29 @@ class UpgradeCardState extends State<UpgradeCard> {
     }
 
     return StreamBuilder(
-        initialData: widget.upgrader.state,
-        stream: widget.upgrader.stateStream,
-        builder: (BuildContext context, AsyncSnapshot<UpgraderState> snapshot) {
-          if ((snapshot.connectionState == ConnectionState.waiting ||
-                  snapshot.connectionState == ConnectionState.active) &&
-              snapshot.data != null) {
-            final upgraderState = snapshot.data!;
-            if (upgraderState.versionInfo != null) {
-              if (widget.upgrader.shouldDisplayUpgrade()) {
-                return buildUpgradeCard(
-                    context, const Key('upgrader_alert_card'));
-              } else {
-                if (widget.upgrader.state.debugLogging) {
-                  print('upgrader: UpgradeCard will not display');
-                }
+      initialData: widget.upgrader.state,
+      stream: widget.upgrader.stateStream,
+      builder: (BuildContext context, AsyncSnapshot<UpgraderState> snapshot) {
+        if ((snapshot.connectionState == ConnectionState.waiting ||
+                snapshot.connectionState == ConnectionState.active) &&
+            snapshot.data != null) {
+          final upgraderState = snapshot.data!;
+          if (upgraderState.versionInfo != null) {
+            if (widget.upgrader.shouldDisplayUpgrade()) {
+              return buildUpgradeCard(
+                context,
+                const Key('upgrader_alert_card'),
+              );
+            } else {
+              if (widget.upgrader.state.debugLogging) {
+                print('upgrader: UpgradeCard will not display');
               }
             }
           }
-          return const SizedBox.shrink();
-        });
+        }
+        return const SizedBox.shrink();
+      },
+    );
   }
 
   /// Build the UpgradeCard widget.
@@ -123,7 +126,8 @@ class UpgradeCardState extends State<UpgradeCard> {
       print('upgrader: UpgradeCard: showDialog title: $title');
       print('upgrader: UpgradeCard: showDialog message: $message');
       print(
-          'upgrader: UpgradeCard: shouldDisplayReleaseNotes: $shouldDisplayReleaseNotes');
+        'upgrader: UpgradeCard: shouldDisplayReleaseNotes: $shouldDisplayReleaseNotes',
+      );
 
       print('upgrader: UpgradeCard: showDialog releaseNotes: $releaseNotes');
     }
@@ -131,20 +135,23 @@ class UpgradeCardState extends State<UpgradeCard> {
     Widget? notes;
     if (shouldDisplayReleaseNotes && releaseNotes != null) {
       notes = Padding(
-          padding: const EdgeInsets.only(top: 15.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(appMessages.message(UpgraderMessage.releaseNotes) ?? '',
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
-              Text(
-                releaseNotes,
-                maxLines: widget.maxLines,
-                overflow: widget.overflow,
-              ),
-            ],
-          ));
+        padding: const EdgeInsets.only(top: 15.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              appMessages.message(UpgraderMessage.releaseNotes) ?? '',
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Text(
+              releaseNotes,
+              maxLines: widget.maxLines,
+              overflow: widget.overflow,
+            ),
+          ],
+        ),
+      );
     }
 
     return Card(
@@ -163,7 +170,7 @@ class UpgradeCardState extends State<UpgradeCard> {
                 padding: const EdgeInsets.only(top: 15.0),
                 child: Text(appMessages.message(UpgraderMessage.prompt) ?? ''),
               ),
-            if (notes != null) notes,
+            ?notes,
           ],
         ),
         actions: actions(appMessages),
@@ -180,35 +187,41 @@ class UpgradeCardState extends State<UpgradeCard> {
     return <Widget>[
       if (showIgnore)
         TextButton(
-            child: Text(
-                appMessages.message(UpgraderMessage.buttonTitleIgnore) ?? ''),
-            onPressed: () {
-              // Save the date/time as the last time alerted.
-              widget.upgrader.saveLastAlerted();
-
-              onUserIgnored();
-              forceRebuild();
-            }),
-      if (showLater)
-        TextButton(
-            child: Text(
-                appMessages.message(UpgraderMessage.buttonTitleLater) ?? ''),
-            onPressed: () {
-              // Save the date/time as the last time alerted.
-              widget.upgrader.saveLastAlerted();
-
-              onUserLater();
-              forceRebuild();
-            }),
-      TextButton(
           child: Text(
-              appMessages.message(UpgraderMessage.buttonTitleUpdate) ?? ''),
+            appMessages.message(UpgraderMessage.buttonTitleIgnore) ?? '',
+          ),
           onPressed: () {
             // Save the date/time as the last time alerted.
             widget.upgrader.saveLastAlerted();
 
-            onUserUpdated();
-          }),
+            onUserIgnored();
+            forceRebuild();
+          },
+        ),
+      if (showLater)
+        TextButton(
+          child: Text(
+            appMessages.message(UpgraderMessage.buttonTitleLater) ?? '',
+          ),
+          onPressed: () {
+            // Save the date/time as the last time alerted.
+            widget.upgrader.saveLastAlerted();
+
+            onUserLater();
+            forceRebuild();
+          },
+        ),
+      TextButton(
+        child: Text(
+          appMessages.message(UpgraderMessage.buttonTitleUpdate) ?? '',
+        ),
+        onPressed: () {
+          // Save the date/time as the last time alerted.
+          widget.upgrader.saveLastAlerted();
+
+          onUserUpdated();
+        },
+      ),
     ];
   }
 

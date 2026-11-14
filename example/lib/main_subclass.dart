@@ -2,7 +2,7 @@
  * Copyright (c) 2019-2024 Larry Aasen. All rights reserved.
  */
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:upgrader/upgrader.dart';
 
 void main() async {
@@ -24,11 +24,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Upgrader Subclass Example',
       home: Scaffold(
-          appBar: AppBar(title: const Text('Upgrader Subclass Example')),
-          body: UpgradeAlert(
-            upgrader: _upgrader,
-            child: const Center(child: Text('Checking...')),
-          )),
+        appBar: AppBar(title: const Text('Upgrader Subclass Example')),
+        body: UpgradeAlert(
+          upgrader: _upgrader,
+          child: const Center(child: Text('Checking...')),
+        ),
+      ),
     );
   }
 }

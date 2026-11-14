@@ -33,14 +33,14 @@ class Appcast {
   /// The current app version, used to check [AppcastItem.minimumUpdateVersion].
   final Version? currentAppVersion;
 
-  Appcast(
-      {http.Client? client,
-      this.clientHeaders,
-      UpgraderOS? upgraderOS,
-      required this.osVersion,
-      this.currentAppVersion})
-      : client = client ?? http.Client(),
-        upgraderOS = upgraderOS ?? UpgraderOS();
+  Appcast({
+    http.Client? client,
+    this.clientHeaders,
+    UpgraderOS? upgraderOS,
+    required this.osVersion,
+    this.currentAppVersion,
+  }) : client = client ?? http.Client(),
+       upgraderOS = upgraderOS ?? UpgraderOS();
 
   /// The items in the Appcast.
   List<AppcastItem>? items;
@@ -54,9 +54,10 @@ class Appcast {
     AppcastItem? bestItem;
     items!.forEach((AppcastItem item) {
       if (item.hostSupportsItem(
-              osVersion: osVersion,
-              currentPlatform: upgraderOS.current,
-              currentAppVersion: currentAppVersion) &&
+            osVersion: osVersion,
+            currentPlatform: upgraderOS.current,
+            currentAppVersion: currentAppVersion,
+          ) &&
           item.isCriticalUpdate) {
         if (bestItem == null) {
           bestItem = item;
@@ -86,9 +87,10 @@ class Appcast {
     AppcastItem? bestItem;
     items!.forEach((AppcastItem item) {
       if (item.hostSupportsItem(
-          osVersion: osVersion,
-          currentPlatform: upgraderOS.current,
-          currentAppVersion: currentAppVersion)) {
+        osVersion: osVersion,
+        currentPlatform: upgraderOS.current,
+        currentAppVersion: currentAppVersion,
+      )) {
         if (bestItem == null) {
           bestItem = item;
         } else {
@@ -111,8 +113,10 @@ class Appcast {
   Future<List<AppcastItem>?> parseAppcastItemsFromUri(String appCastURL) async {
     http.Response response;
     try {
-      response =
-          await client.get(Uri.parse(appCastURL), headers: clientHeaders);
+      response = await client.get(
+        Uri.parse(appCastURL),
+        headers: clientHeaders,
+      );
     } catch (e) {
       print('upgrader: parseAppcastItemsFromUri exception: $e');
       return null;
@@ -286,10 +290,11 @@ class AppcastItem {
 
   /// Does the host support this item? If so is [osVersion] supported?
   /// Optionally pass [currentAppVersion] to check [minimumUpdateVersion].
-  bool hostSupportsItem(
-      {required Version osVersion,
-      required String currentPlatform,
-      Version? currentAppVersion}) {
+  bool hostSupportsItem({
+    required Version osVersion,
+    required String currentPlatform,
+    Version? currentAppVersion,
+  }) {
     assert(currentPlatform.isNotEmpty);
     bool supported = true;
     if (osString != null && osString!.isNotEmpty) {

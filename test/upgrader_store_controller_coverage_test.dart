@@ -44,33 +44,38 @@ void main() {
   });
 
   group('UpgraderAppStore', () {
-    test('getVersionInfo handles invalid version string with debugLogging',
-        () async {
-      final store = UpgraderAppStore();
-      final client = MockClient((request) async {
-        return http.Response(
+    test(
+      'getVersionInfo handles invalid version string with debugLogging',
+      () async {
+        final store = UpgraderAppStore();
+        final client = MockClient((request) async {
+          return http.Response(
             '{"resultCount": 1, "results": [{"version": "invalid", "bundleId": "com.example.app"}]}',
-            200);
-      });
+            200,
+          );
+        });
 
-      final state = UpgraderState(
-        client: client,
-        debugLogging: true,
-        packageInfo: PackageInfo(
+        final state = UpgraderState(
+          client: client,
+          debugLogging: true,
+          packageInfo: PackageInfo(
             appName: 'App',
             packageName: 'com.example.app',
             version: '1.0.0',
-            buildNumber: '1'),
-        upgraderOS: MockUpgraderOS(ios: true),
-      );
+            buildNumber: '1',
+          ),
+          upgraderOS: MockUpgraderOS(ios: true),
+        );
 
-      final info = await store.getVersionInfo(
+        final info = await store.getVersionInfo(
           state: state,
           installedVersion: Version.parse('1.0.0'),
           country: 'US',
-          language: 'en');
+          language: 'en',
+        );
 
-      expect(info.appStoreVersion, isNull);
-    });
+        expect(info.appStoreVersion, isNull);
+      },
+    );
   });
 }

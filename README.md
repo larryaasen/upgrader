@@ -35,6 +35,16 @@ will become more likely that users on other app stores need to be nagged about u
 
 **Note:** This package relies on scraping public Play Store pages for Android. It does *not* use the native Android In-App Updates API or Huawei AppGallery API.
 
+### Requirements
+
+Version 14 and later require Flutter 3.44.0 or later. The widgets are built with the standalone
+[material_ui](https://pub.dev/packages/material_ui) and [cupertino_ui](https://pub.dev/packages/cupertino_ui)
+packages, which replace `package:flutter/material.dart` and `package:flutter/cupertino.dart` (deprecated in
+Flutter 3.47), so your app should use `MaterialApp` or `CupertinoApp` from those packages. To migrate an app's
+imports, run `dart fix --apply --code=migrate_design_widgets`. Until an app is migrated, adding
+`localizationsDelegates: GlobalMaterialLocalizations.delegates` (from `material_ui`) to its `MaterialApp` lets the
+upgrader widgets build, using the default theme. For older versions of Flutter, use upgrader 13.x.
+
 ## Widgets
 The widgets come in two flavors: alert or card. The [UpgradeAlert](#alert-example) widget is used to display the
 popup alert prompt, and the [UpgradeCard](#card-example) widget is used to display the inline material design card.
@@ -52,6 +62,9 @@ Tapping the UPDATE NOW button takes the user to the App Store (iOS) or Google Pl
 Just wrap your home widget in the `UpgradeAlert` widget, and it will handle the rest. Make sure `UpgradeAlert`
 is below `MaterialApp` in the widget tree.
 ```dart
+import 'package:material_ui/material_ui.dart';
+import 'package:upgrader/upgrader.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());

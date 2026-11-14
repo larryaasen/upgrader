@@ -2,7 +2,7 @@
 
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:upgrader/upgrader.dart';
 
 void main() async {
@@ -56,16 +56,13 @@ class _MyAppState extends State<MyApp> {
   }
 
   Widget get _simpleCard => const Card(
-        child: SizedBox(
-          width: 200,
-          height: 50,
-          child: Center(child: Text('Card')),
-        ),
-      );
+    child: SizedBox(width: 200, height: 50, child: Center(child: Text('Card'))),
+  );
 
   void _updateMessages() {
-    _upgrader
-        .updateState(_upgrader.state.copyWith(messages: MyUpgraderMessages()));
+    _upgrader.updateState(
+      _upgrader.state.copyWith(messages: MyUpgraderMessages()),
+    );
   }
 }
 
