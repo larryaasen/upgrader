@@ -1,10 +1,9 @@
 ## 14.0.0
 
+- BREAKING: Added support for Flutter 3.50.0 and Dart 3.12.0.
 - BREAKING: Migrated from `package:flutter/material.dart` and `package:flutter/cupertino.dart`, which are deprecated as of Flutter 3.47, to the standalone `material_ui` and `cupertino_ui` packages. This removes the deprecation warnings on Flutter 3.50.0.
 - BREAKING: The minimum supported versions are now Flutter 3.44.0 and Dart 3.12.0, the lowest that `material_ui` and `cupertino_ui` support.
 - BREAKING: `UpgradeAlert` and `UpgradeCard` are now built from `material_ui`/`cupertino_ui` widgets, so they read the theme and localizations from a `MaterialApp` or `CupertinoApp` imported from those packages. In an app that still uses `MaterialApp` or `CupertinoApp` from `package:flutter/material.dart` or `package:flutter/cupertino.dart`, they fail with "No MaterialLocalizations found". Migrate the app's imports with `dart fix --apply --code=migrate_design_widgets`, and import `GlobalMaterialLocalizations` and `GlobalCupertinoLocalizations` from `material_ui` and `cupertino_ui`. Until an app is migrated, adding `localizationsDelegates: GlobalMaterialLocalizations.delegates` (from `material_ui`) to its `MaterialApp` lets the widgets build, using the default theme.
-- Updated the example app and tests to `material_ui`, `cupertino_ui`, and go_router 18.
-- CI now tests Flutter 3.44.9, 3.47.1, and 3.50.0.
 
 ## 13.8.0
 
